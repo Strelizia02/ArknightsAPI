@@ -1,0 +1,9 @@
+server:
+  port: 8086
+spring:
+  datasource:
+    localdatasource:
+      url: jdbc:mysql://localhost:3306/arknights?useUnicode=true&characterEncoding=utf8&allowMultiQueries=true&serverTimezone=UTC
+      username: root
+      password: root
+      driver-class-name: com.mysql.jdbc.Driver
