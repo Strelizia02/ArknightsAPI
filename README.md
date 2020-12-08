@@ -18,21 +18,30 @@
 
 # 项目结构
 
-└─main
-    ├─java
-    │  └─com
-    │      └─wzy
-    │          └─arknights
-    │              ├─config
-    │              ├─controller
-    │              ├─dao
-    │              ├─job
-    │              ├─model
-    │              ├─service
-    │              │  └─impl
-    │              ├─util
-    │              └─vo
-    └─resources
-        ├─lua
-        ├─mapping
-        └─sql
+main：
+
+​	java：
+
+​		config:Spring配置文件
+
+​		controller：控制层
+
+​		dao：Mapper文件，mapping的interface
+
+​		job：定时任务
+
+​		model：数据封装bean类
+
+​		service：服务类，主要计算逻辑
+
+​		util：工具类，存放静态方法
+
+​		vo：返回类型封装
+
+​	resource：
+
+​		lua：lua插件留底
+
+​		mapping：mapping文件，SQL语句
+
+​		sql：数据库结构留底
