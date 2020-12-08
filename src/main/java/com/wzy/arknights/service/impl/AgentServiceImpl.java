@@ -73,7 +73,7 @@ public class AgentServiceImpl implements AgentService {
                 agentList = agentMapper.selectAgentByStar("常规", star);
             }
             Random random = new Random(System.nanoTime() +  System.currentTimeMillis() / qq);
-            int i = 0;
+            int i = random.nextInt(agentList.size());
             s = s + " " + agentList.get(i).getName();
         }
         return pool+"池："+s;

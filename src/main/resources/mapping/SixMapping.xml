@@ -16,7 +16,7 @@
     <update id="updateSixByQQ">
         INSERT INTO six (qq, found_count, today_count)
         VALUES
-            (#{qq,jdbcType=BIGINT}, #{six,jdbcType=INTEGER}, today_count + 1)
+            (#{qq,jdbcType=BIGINT}, #{six,jdbcType=INTEGER}, 1)
         ON DUPLICATE KEY UPDATE
         found_count = #{six,jdbcType=INTEGER},
         today_count = today_count + 1
