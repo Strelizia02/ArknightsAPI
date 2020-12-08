@@ -29,7 +29,8 @@ function ReceiveGroupMsg(CurrentQQ, data)
 	pool = list[2],
 	qq = data.FromUserId
 }
-	log.notice("From Lua SendMsg Ret-->%s", json.encode(body))
+	log.notice("From Lua SendMsg Ret-->%d", data.FromUserId)
+    log.notice("From Lua SendMsg Ret-->%s", data.FromNickName)
     if (list[1] == "抽卡") then
 	response, error_message =
 		http.post(
@@ -53,8 +54,8 @@ function ReceiveGroupMsg(CurrentQQ, data)
                 sendToType = 2,
                 sendMsgType = "TextMsg",
                 groupid = 0,
-                content = html,
-                atUser = data.FromUserId
+                content = data.FromNickName.."抽取"..html,
+                atUser = 0
             }
         )
     elseif (list[1] == "十连") then
@@ -79,11 +80,11 @@ function ReceiveGroupMsg(CurrentQQ, data)
                 sendToType = 2,
                 sendMsgType = "TextMsg",
                 groupid = 0,
-                content = html,
-                atUser = data.FromUserId
+                content = data.FromNickName.."抽取"..html,
+                atUser = 0
             }
         )
-		log.notice("From Lua SendMsg Ret-->%s", html)
+
 	end
     return 1
 end

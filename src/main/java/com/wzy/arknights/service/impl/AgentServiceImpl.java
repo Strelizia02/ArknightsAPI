@@ -19,11 +19,11 @@ import java.util.Random;
 @Service
 @Slf4j
 public class AgentServiceImpl implements AgentService {
+
     @Autowired
     private AgentMapper agentMapper;
     @Autowired
     private SixMapper sixMapper;
-
 
     @Override
     public String chouKa(String pool,Long qq) {
@@ -37,9 +37,9 @@ public class AgentServiceImpl implements AgentService {
 
     /**
      * 抽卡通用方法
-     * @param count
-     * @param pool
-     * @param qq
+     * @param count 抽几张卡
+     * @param pool  卡池名称
+     * @param qq    抽取人qq
      * @return
      */
     public String FoundAgentByNum(int count,String pool,Long qq){
@@ -48,19 +48,24 @@ public class AgentServiceImpl implements AgentService {
             pool = "常规";
         }
         String s = "";
+        //去数据库中查询这个人的垫刀数
         Integer sum = sixMapper.selectSixByQQ(qq);
         if (sum == null){
             sum = 0;
         }
+        //循环抽卡
         for(int j = 0; j < count; j++) {
             int star = FoundAgent.FoundOneByMath(qq,sum);
             if(star == 6){
                 //抽到六星垫刀归零
                 sixMapper.updateSixByQQ(qq, 0);
             }else {
+                //没有六星垫刀+1
                 sixMapper.updateSixByQQ(qq, sum++);
             }
+            //保存结果集
             List<AgentInfo> agentList;
+            //使用不同的方法Math/Random进行随机运算，尽可能取消同一时间戳导致的相同随机数(虽然两个算法本质一样，这样做基本屁用没有)
             double r = Math.random();
             if (r <= 0.5) {
                 //获取当前卡池三星/四星/五星/六星列表
@@ -72,6 +77,7 @@ public class AgentServiceImpl implements AgentService {
             if (agentList.size() == 0){
                 agentList = agentMapper.selectAgentByStar("常规", star);
             }
+            //随机数种子采用纳秒数+毫秒/qq，尽可能减少时间戳导致的不随机
             Random random = new Random(System.nanoTime() +  System.currentTimeMillis() / qq);
             int i = random.nextInt(agentList.size());
             s = s + " " + agentList.get(i).getName();
