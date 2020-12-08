@@ -12,4 +12,18 @@
         from agent
         where star = #{star} and pool = #{pool};
     </select>
+
+    <select id="selectPool" resultType="java.lang.String">
+        SELECT
+            pool
+        FROM
+            agent
+        WHERE
+            pool != '凭证兑换'
+        AND pool != '活动'
+        AND pool != '公招'
+        AND pool != '初始'
+        GROUP BY
+            pool
+    </select>
 </mapper>

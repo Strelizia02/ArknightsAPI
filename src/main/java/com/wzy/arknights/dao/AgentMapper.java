@@ -10,4 +10,6 @@ import java.util.List;
  **/
 public interface AgentMapper {
     List<AgentInfo> selectAgentByStar(String pool, Integer star);
+
+    List<String> selectPool();
 }

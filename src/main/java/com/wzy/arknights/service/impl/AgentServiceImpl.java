@@ -40,6 +40,16 @@ public class AgentServiceImpl implements AgentService {
         return name + "抽取" + foundLimit(10,pool,qq);
     }
 
+    @Override
+    public String selectPool() {
+        List<String> poolList = agentMapper.selectPool();
+        String s = "";
+        for (String line : poolList) {
+            s = s + "\n" + line;
+        }
+        return s;
+    }
+
     /**
      * 限制每日的抽卡次数
      * @param count
