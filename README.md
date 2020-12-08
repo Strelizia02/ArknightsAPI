@@ -23,16 +23,16 @@
     │  └─com
     │      └─wzy
     │          └─arknights
-    │              ├─config --Spring配置文件
-    │              ├─controller --控制层：Controller文件
-    │              ├─dao --dao层：Mapper文件
-    │              ├─job --定时任务
-    │              ├─model --JavaBean
-    │              ├─service --服务层：计算逻辑
+    │              ├─config
+    │              ├─controller
+    │              ├─dao
+    │              ├─job
+    │              ├─model
+    │              ├─service
     │              │  └─impl
-    │              ├─util --Util工具类
-    │              └─vo --Request返回类型
+    │              ├─util
+    │              └─vo
     └─resources
-        ├─lua --lua插件：对接机器人框架
-        ├─mapping --Mapping文件，SQL
-        └─sql --数据库存档
+        ├─lua
+        ├─mapping
+        └─sql
