@@ -32,6 +32,7 @@ function ReceiveGroupMsg(CurrentQQ, data)
     {
 	    pool = list[2],
 	    qq = data.FromUserId
+	    name = data.FromNickName
     }
     if (list[1] == "抽卡") then
 	response, error_message =
@@ -55,7 +56,7 @@ function ReceiveGroupMsg(CurrentQQ, data)
                 sendToType = 2,
                 sendMsgType = "TextMsg",
                 groupid = 0,
-                content = data.FromNickName.."抽取"..html,
+                content = html,
                 atUser = 0
             }
         )
@@ -81,7 +82,7 @@ function ReceiveGroupMsg(CurrentQQ, data)
                 sendToType = 2,
                 sendMsgType = "TextMsg",
                 groupid = 0,
-                content = data.FromNickName.."抽取"..html,
+                content = html,
                 atUser = 0
             }
         )

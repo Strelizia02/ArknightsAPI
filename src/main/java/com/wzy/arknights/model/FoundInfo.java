@@ -7,6 +7,15 @@ package com.wzy.arknights.model;
 public class FoundInfo {
     private String pool;
     private Long qq;
+    private String name;
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
 
     public String getPool() {
         return pool;

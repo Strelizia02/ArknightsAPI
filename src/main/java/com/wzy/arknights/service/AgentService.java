@@ -5,7 +5,7 @@ package com.wzy.arknights.service;
  * @Date 2020/12/7 14:34
  **/
 public interface AgentService {
-    String chouKa(String pool, Long qq);
+    String chouKa(String pool, Long qq, String name);
 
-    String shiLian(String pool, Long qq);
+    String shiLian(String pool, Long qq, String name);
 }

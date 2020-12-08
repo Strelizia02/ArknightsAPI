@@ -39,12 +39,12 @@ public class ArknightsController {
     public String chouKa(
             @RequestBody FoundInfo foundInfo
     ){
-        return agentService.chouKa(foundInfo.getPool(),foundInfo.getQq());
+        return agentService.chouKa(foundInfo.getPool(),foundInfo.getQq(),foundInfo.getName());
     }
 
     @PostMapping("shiLian")
     public String shiLian(
             @RequestBody FoundInfo foundInfo){
-        return agentService.shiLian(foundInfo.getPool(),foundInfo.getQq());
+        return agentService.shiLian(foundInfo.getPool(),foundInfo.getQq(),foundInfo.getName());
     }
 }

@@ -8,6 +8,7 @@ import com.wzy.arknights.service.AgentService;
 import com.wzy.arknights.util.FoundAgent;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -26,14 +27,17 @@ public class AgentServiceImpl implements AgentService {
     @Autowired
     private SixMapper sixMapper;
 
+    @Value("${userConfig.limit}")
+    private Integer limit;
+
     @Override
-    public String chouKa(String pool,Long qq) {
-        return foundLimit(1,pool,qq);
+    public String chouKa(String pool,Long qq,String name) {
+        return name + "抽取" + foundLimit(1,pool,qq);
     }
 
     @Override
-    public String shiLian(String pool,Long qq) {
-        return foundLimit(10,pool,qq);
+    public String shiLian(String pool,Long qq,String name) {
+        return name + "抽取" + foundLimit(10,pool,qq);
     }
 
     /**
@@ -57,8 +61,8 @@ public class AgentServiceImpl implements AgentService {
         Integer today = userFoundInfo.getTodayCount();
         Long UserQq = userFoundInfo.getQq();
         String s = "今日抽卡机会无了";
-        //管理员账户1111和我无限抽，其他人每天最多100抽
-        if (today<100||UserQq==1111||UserQq==412459523) {
+        //管理员账户1111和我无限抽
+        if (today<limit||UserQq==1111||UserQq==412459523) {
             s = FoundAgentByNum(count, pool, qq, sum);
         }
         return s;

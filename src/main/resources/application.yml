@@ -9,3 +9,5 @@ spring:
       driver-class-name: com.mysql.jdbc.Driver
 scheduled:
   cleanJob: 0 0 4 */1 * ?
+userConfig:
+  limit: 20
