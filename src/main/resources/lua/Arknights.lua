@@ -31,61 +31,63 @@ function ReceiveGroupMsg(CurrentQQ, data)
     local body =
     {
 	    pool = list[2],
-	    qq = data.FromUserId
+	    qq = data.FromUserId,
 	    name = data.FromNickName
     }
     if (list[1] == "抽卡") then
-	response, error_message =
-		http.post(
-			"http://192.168.15.1:8086/Arknights/chouKa",
-			{
-				body = json.encode(body),
-				headers = 
-				{
-					["Accept"] = "*/*",
-					["Content-Type"] = "application/json"
-				}	
-			}
-		)
-	local html = response.body
-	luaRes =
-		Api.Api_SendMsg(
-            CurrentQQ,
-            {
-                toUser = data.FromGroupId,
-                sendToType = 2,
-                sendMsgType = "TextMsg",
-                groupid = 0,
-                content = html,
-                atUser = 0
-            }
-        )
+        response, error_message =
+            http.post(
+                "http://192.168.15.1:8086/Arknights/chouKa",
+                {
+                    body = json.encode(body),
+                    headers =
+                    {
+                        ["Accept"] = "*/*",
+                        ["Content-Type"] = "application/json"
+                    }
+                }
+            )
+            local html = response.body
+            log.notice("From Lua 抽卡 %s", html)
+            luaRes =
+                Api.Api_SendMsg(
+                    CurrentQQ,
+                    {
+                        toUser = data.FromGroupId,
+                        sendToType = 2,
+                        sendMsgType = "TextMsg",
+                        groupid = 0,
+                        content = html,
+                        atUser = 0
+                    }
+                )
     elseif (list[1] == "十连") then
-	response, error_message =
-		http.post(
-			"http://192.168.15.1:8086/Arknights/shiLian",	
-			{
-				body = json.encode(body),
-				headers = 
-				{
-					["Accept"] = "*/*",
-					["Content-Type"] = "application/json"
-				}
-		    }
-		)
-	local html = response.body
-        luaRes =
-            Api.Api_SendMsg(
-            CurrentQQ,
-            {
-                toUser = data.FromGroupId,
-                sendToType = 2,
-                sendMsgType = "TextMsg",
-                groupid = 0,
-                content = html,
-                atUser = 0
-            }
-        )
+        response, error_message =
+            http.post(
+                "http://192.168.15.1:8086/Arknights/shiLian",
+                {
+                    body = json.encode(body),
+                    headers =
+                    {
+                        ["Accept"] = "*/*",
+                        ["Content-Type"] = "application/json"
+                    }
+                }
+            )
+            local html = response.body
+            log.notice("From Lua 十连 %s", html)
+            luaRes =
+                Api.Api_SendMsg(
+                CurrentQQ,
+                {
+                    toUser = data.FromGroupId,
+                    sendToType = 2,
+                    sendMsgType = "TextMsg",
+                    groupid = 0,
+                    content = html,
+                    atUser = 0
+                }
+            )
 	end
     return 1
 end
