@@ -8,10 +8,15 @@ import java.util.Random;
  **/
 public class FoundAgent {
 
-
+    /**
+     * 静态方法，传递一个qq和垫刀数
+     * @param qq
+     * @param num
+     * @return
+     */
     public static int FoundOneByMath(Long qq, int num){
-        //六星概率2%
-        double sixStar = 2;
+
+        double sixStar;
         //五星概率8%
         double fiveStar = 8;
         //四星概率50%
@@ -22,6 +27,7 @@ public class FoundAgent {
         {
             sixStar = 2 + (num - 50) * 2;
         }else {
+            //六星概率默认2%
             sixStar = 2;
         }
 
@@ -36,6 +42,7 @@ public class FoundAgent {
         }else if (set <= 1- sixStar /100 - fiveStar /100 && set > 1 - sixStar /100 - fiveStar / 100 - fourStar / 100){
             starNum = 4;
         }else{
+            //增加的六星概率是从三星中抠出来的
             starNum = 3;
         }
         return starNum;

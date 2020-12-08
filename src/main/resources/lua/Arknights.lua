@@ -3,34 +3,36 @@ local Api = require("coreApi")
 local json = require("json")
 local http = require("http")
 
+-- 字符串切分方法，copy百度的
 function Split(szFullString, szSeparator)
-        local nFindStartIndex = 1
-        local nSplitIndex = 1
-        local nSplitArray = {}
-        while true do
-           local nFindLastIndex = string.find(szFullString, szSeparator, nFindStartIndex)
-           if not nFindLastIndex then
-            nSplitArray[nSplitIndex] = string.sub(szFullString, nFindStartIndex, string.len(szFullString))
-            break
-           end
-           nSplitArray[nSplitIndex] = string.sub(szFullString, nFindStartIndex, nFindLastIndex - 1)
-           nFindStartIndex = nFindLastIndex + string.len(szSeparator)
-           nSplitIndex = nSplitIndex + 1
-        end
-        return nSplitArray
+    local nFindStartIndex = 1
+    local nSplitIndex = 1
+    local nSplitArray = {}
+    while true do
+       local nFindLastIndex = string.find(szFullString, szSeparator, nFindStartIndex)
+       if not nFindLastIndex then
+        nSplitArray[nSplitIndex] = string.sub(szFullString, nFindStartIndex, string.len(szFullString))
+        break
+       end
+       nSplitArray[nSplitIndex] = string.sub(szFullString, nFindStartIndex, nFindLastIndex - 1)
+       nFindStartIndex = nFindLastIndex + string.len(szSeparator)
+       nSplitIndex = nSplitIndex + 1
+    end
+    return nSplitArray
 end
 
 function ReceiveFriendMsg(CurrentQQ, data)
     return 1
 end
+
+-- 调用API接口返回数据
 function ReceiveGroupMsg(CurrentQQ, data)
     local list = Split(data.Content," ")
-    local body = {
-	pool = list[2],
-	qq = data.FromUserId
-}
-	log.notice("From Lua SendMsg Ret-->%d", data.FromUserId)
-    log.notice("From Lua SendMsg Ret-->%s", data.FromNickName)
+    local body =
+    {
+	    pool = list[2],
+	    qq = data.FromUserId
+    }
     if (list[1] == "抽卡") then
 	response, error_message =
 		http.post(
@@ -45,7 +47,6 @@ function ReceiveGroupMsg(CurrentQQ, data)
 			}
 		)
 	local html = response.body
-	log.notice("From Lua SendMsg Ret-->%s", html)
 	luaRes =
 		Api.Api_SendMsg(
             CurrentQQ,
@@ -84,10 +85,10 @@ function ReceiveGroupMsg(CurrentQQ, data)
                 atUser = 0
             }
         )
-
 	end
     return 1
 end
+
 function ReceiveEvents(CurrentQQ, data, extData)
     return 1
 end

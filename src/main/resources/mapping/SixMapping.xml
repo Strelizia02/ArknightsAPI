@@ -21,4 +21,8 @@
         found_count = #{six,jdbcType=INTEGER},
         today_count = today_count + 1
     </update>
+
+    <update id="cleanTodayCount">
+        UPDATE six SET today_count = 0
+    </update>
 </mapper>
