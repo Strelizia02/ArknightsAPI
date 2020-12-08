@@ -3,6 +3,7 @@ package com.wzy.arknights.service.impl;
 import com.wzy.arknights.dao.AgentMapper;
 import com.wzy.arknights.dao.SixMapper;
 import com.wzy.arknights.model.AgentInfo;
+import com.wzy.arknights.model.UserFoundInfo;
 import com.wzy.arknights.service.AgentService;
 import com.wzy.arknights.util.FoundAgent;
 import lombok.extern.slf4j.Slf4j;
@@ -27,12 +28,40 @@ public class AgentServiceImpl implements AgentService {
 
     @Override
     public String chouKa(String pool,Long qq) {
-        return FoundAgentByNum(1,pool,qq);
+        return foundLimit(1,pool,qq);
     }
 
     @Override
     public String shiLian(String pool,Long qq) {
-        return FoundAgentByNum(10,pool,qq);
+        return foundLimit(10,pool,qq);
+    }
+
+    /**
+     * 限制每日的抽卡次数
+     * @param count
+     * @param pool
+     * @param qq
+     * @return
+     */
+    public String foundLimit(int count,String pool,Long qq){
+        UserFoundInfo userFoundInfo = sixMapper.selectUserFoundByQQ(qq);
+        if (userFoundInfo == null){
+            userFoundInfo = new UserFoundInfo();
+            userFoundInfo.setQq(qq);
+            userFoundInfo.setFoundCount(0);
+            userFoundInfo.setTodayCount(0);
+        }
+        //去数据库中查询这个人的垫刀数
+        Integer sum = userFoundInfo.getFoundCount();
+        //今日抽卡数
+        Integer today = userFoundInfo.getTodayCount();
+        Long UserQq = userFoundInfo.getQq();
+        String s = "今日抽卡机会无了";
+        //管理员账户1111和我无限抽，其他人每天最多100抽
+        if (today<100||UserQq==1111||UserQq==412459523) {
+            s = FoundAgentByNum(count, pool, qq, sum);
+        }
+        return s;
     }
 
     /**
@@ -42,26 +71,21 @@ public class AgentServiceImpl implements AgentService {
      * @param qq    抽取人qq
      * @return
      */
-    public String FoundAgentByNum(int count,String pool,Long qq){
+    public String FoundAgentByNum(int count,String pool,Long qq,Integer sum){
         //如果没输入卡池名或者卡池不存在
         if (pool==null||agentMapper.selectAgentByStar(pool,6).size()==0){
             pool = "常规";
         }
         String s = "";
-        //去数据库中查询这个人的垫刀数
-        Integer sum = sixMapper.selectSixByQQ(qq);
-        if (sum == null){
-            sum = 0;
-        }
         //循环抽卡
         for(int j = 0; j < count; j++) {
             int star = FoundAgent.FoundOneByMath(qq,sum);
             if(star == 6){
                 //抽到六星垫刀归零
-                sixMapper.updateSixByQQ(qq, 0);
+                sixMapper.updateUserFoundByQQ(qq, 0);
             }else {
                 //没有六星垫刀+1
-                sixMapper.updateSixByQQ(qq, sum++);
+                sixMapper.updateUserFoundByQQ(qq, sum++);
             }
             //保存结果集
             List<AgentInfo> agentList;

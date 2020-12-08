@@ -1,5 +1,6 @@
 package com.wzy.arknights.dao;
 
+import com.wzy.arknights.model.UserFoundInfo;
 import org.apache.ibatis.annotations.Param;
 
 /**
@@ -8,9 +9,9 @@ import org.apache.ibatis.annotations.Param;
  **/
 public interface SixMapper {
 
-    Integer updateSixByQQ(@Param("qq") Long qq, @Param("six") Integer six);
+    Integer updateUserFoundByQQ(@Param("qq") Long qq, @Param("six") Integer six);
 
-    Integer selectSixByQQ(Long qq);
+    UserFoundInfo selectUserFoundByQQ(Long qq);
 
     Integer cleanTodayCount();
 

@@ -19,11 +19,11 @@ public class CleanDayCountJob {
     @Autowired
     private SixMapper sixMapper;
 
+    //每天凌晨四点重置抽卡次数
     @Scheduled(cron = "${scheduled.cleanJob}")
     @Async
-    public void updateAllQuota(){
+    public void cleanDayCountJob(){
         sixMapper.cleanTodayCount();
     }
-
 
 }
