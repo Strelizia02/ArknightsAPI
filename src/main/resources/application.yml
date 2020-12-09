@@ -8,6 +8,8 @@ spring:
       password: root
       driver-class-name: com.mysql.jdbc.Driver
 scheduled:
+# 每天4点抽卡次数清空
   cleanJob: 0 0 4 */1 * ?
 userConfig:
+# 每日抽卡的限制次数
   limit: 20
