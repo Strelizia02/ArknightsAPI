@@ -3,6 +3,7 @@ local Api = require("coreApi")
 local json = require("json")
 local http = require("http")
 
+-- 这个文件直接复制到已部署好的机器人OPQBot/Plugin文件夹中，无需重启自动加载
 -- 字符串切分方法，copy百度的
 function Split(szFullString, szSeparator)
     local nFindStartIndex = 1
