@@ -1,34 +1,3 @@
-/*
-Navicat MySQL Data Transfer
-
-Source Server         : localhost
-Source Server Version : 50725
-Source Host           : localhost:3306
-Source Database       : arknights
-
-Target Server Type    : MYSQL
-Target Server Version : 50725
-File Encoding         : 65001
-
-Date: 2020-12-09 10:32:55
-*/
-
-SET FOREIGN_KEY_CHECKS=0;
-
--- ----------------------------
--- Table structure for agent
--- ----------------------------
-DROP TABLE IF EXISTS `agent`;
-CREATE TABLE `agent` (
-  `name` varchar(255) NOT NULL,
-  `star` int(20) DEFAULT NULL,
-  `pool` varchar(255) NOT NULL,
-  PRIMARY KEY (`name`,`pool`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
--- ----------------------------
--- Records of agent
--- ----------------------------
 INSERT INTO `agent` VALUES ('12F', '2', '公招');
 INSERT INTO `agent` VALUES ('Castle-3', '1', '公招');
 INSERT INTO `agent` VALUES ('Lanset-2', '1', '公招');
@@ -83,6 +52,7 @@ INSERT INTO `agent` VALUES ('微风', '5', '凭证兑换');
 INSERT INTO `agent` VALUES ('德克萨斯', '5', '常规');
 INSERT INTO `agent` VALUES ('惊蛰', '5', '常规');
 INSERT INTO `agent` VALUES ('慑砂', '5', '常规');
+INSERT INTO `agent` VALUES ('慑砂', '5', '轮换');
 INSERT INTO `agent` VALUES ('慕斯', '4', '常规');
 INSERT INTO `agent` VALUES ('拉普兰德', '5', '常规');
 INSERT INTO `agent` VALUES ('拜松', '5', '活动');
@@ -132,6 +102,7 @@ INSERT INTO `agent` VALUES ('灰喉', '5', '常规');
 INSERT INTO `agent` VALUES ('炎客', '5', '活动');
 INSERT INTO `agent` VALUES ('炎熔', '3', '常规');
 INSERT INTO `agent` VALUES ('煌', '6', '常规');
+INSERT INTO `agent` VALUES ('煌', '6', '轮换');
 INSERT INTO `agent` VALUES ('燧石', '5', '常规');
 INSERT INTO `agent` VALUES ('特米米', '5', '活动');
 INSERT INTO `agent` VALUES ('狮蝎', '5', '常规');
@@ -162,11 +133,13 @@ INSERT INTO `agent` VALUES ('芙蓉', '3', '常规');
 INSERT INTO `agent` VALUES ('芬', '3', '常规');
 INSERT INTO `agent` VALUES ('芳汀', '4', '常规');
 INSERT INTO `agent` VALUES ('苇草', '5', '常规');
+INSERT INTO `agent` VALUES ('苇草', '5', '轮换');
 INSERT INTO `agent` VALUES ('苏苏洛', '4', '常规');
 INSERT INTO `agent` VALUES ('苦艾', '5', '活动');
 INSERT INTO `agent` VALUES ('莫斯提马', '6', '常规');
 INSERT INTO `agent` VALUES ('莫斯提马', '6', '锁与钥的守卫者');
 INSERT INTO `agent` VALUES ('莱恩哈特', '5', '常规');
+INSERT INTO `agent` VALUES ('莱恩哈特', '5', '轮换');
 INSERT INTO `agent` VALUES ('蓝毒', '5', '常规');
 INSERT INTO `agent` VALUES ('薄绿', '5', '活动');
 INSERT INTO `agent` VALUES ('蛇屠箱', '4', '常规');
@@ -183,6 +156,7 @@ INSERT INTO `agent` VALUES ('迷迭香', '6', '常规');
 INSERT INTO `agent` VALUES ('送葬人', '5', '常规');
 INSERT INTO `agent` VALUES ('酸糖', '4', '常规');
 INSERT INTO `agent` VALUES ('铃兰', '6', '常规');
+INSERT INTO `agent` VALUES ('铃兰', '6', '轮换');
 INSERT INTO `agent` VALUES ('银灰', '6', '常规');
 INSERT INTO `agent` VALUES ('铸铁', '5', '活动');
 INSERT INTO `agent` VALUES ('锡兰', '5', '活动');
