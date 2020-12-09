@@ -48,7 +48,8 @@ public class AgentServiceImpl implements AgentService {
         for (String line : poolList) {
             s = s + "\n" + line;
         }
-        return s;
+        //去掉头部换行
+        return s.substring(1);
     }
 
     /**
