@@ -1,6 +1,6 @@
 package com.wzy.arknights.job;
 
-import com.wzy.arknights.dao.SixMapper;
+import com.wzy.arknights.dao.UserFoundMapper;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Async;
@@ -17,13 +17,13 @@ import org.springframework.stereotype.Component;
 public class CleanDayCountJob {
 
     @Autowired
-    private SixMapper sixMapper;
+    private UserFoundMapper userFoundMapper;
 
     //每天凌晨四点重置抽卡次数
     @Scheduled(cron = "${scheduled.cleanJob}")
     @Async
     public void cleanDayCountJob(){
-        sixMapper.cleanTodayCount();
+        userFoundMapper.cleanTodayCount();
     }
 
 }

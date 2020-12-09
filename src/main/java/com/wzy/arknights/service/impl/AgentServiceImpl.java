@@ -1,7 +1,7 @@
 package com.wzy.arknights.service.impl;
 
 import com.wzy.arknights.dao.AgentMapper;
-import com.wzy.arknights.dao.SixMapper;
+import com.wzy.arknights.dao.UserFoundMapper;
 import com.wzy.arknights.model.AgentInfo;
 import com.wzy.arknights.model.UserFoundInfo;
 import com.wzy.arknights.service.AgentService;
@@ -10,6 +10,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
+import org.springframework.util.DigestUtils;
 
 import java.util.List;
 import java.util.Random;
@@ -25,7 +26,7 @@ public class AgentServiceImpl implements AgentService {
     @Autowired
     private AgentMapper agentMapper;
     @Autowired
-    private SixMapper sixMapper;
+    private UserFoundMapper userFoundMapper;
 
     @Value("${userConfig.limit}")
     private Integer limit;
@@ -58,10 +59,12 @@ public class AgentServiceImpl implements AgentService {
      * @return
      */
     public String foundLimit(int count,String pool,Long qq){
-        UserFoundInfo userFoundInfo = sixMapper.selectUserFoundByQQ(qq);
+        String qqMd5 = DigestUtils.md5DigestAsHex(qq.toString().getBytes());
+        UserFoundInfo userFoundInfo = userFoundMapper.selectUserFoundByQQ(qqMd5);
         if (userFoundInfo == null){
             userFoundInfo = new UserFoundInfo();
-            userFoundInfo.setQq(qq);
+            //MD5加密
+            userFoundInfo.setQq(qqMd5);
             userFoundInfo.setFoundCount(0);
             userFoundInfo.setTodayCount(0);
         }
@@ -69,10 +72,10 @@ public class AgentServiceImpl implements AgentService {
         Integer sum = userFoundInfo.getFoundCount();
         //今日抽卡数
         Integer today = userFoundInfo.getTodayCount();
-        Long UserQq = userFoundInfo.getQq();
+        String UserQq = userFoundInfo.getQq();
         String s = "今日抽卡机会无了";
         //管理员账户1111和我无限抽
-        if (today<limit||UserQq==1111||UserQq==412459523) {
+        if (today<limit||UserQq.equals(DigestUtils.md5DigestAsHex("1111".getBytes()))||UserQq.equals(DigestUtils.md5DigestAsHex("412459523".getBytes()))) {
             s = FoundAgentByNum(count, pool, qq, sum);
         }
         return s;
@@ -86,6 +89,7 @@ public class AgentServiceImpl implements AgentService {
      * @return
      */
     public String FoundAgentByNum(int count,String pool,Long qq,Integer sum){
+        String qqMd5 = DigestUtils.md5DigestAsHex(qq.toString().getBytes());
         //如果没输入卡池名或者卡池不存在
         if (pool==null||agentMapper.selectAgentByStar(pool,6).size()==0){
             pool = "常规";
@@ -96,10 +100,10 @@ public class AgentServiceImpl implements AgentService {
             int star = FoundAgent.FoundOneByMath(qq,sum);
             if(star == 6){
                 //抽到六星垫刀归零
-                sixMapper.updateUserFoundByQQ(qq, 0);
+                userFoundMapper.updateUserFoundByQQ(qqMd5, 0);
             }else {
                 //没有六星垫刀+1
-                sixMapper.updateUserFoundByQQ(qq, sum++);
+                userFoundMapper.updateUserFoundByQQ(qqMd5, sum++);
             }
             //保存结果集
             List<AgentInfo> agentList;

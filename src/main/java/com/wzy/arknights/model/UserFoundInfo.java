@@ -5,15 +5,15 @@ package com.wzy.arknights.model;
  * @Date 2020/12/8 14:07
  **/
 public class UserFoundInfo {
-    private Long qq;
+    private String qq;
     private Integer foundCount;
     private Integer todayCount;
 
-    public Long getQq() {
+    public String getQq() {
         return qq;
     }
 
-    public void setQq(Long qq) {
+    public void setQq(String qq) {
         this.qq = qq;
     }
 

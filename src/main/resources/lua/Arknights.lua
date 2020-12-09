@@ -2,6 +2,8 @@ local log = require("log")
 local Api = require("coreApi")
 local json = require("json")
 local http = require("http")
+-- 服务api接口地址
+local url = "http://192.168.15.1:8086"
 
 -- 这个文件直接复制到已部署好的机器人OPQBot/Plugin文件夹中，无需重启自动加载
 -- 字符串切分方法，copy百度的
@@ -38,7 +40,7 @@ function ReceiveGroupMsg(CurrentQQ, data)
     if (list[1] == "抽卡") then
         response, error_message =
             http.post(
-                "http://192.168.15.1:8086/Arknights/chouKa",
+                url + "/Arknights/chouKa",
                 {
                     body = json.encode(body),
                     headers =
@@ -65,7 +67,7 @@ function ReceiveGroupMsg(CurrentQQ, data)
     elseif (list[1] == "十连") then
         response, error_message =
             http.post(
-                "http://192.168.15.1:8086/Arknights/shiLian",
+                url + "/Arknights/shiLian",
                 {
                     body = json.encode(body),
                     headers =

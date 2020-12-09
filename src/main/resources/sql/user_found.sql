@@ -25,11 +25,3 @@ CREATE TABLE `user_found` (
   `today_count` int(255) DEFAULT NULL COMMENT '今日累计抽卡数',
   PRIMARY KEY (`qq`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
--- ----------------------------
--- Records of user_found
--- ----------------------------
-INSERT INTO `user_found` VALUES ('1111', '9', '305');
-INSERT INTO `user_found` VALUES ('11111', '9', '100');
-INSERT INTO `user_found` VALUES ('412459523', '9', '133');
-INSERT INTO `user_found` VALUES ('2398095263', '0', '1');

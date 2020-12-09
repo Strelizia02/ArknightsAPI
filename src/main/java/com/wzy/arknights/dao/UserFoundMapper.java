@@ -7,11 +7,11 @@ import org.apache.ibatis.annotations.Param;
  * @author wangzy
  * @Date 2020/12/7 13:50
  **/
-public interface SixMapper {
+public interface UserFoundMapper {
 
-    Integer updateUserFoundByQQ(@Param("qq") Long qq, @Param("six") Integer six);
+    Integer updateUserFoundByQQ(@Param("qq") String qq, @Param("six") Integer six);
 
-    UserFoundInfo selectUserFoundByQQ(Long qq);
+    UserFoundInfo selectUserFoundByQQ(String qq);
 
     Integer cleanTodayCount();
 
