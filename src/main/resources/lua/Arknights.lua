@@ -37,7 +37,20 @@ function ReceiveGroupMsg(CurrentQQ, data)
 	    qq = data.FromUserId,
 	    name = data.FromNickName
     }
-    if (list[1] == "抽卡") then
+    if (list[1] == "菜单") then
+        luaRes =
+        Api.Api_SendMsg(
+            CurrentQQ,
+            {
+                toUser = data.FromGroupId,
+                sendToType = 2,
+                sendMsgType = "TextMsg",
+                groupid = 0,
+                content = "抽卡/十连/卡池",
+                atUser = 0
+            }
+        )
+    elseif (list[1] == "抽卡") then
         response, error_message =
             http.post(
                 url + "/Arknights/chouKa",
@@ -91,6 +104,35 @@ function ReceiveGroupMsg(CurrentQQ, data)
                     atUser = 0
                 }
             )
+    elseif (list[1] == "卡池") then
+        response, error_message =
+        http.request(
+            "GET",
+            url + "/Arknights/getPoolName",
+            {
+                query = "type=text",
+                headers =
+                {
+                    ["Accept"] = "*/*",
+                    ["Content-Type"] = "application/json",
+                    ["User-Agent"] = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/80.0.3987.163 Safari/537.36"
+                }
+            }
+        )
+        local html = response.body
+        log.notice("From Lua 卡池 %s", html)
+        luaRes =
+        Api.Api_SendMsg(
+            CurrentQQ,
+            {
+                toUser = data.FromGroupId,
+                sendToType = 2,
+                sendMsgType = "TextMsg",
+                groupid = 0,
+                content = html,
+                atUser = 0
+            }
+        )
 	end
     return 1
 end
