@@ -15,21 +15,5 @@ public class ArknightsController {
     @Autowired
     private AgentService agentService;
 
-    @GetMapping("getPoolName")
-    public String getPoolName(){
-        return agentService.selectPool();
-    }
 
-    @PostMapping("chouKa")
-    public String chouKa(
-            @RequestBody FoundInfo foundInfo
-    ){
-        return agentService.chouKa(foundInfo.getPool(),foundInfo.getQq(),foundInfo.getName());
-    }
-
-    @PostMapping("shiLian")
-    public String shiLian(
-            @RequestBody FoundInfo foundInfo){
-        return agentService.shiLian(foundInfo.getPool(),foundInfo.getQq(),foundInfo.getName());
-    }
 }
