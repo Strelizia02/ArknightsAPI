@@ -1,6 +1,6 @@
-package com.wzy.arknights.dao;
+package com.strelizia.arknights.dao;
 
-import com.wzy.arknights.model.AgentInfo;
+import com.strelizia.arknights.model.AgentInfo;
 
 import java.util.List;
 

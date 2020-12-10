@@ -1,4 +1,4 @@
-package com.wzy.arknights.config;
+package com.strelizia.arknights.config;
 
 import org.apache.ibatis.session.SqlSessionFactory;
 import org.mybatis.spring.SqlSessionFactoryBean;
@@ -24,7 +24,7 @@ import javax.sql.DataSource;
 public class LocalDataSourceConfig {
 
   @Autowired
-  private com.wzy.arknights.config.LocalDataSourceProperties prop;
+  private LocalDataSourceProperties prop;
 
   /**
    * 创建数据源

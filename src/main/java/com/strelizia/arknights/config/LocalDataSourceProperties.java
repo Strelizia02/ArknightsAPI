@@ -1,4 +1,4 @@
-package com.wzy.arknights.config;
+package com.strelizia.arknights.config;
 
 import lombok.Data;
 import org.springframework.boot.context.properties.ConfigurationProperties;

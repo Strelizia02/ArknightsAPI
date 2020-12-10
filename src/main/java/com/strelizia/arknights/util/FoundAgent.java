@@ -1,4 +1,4 @@
-package com.wzy.arknights.util;
+package com.strelizia.arknights.util;
 
 import java.util.Random;
 

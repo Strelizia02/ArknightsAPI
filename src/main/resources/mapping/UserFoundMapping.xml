@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.wzy.arknights.dao.UserFoundMapper">
-    <resultMap id="BaseResultMap" type="com.wzy.arknights.model.UserFoundInfo" >
+<mapper namespace="com.strelizia.arknights.dao.UserFoundMapper">
+    <resultMap id="BaseResultMap" type="com.strelizia.arknights.model.UserFoundInfo" >
         <result column="qq" property="qq" jdbcType="BIGINT" />
         <result column="found_count" property="foundCount" jdbcType="INTEGER" />
         <result column="today_count" property="todayCount" jdbcType="INTEGER" />

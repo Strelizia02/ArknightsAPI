@@ -1,6 +1,6 @@
-package com.wzy.arknights.dao;
+package com.strelizia.arknights.dao;
 
-import com.wzy.arknights.model.UserFoundInfo;
+import com.strelizia.arknights.model.UserFoundInfo;
 import org.apache.ibatis.annotations.Param;
 
 /**

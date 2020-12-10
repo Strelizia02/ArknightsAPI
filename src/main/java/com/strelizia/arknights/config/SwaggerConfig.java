@@ -1,4 +1,4 @@
-package com.wzy.arknights.config;
+package com.strelizia.arknights.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

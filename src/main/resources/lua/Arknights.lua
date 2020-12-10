@@ -6,24 +6,6 @@ local http = require("http")
 local url = "http://192.168.15.105:8086"
 
 function ReceiveFriendMsg(CurrentQQ, data)
-    local body =
-    {
-        text = data.Content,
-        qq = data.FromUserId,
-        name = data.FromNickName
-    }
-    response, error_message =
-    http.post(
-        ""..url.."/Arknights/Friend",
-        {
-            body = json.encode(body),
-            headers =
-            {
-                ["Accept"] = "*/*",
-                ["Content-Type"] = "application/json"
-            }
-        }
-    )
     return 1
 end
 
@@ -51,24 +33,6 @@ function ReceiveGroupMsg(CurrentQQ, data)
 end
 
 function ReceiveEvents(CurrentQQ, data, extData)
-    local body =
-    {
-        text = data.Content,
-        qq = data.FromUserId,
-        name = data.FromNickName
-    }
-    response, error_message =
-    http.post(
-        ""..url.."/Arknights/Event",
-        {
-            body = json.encode(body),
-            headers =
-            {
-                ["Accept"] = "*/*",
-                ["Content-Type"] = "application/json"
-            }
-        }
-    )
     return 1
 end
 

@@ -1,7 +1,7 @@
-package com.wzy.arknights.controller;
+package com.strelizia.arknights.controller;
 
-import com.wzy.arknights.model.FoundInfo;
-import com.wzy.arknights.service.AgentService;
+import com.strelizia.arknights.model.FoundInfo;
+import com.strelizia.arknights.service.AgentService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 

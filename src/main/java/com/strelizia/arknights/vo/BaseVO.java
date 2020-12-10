@@ -1,4 +1,4 @@
-package com.wzy.arknights.vo;
+package com.strelizia.arknights.vo;
 
 import org.apache.commons.lang.builder.ToStringBuilder;
 import org.apache.commons.lang.builder.ToStringStyle;

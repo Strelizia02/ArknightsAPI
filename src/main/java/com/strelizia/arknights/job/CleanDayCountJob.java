@@ -1,6 +1,6 @@
-package com.wzy.arknights.job;
+package com.strelizia.arknights.job;
 
-import com.wzy.arknights.dao.UserFoundMapper;
+import com.strelizia.arknights.dao.UserFoundMapper;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Async;

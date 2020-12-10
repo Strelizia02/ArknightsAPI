@@ -1,4 +1,4 @@
-package com.wzy.arknights.vo;
+package com.strelizia.arknights.vo;
 
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 

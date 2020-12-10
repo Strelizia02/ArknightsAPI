@@ -1,4 +1,4 @@
-package com.wzy.arknights;
+package com.strelizia.arknights;
 
 import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.boot.SpringApplication;
@@ -8,7 +8,7 @@ import org.springframework.scheduling.annotation.EnableScheduling;
 import springfox.documentation.swagger2.annotations.EnableSwagger2;
 
 @SpringBootApplication
-@MapperScan(basePackages ={"com.wzy.arknights.dao"})
+@MapperScan(basePackages ={"com.strelizia.arknights.dao"})
 @EnableSwagger2
 @EnableScheduling
 @EnableAsync

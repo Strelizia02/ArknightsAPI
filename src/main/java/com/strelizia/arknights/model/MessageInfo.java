@@ -1,11 +1,11 @@
-package com.wzy.arknights.model;
+package com.strelizia.arknights.model;
 
 /**
  * @author wangzy
- * @Date 2020/12/7 17:45
+ * @Date 2020/12/10 16:37
  **/
-public class FoundInfo {
-    private String pool;
+public class MessageInfo {
+    private String text;
     private Long qq;
     private String name;
 
@@ -17,12 +17,12 @@ public class FoundInfo {
         this.name = name;
     }
 
-    public String getPool() {
-        return pool;
+    public String getText() {
+        return text;
     }
 
-    public void setPool(String pool) {
-        this.pool = pool;
+    public void setText(String text) {
+        this.text = text;
     }
 
     public Long getQq() {

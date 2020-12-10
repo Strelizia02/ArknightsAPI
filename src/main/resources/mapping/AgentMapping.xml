@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.wzy.arknights.dao.AgentMapper">
-    <resultMap id="BaseResultMap" type="com.wzy.arknights.model.AgentInfo" >
+<mapper namespace="com.strelizia.arknights.dao.AgentMapper">
+    <resultMap id="BaseResultMap" type="com.strelizia.arknights.model.AgentInfo" >
         <result column="name" property="name" jdbcType="VARCHAR" />
         <result column="star" property="star" jdbcType="INTEGER" />
         <result column="pool" property="pool" jdbcType="VARCHAR" />

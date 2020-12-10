@@ -50,17 +50,9 @@ main：
 
 # 项目部署：
 
-建议在Linux环境下运行，Windows和Mac环境未测试。
+[机器人框架部署文档](https://github.com/OPQBOT/OPQ/wiki/%E5%AE%89%E8%A3%85%E6%8C%87%E5%8D%97)
 
-拷贝项目目录中sql目录下的SQL脚本，在MySQL中执行，并在application.yml中配置你的MySQL。
-
-将项目打包jar，记录运行url（一般是127.0.0.1:8086）
-
-项目中包含一个application.yml和一个run.sh，二者为项目配置文件和启动脚本。请拷贝出来放置在jar包同名文件夹下
-
-根据上文机器人WIKI链接，部署并启动OPQ机器人，将lua中的插件复制到Plugin目录下，若机器人框架和spring项目不在同一台机器运行，请保证两台机器的网络畅通。
-
-修改lua插件第6行url地址为自己的api地址。
+[本项目部署文档](https://blog.csdn.net/weixin_46466052/article/details/110956460)
 
 # 责任声明：
 

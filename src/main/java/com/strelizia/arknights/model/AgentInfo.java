@@ -1,4 +1,4 @@
-package com.wzy.arknights.model;
+package com.strelizia.arknights.model;
 
 /**
  * @author wangzy
