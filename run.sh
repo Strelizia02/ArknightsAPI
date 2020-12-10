@@ -1,12 +1,11 @@
 #!/bin/sh
 
-
 CUR_SHELL_DIR=`pwd`
 JAR_NAME="arknights-0.0.1-SNAPSHOT.jar"
 JAR_PATH=$CUR_SHELL_DIR/$JAR_NAME
 API_NAME=arknights
 
-LOG_PATH="arknighs.log"
+LOG_PATH="arknights.log"
 
 #PID  代表是PID文件
 PID=$API_NAME\.pid
