@@ -98,6 +98,7 @@ public class AgentServiceImpl implements AgentService {
         String s = "";
         //循环抽卡
         for(int j = 0; j < count; j++) {
+            //获取干员稀有度
             int star = FoundAgent.FoundOneByMath(qq,sum);
             if(star == 6){
                 //抽到六星垫刀归零
@@ -123,8 +124,25 @@ public class AgentServiceImpl implements AgentService {
             //随机数种子采用纳秒数+毫秒/qq，尽可能减少时间戳导致的不随机
             Random random = new Random(System.nanoTime() +  System.currentTimeMillis() / qq);
             int i = random.nextInt(agentList.size());
-            s = s + " " + agentList.get(i).getName();
+            String levelStar;
+            switch (star){
+                case 6:
+                    levelStar = "★★★★★★";
+                    break;
+                case 5:
+                    levelStar = "★★★★★";
+                    break;
+                case 4:
+                    levelStar = "☆☆☆☆";
+                    break;
+                case 3:
+                    levelStar = "☆☆☆";
+                    break;
+                default:
+                    levelStar = "";
+            }
+            s = s + " " + agentList.get(i).getName() + "\t" + levelStar + "\n";
         }
-        return pool+"池："+s;
+        return pool+"池：\n"+s;
     }
 }
