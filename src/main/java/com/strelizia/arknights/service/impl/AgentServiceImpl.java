@@ -4,6 +4,7 @@ import com.strelizia.arknights.dao.AgentMapper;
 import com.strelizia.arknights.dao.UserFoundMapper;
 import com.strelizia.arknights.model.AgentInfo;
 import com.strelizia.arknights.model.UserFoundInfo;
+import com.strelizia.arknights.util.FormatStringUtil;
 import com.strelizia.arknights.util.FoundAgent;
 import com.strelizia.arknights.service.AgentService;
 import lombok.extern.slf4j.Slf4j;
@@ -141,7 +142,11 @@ public class AgentServiceImpl implements AgentService {
                 default:
                     levelStar = "";
             }
-            s = s + " " + agentList.get(i).getName() + "\t" + levelStar + "\n";
+            try {
+                s = s + " " + FormatStringUtil.strAppendStr(agentList.get(i).getName(),10,"-") + levelStar + "\n";
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }
         return pool+"池：\n"+s;
     }
