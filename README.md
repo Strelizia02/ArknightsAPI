@@ -52,7 +52,7 @@ main：
 
 [机器人框架部署文档](https://github.com/OPQBOT/OPQ/wiki/%E5%AE%89%E8%A3%85%E6%8C%87%E5%8D%97)
 
-[本项目部署文档](https://blog.csdn.net/weixin_46466052/article/details/110956460)
+[本项目部署文档](https://www.cnblogs.com/strelizia/p/14120201.html)
 
 # 责任声明：
 
