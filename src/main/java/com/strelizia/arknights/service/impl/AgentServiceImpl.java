@@ -180,7 +180,7 @@ public class AgentServiceImpl implements AgentService {
                     levelStar = "";
             }
             try {
-                s = s + " " + agentList.get(i).getName() + "\n" + levelStar + "\n";
+                s = s + " " + agentList.get(i).getName() + " " + levelStar + "\n";
             } catch (Exception e) {
                 e.printStackTrace();
             }
