@@ -3,7 +3,7 @@ local Api = require("coreApi")
 local json = require("json")
 local http = require("http")
 -- 服务api接口地址
-local url = "http://192.168.15.105:8086"
+local url = "http://localhost:8086"
 
 function ReceiveFriendMsg(CurrentQQ, data)
     return 1
@@ -11,15 +11,17 @@ end
 
 -- 调用API接口返回数据
 function ReceiveGroupMsg(CurrentQQ, data)
-    local body =
+    if (string.find(data.Content, "##") == 1) then
+        keyWord = data.Content:gsub("##", "")
+        local body =
     {
-	    text = data.Content,
+	    text = keyWord,
 	    qq = data.FromUserId,
 	    name = data.FromNickName
     }
     response, error_message =
         http.post(
-            ""..url.."/Arknights/Group",
+            ""..url.."/Arknights/receive",
             {
                 body = json.encode(body),
                 headers =
@@ -29,6 +31,9 @@ function ReceiveGroupMsg(CurrentQQ, data)
                 }
             }
         )
+    local html = response.body
+    log.notice("From Lua 抽卡 %s", html)
+    end
     return 1
 end
 

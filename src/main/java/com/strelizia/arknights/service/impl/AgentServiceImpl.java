@@ -143,7 +143,7 @@ public class AgentServiceImpl implements AgentService {
                     levelStar = "";
             }
             try {
-                s = s + " " + FormatStringUtil.strAppendStr(agentList.get(i).getName(),10,"-") + levelStar + "\n";
+                s = s + " " + FormatStringUtil.strAppendStr(agentList.get(i).getName(),10,"　") + levelStar + "\n";
             } catch (Exception e) {
                 e.printStackTrace();
             }
