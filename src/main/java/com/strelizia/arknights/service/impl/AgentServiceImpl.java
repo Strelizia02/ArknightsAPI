@@ -84,9 +84,11 @@ public class AgentServiceImpl implements AgentService {
     public String selectFoundCount(Long qq, String name, Long groupId) {
         String qqMd5 = DigestUtils.md5DigestAsHex(qq.toString().getBytes());
         UserFoundInfo userFoundInfo = userFoundMapper.selectUserFoundByQQ(qqMd5);
+        Integer todayCount = 0;
         Integer foundCount = 0;
         if (userFoundInfo != null) {
             foundCount = userFoundInfo.getFoundCount();
+            todayCount = userFoundInfo.getTodayCount();
         }
         int sixStar;
         if (foundCount>50)
@@ -96,7 +98,7 @@ public class AgentServiceImpl implements AgentService {
             //六星概率默认2%
             sixStar = 2;
         }
-        String s = name + "的当前垫刀数为：" + foundCount + "\n当前六星概率为：" + sixStar + "%";
+        String s = name + "的当前垫刀数为：" + foundCount + "\n当前六星概率为：" + sixStar + "%" + "\n今日已抽卡次数：" + todayCount;
         poolTaskExecutor.execute(() -> SendMsgUtil.sendTextMsgToGroup(restTemplate,groupId,s,
                 "http://" + OPQUrl + ":8888" + sendTextMsgApi + "?qq=" +  loginQq + "&funcname=SendMsg"));
         return s;
