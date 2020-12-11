@@ -11,6 +11,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.io.support.PathMatchingResourcePatternResolver;
 import org.springframework.jdbc.datasource.DataSourceTransactionManager;
+import org.springframework.web.client.RestTemplate;
 
 import javax.sql.DataSource;
 
@@ -62,6 +63,11 @@ public class LocalDataSourceConfig {
   public SqlSessionTemplate localSqlSessionTemplate(
       @Qualifier("localSqlSessionFactory") SqlSessionFactory sqlSessionFactory){
     return new SqlSessionTemplate(sqlSessionFactory);
+  }
+
+  @Bean
+  public RestTemplate restTemplate() {
+    return new RestTemplate();
   }
 
 }

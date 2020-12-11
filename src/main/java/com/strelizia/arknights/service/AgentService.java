@@ -7,9 +7,9 @@ import java.util.List;
  * @Date 2020/12/7 14:34
  **/
 public interface AgentService {
-    String chouKa(String pool, Long qq, String name);
+    String chouKa(String pool, Long qq, String name, Long groupId);
 
-    String shiLian(String pool, Long qq, String name);
+    String shiLian(String pool, Long qq, String name, Long groupId);
 
-    String selectPool();
+    String selectPool(Long groupId);
 }

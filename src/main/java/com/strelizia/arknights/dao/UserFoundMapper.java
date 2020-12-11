@@ -9,7 +9,7 @@ import org.apache.ibatis.annotations.Param;
  **/
 public interface UserFoundMapper {
 
-    Integer updateUserFoundByQQ(@Param("qq") String qq, @Param("six") Integer six);
+    Integer updateUserFoundByQQ(@Param("qq") String qq, @Param("foundCount") Integer foundCount);
 
     UserFoundInfo selectUserFoundByQQ(String qq);
 

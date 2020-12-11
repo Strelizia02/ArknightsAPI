@@ -7,10 +7,12 @@ spring:
       username: root
       password: root
       driver-class-name: com.mysql.jdbc.Driver
-loginQq: 3022645754
+
 scheduled:
 # 每天4点抽卡次数清空
   cleanJob: 0 0 4 */1 * ?
 userConfig:
 # 每日抽卡的限制次数
   limit: 20
+#登录的机器人qq
+  loginQq: 3022645754

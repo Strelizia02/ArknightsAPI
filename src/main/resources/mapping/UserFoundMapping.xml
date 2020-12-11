@@ -17,9 +17,9 @@
     <update id="updateUserFoundByQQ">
         INSERT INTO user_found (qq, found_count, today_count)
         VALUES
-            (#{qq,jdbcType=VARCHAR}, #{six,jdbcType=INTEGER}, 1)
+            (#{qq,jdbcType=VARCHAR}, #{foundCount,jdbcType=INTEGER}, 1)
         ON DUPLICATE KEY UPDATE
-        found_count = #{six,jdbcType=INTEGER},
+        found_count = #{foundCount,jdbcType=INTEGER},
         today_count = today_count + 1
     </update>
 

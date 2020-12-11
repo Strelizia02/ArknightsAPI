@@ -7,11 +7,14 @@ import com.strelizia.arknights.model.UserFoundInfo;
 import com.strelizia.arknights.util.FormatStringUtil;
 import com.strelizia.arknights.util.FoundAgent;
 import com.strelizia.arknights.service.AgentService;
+import com.strelizia.arknights.util.SendMsgUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 import org.springframework.stereotype.Service;
 import org.springframework.util.DigestUtils;
+import org.springframework.web.client.RestTemplate;
 
 import java.util.List;
 import java.util.Random;
@@ -32,25 +35,57 @@ public class AgentServiceImpl implements AgentService {
     @Value("${userConfig.limit}")
     private Integer limit;
 
+    @Autowired
+    private ThreadPoolTaskExecutor poolTaskExecutor;
+
+    @Autowired
+    protected RestTemplate restTemplate;
+
+    @Value("${userConfig.loginQq}")
+    private Long loginQq;
+
+    private String sendTextMsgUrl = "http://localhost:8888/v1/LuaApiCaller?qq=";
+
     @Override
-    public String chouKa(String pool,Long qq,String name) {
-        return name + "抽取" + foundLimit(1,pool,qq);
+    public String chouKa(String pool,Long qq,String name, Long groupId) {
+        String s = name + "抽取" + foundLimit(1, pool, qq);
+        poolTaskExecutor.execute(new Runnable() {
+            @Override
+            public void run() {
+                SendMsgUtil.sendTextMsgToGroup(restTemplate,groupId,s,sendTextMsgUrl + loginQq + "&funcname=SendMsg");
+            }
+        });
+        return s;
     }
 
     @Override
-    public String shiLian(String pool,Long qq,String name) {
-        return name + "抽取" + foundLimit(10,pool,qq);
+    public String shiLian(String pool,Long qq,String name, Long groupId) {
+        String s = name + "抽取" + foundLimit(10, pool, qq);
+        poolTaskExecutor.execute(new Runnable() {
+            @Override
+            public void run() {
+                SendMsgUtil.sendTextMsgToGroup(restTemplate,groupId,s,sendTextMsgUrl + loginQq + "&funcname=SendMsg");
+            }
+        });
+        return s;
     }
 
     @Override
-    public String selectPool() {
+    public String selectPool(Long groupId) {
         List<String> poolList = agentMapper.selectPool();
-        String s = "";
+        String str = "";
         for (String line : poolList) {
-            s = s + "\n" + line;
+            str = str + "\n" + line;
         }
         //去掉头部换行
-        return s.substring(1);
+        String s = str.substring(1);
+        poolTaskExecutor.execute(new Runnable() {
+            @Override
+            public void run() {
+                SendMsgUtil.sendTextMsgToGroup(restTemplate,groupId,s,sendTextMsgUrl + loginQq + "&funcname=SendMsg");
+            }
+        });
+        return s;
     }
 
     /**
@@ -103,10 +138,12 @@ public class AgentServiceImpl implements AgentService {
             int star = FoundAgent.FoundOneByMath(qq,sum);
             if(star == 6){
                 //抽到六星垫刀归零
-                userFoundMapper.updateUserFoundByQQ(qqMd5, 0);
+                sum = 0;
+                userFoundMapper.updateUserFoundByQQ(qqMd5, sum);
             }else {
                 //没有六星垫刀+1
-                userFoundMapper.updateUserFoundByQQ(qqMd5, sum++);
+                sum = sum + 1;
+                userFoundMapper.updateUserFoundByQQ(qqMd5, sum);
             }
             //保存结果集
             List<AgentInfo> agentList;
@@ -143,7 +180,7 @@ public class AgentServiceImpl implements AgentService {
                     levelStar = "";
             }
             try {
-                s = s + " " + FormatStringUtil.strAppendStr(agentList.get(i).getName(),10,"　") + levelStar + "\n";
+                s = s + " " + agentList.get(i).getName() + "\n" + levelStar + "\n";
             } catch (Exception e) {
                 e.printStackTrace();
             }

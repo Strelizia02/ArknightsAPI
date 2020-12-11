@@ -17,7 +17,8 @@ function ReceiveGroupMsg(CurrentQQ, data)
     {
 	    text = keyWord,
 	    qq = data.FromUserId,
-	    name = data.FromNickName
+	    name = data.FromNickName,
+        groupId = data.FromGroupId
     }
     response, error_message =
         http.post(

@@ -2,8 +2,12 @@ package com.strelizia.arknights.controller;
 
 import com.strelizia.arknights.model.MessageInfo;
 import com.strelizia.arknights.service.AgentService;
+import com.strelizia.arknights.util.SendMsgUtil;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.client.RestTemplate;
 
 /**
  * @author wangzy
@@ -12,27 +16,32 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("Arknights")
 @RestController
 public class ArknightsController {
+
     @Autowired
     private AgentService agentService;
 
     //返回单抽结果
     @PostMapping("receive")
-    public String chouKa(
+    public String receive(
             @RequestBody MessageInfo message
     ){
-
         Long qq = message.getQq();
         String name = message.getName();
         String[] s = message.getText().split(" ");
+        Long groupId = message.getGroupId();
         switch (s[0]){
             case "十连":
-                return agentService.shiLian(s[0],qq,name);
+                String shiLian = agentService.shiLian(s[0], qq, name,groupId);
+                return shiLian;
             case "抽卡":
-                return agentService.chouKa(s[0],qq,name);
+                String chouKa = agentService.chouKa(s[0],qq,name,groupId);
+                return chouKa;
             case "卡池":
-                return agentService.selectPool();
+                String kaChi = agentService.selectPool(groupId);
+                return kaChi;
             default:
-                return "俺不晓得你在锁啥子";
+                String dontKnow = "俺不晓得你在锁啥子";
+                return dontKnow;
         }
     }
 }
