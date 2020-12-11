@@ -4,7 +4,6 @@ import com.strelizia.arknights.dao.AgentMapper;
 import com.strelizia.arknights.dao.UserFoundMapper;
 import com.strelizia.arknights.model.AgentInfo;
 import com.strelizia.arknights.model.UserFoundInfo;
-import com.strelizia.arknights.util.FormatStringUtil;
 import com.strelizia.arknights.util.FoundAgent;
 import com.strelizia.arknights.service.AgentService;
 import com.strelizia.arknights.util.SendMsgUtil;

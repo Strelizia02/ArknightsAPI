@@ -28,6 +28,9 @@ public class ArknightsController {
         Long qq = message.getQq();
         String name = message.getName();
         String[] s = message.getText().split(" ");
+        if (s.length==1){
+            s = new String[]{s[0], null};
+        }
         Long groupId = message.getGroupId();
         switch (s[0]){
             case "十连":
