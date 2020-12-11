@@ -16,3 +16,5 @@ userConfig:
   limit: 20
 #登录的机器人qq
   loginQq: 3022645754
+#OPQ框架部署的IP
+  OPQUrl: localhost

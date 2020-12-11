@@ -44,29 +44,25 @@ public class AgentServiceImpl implements AgentService {
     @Value("${userConfig.loginQq}")
     private Long loginQq;
 
-    private String sendTextMsgUrl = "http://localhost:8888/v1/LuaApiCaller?qq=";
+    @Value("${userConfig.OPQUrl}")
+    private String OPQUrl;
+
+    private String sendTextMsgApi = "/v1/LuaApiCaller";
 
     @Override
     public String chouKa(String pool,Long qq,String name, Long groupId) {
         String s = name + "抽取" + foundLimit(1, pool, qq);
-        poolTaskExecutor.execute(new Runnable() {
-            @Override
-            public void run() {
-                SendMsgUtil.sendTextMsgToGroup(restTemplate,groupId,s,sendTextMsgUrl + loginQq + "&funcname=SendMsg");
-            }
-        });
+        poolTaskExecutor.execute(() -> SendMsgUtil.sendTextMsgToGroup(restTemplate,groupId,s,
+                "http://" + OPQUrl + ":8888" + sendTextMsgApi + "?qq=" +  loginQq + "&funcname=SendMsg"));
+        log.info("http://" + OPQUrl + ":8888" + sendTextMsgApi + "?qq=" +  loginQq + "&funcname=SendMsg");
         return s;
     }
 
     @Override
     public String shiLian(String pool,Long qq,String name, Long groupId) {
         String s = name + "抽取" + foundLimit(10, pool, qq);
-        poolTaskExecutor.execute(new Runnable() {
-            @Override
-            public void run() {
-                SendMsgUtil.sendTextMsgToGroup(restTemplate,groupId,s,sendTextMsgUrl + loginQq + "&funcname=SendMsg");
-            }
-        });
+        poolTaskExecutor.execute(() -> SendMsgUtil.sendTextMsgToGroup(restTemplate,groupId,s,
+                "http://" + OPQUrl + ":8888" + sendTextMsgApi + "?qq=" +  loginQq + "&funcname=SendMsg"));
         return s;
     }
 
@@ -79,12 +75,30 @@ public class AgentServiceImpl implements AgentService {
         }
         //去掉头部换行
         String s = str.substring(1);
-        poolTaskExecutor.execute(new Runnable() {
-            @Override
-            public void run() {
-                SendMsgUtil.sendTextMsgToGroup(restTemplate,groupId,s,sendTextMsgUrl + loginQq + "&funcname=SendMsg");
-            }
-        });
+        poolTaskExecutor.execute(() -> SendMsgUtil.sendTextMsgToGroup(restTemplate,groupId,s,
+                "http://" + OPQUrl + ":8888" + sendTextMsgApi + "?qq=" +  loginQq + "&funcname=SendMsg"));
+        return s;
+    }
+
+    @Override
+    public String selectFoundCount(Long qq, String name, Long groupId) {
+        String qqMd5 = DigestUtils.md5DigestAsHex(qq.toString().getBytes());
+        UserFoundInfo userFoundInfo = userFoundMapper.selectUserFoundByQQ(qqMd5);
+        Integer foundCount = 0;
+        if (userFoundInfo != null) {
+            foundCount = userFoundInfo.getFoundCount();
+        }
+        int sixStar;
+        if (foundCount>50)
+        {
+            sixStar = 2 + (foundCount - 50) * 2;
+        }else {
+            //六星概率默认2%
+            sixStar = 2;
+        }
+        String s = name + "的当前垫刀数为：" + foundCount + "\n当前六星概率为：" + sixStar + "%";
+        poolTaskExecutor.execute(() -> SendMsgUtil.sendTextMsgToGroup(restTemplate,groupId,s,
+                "http://" + OPQUrl + ":8888" + sendTextMsgApi + "?qq=" +  loginQq + "&funcname=SendMsg"));
         return s;
     }
 

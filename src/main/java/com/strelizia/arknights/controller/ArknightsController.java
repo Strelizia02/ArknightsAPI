@@ -31,14 +31,17 @@ public class ArknightsController {
         Long groupId = message.getGroupId();
         switch (s[0]){
             case "十连":
-                String shiLian = agentService.shiLian(s[0], qq, name,groupId);
+                String shiLian = agentService.shiLian(s[1], qq, name,groupId);
                 return shiLian;
             case "抽卡":
-                String chouKa = agentService.chouKa(s[0],qq,name,groupId);
+                String chouKa = agentService.chouKa(s[1],qq,name,groupId);
                 return chouKa;
             case "卡池":
                 String kaChi = agentService.selectPool(groupId);
                 return kaChi;
+            case "垫刀查询":
+                String dianDao = agentService.selectFoundCount(qq,name,groupId);
+                return dianDao;
             default:
                 String dontKnow = "俺不晓得你在锁啥子";
                 return dontKnow;

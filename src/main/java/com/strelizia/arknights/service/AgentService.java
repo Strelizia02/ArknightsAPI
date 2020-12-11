@@ -12,4 +12,6 @@ public interface AgentService {
     String shiLian(String pool, Long qq, String name, Long groupId);
 
     String selectPool(Long groupId);
+
+    String selectFoundCount(Long qq, String name, Long groupId);
 }
