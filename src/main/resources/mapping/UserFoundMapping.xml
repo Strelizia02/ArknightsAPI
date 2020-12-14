@@ -10,12 +10,12 @@
 <!--  根据qq查询抽卡信息  -->
     <select id="selectUserFoundByQQ" resultMap="BaseResultMap">
         select qq,found_count,today_count
-        from user_found WHERE qq = #{qq}
+        from a_user_found WHERE qq = #{qq}
     </select>
 
     <!--  插入新qq，若已存在，则更新垫刀数和今日抽卡次数  -->
     <update id="updateUserFoundByQQ">
-        INSERT INTO user_found (qq, found_count, today_count)
+        INSERT INTO a_user_found (qq, found_count, today_count)
         VALUES
             (#{qq,jdbcType=VARCHAR}, #{foundCount,jdbcType=INTEGER}, 1)
         ON DUPLICATE KEY UPDATE
@@ -24,6 +24,6 @@
     </update>
 
     <update id="cleanTodayCount">
-        UPDATE user_found SET today_count = 0
+        UPDATE a_user_found SET today_count = 0
     </update>
 </mapper>

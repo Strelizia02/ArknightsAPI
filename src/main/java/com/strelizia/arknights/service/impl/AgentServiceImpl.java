@@ -34,39 +34,20 @@ public class AgentServiceImpl implements AgentService {
     @Value("${userConfig.limit}")
     private Integer limit;
 
-    @Autowired
-    private ThreadPoolTaskExecutor poolTaskExecutor;
-
-    @Autowired
-    protected RestTemplate restTemplate;
-
-    @Value("${userConfig.loginQq}")
-    private Long loginQq;
-
-    @Value("${userConfig.OPQUrl}")
-    private String OPQUrl;
-
-    private String sendTextMsgApi = "/v1/LuaApiCaller";
-
     @Override
-    public String chouKa(String pool,Long qq,String name, Long groupId) {
+    public String chouKa(String pool,Long qq,String name) {
         String s = name + "抽取" + foundLimit(1, pool, qq);
-        poolTaskExecutor.execute(() -> SendMsgUtil.sendTextMsgToGroup(restTemplate,groupId,s,
-                "http://" + OPQUrl + ":8888" + sendTextMsgApi + "?qq=" +  loginQq + "&funcname=SendMsg"));
-        log.info("http://" + OPQUrl + ":8888" + sendTextMsgApi + "?qq=" +  loginQq + "&funcname=SendMsg");
         return s;
     }
 
     @Override
-    public String shiLian(String pool,Long qq,String name, Long groupId) {
+    public String shiLian(String pool,Long qq,String name) {
         String s = name + "抽取" + foundLimit(10, pool, qq);
-        poolTaskExecutor.execute(() -> SendMsgUtil.sendTextMsgToGroup(restTemplate,groupId,s,
-                "http://" + OPQUrl + ":8888" + sendTextMsgApi + "?qq=" +  loginQq + "&funcname=SendMsg"));
         return s;
     }
 
     @Override
-    public String selectPool(Long groupId) {
+    public String selectPool() {
         List<String> poolList = agentMapper.selectPool();
         String str = "";
         for (String line : poolList) {
@@ -74,13 +55,11 @@ public class AgentServiceImpl implements AgentService {
         }
         //去掉头部换行
         String s = str.substring(1);
-        poolTaskExecutor.execute(() -> SendMsgUtil.sendTextMsgToGroup(restTemplate,groupId,s,
-                "http://" + OPQUrl + ":8888" + sendTextMsgApi + "?qq=" +  loginQq + "&funcname=SendMsg"));
         return s;
     }
 
     @Override
-    public String selectFoundCount(Long qq, String name, Long groupId) {
+    public String selectFoundCount(Long qq, String name) {
         String qqMd5 = DigestUtils.md5DigestAsHex(qq.toString().getBytes());
         UserFoundInfo userFoundInfo = userFoundMapper.selectUserFoundByQQ(qqMd5);
         Integer todayCount = 0;
@@ -98,8 +77,6 @@ public class AgentServiceImpl implements AgentService {
             sixStar = 2;
         }
         String s = name + "的当前垫刀数为：" + foundCount + "\n当前六星概率为：" + sixStar + "%" + "\n今日已抽卡次数：" + todayCount;
-        poolTaskExecutor.execute(() -> SendMsgUtil.sendTextMsgToGroup(restTemplate,groupId,s,
-                "http://" + OPQUrl + ":8888" + sendTextMsgApi + "?qq=" +  loginQq + "&funcname=SendMsg"));
         return s;
     }
 

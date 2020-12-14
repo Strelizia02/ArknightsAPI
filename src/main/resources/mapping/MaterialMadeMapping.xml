@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.strelizia.arknights.dao.MaterialMadeMapper">
+    <resultMap id="BaseResultMap" type="com.strelizia.arknights.model.MaterialInfo" >
+        <result column="material_name" property="materialName" jdbcType="VARCHAR" />
+        <result column="use_number" property="materialNum" jdbcType="INTEGER" />
+    </resultMap>
+
+    <resultMap id="SourceResultMap" type="com.strelizia.arknights.model.SourcePlace" >
+        <result column="source_place" property="sourcePlace" jdbcType="VARCHAR" />
+        <result column="source_rate" property="sourceRate" jdbcType="INTEGER" />
+    </resultMap>
+
+    <select id="selectMadeMater" parameterType="java.lang.String" resultMap="BaseResultMap">
+        SELECT
+            b.material_name,a.use_number
+        FROM
+            t_material_made a
+        LEFT JOIN t_material b ON a.use_material_id = b.material_id
+        WHERE
+            a.material_id = (
+                SELECT
+                    material_id
+                FROM
+                    t_material
+                WHERE
+                    material_name = #{name}
+            )
+    </select>
+
+    <select id="selectMaterSource" parameterType="java.lang.String" resultMap="SourceResultMap">
+        SELECT
+            a.source_place,a.source_rate
+        FROM
+            t_material_source a
+        LEFT JOIN t_material b ON a.material_id = b.material_id
+        WHERE
+            b.material_name = #{name}
+    </select>
+</mapper>

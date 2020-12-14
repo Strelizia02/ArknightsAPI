@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.strelizia.arknights.dao.OperatorEvolveMapper">
+    <resultMap id="BaseResultMap" type="com.strelizia.arknights.model.MaterialInfo" >
+        <result column="material_name" property="materialName" jdbcType="VARCHAR" />
+        <result column="use_number" property="materialNum" jdbcType="INTEGER" />
+    </resultMap>
+
+    <select id="selectOperatorEvolveBySkillName" resultMap="BaseResultMap">
+        SELECT
+            b.material_name,
+            a.use_number
+        FROM
+            t_operator_evolve_costs a
+        LEFT JOIN t_material b ON a.use_material_id = b.material_id
+        WHERE
+            evolve_level = #{level}
+        AND operator_id = (
+            SELECT
+                operator_id
+            FROM
+                t_operator
+            WHERE
+                operator_name = #{agent}
+        )
+    </select>
+</mapper>

@@ -9,7 +9,7 @@
 
     <select id="selectAgentByStar" resultMap="BaseResultMap">
         select name,star,pool
-        from agent
+        from a_agent
         where star = #{star} and pool = #{pool};
     </select>
 
@@ -17,7 +17,7 @@
         SELECT
             pool
         FROM
-            agent
+            a_agent
         WHERE
             pool != '凭证兑换'
         AND pool != '活动'

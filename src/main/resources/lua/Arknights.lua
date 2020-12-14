@@ -33,7 +33,6 @@ function ReceiveGroupMsg(CurrentQQ, data)
             }
         )
     local html = response.body
-    log.notice("From Lua 抽卡 %s", html)
     end
     return 1
 end
