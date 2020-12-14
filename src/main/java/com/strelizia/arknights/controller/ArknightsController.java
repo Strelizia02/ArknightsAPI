@@ -96,13 +96,42 @@ public class ArknightsController {
                 int index = 1;
                 int level = 1;
                 try {
-                    index = Integer.parseInt(s[2]);
-                    level = Integer.parseInt(s[3]);
+                    switch (s[2]) {
+                        case "一技能":
+                            index = 1;
+                            break;
+                        case "二技能":
+                            index = 2;
+                            break;
+                        case "三技能":
+                            index = 3;
+                            break;
+                        default:
+                            index = Integer.parseInt(s[2]);
+                    }
                 }catch (Exception e){
-                    result = "技能等级和技能索引请输入阿拉伯数字1-2-3";
+                    result = "技能等级最好输入阿拉伯数字1-2-3";
                     break;
                 }
                 if (a.length == 4) {
+                    try {
+                        switch (s[3]) {
+                            case "专一":
+                                level = 1;
+                                break;
+                            case "专二":
+                                level = 2;
+                                break;
+                            case "专三":
+                                level = 3;
+                                break;
+                            default:
+                                level = Integer.parseInt(s[3]);
+                        }
+                    }catch (Exception e){
+                        result = "技能索引请输入输入阿拉伯数字1-2-3";
+                        break;
+                    }
                     result = materialService.ZhuanJingCaiLiao(s[1], index, level);
                 } else if (a.length == 3){
                     result = materialService.ZhuanJingCaiLiao(s[1], index);
@@ -132,6 +161,5 @@ public class ArknightsController {
     public void CallOPQApiSendMsg(Long groupId, String s){
         poolTaskExecutor.execute(() -> SendMsgUtil.sendTextMsgToGroup(restTemplate, groupId, s,
                 "http://" + OPQUrl + ":8888" + sendTextMsgApi + "?qq=" +  loginQq + "&funcname=SendMsg"));
-        log.info("http://" + OPQUrl + ":8888" + sendTextMsgApi + "?qq=" +  loginQq + "&funcname=SendMsg");
     }
 }
