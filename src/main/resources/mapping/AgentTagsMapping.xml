@@ -15,7 +15,7 @@
         FROM
             t_operator_tags_relation
         WHERE
-        operator_rarity != 6
+        (operator_rarity != 2 OR operator_rarity != 3)
         <foreach collection="tags" index="index" item="tag">
         AND FIND_IN_SET(
             #{tag},
