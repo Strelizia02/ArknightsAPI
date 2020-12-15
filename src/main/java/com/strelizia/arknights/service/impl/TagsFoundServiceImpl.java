@@ -71,11 +71,7 @@ public class TagsFoundServiceImpl implements TagsfFoundService {
             if (list.size() == 0){
                 continue;
             }
-            //如果组合内有高姿，则只查找六星
-            if (TagsUtil.isHave(list.toArray(new String[list.size()]),"高级资深干员")) {
-                result.put(list,agentTagsMapper.selectSixAgentByTag(list));
-            }else {
-                result.put(list, agentTagsMapper.selectAgentByTag(list));
+            result.put(list, agentTagsMapper.selectAgentByTag(list));
             }
         }
         return result;
