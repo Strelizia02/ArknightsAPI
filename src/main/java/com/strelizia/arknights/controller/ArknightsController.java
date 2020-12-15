@@ -82,6 +82,8 @@ public class ArknightsController {
                         "7.查询材料掉落关卡：\n" +
                         "\t使用方法：输入{##材料获取 材料名}\n" +
                         "\t例：##材料获取 研磨石\n" +
+                        "8.公招结果查询：\n" +
+                        "\t使用方法：输入{## [公招截图]}，自动识图并返回结果\n" +
                         "注：本项目需严格按照格式输入，自然语言处理功能将在后期优化";
                 break;
             case "十连":
@@ -156,7 +158,7 @@ public class ArknightsController {
                 result = materialService.HuoQuTuJing(s[1]);
                 break;
             case "公招截图":
-                result = tagsfFoundService.FoundAgentByJson(s[1]);
+                result = name + ":\n" + tagsfFoundService.FoundAgentByJson(s[1]);
                 break;
             default:
                 result = "俺不晓得你在锁啥子";
