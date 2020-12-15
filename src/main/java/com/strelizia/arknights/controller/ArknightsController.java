@@ -3,6 +3,7 @@ package com.strelizia.arknights.controller;
 import com.strelizia.arknights.model.MessageInfo;
 import com.strelizia.arknights.service.AgentService;
 import com.strelizia.arknights.service.MaterialService;
+import com.strelizia.arknights.service.TagsfFoundService;
 import com.strelizia.arknights.util.SendMsgUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,6 +26,9 @@ public class ArknightsController {
 
     @Autowired
     private MaterialService materialService;
+
+    @Autowired
+    private TagsfFoundService tagsfFoundService;
 
     @Autowired
     private ThreadPoolTaskExecutor poolTaskExecutor;
@@ -150,6 +154,9 @@ public class ArknightsController {
                 break;
             case "材料获取":
                 result = materialService.HuoQuTuJing(s[1]);
+                break;
+            case "公招截图":
+                result = tagsfFoundService.FoundAgentByJson(s[1]);
                 break;
             default:
                 result = "俺不晓得你在锁啥子";
