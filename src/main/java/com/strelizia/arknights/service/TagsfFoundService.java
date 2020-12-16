@@ -11,4 +11,6 @@ import java.util.Map;
  **/
 public interface TagsfFoundService {
     String FoundAgentByJson(String Json);
+
+    String FoundAgentByArray(String[] array);
 }

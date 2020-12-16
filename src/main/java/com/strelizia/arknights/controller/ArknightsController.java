@@ -84,6 +84,9 @@ public class ArknightsController {
                         "\t例：##材料获取 研磨石\n" +
                         "8.公招结果查询：\n" +
                         "\t使用方法：输入{## [公招截图]}，自动识图并返回结果\n" +
+                        "9.公开招募tag组合查询：\n" +
+                        "\t使用方法：输入{##公开招募 [tag1],[tag2]}\n" +
+                        "\t例：##公开招募 爆发,近战位,高级资深干员\n" +
                         "注：本项目需严格按照格式输入，自然语言处理功能将在后期优化";
                 break;
             case "十连":
@@ -159,6 +162,9 @@ public class ArknightsController {
                 break;
             case "公招截图":
                 result = name + ":\n" + tagsfFoundService.FoundAgentByJson(s[1]);
+                break;
+            case "公开招募":
+                result = name + "\n" + tagsfFoundService.FoundAgentByArray(s[1].split(",|，"));
                 break;
             default:
                 result = "俺不晓得你在锁啥子";

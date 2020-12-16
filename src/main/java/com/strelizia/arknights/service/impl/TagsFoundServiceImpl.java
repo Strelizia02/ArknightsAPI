@@ -44,6 +44,13 @@ public class TagsFoundServiceImpl implements TagsfFoundService {
         return s;
     }
 
+    @Override
+    public String FoundAgentByArray(String[] array) {
+        Map<List<String>, List<AgentTagsInfo>> listMap = FoundTagResultByArrays(array);
+        String s = MapToString(listMap);
+        return s;
+    }
+
     public Map<List<String>, List<AgentTagsInfo>> FoundTagsByImg(String Json) {
         //单例模式的百度API实例
         BaiduAPIUtil baiduAPIUtil = BaiduAPIUtil.getInstance(APP_ID, API_KEY, SECRET_KEY);
@@ -58,6 +65,13 @@ public class TagsFoundServiceImpl implements TagsfFoundService {
 
         //调用百度api图片识别
         String[] s = baiduAPIUtil.BaiduOCRGetTags(url);
+
+        Map<List<String>, List<AgentTagsInfo>> map = FoundTagResultByArrays(s);
+
+        return map;
+    }
+
+    public Map<List<String>, List<AgentTagsInfo>> FoundTagResultByArrays(String[] s){
 
         //把数组进行笛卡尔积组合
         List<List<String>> allCompose = TagsUtil.getAllCompose(Arrays.asList(s));
