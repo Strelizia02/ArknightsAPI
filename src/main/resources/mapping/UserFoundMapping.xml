@@ -99,6 +99,16 @@
         all_count = all_count + 1
     </update>
 
+    <update id="updateFiveByQq">
+        INSERT INTO a_user_found (
+            qq,
+            today_five
+        )
+        VALUES
+            (#{qq}, 1) ON DUPLICATE KEY
+        UPDATE today_five = today_five + 1
+    </update>
+
     <update id="updateSixByQq">
         INSERT INTO a_user_found (
             qq,
