@@ -6,14 +6,11 @@ import com.strelizia.arknights.model.AgentInfo;
 import com.strelizia.arknights.model.UserFoundInfo;
 import com.strelizia.arknights.util.FoundAgent;
 import com.strelizia.arknights.service.AgentService;
-import com.strelizia.arknights.util.SendMsgUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 import org.springframework.stereotype.Service;
 import org.springframework.util.DigestUtils;
-import org.springframework.web.client.RestTemplate;
 
 import java.util.List;
 import java.util.Random;
@@ -35,14 +32,14 @@ public class AgentServiceImpl implements AgentService {
     private Integer limit;
 
     @Override
-    public String chouKa(String pool,Long qq,String name) {
-        String s = name + "抽取" + foundLimit(1, pool, qq);
+    public String chouKa(String pool,Long qq,String name,Long groupId) {
+        String s = name + "抽取" + foundLimit(1, pool, qq, name, groupId);
         return s;
     }
 
     @Override
-    public String shiLian(String pool,Long qq,String name) {
-        String s = name + "抽取" + foundLimit(10, pool, qq);
+    public String shiLian(String pool,Long qq,String name,Long groupId) {
+        String s = name + "抽取" + foundLimit(10, pool, qq, name, groupId);
         return s;
     }
 
@@ -87,7 +84,7 @@ public class AgentServiceImpl implements AgentService {
      * @param qq
      * @return
      */
-    public String foundLimit(int count,String pool,Long qq){
+    public String foundLimit(int count,String pool,Long qq,String name,Long groupId){
         String qqMd5 = DigestUtils.md5DigestAsHex(qq.toString().getBytes());
         UserFoundInfo userFoundInfo = userFoundMapper.selectUserFoundByQQ(qqMd5);
         if (userFoundInfo == null){
@@ -105,7 +102,7 @@ public class AgentServiceImpl implements AgentService {
         String s = "今日抽卡机会无了";
         //管理员账户1111和我无限抽
         if (today<limit||UserQq.equals(DigestUtils.md5DigestAsHex("1111".getBytes()))||UserQq.equals(DigestUtils.md5DigestAsHex("412459523".getBytes()))) {
-            s = FoundAgentByNum(count, pool, qq, sum);
+            s = FoundAgentByNum(count, pool, qq, sum, name, groupId);
         }
         return s;
     }
@@ -117,7 +114,7 @@ public class AgentServiceImpl implements AgentService {
      * @param qq    抽取人qq
      * @return
      */
-    public String FoundAgentByNum(int count,String pool,Long qq,Integer sum){
+    public String FoundAgentByNum(int count,String pool,Long qq,Integer sum,String name,Long groupId){
         String qqMd5 = DigestUtils.md5DigestAsHex(qq.toString().getBytes());
         //如果没输入卡池名或者卡池不存在
         if (pool==null||agentMapper.selectAgentByStar(pool,6).size()==0){
@@ -131,11 +128,17 @@ public class AgentServiceImpl implements AgentService {
             if(star == 6){
                 //抽到六星垫刀归零
                 sum = 0;
-                userFoundMapper.updateUserFoundByQQ(qqMd5, sum);
+                userFoundMapper.updateUserFoundByQQ(qqMd5, name, groupId, sum);
+                userFoundMapper.updateSixByQq(qqMd5);
+            }else if (star == 5){
+                //没有六星垫刀+1
+                sum = sum + 1;
+                userFoundMapper.updateUserFoundByQQ(qqMd5, name, groupId, sum);
+                userFoundMapper.updateFiveByQq(qqMd5);
             }else {
                 //没有六星垫刀+1
                 sum = sum + 1;
-                userFoundMapper.updateUserFoundByQQ(qqMd5, sum);
+                userFoundMapper.updateUserFoundByQQ(qqMd5, name, groupId, sum);
             }
             //保存结果集
             List<AgentInfo> agentList;

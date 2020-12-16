@@ -8,9 +8,7 @@ import com.strelizia.arknights.util.SendMsgUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.client.RestTemplate;
 
 /**
  * @author wangzy
@@ -31,18 +29,7 @@ public class ArknightsController {
     private TagsfFoundService tagsfFoundService;
 
     @Autowired
-    private ThreadPoolTaskExecutor poolTaskExecutor;
-
-    @Autowired
-    protected RestTemplate restTemplate;
-
-    @Value("${userConfig.loginQq}")
-    private Long loginQq;
-
-    @Value("${userConfig.OPQUrl}")
-    private String OPQUrl;
-
-    private String sendTextMsgApi = "/v1/LuaApiCaller";
+    private SendMsgUtil sendMsgUtil;
 
     //返回单抽结果
     @PostMapping("receive")
@@ -90,10 +77,10 @@ public class ArknightsController {
                         "注：本项目需严格按照格式输入，自然语言处理功能将在后期优化";
                 break;
             case "十连":
-                result = agentService.shiLian(s[1], qq, name);
+                result = agentService.shiLian(s[1], qq, name,groupId);
                 break;
             case "抽卡":
-                result = agentService.chouKa(s[1],qq,name);
+                result = agentService.chouKa(s[1],qq,name,groupId);
                 break;
             case "卡池":
                 result = agentService.selectPool();
@@ -169,12 +156,7 @@ public class ArknightsController {
             default:
                 result = "俺不晓得你在锁啥子";
         }
-        CallOPQApiSendMsg(groupId,result);
+        sendMsgUtil.CallOPQApiSendMsg(groupId,result);
         return result;
-    }
-
-    public void CallOPQApiSendMsg(Long groupId, String s){
-        poolTaskExecutor.execute(() -> SendMsgUtil.sendTextMsgToGroup(restTemplate, groupId, s,
-                "http://" + OPQUrl + ":8888" + sendTextMsgApi + "?qq=" +  loginQq + "&funcname=SendMsg"));
     }
 }

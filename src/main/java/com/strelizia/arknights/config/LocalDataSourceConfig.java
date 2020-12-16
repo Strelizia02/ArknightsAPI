@@ -20,7 +20,7 @@ import javax.sql.DataSource;
  * @Date 2020/11/20 17:01
  **/
 @Configuration
-@MapperScan(basePackages = "com.wzy.arknights.dao",
+@MapperScan(basePackages = "com.strelizia.arknights.dao",
     sqlSessionTemplateRef ="localSqlSessionTemplate")
 public class LocalDataSourceConfig {
 
