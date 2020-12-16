@@ -22,6 +22,7 @@
                 t_operator_skill
             WHERE
                 skill_name = #{skillName}
+            LIMIT 1
         )
     </select>
 
@@ -48,6 +49,7 @@
                     t_operator
                 WHERE
                     operator_name = #{agent}
+                LIMIT 1
             )
         )
     </select>
