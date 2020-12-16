@@ -51,7 +51,7 @@ public class BaiduAPIUtil {
         // 也可以直接通过jvm启动参数设置此环境变量
         System.setProperty("aip.log4j.conf", "path/to/your/log4j.properties");
 
-
+        //只筛选识图的这些词语，其他词语抛弃
         String[] all = {"远程位", "治疗", "支援机械", "医疗干员", "近战位", "支援", "近卫干员", "新手"
                 , "先锋干员", "术师干员", "狙击干员", "重装干员", "费用回复", "输出", "群攻", "减速", "辅助干员"
                 , "生存", "防护", "削弱", "快速复活", "特种干员", "位移", "资深干员", "高级资深干员", "爆发", "控场"};
@@ -68,12 +68,6 @@ public class BaiduAPIUtil {
         }
         String[] s = new String[str.size()];
         str.toArray(s);
-//        String[] s = new String[5];
-//        s[0] = words_result.getJSONObject(13).getString("words");
-//        s[1] = words_result.getJSONObject(14).getString("words");
-//        s[2] = words_result.getJSONObject(15).getString("words");
-//        s[3] = words_result.getJSONObject(18).getString("words");
-//        s[4] = words_result.getJSONObject(19).getString("words");
         return s;
     }
 

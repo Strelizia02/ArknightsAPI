@@ -73,7 +73,6 @@ public class TagsFoundServiceImpl implements TagsfFoundService {
             }
             result.put(list, agentTagsMapper.selectAgentByTag(list));
             }
-        }
         return result;
     }
 
@@ -120,7 +119,7 @@ public class TagsFoundServiceImpl implements TagsfFoundService {
             s = s  + "\n\n" + tags.substring(1) + "\n" + agents.substring(1);
         }
         if (s == ""){
-            s = "没有找到对应的稀有公招结果";
+            s = "\t\tQAQ没有找到对应的稀有公招结果";
         }
         return s.substring(2);
     }
