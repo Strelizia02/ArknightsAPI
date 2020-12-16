@@ -22,6 +22,6 @@ userConfig:
 #OPQ框架部署的IP
   OPQUrl: localhost
 baiduConfig:
-  APP_ID: 23153443
-  API_KEY: Ah79wgMEgvkCr4xq4gpDvx86
-  SECRET_KEY: j3MOO7nWneF6zOuVxpT2S7gQbaPMn3Dc
+  APP_ID:
+  API_KEY:
+  SECRET_KEY:
