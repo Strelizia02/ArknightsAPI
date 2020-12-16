@@ -2,6 +2,7 @@ package com.strelizia.arknights.util;
 
 import com.strelizia.arknights.model.AgentTagsInfo;
 
+import java.sql.ClientInfoStatus;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -11,10 +12,10 @@ import java.util.stream.Collectors;
  **/
 public class TagsUtil {
 
-    public static boolean isHave(String[] str,String s){
-        int i = str.length;
+    public static boolean isHave(List<String> str, String s){
+        int i = str.size();
         while (i-- > 0){
-            if(str[i] == s){
+            if(str.get(i).equals(s)){
                 return true;
             }
         }

@@ -71,8 +71,13 @@ public class TagsFoundServiceImpl implements TagsfFoundService {
             if (list.size() == 0){
                 continue;
             }
-            result.put(list, agentTagsMapper.selectAgentByTag(list));
+            if(TagsUtil.isHave(list,"高级资深干员"))
+            {
+                result.put(list,agentTagsMapper.selectSixAgentByTag(list));
+            }else {
+                result.put(list, agentTagsMapper.selectAgentByTag(list));
             }
+        }
         return result;
     }
 
@@ -108,8 +113,8 @@ public class TagsFoundServiceImpl implements TagsfFoundService {
                     case 4:
                         levelStar = "☆☆☆☆";
                         break;
-                    case 3:
-                        levelStar = "☆☆☆";
+                    case 1:
+                        levelStar = "☆";
                         break;
                     default:
                         levelStar = "";
