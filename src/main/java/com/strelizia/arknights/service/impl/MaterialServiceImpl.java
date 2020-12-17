@@ -33,7 +33,7 @@ public class MaterialServiceImpl implements MaterialService {
     public String ZhuanJingCaiLiao(String skillName, Integer level) {
         List<MaterialInfo> materialInfos = skillMateryMapper.selectSkillUpBySkillName(skillName, level);
         String s = "";
-        if (materialInfos == null){
+        if (materialInfos.size() == 0){
             s = "找不到查询的内容";
         }else {
             for (MaterialInfo m:materialInfos){
@@ -47,7 +47,7 @@ public class MaterialServiceImpl implements MaterialService {
     public String ZhuanJingCaiLiao(String agent, Integer index, Integer level) {
         List<MaterialInfo> materialInfos = skillMateryMapper.selectSkillUpByAgentAndIndex(agent, index, level);
         String s = "";
-        if (materialInfos == null){
+        if (materialInfos.size() == 0){
             s = "找不到查询的内容";
         }else {
             for (MaterialInfo m:materialInfos){
@@ -75,7 +75,7 @@ public class MaterialServiceImpl implements MaterialService {
     public String HeChengLuXian(String name) {
         List<MaterialInfo> materialInfos = materialMadeMapper.selectMadeMater(name);
         String s = "";
-        if (materialInfos == null){
+        if (materialInfos.size() == 0){
             s = "找不到该材料的合成路线";
         }else {
             for (MaterialInfo m:materialInfos){
@@ -89,7 +89,7 @@ public class MaterialServiceImpl implements MaterialService {
     public String HuoQuTuJing(String name) {
         List<SourcePlace> sourcePlaces = materialMadeMapper.selectMaterSource(name);
         String s = "";
-        if (sourcePlaces == null){
+        if (sourcePlaces.size() == 0){
             s = "找不到该材料的获取关卡";
         }else {
             for (SourcePlace p:sourcePlaces){
