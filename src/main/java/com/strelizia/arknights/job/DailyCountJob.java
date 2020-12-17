@@ -49,12 +49,12 @@ public class DailyCountJob {
         Integer usersCount = userFoundMapper.foundNoSixToday(groupId);
         String s = "截止今晚8:00，本群内";
         if (allRateMax != null)s = s + "模拟寻访累计出货最多的欧皇为：" + allSixMax.getName() + "累计获得"+ allSixMax.getValue() + "个六星\n";
-        if (allRateMax != null)s = s + "模拟寻访累计爆率最高的欧皇为：" + allRateMax.getName() + "六星概率为："+ allRateMax.getValue() + "个六星\n";
+        if (allRateMax != null)s = s + "模拟寻访累计爆率最高的欧皇为：" + allRateMax.getName() + "六星概率为："+ allRateMax.getValue() + "%\n";
         if (todaySixMax != null)s = s + "今日获取六星最多的是：" + todaySixMax.getName() + "共抽取了" + todaySixMax.getValue() + "个六星\n";
         if (foundCount != null)s = s +  "目前垫刀数最多的人为：" + foundCount.getName() + "垫刀数为：" + foundCount.getValue() + "加油，也许下一发就出货了\n";
         s = s +"今日群内共有" + usersCount + "个群友已经50抽还没六星，现在白给这些群友二十抽，抓紧时间，这可能就是去往欧洲的船票\n";
-        if (todayFeiQiu != null)s = s + "今日非酋为：" + todayFeiQiu.getName() + "五星六星爆率合计竟高达" + todayFeiQiu.getValue() + "人与人的欧气果然不能相提并论\n";
-        if (todayRateMax != null)s = s + "今日欧皇为：" + todayRateMax.getName() + "六星爆率竟高达" + todayRateMax.getValue() + "让我们恭喜这个b";
+        if (todayFeiQiu != null)s = s + "今日非酋为：" + todayFeiQiu.getName() + "五星六星爆率合计竟高达" + todayFeiQiu.getValue() + "%人与人的欧气果然不能相提并论\n";
+        if (todayRateMax != null)s = s + "今日欧皇为：" + todayRateMax.getName() + "六星爆率为" + todayRateMax.getValue() + "%让我们恭喜这个b";
         return s;
     }
 }
