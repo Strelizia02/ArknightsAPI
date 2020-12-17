@@ -16,7 +16,9 @@
 
 项目主要实现机器人的自定义事件触发、自动回复。
 
-感谢大佬提供的[机器人框架](https://github.com/OPQBOT/OPQ/wiki)技术支持，有关框架的部署请参考上述文档。
+感谢[机器人框架](https://github.com/OPQBOT/OPQ/wiki)提供的技术支持，有关框架的部署请参考wiki文档。
+
+感谢[兔兔阿米娅](https://github.com/vivien8261/Amiya-Bot)提供的数据支持，目前数据仍采用手动更新，自动爬取数据功能在开发中(在做了，在做了.jpg)。
 
 # 项目结构
 
