@@ -100,8 +100,8 @@ public class AgentServiceImpl implements AgentService {
         Integer today = userFoundInfo.getTodayCount();
         String UserQq = userFoundInfo.getQq();
         String s = "今日抽卡机会无了";
-        //测试账户1111无限抽
-        if (today<limit||UserQq.equals(DigestUtils.md5DigestAsHex("1111".getBytes()))) {
+        //管理员账户1111和我无限抽
+        if (today<limit||UserQq.equals(DigestUtils.md5DigestAsHex("1111".getBytes()))||UserQq.equals("c5ecb54cdb92b19fe7c6c8dca260e69d")) {
             s = FoundAgentByNum(count, pool, qq, sum, name, groupId);
         }
         return s;
