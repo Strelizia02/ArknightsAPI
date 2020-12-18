@@ -49,13 +49,13 @@
     </select>
 
     <!--  今日无六星非酋  -->
-    <select id="foundNoSixToday" parameterType="java.lang.Long" resultType="java.lang.Integer">
+    <select id="foundNoSixToday" resultType="java.lang.Integer">
         SELECT
             Count(name) as count
         FROM
             a_user_found
         WHERE
-            today_count = 50
+            today_count = #{todayCount}
         AND today_six = 0
 		AND group_id = #{groupId}
     </select>
@@ -77,12 +77,12 @@
             sum > 0
     </select>
 
-<!--  额外再发二十抽  -->
-    <update id="GiveMoreFoundToFeiQiu">
+    <!--  额外再发十抽  -->
+    <update id="giveMoreFoundToFeiQiu" parameterType="java.lang.Integer">
         UPDATE a_user_found
-        SET today_count = 30
+        SET today_count = today_count - 10
         WHERE
-            today_count = 50
+            today_count = #{todayCount}
         AND today_six = 0
     </update>
 

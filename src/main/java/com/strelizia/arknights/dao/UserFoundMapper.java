@@ -34,9 +34,9 @@ public interface UserFoundMapper {
 
     UserGetInfo selectRateAllMax(Long groupId);
 
-    Integer foundNoSixToday(Long groupId);
+    Integer foundNoSixToday(@Param("groupId") Long groupId, @Param("todayCount") Integer todayCount);
 
-    Integer giveMoreFoundToFeiQiu();
+    Integer giveMoreFoundToFeiQiu(@Param("todayCount") Integer todayCount);
 
     List<Long> selectAllActiveGroups();
 
