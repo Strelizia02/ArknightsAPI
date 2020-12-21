@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.strelizia.arknights.dao.UpdateMapper">
+
+    <select id="selectOperatorIdByName" resultType="java.lang.Integer">
+        SELECT
+            operator_id
+        FROM
+            t_operator
+        WHERE
+            operator_name = #{name}
+        ORDER BY
+            operator_id DESC
+        LIMIT 1
+    </select>
+
+    <select id="selectSkillIdByName" resultType="java.lang.Integer">
+        SELECT
+            skill_id
+        FROM
+            t_operator_skill
+        WHERE
+            skill_name = #{SkillName}
+        ORDER BY
+            skill_id DESC
+        LIMIT 1
+    </select>
+
+    <insert id="insertOperator" parameterType="com.strelizia.arknights.model.OperatorInfo">
+        INSERT INTO t_operator (
+            operator_name,
+            operator_rarity,
+            operator_class,
+            available,
+            in_limit
+        )
+        VALUES
+            (#{operator_name},
+            #{operator_rarity},
+            #{operator_class},
+            #{available},
+            #{in_limit})
+    </insert>
+
+    <insert id="insertOperatorEvolve" parameterType="com.strelizia.arknights.model.OperatorEvolveInfo">
+        INSERT INTO t_operator_evolve_costs (
+            operator_id,
+            evolve_level,
+            use_material_id,
+            use_number
+        )
+        VALUES
+            (#{operatorId},
+            #{evolveLevel},
+            #{useMaterialId},
+            #{useNumber})
+    </insert>
+
+    <insert id="insertOperatorSkill" parameterType="com.strelizia.arknights.model.OperatorSkillInfo">
+        INSERT INTO t_operator_skill (
+            operator_id,skill_index,skill_name
+        )
+        VALUES
+            (#{operatorId},
+            #{skillIndex},
+            #{skillName})
+    </insert>
+
+    <insert id="insertSkillMater" parameterType="com.strelizia.arknights.model.SkillMaterInfo">
+        INSERT INTO t_operator_skill_mastery_costs (
+            skill_id,mastery_level,use_material_id,use_number
+        )
+        VALUES
+            (#{skillId},#{materLevel},
+            #{useMaterialId},#{useNumber})
+    </insert>
+</mapper>

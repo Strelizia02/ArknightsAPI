@@ -53,7 +53,7 @@ public class SendMsgUtil {
         }
         //获取请求头
         HttpHeaders httpHeaders = new HttpHeaders();
-        MediaType type = MediaType.parseMediaType("application/json; charset=UTF-8");
+        MediaType type = MediaType.parseMediaType("application/json; charset=UTF-8;OAuth e1bac1205283429d818c5ab6ae4c2b10");
         httpHeaders.setContentType(type);
         HttpEntity<String> httpEntity = new HttpEntity<>(jsonData, httpHeaders);
         //发送请求，封装结果数据
