@@ -15,7 +15,6 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
-import java.awt.image.ImageProducer;
 import java.net.InetSocketAddress;
 import java.util.HashMap;
 import java.util.Map;

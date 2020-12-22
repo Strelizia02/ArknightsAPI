@@ -6,11 +6,14 @@ import com.strelizia.arknights.dao.SkillMateryMapper;
 import com.strelizia.arknights.model.MaterialInfo;
 import com.strelizia.arknights.model.SourcePlace;
 import com.strelizia.arknights.service.MaterialService;
+import com.strelizia.arknights.util.DescriptionTransformationUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * @author wangzy
@@ -30,24 +33,21 @@ public class MaterialServiceImpl implements MaterialService {
     private MaterialMadeMapper materialMadeMapper;
 
     @Override
-    public String ZhuanJingCaiLiao(String skillName, Integer level) {
-        List<MaterialInfo> materialInfos = skillMateryMapper.selectSkillUpBySkillName(skillName, level);
-        String s = "";
-        if (materialInfos.size() == 0){
-            s = "找不到查询的内容";
+    public String ZhuanJingCaiLiao(String[] args) {
+        List<MaterialInfo> materialInfos;
+        if (args.length == 4){
+            Integer index = DescriptionTransformationUtil.ChangeStringToInt(args[2]);
+            Integer level = DescriptionTransformationUtil.ChangeStringToInt(args[3]);
+            materialInfos = skillMateryMapper.selectSkillUpByAgentAndIndex(args[1], index, level);
+        }else if (args.length == 3){
+            Integer level = DescriptionTransformationUtil.ChangeStringToInt(args[2]);
+            materialInfos = operatorEvolveMapper.selectOperatorEvolveBySkillName(args[1], level);
         }else {
-            for (MaterialInfo m:materialInfos){
-                s = s + m.getMaterialName() + "*" + m.getMaterialNum() + "个\n";
-            }
+            materialInfos = null;
         }
-        return s;
-    }
 
-    @Override
-    public String ZhuanJingCaiLiao(String agent, Integer index, Integer level) {
-        List<MaterialInfo> materialInfos = skillMateryMapper.selectSkillUpByAgentAndIndex(agent, index, level);
         String s = "";
-        if (materialInfos.size() == 0){
+        if (materialInfos ==null||materialInfos.size() == 0){
             s = "找不到查询的内容";
         }else {
             for (MaterialInfo m:materialInfos){

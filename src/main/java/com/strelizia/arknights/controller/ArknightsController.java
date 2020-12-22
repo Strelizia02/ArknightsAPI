@@ -39,16 +39,26 @@ public class ArknightsController {
         log.info("接受到消息:{}",message.getText());
         Long qq = message.getQq();
         String name = message.getName();
-        String[] a = message.getText().split(" ");
-        String[] s = new String[5];
-        for (int i = 0;i<a.length;i++){
-            s[i] = a[i];
-        }
+        String[] s = message.getText().split(" ");
         Long groupId = message.getGroupId();
         String result;
         switch (s[0]){
             case "菜单":
-                result = "1.模拟寻访：\n" +
+                result =
+                        "0.详细菜单：{##详细菜单}查看完整菜单以及使用示例\n" +
+                        "1.模拟寻访：{##十连 卡池名}或{##单抽 卡池名}\n" +
+                        "2.卡池清单：{##卡池}\n" +
+                        "3.查询个人垫刀数{##垫刀查询}\n" +
+                        "4.查询技能专精材料{##专精材料 干员名 第几技能 专精等级}或{##专精材料 技能名 专精等级}\n" +
+                        "5.精英化材料查询：{##精一材料 干员名}或{精二材料 干员名}\n" +
+                        "6.查询材料合成路线：{##合成路线 材料名}\n" +
+                        "7.查询材料掉落关卡：{##材料获取 材料名}\n" +
+                        "8.公招结果查询：{## [公招截图]}\n" +
+                        "9.公开招募tag组合查询：{##公开招募 [tag1],[tag2]}\n";
+                break;
+            case "详细菜单":
+                result =
+                        "1.模拟寻访：\n" +
                         "\t使用方法：输入{##十连 卡池名}或{##单抽 卡池名}\n" +
                         "\t例：##卡池 无拘熔火\n" +
                         "2.卡池清单：\n" +
@@ -58,7 +68,8 @@ public class ArknightsController {
                         "4.查询技能专精材料：\n" +
                         "\t使用方法：输入{##专精材料 干员名 第几技能 专精等级}或{##专精材料 技能名 专精等级}\n" +
                         "\t例1：##专精材料 艾雅法拉 3 3\n" +
-                        "\t例2：##专精材料 火山 3\n" +
+                        "\t例2：##专精材料 艾雅法拉 三技能 专三\n" +
+                        "\t例3：##专精材料 火山 3\n" +
                         "5.精英化材料查询：\n" +
                         "\t使用方法：输入{##精一材料 干员名}或{精二材料 干员名}\n" +
                         "\t例1：##精一材料 克洛丝\n" +
@@ -89,51 +100,7 @@ public class ArknightsController {
                 result = agentService.selectFoundCount(qq,name);
                 break;
             case "专精材料":
-                int index = 1;
-                int level = 1;
-                try {
-                    switch (s[2]) {
-                        case "一技能":
-                            index = 1;
-                            break;
-                        case "二技能":
-                            index = 2;
-                            break;
-                        case "三技能":
-                            index = 3;
-                            break;
-                        default:
-                            index = Integer.parseInt(s[2]);
-                    }
-                }catch (Exception e){
-                    result = "技能等级最好输入阿拉伯数字1-2-3";
-                    break;
-                }
-                if (a.length == 4) {
-                    try {
-                        switch (s[3]) {
-                            case "专一":
-                                level = 1;
-                                break;
-                            case "专二":
-                                level = 2;
-                                break;
-                            case "专三":
-                                level = 3;
-                                break;
-                            default:
-                                level = Integer.parseInt(s[3]);
-                        }
-                    }catch (Exception e){
-                        result = "技能索引请输入输入阿拉伯数字1-2-3";
-                        break;
-                    }
-                    result = materialService.ZhuanJingCaiLiao(s[1], index, level);
-                } else if (a.length == 3){
-                    result = materialService.ZhuanJingCaiLiao(s[1], index);
-                }else {
-                    result = "找不到查询的内容";
-                }
+                result = materialService.ZhuanJingCaiLiao(s);
                 break;
             case "精一材料":
                 result = materialService.JingYingHuaCaiLiao(s[1], 1);

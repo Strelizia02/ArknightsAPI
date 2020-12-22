@@ -5,9 +5,7 @@ package com.strelizia.arknights.service;
  * @Date 2020/12/14 11:40
  **/
 public interface MaterialService {
-    String ZhuanJingCaiLiao(String agent, Integer index, Integer level);
-
-    String ZhuanJingCaiLiao(String skillName, Integer level);
+    String ZhuanJingCaiLiao(String[] args);
 
     String JingYingHuaCaiLiao(String agent, Integer level);
 
