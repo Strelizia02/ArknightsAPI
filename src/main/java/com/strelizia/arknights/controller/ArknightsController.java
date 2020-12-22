@@ -6,10 +6,10 @@ import com.strelizia.arknights.service.AgentService;
 import com.strelizia.arknights.service.MaterialService;
 import com.strelizia.arknights.service.PixivService;
 import com.strelizia.arknights.service.TagsfFoundService;
+import com.strelizia.arknights.util.ClassificationUtil;
 import com.strelizia.arknights.util.SendMsgUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.*;
 
 /**
@@ -34,9 +34,6 @@ public class ArknightsController {
     private SendMsgUtil sendMsgUtil;
 
     @Autowired
-    private ClassificationEnum classificationEnum;
-
-    @Autowired
     private PixivService pixivService;
 
     //返回单抽结果
@@ -47,10 +44,20 @@ public class ArknightsController {
         log.info("接受到消息:{}",message.getText());
         Long qq = message.getQq();
         String name = message.getName();
-        String[] s = message.getText().split(" ");
+        String[] a = message.getText().split(" ");
+        /**
+         * 用一个固定长度10的数组承接a的内容，防止数组溢出
+         * 当需要数组内某个值的时候，选择s[i]，10位以内不会存在数组溢出
+         * 当需要数组本身的时候选择a，原始长度数组
+         */
+
+        String[] s = new String[10];
+        for (int i = 0; i < a.length; i++){
+            s[i] = a[i];
+        }
         Long groupId = message.getGroupId();
         String result;
-        ClassificationEnum c = this.classificationEnum.GetClass(s[0]);
+        ClassificationEnum c = ClassificationUtil.GetClass(s[0]);
         switch (c){
             case CaiDan:
                 result =
@@ -109,7 +116,7 @@ public class ArknightsController {
                 result = agentService.selectFoundCount(qq,name);
                 break;
             case ZhuanJingCaiLiao:
-                result = materialService.ZhuanJingCaiLiao(s);
+                result = materialService.ZhuanJingCaiLiao(a);
                 break;
             case JingYiCaiLiao:
                 result = materialService.JingYingHuaCaiLiao(s[1], 1);
@@ -135,7 +142,7 @@ public class ArknightsController {
             default:
                 result = "俺不晓得你在锁啥子";
         }
-        if (result != null) {
+        if (result.equals("")) {
             sendMsgUtil.CallOPQApiSendMsg(groupId, result);
         }
         return result;

@@ -21,13 +21,13 @@ import java.util.Random;
 @Service
 public class PixivServiceImpl implements PixivService {
 
-    @Value("pixiv.username")
+    @Value("${pixiv.username}")
     private String pixivUsername;
 
-    @Value("pixiv.password")
+    @Value("${pixiv.password}")
     private String pixivPassword;
 
-    @Value("pixiv.count")
+    @Value("${pixiv.count}")
     private Integer count;
 
     @Autowired
@@ -45,19 +45,23 @@ public class PixivServiceImpl implements PixivService {
         if (pixiv < count) {
             //创建一个客户端实例
             PixivParserClient client = new PixivParserClient();
-            //设置用户名和对应的密码
-            client.setUsername(pixivUsername);
-            client.setPassword(pixivPassword);
-            //登录
-            if (client.login()) {
-                //进行获取图片任务..
+//            //设置用户名和对应的密码
+//            client.setUsername(pixivUsername);
+//            client.setPassword(pixivPassword);
+//            //登录
+//            if (client.login()) {
+//                //进行获取图片任务..
+            if (s == null){
+                s = "kancolle";
+            }
                 List<Work> works = client.search(s);
                 int r = new Random().nextInt(works.size());
                 url = works.get(r).getImageUrls().getLarge();
-            }
+//            }
             //关闭客户端
             client.close();
-            result = null;
+            seTuMapper.updateTodaySeTu(qqMd5,name,groupId);
+            result = "";
             sendMsgUtil.CallOPQApiSendImg(groupId,null, url);
         }else {
             result = name + "别冲了，一天就"+ count +"张涩图";
@@ -82,7 +86,8 @@ public class PixivServiceImpl implements PixivService {
                 url = works.get(rank).getWork().getImageUrls().getLarge();
             }
             client.close();
-            result = null;
+            result = "";
+            seTuMapper.updateTodaySeTu(qqMd5,name,groupId);
             sendMsgUtil.CallOPQApiSendImg(groupId,null,url);
         } else {
             result = name + "别冲了，一天就" + count + "张涩图";
