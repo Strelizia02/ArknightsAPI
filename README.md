@@ -20,6 +20,10 @@
 
 感谢[兔兔阿米娅](https://github.com/vivien8261/Amiya-Bot)提供的数据支持，目前数据仍采用手动更新，自动爬取数据功能在开发中(在做了，在做了.jpg)。
 
+感谢[百度智能云](https://console.bce.baidu.com/)提供的图像识别技术，公开招募截图可以直接截图查询。
+
+感谢[pixiv接口](https://github.com/ScienJus/pixiv-parser)提供pixiv网站接口，涩图功能仍在开发中。
+
 # 项目结构
 
 main：

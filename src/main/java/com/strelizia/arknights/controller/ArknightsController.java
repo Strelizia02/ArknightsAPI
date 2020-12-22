@@ -1,8 +1,10 @@
 package com.strelizia.arknights.controller;
 
+import com.strelizia.arknights.model.ClassificationEnum;
 import com.strelizia.arknights.model.MessageInfo;
 import com.strelizia.arknights.service.AgentService;
 import com.strelizia.arknights.service.MaterialService;
+import com.strelizia.arknights.service.PixivService;
 import com.strelizia.arknights.service.TagsfFoundService;
 import com.strelizia.arknights.util.SendMsgUtil;
 import lombok.extern.slf4j.Slf4j;
@@ -31,6 +33,12 @@ public class ArknightsController {
     @Autowired
     private SendMsgUtil sendMsgUtil;
 
+    @Autowired
+    private ClassificationEnum classificationEnum;
+
+    @Autowired
+    private PixivService pixivService;
+
     //返回单抽结果
     @PostMapping("receive")
     public String receive(
@@ -42,8 +50,9 @@ public class ArknightsController {
         String[] s = message.getText().split(" ");
         Long groupId = message.getGroupId();
         String result;
-        switch (s[0]){
-            case "菜单":
+        ClassificationEnum c = this.classificationEnum.GetClass(s[0]);
+        switch (c){
+            case CaiDan:
                 result =
                         "0.详细菜单：{##详细菜单}查看完整菜单以及使用示例\n" +
                         "1.模拟寻访：{##十连 卡池名}或{##单抽 卡池名}\n" +
@@ -56,7 +65,7 @@ public class ArknightsController {
                         "8.公招结果查询：{## [公招截图]}\n" +
                         "9.公开招募tag组合查询：{##公开招募 [tag1],[tag2]}\n";
                 break;
-            case "详细菜单":
+            case XiangXiCaiDan:
                 result =
                         "1.模拟寻访：\n" +
                         "\t使用方法：输入{##十连 卡池名}或{##单抽 卡池名}\n" +
@@ -87,38 +96,41 @@ public class ArknightsController {
                         "\t例：##公开招募 爆发,近战位,高级资深干员\n" +
                         "注：本项目需严格按照格式输入，自然语言处理功能将在后期优化";
                 break;
-            case "十连":
+            case ShiLian:
                 result = agentService.shiLian(s[1], qq, name,groupId);
                 break;
-            case "抽卡":
+            case ChouKa:
                 result = agentService.chouKa(s[1],qq,name,groupId);
                 break;
-            case "卡池":
+            case KaChi:
                 result = agentService.selectPool();
                 break;
-            case "垫刀查询":
+            case DianDaoChaXun:
                 result = agentService.selectFoundCount(qq,name);
                 break;
-            case "专精材料":
+            case ZhuanJingCaiLiao:
                 result = materialService.ZhuanJingCaiLiao(s);
                 break;
-            case "精一材料":
+            case JingYiCaiLiao:
                 result = materialService.JingYingHuaCaiLiao(s[1], 1);
                 break;
-            case "精二材料":
+            case JingErCaiLiao:
                 result = materialService.JingYingHuaCaiLiao(s[1], 2);
                 break;
-            case "合成路线":
+            case HeChengLuXian:
                 result = materialService.HeChengLuXian(s[1]);
                 break;
-            case "材料获取":
+            case CaiLiaoHuoQu:
                 result = materialService.HuoQuTuJing(s[1]);
                 break;
-            case "公招截图":
+            case GongZhaoJieTu:
                 result = name + ":\n" + tagsfFoundService.FoundAgentByJson(s[1]);
                 break;
-            case "公开招募":
+            case GongKaiZhaoMu:
                 result = name + "\n" + tagsfFoundService.FoundAgentByArray(s[1].split(",|，"));
+                break;
+            case SeTu:
+                result = pixivService.getSeTuUrlByName(qq, groupId, name, s[1]);
                 break;
             default:
                 result = "俺不晓得你在锁啥子";

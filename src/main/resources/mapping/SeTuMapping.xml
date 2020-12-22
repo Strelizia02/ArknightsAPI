@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.strelizia.arknights.dao.SeTuMapper">
+
+    <select id="selectTodaySeTuByQQ" resultType="java.lang.Integer">
+        SELECT pixiv from a_user_found WHERE qq = #{qq} LIMIT 1
+    </select>
+
+    <insert id="updateTodaySeTu">
+        INSERT INTO a_user_found (qq, name, group_id, pixiv)
+        VALUES
+            (#{qq,jdbcType=VARCHAR}, #{name}, #{groupId,jdbcType=INTEGER}, 1)
+        ON DUPLICATE KEY UPDATE
+        group_id = #{groupId},
+        name = #{name},
+        pixiv = pixiv + 1
+    </insert>
+</mapper>

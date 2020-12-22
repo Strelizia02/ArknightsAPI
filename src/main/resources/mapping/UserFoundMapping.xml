@@ -88,9 +88,9 @@
 
     <!--  插入新qq，若已存在，则更新垫刀数和今日抽卡次数  -->
     <update id="updateUserFoundByQQ">
-        INSERT INTO a_user_found (qq, name, found_count, today_count ,all_count)
+        INSERT INTO a_user_found (qq, name, found_count, group_id, today_count ,all_count)
         VALUES
-            (#{qq,jdbcType=VARCHAR}, #{name}, #{foundCount,jdbcType=INTEGER}, 1 , 1)
+            (#{qq,jdbcType=VARCHAR}, #{name}, #{foundCount,jdbcType=INTEGER}, #{groupId}, 1 , 1)
         ON DUPLICATE KEY UPDATE
         group_id = #{groupId},
         name = #{name},

@@ -93,8 +93,8 @@ public class SendMsgUtil {
                 "http://" + OPQUrl + ":8888" + sendTextMsgApi + "?qq=" +  loginQq + "&funcname=SendMsg"));
     }
 
-    public void CallOPQApiSendImg(Long groupId, String s, String img){
-        poolTaskExecutor.execute(() -> sendTextImgToGroup(restTemplate, groupId, s, img,
+    public void CallOPQApiSendImg(Long groupId, String s, String imgUrl){
+        poolTaskExecutor.execute(() -> sendTextImgToGroup(restTemplate, groupId, s, imgUrl,
                 "http://" + OPQUrl + ":8888" + sendTextMsgApi + "?qq=" +  loginQq + "&funcname=SendMsg"));
     }
 }
