@@ -135,7 +135,9 @@ public class ArknightsController {
             default:
                 result = "俺不晓得你在锁啥子";
         }
-        sendMsgUtil.CallOPQApiSendMsg(groupId,result);
+        if (result != null) {
+            sendMsgUtil.CallOPQApiSendMsg(groupId, result);
+        }
         return result;
     }
 }
