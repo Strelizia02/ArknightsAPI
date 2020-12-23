@@ -84,7 +84,7 @@ public class AgentServiceImpl implements AgentService {
             return "没有找到该卡池哦";
         }
         List<AgentInfo> agents = agentMapper.selectPoolAgent(pool);
-        String s = "卡池 " + pool + " 中概率up干员为：";
+        String s = "卡池[" + pool + "]中概率up干员为：";
         for (AgentInfo agent:agents){
             s = s + "\n" + agent.getName() + FormatStringUtil.FormatStar(agent.getStar());
         }
