@@ -91,10 +91,13 @@ public class SendMsgUtil {
     public void CallOPQApiSendMsg(Long groupId, String s){
         poolTaskExecutor.execute(() -> sendTextMsgToGroup(restTemplate, groupId, s,
                 "http://" + OPQUrl + ":8888" + sendTextMsgApi + "?qq=" +  loginQq + "&funcname=SendMsg"));
+        log.info("发送消息{}成功",s);
     }
 
     public void CallOPQApiSendImg(Long groupId, String s, String imgUrl){
         poolTaskExecutor.execute(() -> sendTextImgToGroup(restTemplate, groupId, s, imgUrl,
                 "http://" + OPQUrl + ":8888" + sendTextMsgApi + "?qq=" +  loginQq + "&funcname=SendMsg"));
+        log.info("发送消息{}成功",s);
     }
+
 }
