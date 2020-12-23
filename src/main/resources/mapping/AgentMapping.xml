@@ -26,4 +26,14 @@
         GROUP BY
             pool
     </select>
+
+    <select id="selectPoolAgent" parameterType="java.lang.String" resultMap="BaseResultMap">
+        SELECT
+            name,star,pool
+        FROM
+            a_agent
+        WHERE
+            pool = #{pool}
+        ORDER BY star DESC
+    </select>
 </mapper>

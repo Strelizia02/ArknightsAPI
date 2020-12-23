@@ -12,4 +12,6 @@ public interface AgentMapper {
     List<AgentInfo> selectAgentByStar(String pool, Integer star);
 
     List<String> selectPool();
+
+    List<AgentInfo> selectPoolAgent(String pool);
 }

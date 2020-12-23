@@ -4,6 +4,7 @@ import com.strelizia.arknights.dao.AgentMapper;
 import com.strelizia.arknights.dao.UserFoundMapper;
 import com.strelizia.arknights.model.AgentInfo;
 import com.strelizia.arknights.model.UserFoundInfo;
+import com.strelizia.arknights.util.FormatStringUtil;
 import com.strelizia.arknights.util.FoundAgent;
 import com.strelizia.arknights.service.AgentService;
 import lombok.extern.slf4j.Slf4j;
@@ -74,6 +75,19 @@ public class AgentServiceImpl implements AgentService {
             sixStar = 2;
         }
         String s = name + "的当前垫刀数为：" + foundCount + "\n当前六星概率为：" + sixStar + "%" + "\n今日已抽卡次数：" + todayCount;
+        return s;
+    }
+
+    @Override
+    public String selectPoolAgent(String pool) {
+        if (pool.equals("凭证兑换") || pool.equals("活动") || pool.equals("公招") || pool.equals("初始")){
+            return "没有找到该卡池哦";
+        }
+        List<AgentInfo> agents = agentMapper.selectPoolAgent(pool);
+        String s = "卡池 " + pool + " 中概率up干员为：";
+        for (AgentInfo agent:agents){
+            s = s + "\n" + agent.getName() + FormatStringUtil.FormatStar(agent.getStar());
+        }
         return s;
     }
 
@@ -157,23 +171,7 @@ public class AgentServiceImpl implements AgentService {
             //随机数种子采用纳秒数+毫秒/qq，尽可能减少时间戳导致的不随机
             Random random = new Random(System.nanoTime() +  System.currentTimeMillis() / qq);
             int i = random.nextInt(agentList.size());
-            String levelStar;
-            switch (star){
-                case 6:
-                    levelStar = "★★★★★★";
-                    break;
-                case 5:
-                    levelStar = "★★★★★";
-                    break;
-                case 4:
-                    levelStar = "☆☆☆☆";
-                    break;
-                case 3:
-                    levelStar = "☆☆☆";
-                    break;
-                default:
-                    levelStar = "";
-            }
+            String levelStar = FormatStringUtil.FormatStar(star);
             try {
                 s = s + " " + agentList.get(i).getName() + " " + levelStar + "\n";
             } catch (Exception e) {

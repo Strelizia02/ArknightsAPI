@@ -1,5 +1,8 @@
 package com.strelizia.arknights.util;
 
+import java.util.HashMap;
+import java.util.Map;
+
 /**
  * @author wangzy
  * @Date 2020/12/10 18:01
@@ -66,5 +69,17 @@ public class FormatStringUtil {
             }
         } while (j <= b_name.length - 1);
         return len;
+    }
+
+    public static String FormatStar(int star){
+        Map<Integer, String> map = new HashMap<>();
+        map.put(6, "★★★★★★");
+        map.put(5, "★★★★★");
+        map.put(4,"☆☆☆☆");
+        map.put(3,"☆☆☆");
+        map.put(2,"☆☆");
+        map.put(1,"☆");
+        String s = map.get(star);
+        return s;
     }
 }

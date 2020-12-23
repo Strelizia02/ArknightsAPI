@@ -112,6 +112,9 @@ public class ArknightsController {
             case KaChi:
                 result = agentService.selectPool();
                 break;
+            case KaChiQingdan:
+                result = agentService.selectPoolAgent(s[1]);
+                break;
             case DianDaoChaXun:
                 result = agentService.selectFoundCount(qq,name);
                 break;

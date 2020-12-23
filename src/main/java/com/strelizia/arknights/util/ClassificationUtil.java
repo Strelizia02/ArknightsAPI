@@ -19,6 +19,7 @@ public class ClassificationUtil {
         map.put("抽卡",ChouKa);
         map.put("十连",ShiLian);
         map.put("卡池",KaChi);
+        map.put("卡池清单",KaChiQingdan);
         map.put("垫刀查询",DianDaoChaXun);
         map.put("专精材料",ZhuanJingCaiLiao);
         map.put("精一材料",JingYiCaiLiao);

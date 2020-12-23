@@ -12,4 +12,6 @@ public interface AgentService {
     String selectPool();
 
     String selectFoundCount(Long qq, String name);
+
+    String selectPoolAgent(String pool);
 }

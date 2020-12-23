@@ -10,6 +10,7 @@ public enum ClassificationEnum {
     ChouKa,
     ShiLian,
     KaChi,
+    KaChiQingdan,
     DianDaoChaXun,
     ZhuanJingCaiLiao,
     JingYiCaiLiao,
