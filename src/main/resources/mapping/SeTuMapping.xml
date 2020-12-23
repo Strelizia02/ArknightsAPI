@@ -6,6 +6,17 @@
         SELECT pixiv from a_user_found WHERE qq = #{qq} LIMIT 1
     </select>
 
+    <select id="selectSeTuUrl" resultMap="java.lang.String">
+        SELECT url from a_image_url WHERE type = #{type}
+    </select>
+
+    <insert id="insertSeTuUrl">
+        INSERT INTO a_image_url
+            (url,type)
+        VALUES
+            (#{url},#{type})
+    </insert>
+
     <insert id="updateTodaySeTu">
         INSERT INTO a_user_found (qq, name, group_id, pixiv)
         VALUES

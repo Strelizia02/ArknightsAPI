@@ -19,5 +19,7 @@ public enum ClassificationEnum {
     CaiLiaoHuoQu,
     GongZhaoJieTu,
     GongKaiZhaoMu,
-    SeTu
+    SeTu,
+    GeiNiSeTu,
+    GeiNiBiaoQingBao
 }
