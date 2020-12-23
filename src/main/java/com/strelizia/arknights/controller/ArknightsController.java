@@ -148,7 +148,7 @@ public class ArknightsController {
             default:
                 result = "俺不晓得你在锁啥子";
         }
-        if (result.equals("")) {
+        if (!result.equals("")) {
             sendMsgUtil.CallOPQApiSendMsg(groupId, result);
         }
         return result;
