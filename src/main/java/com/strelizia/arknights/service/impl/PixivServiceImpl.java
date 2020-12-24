@@ -62,7 +62,7 @@ public class PixivServiceImpl implements PixivService {
             client.close();
             seTuMapper.updateTodaySeTu(qqMd5,name,groupId);
             result = "";
-            sendMsgUtil.CallOPQApiSendImg(groupId,null, url);
+            sendMsgUtil.CallOPQApiSendImg(groupId,null, url,2);
         }else {
             result = name + "别冲了，一天就"+ count +"张涩图";
         }
@@ -88,7 +88,7 @@ public class PixivServiceImpl implements PixivService {
             client.close();
             result = "";
             seTuMapper.updateTodaySeTu(qqMd5,name,groupId);
-            sendMsgUtil.CallOPQApiSendImg(groupId,null,url);
+            sendMsgUtil.CallOPQApiSendImg(groupId,null,url,2);
         } else {
             result = name + "别冲了，一天就" + count + "张涩图";
         }

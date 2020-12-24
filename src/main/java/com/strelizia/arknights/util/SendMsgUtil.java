@@ -37,10 +37,10 @@ public class SendMsgUtil {
 
     private String sendTextMsgApi = "/v1/LuaApiCaller";
 
-    public SendMsgRespInfo sendTextMsgToGroup(RestTemplate restTemplate, Long groupId, String Text, String sendTextMsgUrl) {
+    public SendMsgRespInfo sendTextMsgToGroup(RestTemplate restTemplate, Long groupId, String Text, String sendTextMsgUrl, Integer sendToType) {
         Map<String,Object> map = new HashMap<>(7);
         map.put("toUser",groupId);
-        map.put("sendToType",2);
+        map.put("sendToType",sendToType);
         map.put("sendMsgType","TextMsg");
         map.put("content",Text);
         map.put("group",0);
@@ -62,10 +62,10 @@ public class SendMsgUtil {
         return body;
     }
 
-    public SendMsgRespInfo sendTextImgToGroup(RestTemplate restTemplate, Long groupId, String Text, String url, String sendTextMsgUrl) {
+    public SendMsgRespInfo sendTextImgToGroup(RestTemplate restTemplate, Long groupId, String Text, String url, String sendTextMsgUrl,Integer sendToType) {
         Map<String,Object> map = new HashMap<>(7);
         map.put("toUser",groupId);
-        map.put("sendToType",2);
+        map.put("sendToType",sendToType);
         map.put("sendMsgType","PicMsg");
         map.put("content",Text);
         map.put("group",0);
@@ -88,15 +88,15 @@ public class SendMsgUtil {
         return body;
     }
 
-    public void CallOPQApiSendMsg(Long groupId, String s){
+    public void CallOPQApiSendMsg(Long groupId, String s, Integer sendToType){
         poolTaskExecutor.execute(() -> sendTextMsgToGroup(restTemplate, groupId, s,
-                "http://" + OPQUrl + ":8888" + sendTextMsgApi + "?qq=" +  loginQq + "&funcname=SendMsg"));
+                "http://" + OPQUrl + ":8888" + sendTextMsgApi + "?qq=" +  loginQq + "&funcname=SendMsg",sendToType));
         log.info("发送消息{}成功",s);
     }
 
-    public void CallOPQApiSendImg(Long groupId, String s, String imgUrl){
+    public void CallOPQApiSendImg(Long groupId, String s, String imgUrl ,Integer sendToType){
         poolTaskExecutor.execute(() -> sendTextImgToGroup(restTemplate, groupId, s, imgUrl,
-                "http://" + OPQUrl + ":8888" + sendTextMsgApi + "?qq=" +  loginQq + "&funcname=SendMsg"));
+                "http://" + OPQUrl + ":8888" + sendTextMsgApi + "?qq=" +  loginQq + "&funcname=SendMsg",sendToType));
         log.info("发送消息图片+文字{}成功",s);
     }
 

@@ -6,6 +6,23 @@ local http = require("http")
 local url = "http://localhost:8086"
 
 function ReceiveFriendMsg(CurrentQQ, data)
+    local body =
+    {
+        text = data.Content,
+        qq = data.FromUin
+    }
+    response, error_message =
+    http.post(
+        ""..url.."/private/chat",
+        {
+            body = json.encode(body),
+            headers =
+            {
+                ["Accept"] = "*/*",
+                ["Content-Type"] = "application/json"
+            }
+        }
+    )
     return 1
 end
 

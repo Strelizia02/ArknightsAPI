@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.*;
 /**
  * @author wangzy
  * @Date 2020/11/20 17:02
+ * 通用的群聊回复接口
  **/
 @RequestMapping("Arknights")
 @RestController
@@ -181,7 +182,7 @@ public class ArknightsController {
                 result = "俺不晓得你在锁啥子";
         }
         if (!result.equals("")) {
-            sendMsgUtil.CallOPQApiSendMsg(groupId, result);
+            sendMsgUtil.CallOPQApiSendMsg(groupId, result,2);
         }
         return result;
     }
