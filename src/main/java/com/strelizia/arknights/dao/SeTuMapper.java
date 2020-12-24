@@ -15,5 +15,5 @@ public interface SeTuMapper {
 
     Integer insertSeTuUrl(@Param("url")String url, @Param("type")Integer type);
 
-    List<String> selectSeTuUrl(@Param("type")Integer type);
+    String selectSeTuUrl(@Param("type")Integer type);
 }

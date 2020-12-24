@@ -7,7 +7,7 @@
     </select>
 
     <select id="selectSeTuUrl" resultType="java.lang.String">
-        SELECT url from a_image_url WHERE type = #{type}
+        SELECT url from a_image_url WHERE type = #{type} ORDER BY RAND() LIMIT 1
     </select>
 
     <insert id="insertSeTuUrl">

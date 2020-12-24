@@ -61,14 +61,11 @@ public class SeTuServiceImpl implements SeTuService {
         String qqMd5 = DigestUtils.md5DigestAsHex(qq.toString().getBytes());
         Integer pixiv = seTuMapper.selectTodaySeTuByQQ(qqMd5);
         if (pixiv < count ||qqMd5.equals(DigestUtils.md5DigestAsHex("1111".getBytes()))||qqMd5.equals("c5ecb54cdb92b19fe7c6c8dca260e69d")) {
-            List<String> urls = seTuMapper.selectSeTuUrl(type);
-            int size = urls.size();
-            int i = new Random().nextInt(size);
-            if (urls == null || size == 0){
+            String urls = seTuMapper.selectSeTuUrl(type);
+            if (urls == null){
                 return "没有找到涩图哦";
             }else {
-                String imgUrl = urls.get(i);
-                sendMsgUtil.CallOPQApiSendImg(groupId, null, imgUrl,2);
+                sendMsgUtil.CallOPQApiSendImg(groupId, null, urls,2);
                 //更新请求涩图数量
                 seTuMapper.updateTodaySeTu(qqMd5,name,groupId);
                 return "";
