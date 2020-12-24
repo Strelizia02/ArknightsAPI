@@ -8,6 +8,7 @@ import com.strelizia.arknights.util.SendMsgUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.*;
 
 /**
@@ -18,6 +19,9 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @Slf4j
 public class ArknightsController {
+
+    @Value("${userConfig.loginQq}")
+    private Long loginQq;
 
     @Autowired
     private AgentService agentService;
@@ -39,22 +43,24 @@ public class ArknightsController {
     public String receive(
             @RequestBody MessageInfo message
     ){
-        log.info("接受到消息:{}",message.getText());
         Long qq = message.getQq();
-        Long groupId = message.getGroupId();
-        String name = message.getName();
-        String text = message.getText();
-        //这样开头的消息是图片消息
-        if (text.startsWith("{\"Content")){
-            JSONObject jsonObj = new JSONObject(text);
-            //提取图片消息中的文字部分，取关键字
-            String keyword = jsonObj.getString("Content").split(" ")[0];
-            text = keyword + " " + text;
-        }
-        if (text.startsWith("##")){
-            String messages = text.substring(2);
-            String s = queryKeyword(qq, groupId, name, messages);
-            return s;
+        if (qq != loginQq) {
+            log.info("接受到消息:{}",message.getText());
+            Long groupId = message.getGroupId();
+            String name = message.getName();
+            String text = message.getText();
+            //这样开头的消息是图片消息
+            if (text.startsWith("{\"Content")) {
+                JSONObject jsonObj = new JSONObject(text);
+                //提取图片消息中的文字部分，取关键字
+                String keyword = jsonObj.getString("Content").split(" ")[0];
+                text = keyword.replace(" ","") + " " + text;
+            }
+            if (text.startsWith("##")) {
+                String messages = text.substring(2);
+                String s = queryKeyword(qq, groupId, name, messages);
+                return s;
+            }
         }
         return null;
     }
