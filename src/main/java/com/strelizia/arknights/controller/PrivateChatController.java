@@ -36,14 +36,9 @@ public class PrivateChatController {
         String text = message.getText();
         String result = null;
         //发送的是图片才触发
-        if (text.startsWith("{")) {
-            JSONObject jsonObj = new JSONObject(text);
-            String content = jsonObj.getString("Content");
-            //不带文字的纯图片触发保存涩图
-            if (content.equals("") || content == null) {
-                result = seTuService.PrivategetImageIntoDb(text, 1);
-                sendMsgUtil.CallOPQApiSendMsg(qq, result, 1);
-            }
+        if (text.startsWith("{\"")) {
+            result = seTuService.PrivategetImageIntoDb(text, 1);
+            sendMsgUtil.CallOPQApiSendMsg(qq, result, 1);
         }
         return result;
     }
