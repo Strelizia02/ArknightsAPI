@@ -6,7 +6,7 @@
         SELECT pixiv from a_user_found WHERE qq = #{qq} LIMIT 1
     </select>
 
-    <select id="selectSeTuUrl" resultMap="java.lang.String">
+    <select id="selectSeTuUrl" resultType="java.lang.String">
         SELECT url from a_image_url WHERE type = #{type}
     </select>
 

@@ -29,6 +29,7 @@ public class ClassificationUtil {
         map.put("公招截图",GongZhaoJieTu);
         map.put("公开招募",GongKaiZhaoMu);
         map.put("涩图",SeTu);
+        map.put("给你涩图",GeiNiSeTu);
         return map.get(s);
     }
 }

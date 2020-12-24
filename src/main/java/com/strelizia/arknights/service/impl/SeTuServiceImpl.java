@@ -49,9 +49,14 @@ public class SeTuServiceImpl implements SeTuService {
         Integer pixiv = seTuMapper.selectTodaySeTuByQQ(qqMd5);
         if (pixiv < count) {
             List<String> urls = seTuMapper.selectSeTuUrl(type);
-            int i = new Random().nextInt();
-            sendMsgUtil.CallOPQApiSendImg(groupId,null,urls.get(i));
-            return "";
+            int size = urls.size();
+            int i = new Random().nextInt(size);
+            if (urls == null || size == 0){
+                return "没有找到涩图哦";
+            }else {
+                sendMsgUtil.CallOPQApiSendImg(groupId, null, urls.get(i));
+                return "";
+            }
         }else {
             return name + "别冲了，一天就"+ count +"张涩图";
         }
