@@ -54,7 +54,9 @@ public class ArknightsController {
                 JSONObject jsonObj = new JSONObject(text);
                 //提取图片消息中的文字部分，取关键字
                 String keyword = jsonObj.getString("Content").split(" ")[0];
-                text = keyword.replace(" ","") + " " + text;
+                text = keyword + "~" + text;
+            }else {
+                text = text.replace(" ","~");
             }
             if (text.startsWith("##")) {
                 String messages = text.substring(2);
@@ -66,7 +68,7 @@ public class ArknightsController {
     }
 
     public String queryKeyword(Long qq, Long groupId,String name, String text){
-        String[] a = text.split(" ");
+        String[] a = text.split("~");
         /**
          * 用一个固定长度10的数组承接a的内容，防止数组溢出
          * 当需要数组内某个值的时候，选择s[i]，10位以内不会存在数组溢出
