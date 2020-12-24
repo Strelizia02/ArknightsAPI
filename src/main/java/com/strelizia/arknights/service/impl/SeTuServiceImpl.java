@@ -54,7 +54,10 @@ public class SeTuServiceImpl implements SeTuService {
             if (urls == null || size == 0){
                 return "没有找到涩图哦";
             }else {
-                sendMsgUtil.CallOPQApiSendImg(groupId, null, urls.get(i));
+                String imgUrl = urls.get(i);
+                sendMsgUtil.CallOPQApiSendImg(groupId, null, imgUrl);
+                //更新请求涩图数量
+                seTuMapper.updateTodaySeTu(qqMd5,name,groupId);
                 return "";
             }
         }else {

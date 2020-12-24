@@ -97,7 +97,7 @@ public class SendMsgUtil {
     public void CallOPQApiSendImg(Long groupId, String s, String imgUrl){
         poolTaskExecutor.execute(() -> sendTextImgToGroup(restTemplate, groupId, s, imgUrl,
                 "http://" + OPQUrl + ":8888" + sendTextMsgApi + "?qq=" +  loginQq + "&funcname=SendMsg"));
-        log.info("发送消息{}成功",s);
+        log.info("发送消息图片+文字{}成功",s);
     }
 
 }
