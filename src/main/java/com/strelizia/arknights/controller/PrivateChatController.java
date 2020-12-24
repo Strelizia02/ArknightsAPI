@@ -4,7 +4,6 @@ import com.strelizia.arknights.model.MessageInfo;
 import com.strelizia.arknights.service.SeTuService;
 import com.strelizia.arknights.util.SendMsgUtil;
 import lombok.extern.slf4j.Slf4j;
-import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
