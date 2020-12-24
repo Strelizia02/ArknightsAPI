@@ -41,7 +41,7 @@ public class PrivateChatController {
             String content = jsonObj.getString("Content");
             //不带文字的纯图片触发保存涩图
             if (content.equals("") || content == null) {
-                result = seTuService.getImageIntoDb(text, 1, "你");
+                result = seTuService.PrivategetImageIntoDb(text, 1);
                 sendMsgUtil.CallOPQApiSendMsg(qq, result, 1);
             }
         }

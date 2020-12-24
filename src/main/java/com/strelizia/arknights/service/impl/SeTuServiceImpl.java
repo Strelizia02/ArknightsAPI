@@ -44,6 +44,19 @@ public class SeTuServiceImpl implements SeTuService {
     }
 
     @Override
+    public String PrivategetImageIntoDb(String json, Integer type) {
+        JSONObject jsonObj = new JSONObject(json);
+        JSONArray array = new JSONArray(jsonObj.get("FriendPic").toString());
+        String url = array.getJSONObject(0).getString("Url");
+        Integer i = seTuMapper.insertSeTuUrl(url, type);
+        if (i == 0)
+        {
+            return "涩图保存失败";
+        }
+        return "涩图已收到get√";
+    }
+
+    @Override
     public String sendImageByType(Long qq, Long groupId, Integer type, String name) {
         String qqMd5 = DigestUtils.md5DigestAsHex(qq.toString().getBytes());
         Integer pixiv = seTuMapper.selectTodaySeTuByQQ(qqMd5);
