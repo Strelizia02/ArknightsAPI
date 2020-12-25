@@ -7,7 +7,11 @@ function ReceiveFriendMsg(CurrentQQ, data)
     return 1
 end
 function ReceiveGroupMsg(CurrentQQ, data)
-    if (string.find(data.Content, "日日") == 1 and data.FromUserId ~= 0) then
+	text = data.Content
+	text = string.gsub(text," ","")
+	text = string.gsub(text,"曰","日")
+	text = string.gsub(text,"","")
+    if (string.find(text, "日日") == 1 and data.FromUserId ~= 0) then
         luaRes =
             Api.Api_SendMsg(
             CurrentQQ,
@@ -21,7 +25,6 @@ function ReceiveGroupMsg(CurrentQQ, data)
             }
         )
     end
-    -- 正所谓日人者终被日
     return 1
 end
 function ReceiveEvents(CurrentQQ, data, extData)
