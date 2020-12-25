@@ -1,13 +1,18 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.strelizia.arknights.dao.SeTuMapper">
+    <resultMap id="BaseResultMap" type="com.strelizia.arknights.model.ImgUrlInfo" >
+        <result column="url" property="url" jdbcType="VARCHAR" />
+        <result column="id" property="id" jdbcType="INTEGER" />
+        <result column="type" property="type" jdbcType="INTEGER" />
+    </resultMap>
 
     <select id="selectTodaySeTuByQQ" resultType="java.lang.Integer">
         SELECT pixiv from a_user_found WHERE qq = #{qq} LIMIT 1
     </select>
 
-    <select id="selectSeTuUrl" resultType="java.lang.String">
-        SELECT url from a_image_url WHERE type = #{type} ORDER BY RAND() LIMIT 1
+    <select id="selectSeTuUrl" resultMap="BaseResultMap">
+        SELECT id,url,type from a_image_url WHERE type = #{type}
     </select>
 
     <insert id="insertSeTuUrl">

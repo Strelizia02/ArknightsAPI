@@ -1,5 +1,6 @@
 package com.strelizia.arknights.dao;
 
+import com.strelizia.arknights.model.ImgUrlInfo;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
@@ -15,5 +16,5 @@ public interface SeTuMapper {
 
     Integer insertSeTuUrl(@Param("url")String url, @Param("type")Integer type);
 
-    String selectSeTuUrl(@Param("type")Integer type);
+    List<ImgUrlInfo> selectSeTuUrl(@Param("type")Integer type);
 }

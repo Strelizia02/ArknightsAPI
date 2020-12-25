@@ -1,6 +1,7 @@
 package com.strelizia.arknights.service.impl;
 
 import com.strelizia.arknights.dao.SeTuMapper;
+import com.strelizia.arknights.model.ImgUrlInfo;
 import com.strelizia.arknights.service.SeTuService;
 import com.strelizia.arknights.util.ImageUtil;
 import com.strelizia.arknights.util.SendMsgUtil;
@@ -69,17 +70,32 @@ public class SeTuServiceImpl implements SeTuService {
         String qqMd5 = DigestUtils.md5DigestAsHex(qq.toString().getBytes());
         Integer pixiv = seTuMapper.selectTodaySeTuByQQ(qqMd5);
         if (pixiv < count ||qqMd5.equals(DigestUtils.md5DigestAsHex("1111".getBytes()))||qqMd5.equals("c5ecb54cdb92b19fe7c6c8dca260e69d")) {
-            String urls = seTuMapper.selectSeTuUrl(type);
-            if (urls == null){
+            List<ImgUrlInfo> imgs = seTuMapper.selectSeTuUrl(type);
+            if (imgs == null){
                 return "没有找到涩图哦";
             }else {
+                //随机一张图片
+                String urls = imgs.get(new Random().nextInt(imgs.size())).getUrl();
+
                 sendMsgUtil.CallOPQApiSendImg(groupId, null,SendMsgUtil.picBase64Buf, urls,2);
                 //更新请求涩图数量
                 seTuMapper.updateTodaySeTu(qqMd5,name,groupId);
+                //空字符串不返回文字信息
                 return "";
             }
         }else {
             return name + "别冲了，一天就"+ count +"张涩图";
         }
+    }
+
+    @Override
+    public Integer getAllImageIntoLocal(String dir) {
+        List<ImgUrlInfo> imgUrlInfos = seTuMapper.selectSeTuUrl(1);
+        int i = 0;
+        for (ImgUrlInfo img:imgUrlInfos) {
+            imageUtil.getImgToLocal(dir, img.getId(),img.getUrl());
+            i++;
+        }
+        return i;
     }
 }
