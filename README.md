@@ -22,7 +22,7 @@
 
 感谢[百度智能云](https://console.bce.baidu.com/)提供的图像识别技术，公开招募截图可以直接截图查询。
 
-感谢[pixiv接口](https://github.com/ScienJus/pixiv-parser)提供pixiv网站接口，涩图功能仍在开发中。
+感谢[pixiv接口](https://github.com/ScienJus/pixiv-parser)提供pixiv网站接口。
 
 # 项目结构：
 

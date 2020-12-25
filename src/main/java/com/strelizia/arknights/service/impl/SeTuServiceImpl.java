@@ -1,5 +1,6 @@
 package com.strelizia.arknights.service.impl;
 
+import com.strelizia.arknights.dao.AdminUserMapper;
 import com.strelizia.arknights.dao.SeTuMapper;
 import com.strelizia.arknights.model.ImgUrlInfo;
 import com.strelizia.arknights.service.SeTuService;
@@ -27,6 +28,9 @@ public class SeTuServiceImpl implements SeTuService {
 
     @Autowired
     private SeTuMapper seTuMapper;
+
+    @Autowired
+    private AdminUserMapper adminUserMapper;
 
     @Autowired
     private SendMsgUtil sendMsgUtil;
@@ -69,7 +73,8 @@ public class SeTuServiceImpl implements SeTuService {
     public String sendImageByType(Long qq, Long groupId, Integer type, String name) {
         String qqMd5 = DigestUtils.md5DigestAsHex(qq.toString().getBytes());
         Integer pixiv = seTuMapper.selectTodaySeTuByQQ(qqMd5);
-        if (pixiv < count ||qqMd5.equals(DigestUtils.md5DigestAsHex("1111".getBytes()))||qqMd5.equals("c5ecb54cdb92b19fe7c6c8dca260e69d")) {
+        boolean b = ifAdminUser(qqMd5);
+        if (pixiv < count || b) {
             List<ImgUrlInfo> imgs = seTuMapper.selectSeTuUrl(type);
             if (imgs == null){
                 return "没有找到涩图哦";
@@ -97,5 +102,16 @@ public class SeTuServiceImpl implements SeTuService {
             i++;
         }
         return i;
+    }
+
+    public boolean ifAdminUser(String qq){
+        //管理员账户无限涩图
+        List<String> admins = adminUserMapper.selectAllAdmin();
+        for (String admin:admins){
+            if (admin.equals(qq)){
+                return true;
+            }
+        }
+        return false;
     }
 }

@@ -1,5 +1,6 @@
 package com.strelizia.arknights.service.impl;
 
+import com.strelizia.arknights.dao.AdminUserMapper;
 import com.strelizia.arknights.dao.AgentMapper;
 import com.strelizia.arknights.dao.UserFoundMapper;
 import com.strelizia.arknights.model.AgentInfo;
@@ -28,6 +29,8 @@ public class AgentServiceImpl implements AgentService {
     private AgentMapper agentMapper;
     @Autowired
     private UserFoundMapper userFoundMapper;
+    @Autowired
+    private AdminUserMapper adminUserMapper;
 
     @Value("${userConfig.limit}")
     private Integer limit;
@@ -114,11 +117,22 @@ public class AgentServiceImpl implements AgentService {
         Integer today = userFoundInfo.getTodayCount();
         String UserQq = userFoundInfo.getQq();
         String s = "今日抽卡机会无了";
-        //管理员账户1111和我无限抽
-        if (today<limit||UserQq.equals(DigestUtils.md5DigestAsHex("1111".getBytes()))||UserQq.equals("c5ecb54cdb92b19fe7c6c8dca260e69d")) {
+        boolean b = ifAdminUser(qqMd5);
+        if (today<limit||b) {
             s = FoundAgentByNum(count, pool, qq, sum, name, groupId);
         }
         return s;
+    }
+
+    public boolean ifAdminUser(String qq){
+        //管理员账户无限抽
+        List<String> admins = adminUserMapper.selectAllAdmin();
+        for (String admin:admins){
+            if (admin.equals(qq)){
+                return true;
+            }
+        }
+        return false;
     }
 
     /**
