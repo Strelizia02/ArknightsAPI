@@ -29,6 +29,10 @@ public class SendMsgUtil {
     @Value("${userConfig.OPQUrl}")
     private String OPQUrl;
 
+    public static final String picUrl = "picUrl";
+
+    public static final String picBase64Buf = "picBase64Buf";
+
     @Autowired
     private ThreadPoolTaskExecutor poolTaskExecutor;
 
@@ -62,14 +66,14 @@ public class SendMsgUtil {
         return body;
     }
 
-    public SendMsgRespInfo sendTextImgToGroup(RestTemplate restTemplate, Long groupId, String Text, String url, String sendTextMsgUrl,Integer sendToType) {
+    public SendMsgRespInfo sendTextImgToGroup(RestTemplate restTemplate, Long groupId, String Text, String picType, String url, String sendTextMsgUrl,Integer sendToType) {
         Map<String,Object> map = new HashMap<>(7);
         map.put("toUser",groupId);
         map.put("sendToType",sendToType);
         map.put("sendMsgType","PicMsg");
         map.put("content",Text);
         map.put("group",0);
-        map.put("picUrl",url);
+        map.put(picType,url);
 
         String jsonData = null;
         try {
@@ -94,8 +98,8 @@ public class SendMsgUtil {
         log.info("发送消息{}成功",s);
     }
 
-    public void CallOPQApiSendImg(Long groupId, String s, String imgUrl ,Integer sendToType){
-        poolTaskExecutor.execute(() -> sendTextImgToGroup(restTemplate, groupId, s, imgUrl,
+    public void CallOPQApiSendImg(Long groupId, String s, String picType, String imgUrl ,Integer sendToType){
+        poolTaskExecutor.execute(() -> sendTextImgToGroup(restTemplate, groupId, s, picType, imgUrl,
                 "http://" + OPQUrl + ":8888" + sendTextMsgApi + "?qq=" +  loginQq + "&funcname=SendMsg",sendToType));
         log.info("发送消息图片{}+文字{}成功",imgUrl,s);
     }

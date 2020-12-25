@@ -2,11 +2,13 @@ package com.strelizia.arknights.service.impl;
 
 import com.strelizia.arknights.dao.SeTuMapper;
 import com.strelizia.arknights.service.SeTuService;
+import com.strelizia.arknights.util.ImageUtil;
 import com.strelizia.arknights.util.SendMsgUtil;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 import org.springframework.stereotype.Service;
 import org.springframework.util.DigestUtils;
 
@@ -27,6 +29,12 @@ public class SeTuServiceImpl implements SeTuService {
     @Autowired
     private SendMsgUtil sendMsgUtil;
 
+    @Autowired
+    private ThreadPoolTaskExecutor poolTaskExecutor;
+
+    @Autowired
+    private ImageUtil imageUtil;
+
     @Value("${pixiv.count}")
     private Integer count;
 
@@ -35,11 +43,10 @@ public class SeTuServiceImpl implements SeTuService {
         JSONObject jsonObj = new JSONObject(json);
         JSONArray array = new JSONArray(jsonObj.get("GroupPic").toString());
         String url = array.getJSONObject(0).getString("Url");
-        Integer i = seTuMapper.insertSeTuUrl(url, type);
-        if (i == 0)
-        {
-            return "涩图保存失败";
-        }
+        poolTaskExecutor.execute(() -> {
+            String base64 = imageUtil.getImageBase64ByUrl(url);
+            seTuMapper.insertSeTuUrl(base64, type);
+        });
         return "感谢[" + name + "]的涩图";
     }
 
@@ -48,11 +55,10 @@ public class SeTuServiceImpl implements SeTuService {
         JSONObject jsonObj = new JSONObject(json);
         JSONArray array = new JSONArray(jsonObj.get("FriendPic").toString());
         String url = array.getJSONObject(0).getString("Url");
-        Integer i = seTuMapper.insertSeTuUrl(url, type);
-        if (i == 0)
-        {
-            return "涩图保存失败";
-        }
+        poolTaskExecutor.execute(() -> {
+            String base64 = imageUtil.getImageBase64ByUrl(url);
+            seTuMapper.insertSeTuUrl(base64, type);
+        });
         return "涩图已收到get√";
     }
 
@@ -65,7 +71,7 @@ public class SeTuServiceImpl implements SeTuService {
             if (urls == null){
                 return "没有找到涩图哦";
             }else {
-                sendMsgUtil.CallOPQApiSendImg(groupId, null, urls,2);
+                sendMsgUtil.CallOPQApiSendImg(groupId, null,SendMsgUtil.picBase64Buf, urls,2);
                 //更新请求涩图数量
                 seTuMapper.updateTodaySeTu(qqMd5,name,groupId);
                 return "";
