@@ -13,6 +13,7 @@ import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
 
+import javax.annotation.Resource;
 import java.util.*;
 
 /**
@@ -33,6 +34,7 @@ public class SendMsgUtil {
 
     public static final String picBase64Buf = "picBase64Buf";
 
+    @Resource(name="taskModuleExecutor")
     @Autowired
     private ThreadPoolTaskExecutor poolTaskExecutor;
 

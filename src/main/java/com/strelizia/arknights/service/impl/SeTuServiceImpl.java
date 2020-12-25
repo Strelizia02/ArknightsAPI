@@ -12,6 +12,7 @@ import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 import org.springframework.stereotype.Service;
 import org.springframework.util.DigestUtils;
 
+import javax.annotation.Resource;
 import java.util.List;
 import java.util.Random;
 
@@ -29,6 +30,7 @@ public class SeTuServiceImpl implements SeTuService {
     @Autowired
     private SendMsgUtil sendMsgUtil;
 
+    @Resource(name="taskModuleExecutor")
     @Autowired
     private ThreadPoolTaskExecutor poolTaskExecutor;
 
