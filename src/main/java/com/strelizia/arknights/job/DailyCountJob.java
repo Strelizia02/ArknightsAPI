@@ -11,6 +11,7 @@ import org.springframework.scheduling.annotation.Async;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -29,6 +30,7 @@ public class DailyCountJob {
     @Async
     public void dailyCountJob(){
         dailyCountService.SendDailyCount();
+        log.info("{}每日日报发送成功",new Date());
     }
 
 }

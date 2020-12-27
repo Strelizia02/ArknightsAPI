@@ -7,6 +7,8 @@ import org.springframework.scheduling.annotation.Async;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
+import java.util.Date;
+
 /**
  * @author wangzy
  * @Date 2020/12/8 15:53
@@ -24,6 +26,6 @@ public class CleanDayCountJob {
     @Async
     public void cleanDayCountJob(){
         userFoundMapper.cleanTodayCount();
+        log.info("{}每日涩图抽卡数结算成功", new Date());
     }
-
 }
