@@ -8,7 +8,7 @@ import com.strelizia.arknights.model.AgentInfo;
 import com.strelizia.arknights.model.UserFoundInfo;
 import com.strelizia.arknights.util.AdminUtil;
 import com.strelizia.arknights.util.FormatStringUtil;
-import com.strelizia.arknights.util.FoundAgent;
+import com.strelizia.arknights.util.FoundAgentUtil;
 import com.strelizia.arknights.service.AgentService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -147,7 +147,7 @@ public class AgentServiceImpl implements AgentService {
         for(int j = 0; j < count; j++) {
             if (b){sum = 100;}
             //获取干员稀有度
-            int star = FoundAgent.FoundOneByMath(qq,sum);
+            int star = FoundAgentUtil.FoundOneByMath(qq,sum);
             if(star == 6){
                 //抽到六星垫刀归零
                 sum = 0;

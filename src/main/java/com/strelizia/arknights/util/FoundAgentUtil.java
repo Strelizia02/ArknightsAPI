@@ -6,7 +6,7 @@ import java.util.Random;
  * @author wangzy
  * @Date 2020/12/5 14:06
  **/
-public class FoundAgent {
+public class FoundAgentUtil {
 
     /**
      * 静态方法，传递一个qq和垫刀数
