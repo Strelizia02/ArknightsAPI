@@ -28,7 +28,7 @@ public class SwaggerConfig {
           .enable(false)
           .apiInfo(apiInfo())
           .select()
-          .apis(basePackage("com.wzy.arknights.controller"))
+          .apis(basePackage("com.strelizia.arknights.controller"))
           .paths(PathSelectors.any())
           .build();
   }
