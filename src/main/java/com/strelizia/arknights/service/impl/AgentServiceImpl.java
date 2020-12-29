@@ -3,8 +3,10 @@ package com.strelizia.arknights.service.impl;
 import com.strelizia.arknights.dao.AdminUserMapper;
 import com.strelizia.arknights.dao.AgentMapper;
 import com.strelizia.arknights.dao.UserFoundMapper;
+import com.strelizia.arknights.model.AdminUserInfo;
 import com.strelizia.arknights.model.AgentInfo;
 import com.strelizia.arknights.model.UserFoundInfo;
+import com.strelizia.arknights.util.AdminUtil;
 import com.strelizia.arknights.util.FormatStringUtil;
 import com.strelizia.arknights.util.FoundAgent;
 import com.strelizia.arknights.service.AgentService;
@@ -117,22 +119,12 @@ public class AgentServiceImpl implements AgentService {
         Integer today = userFoundInfo.getTodayCount();
         String UserQq = userFoundInfo.getQq();
         String s = "今日抽卡机会无了";
-        boolean b = ifAdminUser(qqMd5);
+        List<AdminUserInfo> admins = adminUserMapper.selectAllAdmin();
+        boolean b = AdminUtil.getFoundAdmin(qqMd5,admins);
         if (today<limit||b) {
             s = FoundAgentByNum(count, pool, qq, sum, name, groupId);
         }
         return s;
-    }
-
-    public boolean ifAdminUser(String qq){
-        //管理员账户无限抽
-        List<String> admins = adminUserMapper.selectAllAdmin();
-        for (String admin:admins){
-            if (admin.equals(qq)){
-                return true;
-            }
-        }
-        return false;
     }
 
     /**
@@ -143,7 +135,9 @@ public class AgentServiceImpl implements AgentService {
      * @return
      */
     public String FoundAgentByNum(int count,String pool,Long qq,Integer sum,String name,Long groupId){
+        List<AdminUserInfo> admins = adminUserMapper.selectAllAdmin();
         String qqMd5 = DigestUtils.md5DigestAsHex(qq.toString().getBytes());
+        boolean b = AdminUtil.getSixAdmin(qqMd5, admins);
         //如果没输入卡池名或者卡池不存在
         if (pool==null||agentMapper.selectAgentByStar(pool,6).size()==0){
             pool = "常规";
@@ -151,6 +145,7 @@ public class AgentServiceImpl implements AgentService {
         String s = "";
         //循环抽卡
         for(int j = 0; j < count; j++) {
+            if (b){sum = 100;}
             //获取干员稀有度
             int star = FoundAgent.FoundOneByMath(qq,sum);
             if(star == 6){

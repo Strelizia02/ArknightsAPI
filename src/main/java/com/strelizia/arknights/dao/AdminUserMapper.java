@@ -1,5 +1,7 @@
 package com.strelizia.arknights.dao;
 
+import com.strelizia.arknights.model.AdminUserInfo;
+
 import java.util.List;
 
 /**
@@ -8,5 +10,5 @@ import java.util.List;
  **/
 public interface AdminUserMapper {
 
-    List<String> selectAllAdmin();
+    List<AdminUserInfo> selectAllAdmin();
 }
