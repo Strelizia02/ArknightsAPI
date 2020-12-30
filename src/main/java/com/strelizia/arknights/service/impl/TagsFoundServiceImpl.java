@@ -65,6 +65,7 @@ public class TagsFoundServiceImpl implements TagsfFoundService {
 
         //调用百度api图片识别
         String[] s = baiduAPIUtil.BaiduOCRGetTags(url);
+        log.info("识图获取到tag为：",Arrays.asList(s));
 
         Map<List<String>, List<AgentTagsInfo>> map = FoundTagResultByArrays(s);
 

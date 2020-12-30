@@ -63,8 +63,9 @@ public class BaiduAPIUtil {
         List<String> str = new ArrayList<>();
         for (int i = 0;i<words_result.length();i++){
             String words = words_result.getJSONObject(i).getString("words");
-            if (allTag.contains(words))
-            str.add(words);
+            if (allTag.contains(words)){
+                str.add(words);
+            }
         }
         String[] s = new String[str.size()];
         str.toArray(s);
