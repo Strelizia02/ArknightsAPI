@@ -71,6 +71,11 @@ public class FormatStringUtil {
         return len;
     }
 
+    /**
+     * 稀有度格式化成星星
+     * @param star
+     * @return
+     */
     public static String FormatStar(int star){
         Map<Integer, String> map = new HashMap<>();
         map.put(6, "★★★★★★");

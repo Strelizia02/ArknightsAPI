@@ -3,6 +3,7 @@ package com.strelizia.arknights.model;
 /**
  * @author wangzy
  * @Date 2020/12/11 10:04
+ * OPQ返回消息封装
  **/
 public class SendMsgRespInfo {
     private String Msg;

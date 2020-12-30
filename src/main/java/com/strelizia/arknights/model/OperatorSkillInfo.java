@@ -3,6 +3,7 @@ package com.strelizia.arknights.model;
 /**
  * @author wangzy
  * @Date 2020/12/21 16:12
+ * 干员技能信息
  **/
 public class OperatorSkillInfo {
     private Integer operatorId;

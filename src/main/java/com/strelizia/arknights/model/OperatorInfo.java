@@ -1,10 +1,9 @@
 package com.strelizia.arknights.model;
 
-import io.swagger.models.auth.In;
-
 /**
  * @author wangzy
  * @Date 2020/12/19 18:45
+ * 干员详细信息
  **/
 public class OperatorInfo {
     private Integer operator_id;

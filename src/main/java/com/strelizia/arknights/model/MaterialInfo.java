@@ -3,6 +3,7 @@ package com.strelizia.arknights.model;
 /**
  * @author wangzy
  * @Date 2020/12/14 11:12
+ * 材料以及数量信息
  **/
 public class MaterialInfo {
     private String materialName;

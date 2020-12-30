@@ -10,5 +10,6 @@ import java.util.List;
  **/
 public interface AdminUserMapper {
 
+    //查询所有的管理员用户，以及对应的权限信息
     List<AdminUserInfo> selectAllAdmin();
 }

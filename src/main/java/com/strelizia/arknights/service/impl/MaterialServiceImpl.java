@@ -11,9 +11,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 /**
  * @author wangzy
@@ -35,13 +33,16 @@ public class MaterialServiceImpl implements MaterialService {
     @Override
     public String ZhuanJingCaiLiao(String[] args) {
         List<MaterialInfo> materialInfos;
+
         if (args.length == 4){
+            //四个参数就是##专精材料-干员—第几技能-专精等级
             Integer index = DescriptionTransformationUtil.ChangeStringToInt(args[2]);
             Integer level = DescriptionTransformationUtil.ChangeStringToInt(args[3]);
             materialInfos = skillMateryMapper.selectSkillUpByAgentAndIndex(args[1], index, level);
         }else if (args.length == 3){
+            //三个参数就是##专精材料-技能名-专精等级
             Integer level = DescriptionTransformationUtil.ChangeStringToInt(args[2]);
-            materialInfos = operatorEvolveMapper.selectOperatorEvolveBySkillName(args[1], level);
+            materialInfos = skillMateryMapper.selectSkillUpBySkillName(args[1], level);
         }else {
             materialInfos = null;
         }
@@ -59,7 +60,7 @@ public class MaterialServiceImpl implements MaterialService {
 
     @Override
     public String JingYingHuaCaiLiao(String agent, Integer level) {
-        List<MaterialInfo> materialInfos = operatorEvolveMapper.selectOperatorEvolveBySkillName(agent, level);
+        List<MaterialInfo> materialInfos = operatorEvolveMapper.selectOperatorEvolveByName(agent, level);
         String s = "";
         if (materialInfos.size() == 0){
             s = "找不到查询的材料";

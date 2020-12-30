@@ -3,6 +3,7 @@ package com.strelizia.arknights.model;
 /**
  * @author wangzy
  * @Date 2020/12/7 13:58
+ * 干员信息
  **/
 public class AgentInfo {
     private String name;

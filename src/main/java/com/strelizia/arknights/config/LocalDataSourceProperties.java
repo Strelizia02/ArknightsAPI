@@ -12,6 +12,9 @@ import org.springframework.stereotype.Component;
 @Data
 @Component
 @ConfigurationProperties(prefix = "spring.datasource.localdatasource")
+/**
+ * 读取配置文件中的数据库信息
+ */
 public class LocalDataSourceProperties {
 
   private String url;

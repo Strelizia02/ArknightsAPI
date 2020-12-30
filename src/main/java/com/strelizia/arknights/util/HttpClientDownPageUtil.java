@@ -23,6 +23,9 @@ import java.io.IOException;
  * @Date 2020/12/18 15:06
  **/
 public class HttpClientDownPageUtil {
+    /**
+     * 爬虫类，尚未完善，在考虑绕过权限的问题
+     */
     private static final String USER_AGENT = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/87.0.4280.88 Safari/537.36";
     public static String sendGet(String url){
         //1.生成httpclient，相当于该打开一个浏览器

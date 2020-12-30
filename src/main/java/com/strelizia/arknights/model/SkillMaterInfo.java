@@ -5,6 +5,7 @@ import io.swagger.models.auth.In;
 /**
  * @author wangzy
  * @Date 2020/12/21 16:13
+ * 技能专精材料信息
  **/
 public class SkillMaterInfo {
     private Integer skillId;

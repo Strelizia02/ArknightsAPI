@@ -3,6 +3,7 @@ package com.strelizia.arknights.model;
 /**
  * @author wangzy
  * @Date 2020/12/14 15:08
+ * 材料获取途径信息
  **/
 public class SourcePlace {
     private String sourcePlace;

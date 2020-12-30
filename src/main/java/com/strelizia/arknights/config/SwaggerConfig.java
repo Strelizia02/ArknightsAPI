@@ -20,6 +20,9 @@ import static springfox.documentation.builders.RequestHandlerSelectors.basePacka
 @Configuration
 @EnableSwagger2
 @Profile(value = {"staging", "development"})
+/**
+ * swagger配置信息
+ */
 public class SwaggerConfig {
 
     @Bean

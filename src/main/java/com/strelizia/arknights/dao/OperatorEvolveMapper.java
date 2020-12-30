@@ -10,5 +10,7 @@ import java.util.List;
  * @Date 2020/12/14 11:12
  **/
 public interface OperatorEvolveMapper {
-    List<MaterialInfo> selectOperatorEvolveBySkillName(@Param("agent") String agent, @Param("level") Integer level);
+
+    //根据干员名称和精英化等级获取对应的消耗材料列表
+    List<MaterialInfo> selectOperatorEvolveByName(@Param("agent") String agent, @Param("level") Integer level);
 }

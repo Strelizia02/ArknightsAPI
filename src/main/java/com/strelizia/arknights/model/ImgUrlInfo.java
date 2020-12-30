@@ -3,6 +3,7 @@ package com.strelizia.arknights.model;
 /**
  * @author wangzy
  * @Date 2020/12/25 15:50
+ * 图片信息
  **/
 public class ImgUrlInfo {
 

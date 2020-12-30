@@ -50,14 +50,14 @@ public class UpdateDataServiceImpl implements UpdateDataService {
     @Override
     public Integer updateByJson(String json) {
         Map<String, Integer> operatorClass = new HashMap<>(8);
-        operatorClass.put("先锋", 1);
+        operatorClass.put("PIONEER", 1);
         operatorClass.put("WARRIOR", 2);
-        operatorClass.put("重装", 3);
-        operatorClass.put("狙击", 4);
-        operatorClass.put("术师", 5);
-        operatorClass.put("辅助", 6);
-        operatorClass.put("医疗", 7);
-        operatorClass.put("特种", 8);
+        operatorClass.put("TANK", 3);
+        operatorClass.put("SNIPER", 4);
+        operatorClass.put("CASTER", 5);
+        operatorClass.put("SUPPORT", 6);
+        operatorClass.put("MEDIC", 7);
+        operatorClass.put("SPECIAL", 8);
         JSONObject jsonObj = new JSONObject(json);
         String name = jsonObj.getString("name");
         int rarity = jsonObj.getInt("rarity") + 1;

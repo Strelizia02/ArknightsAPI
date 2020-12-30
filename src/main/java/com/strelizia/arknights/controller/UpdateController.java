@@ -21,7 +21,11 @@ public class UpdateController {
     @Autowired
     private SeTuService seTuService;
 
-    //手动更新方法
+    /**
+     * 手动更新方法，kokodayo的端口使用springhttp拨不通很烦
+     * 被阿里云OSS防盗链锁住了，但是postman可以拨通就离谱
+     * 目前处理方法为使用postman获取结果json，然后发送，只能更新干员信息
+     */
     @PostMapping("update")
     public Integer receive(
             @RequestBody String json

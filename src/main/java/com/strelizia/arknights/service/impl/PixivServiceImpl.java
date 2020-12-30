@@ -17,6 +17,7 @@ import com.strelizia.arknights.service.PixivService;
 /**
  * @author wangzy
  * @Date 2020/12/22 14:14
+ * pixiv功能暂时停用，api可能已经停止维护，在寻找新的pixiv的api
  **/
 //@Service
 public class PixivServiceImpl implements PixivService {

@@ -1,18 +1,13 @@
 package com.strelizia.arknights.job;
 
-import com.strelizia.arknights.dao.UserFoundMapper;
-import com.strelizia.arknights.model.UserGetInfo;
 import com.strelizia.arknights.service.DailyCountService;
-import com.strelizia.arknights.util.SendMsgUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
 import java.util.Date;
-import java.util.List;
 
 /**
  * @author wangzy

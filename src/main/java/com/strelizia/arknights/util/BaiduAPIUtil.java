@@ -16,6 +16,9 @@ import java.util.List;
  **/
 public class BaiduAPIUtil {
 
+    /**
+     * 单例实现
+     */
     private static volatile BaiduAPIUtil instance = null;
 
     public String APP_ID;
@@ -39,6 +42,12 @@ public class BaiduAPIUtil {
         return instance;
     }
 
+    /**
+     * 根据图片url，调用百度识图api获取文字列表
+     * 白底黑字的截图有可能一行读取为一个单词
+     * @param url
+     * @return
+     */
     public String[] BaiduOCRGetTags(String url){
         // 初始化一个AipOcr
         AipOcr client = new AipOcr(APP_ID, API_KEY, SECRET_KEY);

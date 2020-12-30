@@ -11,8 +11,31 @@
         SELECT pixiv from a_user_found WHERE qq = #{qq} LIMIT 1
     </select>
 
-    <select id="selectSeTuUrl" resultMap="BaseResultMap">
+    <select id="selectAllSeTuUrl" resultMap="BaseResultMap">
         SELECT id,url,type from a_image_url WHERE type = #{type}
+    </select>
+
+    <!--  优化版随机取数sql，比直接order by rand()效率高了10倍  -->
+    <select id="selectOneSeTuUrl" resultMap="BaseResultMap">
+        SELECT
+            t1.id,
+            url,
+            type
+        FROM
+            a_image_url AS t1
+        JOIN (
+            SELECT
+                ROUND(
+                    RAND() * (
+                        (SELECT MAX(id) FROM a_image_url) - (SELECT MIN(id) FROM a_image_url)
+                    ) + (SELECT MIN(id) FROM a_image_url)
+                ) AS id
+        ) AS t2
+        WHERE
+            t1.id >= t2.id
+        ORDER BY
+            t1.id
+        LIMIT 1;
     </select>
 
     <insert id="insertSeTuUrl">

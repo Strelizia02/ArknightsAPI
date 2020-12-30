@@ -3,6 +3,7 @@ package com.strelizia.arknights.model;
 /**
  * @author wangzy
  * @Date 2020/12/10 16:37
+ * qq消息封装
  **/
 public class MessageInfo {
     private String text;

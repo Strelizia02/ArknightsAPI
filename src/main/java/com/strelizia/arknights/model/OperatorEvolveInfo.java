@@ -3,6 +3,7 @@ package com.strelizia.arknights.model;
 /**
  * @author wangzy
  * @Date 2020/12/21 16:10
+ * 精英化材料信息
  **/
 public class OperatorEvolveInfo {
     private Integer operatorId;

@@ -9,7 +9,7 @@ import java.util.Random;
 public class FoundAgentUtil {
 
     /**
-     * 静态方法，传递一个qq和垫刀数
+     * 静态抽卡方法，传递一个qq和垫刀数，返回随机稀有度
      * @param qq
      * @param num
      * @return

@@ -3,6 +3,7 @@ package com.strelizia.arknights.model;
 /**
  * @author wangzy
  * @Date 2020/12/16 14:00
+ * 日报返回信息
  **/
 public class UserGetInfo {
     private String name;

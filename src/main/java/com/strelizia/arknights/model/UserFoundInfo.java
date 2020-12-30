@@ -3,6 +3,7 @@ package com.strelizia.arknights.model;
 /**
  * @author wangzy
  * @Date 2020/12/8 14:07
+ * 用户抽卡垫刀信息
  **/
 public class UserFoundInfo {
     private String qq;

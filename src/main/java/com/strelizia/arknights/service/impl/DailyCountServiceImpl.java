@@ -26,6 +26,11 @@ public class DailyCountServiceImpl implements DailyCountService {
     @Value("${userConfig.limit}")
     private Integer todayCount;
 
+    /**
+     * 每日日报的查询逻辑
+     * @param groupId
+     * @return
+     */
     public String jobMessageByGroupId(Long groupId){
         UserGetInfo allSixMax = userFoundMapper.selectAllSixMax(groupId);
         UserGetInfo allRateMax = userFoundMapper.selectRateAllMax(groupId);
@@ -50,7 +55,6 @@ public class DailyCountServiceImpl implements DailyCountService {
         List<Long> groups = userFoundMapper.selectAllActiveGroups();
         for (Long groupId:groups){
             String s = jobMessageByGroupId(groupId);
-//            String imgUrl = "http://gchat.qpic.cn/gchatpic_new/412459523/901158551-2534335053-0917C33A201AC78760663890D4073968/0?vuin=3022645754\\u0026term=255\\u0026pictype=0";
             sendMsgUtil.CallOPQApiSendMsg(groupId,s,2);
         }
         userFoundMapper.giveMoreFoundToFeiQiu(todayCount);

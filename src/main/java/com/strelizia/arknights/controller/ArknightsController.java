@@ -39,14 +39,19 @@ public class ArknightsController {
     @Autowired
     private SeTuService seTuService;
 
-    //返回单抽结果
+    /**
+     * 消息处理总控制器，用于接收消息，并处理分流到不同的service
+     */
     @PostMapping("receive")
     public String receive(
             @RequestBody MessageInfo message
     ){
+        //获取发送消息的群友qq
         Long qq = message.getQq();
+        //不处理自身发送的消息
         if (qq != loginQq) {
             log.info("接受到消息:{}",message.getText());
+            //获取群号、昵称、消息
             Long groupId = message.getGroupId();
             String name = message.getName();
             String text = message.getText();
@@ -55,10 +60,13 @@ public class ArknightsController {
                 JSONObject jsonObj = new JSONObject(text);
                 //提取图片消息中的文字部分，取关键字
                 String keyword = jsonObj.getString("Content").split(" ")[0];
+                //在json结构前添加关键字信息， 使用波浪线分隔，可以将图片内容和文字内容统一进行处理。
                 text = keyword + "~" + text;
             }else {
+                //split("~")，以防图片信息中多余的空格导致的json结构破坏
                 text = text.replace(" ","~");
             }
+            //触发关键字是##，目前机器人还没名字，本来就是功能性的。
             if (text.startsWith("##")) {
                 String messages = text.substring(2);
                 String s = queryKeyword(qq, groupId, name, messages);
@@ -68,6 +76,7 @@ public class ArknightsController {
         return null;
     }
 
+    //消息分流方法，使用switch进行模式匹配，具体消息类型有枚举类。
     public String queryKeyword(Long qq, Long groupId,String name, String text){
         String[] a = text.split("~");
         /**
@@ -183,6 +192,7 @@ public class ArknightsController {
             default:
                 result = "俺不晓得你在锁啥子";
         }
+        //返回空字符串则不发送信息
         if (!result.equals("")) {
             sendMsgUtil.CallOPQApiSendMsg(groupId, result,2);
         }

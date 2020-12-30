@@ -5,6 +5,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 /**
  * @author wangzy
  * @Date 2020/12/19 15:56
+ * wiki的干员信息json封装
  **/
 public class AgentFromWiki {
     private String name;

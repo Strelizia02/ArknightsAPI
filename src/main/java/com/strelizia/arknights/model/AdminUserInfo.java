@@ -3,12 +3,18 @@ package com.strelizia.arknights.model;
 /**
  * @author wangzy
  * @Date 2020/12/29 14:38
+ * 管理员权限信息
  **/
 public class AdminUserInfo {
+    //管理员qq
     private String qq;
+    //管理员昵称，用于肉眼识别
     private String name;
+    //无限抽卡权限
     private Integer found;
+    //无限涩图权限
     private Integer img;
+    //爆率拉满权限
     private Integer six;
 
     public String getQq() {

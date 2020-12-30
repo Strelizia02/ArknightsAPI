@@ -3,6 +3,7 @@ package com.strelizia.arknights.model;
 /**
  * @author wangzy
  * @Date 2020/12/7 17:45
+ * 抽卡请求数据封装
  **/
 public class FoundInfo {
     private String pool;

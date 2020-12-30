@@ -6,7 +6,7 @@
         <result column="use_number" property="materialNum" jdbcType="INTEGER" />
     </resultMap>
 
-    <select id="selectOperatorEvolveBySkillName" resultMap="BaseResultMap">
+    <select id="selectOperatorEvolveByName" resultMap="BaseResultMap">
         SELECT
             b.material_name,
             a.use_number

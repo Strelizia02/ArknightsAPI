@@ -117,7 +117,6 @@ public class AgentServiceImpl implements AgentService {
         Integer sum = userFoundInfo.getFoundCount();
         //今日抽卡数
         Integer today = userFoundInfo.getTodayCount();
-        String UserQq = userFoundInfo.getQq();
         String s = "今日抽卡机会无了";
         List<AdminUserInfo> admins = adminUserMapper.selectAllAdmin();
         boolean b = AdminUtil.getFoundAdmin(qqMd5,admins);

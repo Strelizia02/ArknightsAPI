@@ -4,6 +4,7 @@ import com.strelizia.arknights.dao.AgentTagsMapper;
 import com.strelizia.arknights.model.AgentTagsInfo;
 import com.strelizia.arknights.service.TagsfFoundService;
 import com.strelizia.arknights.util.BaiduAPIUtil;
+import com.strelizia.arknights.util.FormatStringUtil;
 import com.strelizia.arknights.util.TagsUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.json.JSONArray;
@@ -117,23 +118,9 @@ public class TagsFoundServiceImpl implements TagsfFoundService {
             for (AgentTagsInfo agent:value){
                 String levelStar;
                 Integer star = agent.getStar();
-                if (star == 3|| star == 2)break;
-                switch (star){
-                    case 6:
-                        levelStar = "★★★★★★";
-                        break;
-                    case 5:
-                        levelStar = "★★★★★";
-                        break;
-                    case 4:
-                        levelStar = "☆☆☆☆";
-                        break;
-                    case 1:
-                        levelStar = "☆";
-                        break;
-                    default:
-                        levelStar = "";
-                }
+                //不要三星两星的结果
+                if (star == 3|| star == 2) break;
+                levelStar = FormatStringUtil.FormatStar(star);
                 agents = agents + "\n" + agent.getAgentName() + levelStar;
             }
             s = s  + "\n\n" + tags.substring(1) + "\n" + agents.substring(1);

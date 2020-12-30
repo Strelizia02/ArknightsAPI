@@ -26,6 +26,12 @@ public class PrivateChatController {
     @Autowired
     private SendMsgUtil sendMsgUtil;
 
+    /**
+     * 目前只有单独发送图片的功能，将图片保存为涩图
+     * 云涩图功能（不是）
+     * @param message
+     * @return
+     */
     @PostMapping("chat")
     public String receive(
             @RequestBody MessageInfo message
