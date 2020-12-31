@@ -27,6 +27,7 @@ public class ClassificationUtil {
         map.put("卡池列表",KaChi);
         map.put("卡池干员",KaChiQingdan);
         map.put("卡池up",KaChiQingdan);
+        map.put("干员up",KaChiQingdan);
         map.put("卡池清单",KaChiQingdan);
         map.put("垫刀查询",DianDaoChaXun);
         map.put("垫刀",DianDaoChaXun);
@@ -45,6 +46,9 @@ public class ClassificationUtil {
         map.put("公开招募",GongKaiZhaoMu);
         map.put("涩图",SeTu);
         map.put("给你涩图",GeiNiSeTu);
+        map.put("服务器查询",XiTongXinXi);
+        map.put("系统信息",XiTongXinXi);
+        map.put("服务器信息",XiTongXinXi);
         return map.get(s);
     }
 }

@@ -5,6 +5,7 @@ import com.strelizia.arknights.model.MessageInfo;
 import com.strelizia.arknights.service.*;
 import com.strelizia.arknights.util.ClassificationUtil;
 import com.strelizia.arknights.util.SendMsgUtil;
+import com.strelizia.arknights.util.ServerSystemUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -188,6 +189,9 @@ public class ArknightsController {
                 break;
             case GeiNiSeTu:
                 result = seTuService.getImageIntoDb(s[1],1,name);
+                break;
+            case XiTongXinXi:
+                result = new ServerSystemUtil().getSystemInfo();
                 break;
             default:
                 result = "俺不晓得你在锁啥子";

@@ -22,5 +22,6 @@ public enum ClassificationEnum {
     GongKaiZhaoMu,
     SeTu,
     GeiNiSeTu,
-    GeiNiBiaoQingBao
+    GeiNiBiaoQingBao,
+    XiTongXinXi
 }
