@@ -18,7 +18,7 @@
 
 感谢[机器人框架](https://github.com/OPQBOT/OPQ/wiki)提供的技术支持，有关框架的部署请参考wiki文档。
 
-感谢[兔兔阿米娅](https://github.com/vivien8261/Amiya-Bot)提供的数据支持，目前数据仍采用手动更新，自动爬取数据功能在开发中(在做了，在做了.jpg)。
+感谢[兔兔阿米娅](https://github.com/vivien8261/Amiya-Bot)提供的数据支持，因服务器性能原因，关闭了每日自动更新，采用swagger触发的模式。
 
 感谢[百度智能云](https://console.bce.baidu.com/)提供的图像识别技术，公开招募截图可以直接截图查询。
 

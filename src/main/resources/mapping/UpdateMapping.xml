@@ -9,6 +9,7 @@
             t_operator
         WHERE
             operator_name = #{name}
+        AND operator_class is not null
         ORDER BY
             operator_id DESC
         LIMIT 1
@@ -74,4 +75,15 @@
             (#{skillId},#{materLevel},
             #{useMaterialId},#{useNumber})
     </insert>
+
+    <delete id="clearOperatorData">
+        DELETE FROM t_operator;
+        TRUNCATE TABLE t_operator;
+        DELETE FROM t_operator_evolve_costs;
+        TRUNCATE TABLE t_operator_evolve_costs;
+        DELETE FROM t_operator_skill;
+        TRUNCATE TABLE t_operator_skill;
+        DELETE FROM t_operator_skill_mastery_costs;
+        TRUNCATE TABLE t_operator_skill_mastery_costs;
+    </delete>
 </mapper>

@@ -34,6 +34,12 @@ public class UpdateController {
         return i;
     }
 
+    @GetMapping("AutoUpdate")
+    public Integer update(){
+        Integer s = updateDataService.updateAllData();
+        return s;
+    }
+
     //获取所有涩图到本地
     @PostMapping("getImg")
     public Integer getAllImg(

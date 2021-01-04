@@ -28,4 +28,7 @@ public interface UpdateMapper {
 
     //插入一个技能升级材料信息
     Integer insertSkillMater(SkillMaterInfo skillMaterInfo);
+
+    //清空数据库重新插入
+    Integer clearOperatorData();
 }

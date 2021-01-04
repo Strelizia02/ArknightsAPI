@@ -22,6 +22,7 @@
                 t_operator_skill
             WHERE
                 skill_name = #{skillName}
+		    DESC
             LIMIT 1
         )
     </select>
