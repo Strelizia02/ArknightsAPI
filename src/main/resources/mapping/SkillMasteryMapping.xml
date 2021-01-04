@@ -22,7 +22,7 @@
                 t_operator_skill
             WHERE
                 skill_name = #{skillName}
-		    DESC
+		    ORDER BY skill_id DESC
             LIMIT 1
         )
     </select>
