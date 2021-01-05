@@ -1,11 +1,13 @@
 package com.strelizia.arknights.service.impl;
 
 import com.strelizia.arknights.dao.UpdateMapper;
+import com.strelizia.arknights.dao.UserFoundMapper;
 import com.strelizia.arknights.model.OperatorEvolveInfo;
 import com.strelizia.arknights.model.OperatorInfo;
 import com.strelizia.arknights.model.OperatorSkillInfo;
 import com.strelizia.arknights.model.SkillMaterInfo;
 import com.strelizia.arknights.service.UpdateDataService;
+import com.strelizia.arknights.util.SendMsgUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -19,7 +21,10 @@ import org.springframework.web.client.RestTemplate;
 
 import java.io.UnsupportedEncodingException;
 import java.net.InetSocketAddress;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -30,42 +35,89 @@ import java.util.Map;
 @Slf4j
 public class UpdateDataServiceImpl implements UpdateDataService {
 
+    private final String operatorListUrl = "https://andata.somedata.top/data-2020/char/list/7703052669061.json";
+
+    private final String enemyListUrl = "https://andata.somedata.top/data-2020/lists/enemy/0453052669061.json";
+
     private final String operatorIdUrl = "https://andata.somedata.top/data-2020/char/data/";
 
     private final String skillIdUrl = "https://andata.somedata.top/data-2020/skills/";
 
+    private final String enemyIdUrl = "https://andata.somedata.top/data-2020/enemy/";
+
+    @Autowired
+    private UserFoundMapper userFoundMapper;
+
     @Autowired
     private UpdateMapper updateMapper;
+
+    @Autowired
+    private SendMsgUtil sendMsgUtil;
 
     @Autowired
     protected RestTemplate restTemplate;
 
     @Override
     public Integer updateAllData() {
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         updateMapper.clearOperatorData();
-        HttpHeaders httpHeaders = new HttpHeaders();
-        httpHeaders.set("User-Agent","PostmanRuntime/7.26.8");
-        httpHeaders.set("Authorization","2");
-        httpHeaders.set("Host","andata.somedata.top");
-        HttpEntity<String> httpEntity = new HttpEntity<>(httpHeaders);
-        //发送请求，封装结果数据
-        String allOperator = restTemplate
-                .exchange("https://andata.somedata.top/data-2020/char/list/7703052669061.json", HttpMethod.GET, httpEntity, String.class).getBody();
+        List<Long> groups = userFoundMapper.selectAllActiveGroups();
+
+        for (Long groupId:groups){
+            String s = "游戏数据闪断更新中，更新期间存在无响应情况，请耐心等待更新完成。\n" +
+                    "若十分钟后仍未收到更新完成信息，请联系开发者重新进行更新请求\n--" +
+                    sdf.format(new Date());
+            sendMsgUtil.CallOPQApiSendMsg(groupId,s,2);
+        }
+
+        Integer operatorSize = updateAllOperator();
+
+        for (Long groupId:groups){
+            String s = "游戏数据更新完成\n--" + sdf.format(new Date());
+            sendMsgUtil.CallOPQApiSendMsg(groupId,s,2);
+        }
+        return operatorSize;
+    }
+
+    public Integer updateAllOperator(){
+
+        //发送请求，封装所有的干员基础信息列表
+        String allOperator = getJsonStringFromUrl(operatorListUrl);
+
         JSONArray json = new JSONArray(allOperator);
         int length = json.length();
         for (int i = 0; i < length; i++){
             JSONObject operator = json.getJSONObject(i);
             String operatorId = operator.getString("No");
-            String operatorJson = restTemplate
-                    .exchange(operatorIdUrl + operatorId + ".json", HttpMethod.GET, httpEntity, String.class).getBody();
-            updateByJson(operatorJson);
+            //发送请求遍历干员详细信息
+            String operatorJson = getJsonStringFromUrl(operatorIdUrl + operatorId + ".json");
+            updateOperatorByJson(operatorJson);
         }
         log.info("更新完成，共更新了{}个干员信息",length);
         return length;
     }
 
+    public Integer updateAllEnemy(){
+        //发送请求，封装所有的干员基础信息列表
+        String allEnemy = getJsonStringFromUrl(enemyListUrl);
+        JSONArray json = new JSONArray(allEnemy);
+        return 0;
+    }
+
+    //发送url的get请求获取结果json字符串
+    public String getJsonStringFromUrl(String url){
+        HttpHeaders httpHeaders = new HttpHeaders();
+        httpHeaders.set("User-Agent","PostmanRuntime/7.26.8");
+        httpHeaders.set("Authorization","2");
+        httpHeaders.set("Host","andata.somedata.top");
+        HttpEntity<String> httpEntity = new HttpEntity<>(httpHeaders);
+        String s = restTemplate
+                .exchange(url, HttpMethod.GET, httpEntity, String.class).getBody();
+        return s;
+    }
+
     @Override
-    public Integer updateByJson(String json) {
+    public Integer updateOperatorByJson(String json) {
         Map<String, Integer> operatorClass = new HashMap<>(8);
         operatorClass.put("PIONEER", 1);
         operatorClass.put("WARRIOR", 2);

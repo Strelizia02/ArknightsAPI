@@ -7,5 +7,5 @@ package com.strelizia.arknights.service;
 public interface UpdateDataService {
     Integer updateAllData();
 
-    Integer updateByJson(String json);
+    Integer updateOperatorByJson(String json);
 }

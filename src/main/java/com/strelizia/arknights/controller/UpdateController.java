@@ -30,7 +30,7 @@ public class UpdateController {
     public Integer receive(
             @RequestBody String json
     ){
-        Integer i = updateDataService.updateByJson(json);
+        Integer i = updateDataService.updateOperatorByJson(json);
         return i;
     }
 
