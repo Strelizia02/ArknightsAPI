@@ -77,6 +77,15 @@
             sum > 0
     </select>
 
+    <select id="selectAllGroups" resultType="java.lang.Long">
+        SELECT
+            group_id
+        FROM
+            a_user_found
+        GROUP BY
+            group_id
+    </select>
+
     <!--  额外再发十抽  -->
     <update id="giveMoreFoundToFeiQiu" parameterType="java.lang.Integer">
         UPDATE a_user_found

@@ -56,4 +56,5 @@ public interface UserFoundMapper {
     //查找所有活跃群，今日没有人抽卡则视为不活跃群，只在活跃群中发送日报
     List<Long> selectAllActiveGroups();
 
+    List<Long> selectAllGroups();
 }

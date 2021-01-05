@@ -61,7 +61,7 @@ public class UpdateDataServiceImpl implements UpdateDataService {
     public Integer updateAllData(String JsonId) {
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         updateMapper.clearOperatorData();
-        List<Long> groups = userFoundMapper.selectAllActiveGroups();
+        List<Long> groups = userFoundMapper.selectAllGroups();
 
         for (Long groupId:groups){
             String s = "游戏数据闪断更新中，更新期间存在无响应情况，请耐心等待更新完成。\n" +
