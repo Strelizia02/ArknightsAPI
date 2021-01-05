@@ -35,9 +35,9 @@ import java.util.Map;
 @Slf4j
 public class UpdateDataServiceImpl implements UpdateDataService {
 
-    private final String operatorListUrl = "https://andata.somedata.top/data-2020/char/list/7703052669061.json";
+    private final String operatorListUrl = "https://andata.somedata.top/data-2020/char/list/";
 
-    private final String enemyListUrl = "https://andata.somedata.top/data-2020/lists/enemy/0453052669061.json";
+    private final String enemyListUrl = "https://andata.somedata.top/data-2020/lists/enemy/";
 
     private final String operatorIdUrl = "https://andata.somedata.top/data-2020/char/data/";
 
@@ -58,7 +58,7 @@ public class UpdateDataServiceImpl implements UpdateDataService {
     protected RestTemplate restTemplate;
 
     @Override
-    public Integer updateAllData() {
+    public Integer updateAllData(String JsonId) {
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         updateMapper.clearOperatorData();
         List<Long> groups = userFoundMapper.selectAllActiveGroups();
@@ -70,7 +70,7 @@ public class UpdateDataServiceImpl implements UpdateDataService {
             sendMsgUtil.CallOPQApiSendMsg(groupId,s,2);
         }
 
-        Integer operatorSize = updateAllOperator();
+        Integer operatorSize = updateAllOperator(JsonId);
 
         for (Long groupId:groups){
             String s = "游戏数据更新完成\n--" + sdf.format(new Date());
@@ -79,10 +79,10 @@ public class UpdateDataServiceImpl implements UpdateDataService {
         return operatorSize;
     }
 
-    public Integer updateAllOperator(){
+    public Integer updateAllOperator(String JsonId){
 
         //发送请求，封装所有的干员基础信息列表
-        String allOperator = getJsonStringFromUrl(operatorListUrl);
+        String allOperator = getJsonStringFromUrl(operatorListUrl + JsonId + ".json");
 
         JSONArray json = new JSONArray(allOperator);
         int length = json.length();
@@ -98,6 +98,7 @@ public class UpdateDataServiceImpl implements UpdateDataService {
     }
 
     public Integer updateAllEnemy(){
+        //TODO 更新敌人数据，更新材料数据，更新关卡数据
         //发送请求，封装所有的干员基础信息列表
         String allEnemy = getJsonStringFromUrl(enemyListUrl);
         JSONArray json = new JSONArray(allEnemy);

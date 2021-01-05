@@ -35,8 +35,8 @@ public class UpdateController {
     }
 
     @GetMapping("AutoUpdate")
-    public Integer update(){
-        Integer s = updateDataService.updateAllData();
+    public Integer update(String JsonId){
+        Integer s = updateDataService.updateAllData(JsonId);
         return s;
     }
 
