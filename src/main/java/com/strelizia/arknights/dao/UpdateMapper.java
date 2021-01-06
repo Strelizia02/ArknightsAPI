@@ -1,9 +1,6 @@
 package com.strelizia.arknights.dao;
 
-import com.strelizia.arknights.model.OperatorEvolveInfo;
-import com.strelizia.arknights.model.OperatorInfo;
-import com.strelizia.arknights.model.OperatorSkillInfo;
-import com.strelizia.arknights.model.SkillMaterInfo;
+import com.strelizia.arknights.model.*;
 
 /**
  * @author wangzy
@@ -31,4 +28,7 @@ public interface UpdateMapper {
 
     //清空数据库重新插入
     Integer clearOperatorData();
+
+    //更新干员面板数据
+    Integer updateOperatorData(OperatorData operatorData);
 }

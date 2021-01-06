@@ -76,6 +76,20 @@
             #{useMaterialId},#{useNumber})
     </insert>
 
+    <update id="updateOperatorData" parameterType="com.strelizia.arknights.model.OperatorData">
+        UPDATE t_operator
+        SET atk = #{atk},
+         def= #{def},
+         magicResistance= #{magicResistance},
+         maxHp= #{maxHp},
+         blockCnt= #{blockCnt},
+         cost= #{cost},
+         baseAttackTime= #{baseAttackTime},
+         respawnTime= #{respawnTime}
+        WHERE
+            operator_id = #{id}
+    </update>
+
     <delete id="clearOperatorData">
         DELETE FROM t_operator;
         TRUNCATE TABLE t_operator;

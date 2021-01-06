@@ -2,10 +2,7 @@ package com.strelizia.arknights.service.impl;
 
 import com.strelizia.arknights.dao.UpdateMapper;
 import com.strelizia.arknights.dao.UserFoundMapper;
-import com.strelizia.arknights.model.OperatorEvolveInfo;
-import com.strelizia.arknights.model.OperatorInfo;
-import com.strelizia.arknights.model.OperatorSkillInfo;
-import com.strelizia.arknights.model.SkillMaterInfo;
+import com.strelizia.arknights.model.*;
 import com.strelizia.arknights.service.UpdateDataService;
 import com.strelizia.arknights.util.SendMsgUtil;
 import lombok.extern.slf4j.Slf4j;
@@ -153,8 +150,25 @@ public class UpdateDataServiceImpl implements UpdateDataService {
 
         JSONArray phases = jsonObj.getJSONArray("phases");
         if (operatorId != null) {
+            int length = phases.length();
+            //封装干员面板信息（满级无潜能无信赖）
+            JSONArray operatorPanel = phases.getJSONObject(length - 1).getJSONArray("attributesKeyFrames");
+            JSONObject panelMax = operatorPanel.getJSONObject(operatorPanel.length() - 1).getJSONObject("data");
+            OperatorData operatorData = new OperatorData();
+            operatorData.setId(operatorId);
+            operatorData.setAtk(panelMax.getInt("atk"));
+            operatorData.setDef(panelMax.getInt("def"));
+            operatorData.setMagicResistance(panelMax.getInt("magicResistance"));
+            operatorData.setMaxHp(panelMax.getInt("maxHp"));
+            operatorData.setBlockCnt(panelMax.getInt("blockCnt"));
+            operatorData.setCost(panelMax.getInt("cost"));
+            operatorData.setBaseAttackTime(panelMax.getInt("baseAttackTime"));
+            operatorData.setRespawnTime(panelMax.getInt("respawnTime"));
+            updateMapper.updateOperatorData(operatorData);
+            log.info("更新{}干员面板信息",name);
+
             //封装干员精英化花费
-            for (int i = 1; i < phases.length(); i++) {
+            for (int i = 1; i < length; i++) {
                 JSONObject array = phases.getJSONObject(i);
                 if (array.get("evolveCost") instanceof JSONArray) {
                     JSONArray evolveJson = array.getJSONArray("evolveCost");
