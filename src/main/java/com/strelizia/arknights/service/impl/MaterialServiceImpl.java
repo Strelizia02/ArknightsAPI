@@ -123,11 +123,14 @@ public class MaterialServiceImpl implements MaterialService {
     @Override
     public String selectAgentData(String name) {
         OperatorData operatorData = operatorEvolveMapper.selectOperatorData(name);
-        String s = name + "满精英化满级，无信赖无潜能面板为：" +
-                "\n生命上限：" + operatorData.getMaxHp() + "\t攻击：" + operatorData.getAtk() +
-                "\n防御：" + operatorData.getDef() + "\t法术抵抗：" + operatorData.getMagicResistance() +
-                "\n部署费用：" + operatorData.getCost() + "\t阻挡数：" + operatorData.getBlockCnt() +
-                "\n攻击间隔：" + operatorData.getBaseAttackTime() + "s\t再部署：" + operatorData.getRespawnTime() + "s";
+        String s = "未找到该干员数据";
+        if (operatorData.getAtk() != null) {
+            s = name + "满精英化满级，无信赖无潜能面板为：" +
+                    "\n生命上限：" + operatorData.getMaxHp() + "\t攻击：" + operatorData.getAtk() +
+                    "\n防御：" + operatorData.getDef() + "\t法术抵抗：" + operatorData.getMagicResistance() +
+                    "\n部署费用：" + operatorData.getCost() + "\t阻挡数：" + operatorData.getBlockCnt() +
+                    "\n攻击间隔：" + operatorData.getBaseAttackTime() + "s\t再部署：" + operatorData.getRespawnTime() + "s";
+        }
         return s;
     }
 }
