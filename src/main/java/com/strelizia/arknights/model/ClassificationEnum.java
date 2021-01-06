@@ -23,5 +23,6 @@ public enum ClassificationEnum {
     SeTu,
     GeiNiSeTu,
     GeiNiBiaoQingBao,
-    XiTongXinXi
+    XiTongXinXi,
+    GanYuanMianBan
 }

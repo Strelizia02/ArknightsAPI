@@ -193,6 +193,9 @@ public class ArknightsController {
             case XiTongXinXi:
                 result = new ServerSystemUtil().getSystemInfo();
                 break;
+            case GanYuanMianBan:
+                result = materialService.selectAgentData(s[1]);
+                break;
             default:
                 result = "俺不晓得你在锁啥子";
         }

@@ -4,6 +4,7 @@ import com.strelizia.arknights.dao.MaterialMadeMapper;
 import com.strelizia.arknights.dao.OperatorEvolveMapper;
 import com.strelizia.arknights.dao.SkillMateryMapper;
 import com.strelizia.arknights.model.MaterialInfo;
+import com.strelizia.arknights.model.OperatorData;
 import com.strelizia.arknights.model.SourcePlace;
 import com.strelizia.arknights.service.MaterialService;
 import com.strelizia.arknights.util.DescriptionTransformationUtil;
@@ -116,6 +117,17 @@ public class MaterialServiceImpl implements MaterialService {
                 s = s + p.getSourcePlace() + "--" + rate + "\n";
             }
         }
+        return s;
+    }
+
+    @Override
+    public String selectAgentData(String name) {
+        OperatorData operatorData = operatorEvolveMapper.selectOperatorData(name);
+        String s = name + "满精英化满级，无信赖无潜能面板为：" +
+                "\n生命上限：" + operatorData.getMaxHp() + "\t攻击：" + operatorData.getAtk() +
+                "\n防御：" + operatorData.getDef() + "\t法术抵抗：" + operatorData.getMagicResistance() +
+                "\n部署费用：" + operatorData.getCost() + "\t阻挡数：" + operatorData.getBlockCnt() +
+                "\n攻击间隔：" + operatorData.getBaseAttackTime() + "s\t再部署：" + operatorData.getRespawnTime() + "s";
         return s;
     }
 }

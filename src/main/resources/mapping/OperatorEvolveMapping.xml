@@ -6,6 +6,17 @@
         <result column="use_number" property="materialNum" jdbcType="INTEGER" />
     </resultMap>
 
+    <resultMap id="DataResultMap" type="com.strelizia.arknights.model.OperatorData" >
+        <result column="atk" property="atk" jdbcType="INTEGER" />
+        <result column="def" property="def" jdbcType="INTEGER" />
+        <result column="magicResistance" property="magicResistance" jdbcType="INTEGER" />
+        <result column="maxHp" property="maxHp" jdbcType="INTEGER" />
+        <result column="blockCnt" property="blockCnt" jdbcType="INTEGER" />
+        <result column="cost" property="cost" jdbcType="INTEGER" />
+        <result column="baseAttackTime" property="baseAttackTime" jdbcType="INTEGER" />
+        <result column="respawnTime" property="respawnTime" jdbcType="INTEGER" />
+    </resultMap>
+
     <select id="selectOperatorEvolveByName" resultMap="BaseResultMap">
         SELECT
             b.material_name,
@@ -23,5 +34,21 @@
             WHERE
                 operator_name = #{agent}
         )
+    </select>
+
+    <select id="selectOperatorData" parameterType="java.lang.String" resultMap="DataResultMap">
+        SELECT
+            atk,
+            def,
+            magicResistance,
+            maxHp,
+            blockCnt,
+            cost,
+            baseAttackTime,
+            respawnTime
+        FROM
+            t_operator
+        WHERE
+            operator_name = #{name}
     </select>
 </mapper>

@@ -12,4 +12,6 @@ public interface MaterialService {
     String HeChengLuXian(String name);
 
     String HuoQuTuJing(String name);
+
+    String selectAgentData(String name);
 }

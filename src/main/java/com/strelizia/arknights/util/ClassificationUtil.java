@@ -49,6 +49,9 @@ public class ClassificationUtil {
         map.put("服务器查询",XiTongXinXi);
         map.put("系统信息",XiTongXinXi);
         map.put("服务器信息",XiTongXinXi);
+        map.put("干员面板",GanYuanMianBan);
+        map.put("面板信息",GanYuanMianBan);
+        map.put("面板",GanYuanMianBan);
         return map.get(s);
     }
 }
