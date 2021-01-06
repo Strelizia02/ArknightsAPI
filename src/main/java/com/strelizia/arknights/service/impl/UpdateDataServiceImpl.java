@@ -128,6 +128,10 @@ public class UpdateDataServiceImpl implements UpdateDataService {
 
         JSONObject jsonObj = new JSONObject(json);
         String name = jsonObj.getString("name");
+        //近卫兔兔改个名
+        if (jsonObj.getJSONArray("phases").getJSONObject(0).getString("characterPrefabKey").equals("char_1001_amiya2")){
+            name = "近卫阿米娅";
+        }
         int rarity = jsonObj.getInt("rarity") + 1;
         jsonObj.getString("position");
         boolean isNotObtainable = jsonObj.getBoolean("isNotObtainable");
