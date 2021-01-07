@@ -75,6 +75,21 @@ restart(){
   start
 }
 
+#下载
+download(){
+  echo "文件ID为：$1"
+  fileUrl = `curl -X POST "http://localhost:8888/v1/LuaApiCaller?qq=3022645754&funcname=OidbSvc.0x6d6_2" -H "accept: */*" -H "Content-Type: application/json" -d "{ \"GroupID\": 901158551, \"FileID\": \"$1\"}"`
+  echo "获取到文件Url为${fileUrl}"
+  mv ${JAR_NAME} "${JAR_NAME}.temple"
+  wget -c ${fileUrl} -O ${JAR_NAME}
+}
+
+##更新
+update(){
+  echo "更新json编号为：$1"
+  curl -X GET "http://localhost:8086/Update/AutoUpdate?JsonId=3204855389061" -H "accept: */*"
+}
+
 #根据输入参数，选择执行对应方法，不输入则执行使用说明
 case "$1" in
   "start")
@@ -88,6 +103,12 @@ case "$1" in
     ;;
   "restart")
     restart
+    ;;
+  "download")
+    download $2
+    ;;
+  "update")
+    update $2
     ;;
   *)
     usage

@@ -63,6 +63,11 @@ public class ArknightsController {
                 String keyword = jsonObj.getString("Content").split(" ")[0];
                 //在json结构前添加关键字信息， 使用波浪线分隔，可以将图片内容和文字内容统一进行处理。
                 text = keyword + "~" + text;
+            }else if (text.startsWith("{\"FileID")){
+                JSONObject jsonObj = new JSONObject(text);
+                String fileID = jsonObj.getString("FileID");
+                log.info("获取到文件Id为{}",fileID);
+                sendMsgUtil.CallOPQApiSendMsg(groupId, fileID,2);
             }else {
                 //split("~")，以防图片信息中多余的空格导致的json结构破坏
                 text = text.replace(" ","~");
