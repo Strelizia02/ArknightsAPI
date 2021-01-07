@@ -16,4 +16,7 @@ public interface SkillMateryMapper {
 
     //根据干员名，第几技能和技能等级查询所需材料
     List<MaterialInfo> selectSkillUpByAgentAndIndex(@Param("agent") String agent, @Param("index") Integer index, @Param("level") Integer level);
+
+    //根据干员名，第几技能查询技能名
+    String selectSkillNameByAgentIndex(@Param("agent") String agent, @Param("index") Integer index);
 }

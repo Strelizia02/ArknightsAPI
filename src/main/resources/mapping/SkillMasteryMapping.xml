@@ -54,4 +54,22 @@
             )
         )
     </select>
+
+    <select id="selectSkillNameByAgentIndex" resultType="java.lang.String">
+        SELECT
+            skill_name
+        FROM
+            t_operator_skill
+        WHERE
+            skill_index = #{index}
+        AND operator_id = (
+            SELECT
+                operator_id
+            FROM
+                t_operator
+            WHERE
+                operator_name = #{agent}
+            LIMIT 1
+        )
+    </select>
 </mapper>

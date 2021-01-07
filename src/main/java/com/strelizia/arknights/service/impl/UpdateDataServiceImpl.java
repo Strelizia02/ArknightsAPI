@@ -42,6 +42,8 @@ public class UpdateDataServiceImpl implements UpdateDataService {
 
     private final String enemyIdUrl = "https://andata.somedata.top/data-2020/enemy/";
 
+    private final String mapIdurl = "https://andata.somedata.top/data-2020/map/exData/";
+
     @Autowired
     private UserFoundMapper userFoundMapper;
 

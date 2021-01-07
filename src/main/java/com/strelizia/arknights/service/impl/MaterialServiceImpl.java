@@ -35,25 +35,29 @@ public class MaterialServiceImpl implements MaterialService {
     public String ZhuanJingCaiLiao(String[] args) {
         List<MaterialInfo> materialInfos;
 
+        String skillName = "";
+        Integer level = 0;
         if (args.length == 4){
             //四个参数就是##专精材料-干员—第几技能-专精等级
             Integer index = DescriptionTransformationUtil.ChangeStringToInt(args[2]);
-            Integer level = DescriptionTransformationUtil.ChangeStringToInt(args[3]);
+            level = DescriptionTransformationUtil.ChangeStringToInt(args[3]);
+            skillName = skillMateryMapper.selectSkillNameByAgentIndex(args[1],index);
             materialInfos = skillMateryMapper.selectSkillUpByAgentAndIndex(args[1], index, level);
         }else if (args.length == 3){
             //三个参数就是##专精材料-技能名-专精等级
-            Integer level = DescriptionTransformationUtil.ChangeStringToInt(args[2]);
+            skillName = args[1];
+            level = DescriptionTransformationUtil.ChangeStringToInt(args[2]);
             materialInfos = skillMateryMapper.selectSkillUpBySkillName(args[1], level);
         }else {
             materialInfos = null;
         }
 
-        String s = "";
+        String s = skillName + "专精" + level + "材料为：";
         if (materialInfos ==null||materialInfos.size() == 0){
             s = "找不到查询的内容";
         }else {
             for (MaterialInfo m:materialInfos){
-                s = s + m.getMaterialName() + "*" + m.getMaterialNum() + "个\n";
+                s = s + "\n" + m.getMaterialName() + "*" + m.getMaterialNum() + "个";
             }
         }
         return s;
@@ -62,12 +66,12 @@ public class MaterialServiceImpl implements MaterialService {
     @Override
     public String JingYingHuaCaiLiao(String agent, Integer level) {
         List<MaterialInfo> materialInfos = operatorEvolveMapper.selectOperatorEvolveByName(agent, level);
-        String s = "";
+        String s = agent + "干员精英" + level + "需要的材料为：";
         if (materialInfos.size() == 0){
             s = "找不到查询的材料";
         }else {
             for (MaterialInfo m:materialInfos){
-                s = s + m.getMaterialName() + "*" + m.getMaterialNum() + "个\n";
+                s = s + "\n" + m.getMaterialName() + "*" + m.getMaterialNum() + "个";
             }
         }
         return s;
@@ -76,12 +80,12 @@ public class MaterialServiceImpl implements MaterialService {
     @Override
     public String HeChengLuXian(String name) {
         List<MaterialInfo> materialInfos = materialMadeMapper.selectMadeMater(name);
-        String s = "";
+        String s = name + "的合成路线为：";
         if (materialInfos.size() == 0){
             s = "找不到该材料的合成路线";
         }else {
             for (MaterialInfo m:materialInfos){
-                s = s + m.getMaterialName() + "*" + m.getMaterialNum() + "个\n";
+                s = s + "\n" + m.getMaterialName() + "*" + m.getMaterialNum() + "个";
             }
         }
         return s;
@@ -90,7 +94,7 @@ public class MaterialServiceImpl implements MaterialService {
     @Override
     public String HuoQuTuJing(String name) {
         List<SourcePlace> sourcePlaces = materialMadeMapper.selectMaterSource(name);
-        String s = "";
+        String s = name + "的获取途径为：";
         if (sourcePlaces.size() == 0){
             s = "找不到该材料的获取关卡";
         }else {
@@ -114,7 +118,7 @@ public class MaterialServiceImpl implements MaterialService {
                         rate = "固定掉落";
                         break;
                 }
-                s = s + p.getSourcePlace() + "--" + rate + "\n";
+                s = s + "\n" + p.getSourcePlace() + "--" + rate + "";
             }
         }
         return s;
