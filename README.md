@@ -44,7 +44,37 @@
 
 qq和name两个字段推荐从a_user_found中复制，默认权限都为0(无权限)，修改为1以后即可获取相应权限。
 
+## run.sh脚本功能：
 
+1.启动项目
+
+```shell
+./run.sh start
+```
+
+2.停止项目
+
+```shell
+./run.sh stop
+```
+
+3.重启项目
+
+```shell
+./run.sh restart
+```
+
+4.下载jar
+
+```shell
+./run.sh download fileId
+```
+
+5.更新数据
+
+```shell
+./run.sh update
+```
 
 ## 0.菜单：
 
