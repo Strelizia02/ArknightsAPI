@@ -12,7 +12,7 @@ PID=$API_NAME\.pid
 
 #使用说明，用来提示输入参数
 usage() {
-    echo "Usage: sh 执行脚本.sh [start|stop|restart|status]"
+    echo "Usage: sh 执行脚本.sh [start|stop|restart|status|download fileId|update jsonId]"
     exit 1
 }
 
