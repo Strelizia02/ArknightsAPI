@@ -1,6 +1,7 @@
 package com.strelizia.arknights.dao;
 
 import com.strelizia.arknights.model.*;
+import org.apache.ibatis.annotations.Param;
 
 /**
  * @author wangzy
@@ -31,4 +32,17 @@ public interface UpdateMapper {
 
     //更新干员面板数据
     Integer updateOperatorData(OperatorData operatorData);
+
+    //更新地图数据
+    Integer updateStageData(MapJson mapJson);
+
+    //更新章节数据
+    Integer updateZoneData(ZoneJson zoneJson);
+
+    //更新材料数据
+    Integer updateItemData(@Param("id") Integer id, @Param("name") String name);
+
+    //更新掉落数据
+    Integer updateMatrixData(@Param("stageId") String stageId, @Param("itemId") Integer itemId
+            , @Param("quantity") Integer quantity, @Param("times") Integer times);
 }

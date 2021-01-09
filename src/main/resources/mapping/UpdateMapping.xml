@@ -67,6 +67,42 @@
             #{skillName})
     </insert>
 
+    <insert id="updateStageData">
+        INSERT INTO t_stage
+        (stage_id,zone_id,code,ap_cost)
+        VALUES
+        (
+            #{stageId},#{zoneId},#{code},#{apCost}
+        )
+    </insert>
+
+    <insert id="updateZoneData">
+        INSERT INTO t_zone
+            (zone_id,zone_name)
+        VALUES
+        (
+            #{zoneId},#{zoneName}
+        )
+    </insert>
+
+    <insert id="updateItemData">
+        INSERT INTO t_material
+            (material_id,material_name)
+        VALUES
+        (
+            #{id},#{name}
+        )
+    </insert>
+
+    <insert id="updateMatrixData">
+        INSERT INTO t_matrix
+            (stage_id,item_id,quantity,times,rate)
+        VALUES
+        (
+            #{stageId},#{itemId},#{quantity},#{times},(#{quantity}/#{times}*100)
+        )
+    </insert>
+
     <insert id="insertSkillMater" parameterType="com.strelizia.arknights.model.SkillMaterInfo">
         INSERT INTO t_operator_skill_mastery_costs (
             skill_id,mastery_level,use_material_id,use_number
@@ -99,5 +135,10 @@
         TRUNCATE TABLE t_operator_skill;
         DELETE FROM t_operator_skill_mastery_costs;
         TRUNCATE TABLE t_operator_skill_mastery_costs;
+        DELETE FROM t_stage;
+        DELETE FROM t_zone;
+        DELETE FROM t_material;
+        DELETE FROM t_matrix;
+        TRUNCATE TABLE t_matrix;
     </delete>
 </mapper>

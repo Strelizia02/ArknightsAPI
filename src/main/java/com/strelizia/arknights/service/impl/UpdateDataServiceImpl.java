@@ -9,10 +9,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpEntity;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpMethod;
-import org.springframework.http.MediaType;
+import org.springframework.http.*;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
@@ -32,17 +29,35 @@ import java.util.Map;
 @Slf4j
 public class UpdateDataServiceImpl implements UpdateDataService {
 
+    //干员列表
     private final String operatorListUrl = "https://andata.somedata.top/data-2020/char/list/";
 
+    //敌人列表
     private final String enemyListUrl = "https://andata.somedata.top/data-2020/lists/enemy/";
 
+    //干员ID信息
     private final String operatorIdUrl = "https://andata.somedata.top/data-2020/char/data/";
 
+    //技能ID信息
     private final String skillIdUrl = "https://andata.somedata.top/data-2020/skills/";
 
+    //敌人ID信息
     private final String enemyIdUrl = "https://andata.somedata.top/data-2020/enemy/";
 
+    //地图ID信息
     private final String mapIdurl = "https://andata.somedata.top/data-2020/map/exData/";
+
+    //材料列表
+    private final String itemListUrl = "https://penguin-stats.cn/PenguinStats/api/v2/items";
+
+    //地图列表
+    private final String mapListUrl = "https://penguin-stats.cn/PenguinStats/api/v2/stages?server=CN";
+
+    //章节列表
+    private final String zoneListUrl = "https://penguin-stats.cn/PenguinStats/api/v2/zones";
+
+    //地图掉落关联表
+    private final String matrixListUrl = "https://penguin-stats.cn/PenguinStats/api/v2/_private/result/matrix/CN/global";
 
     @Autowired
     private UserFoundMapper userFoundMapper;
@@ -69,13 +84,15 @@ public class UpdateDataServiceImpl implements UpdateDataService {
             sendMsgUtil.CallOPQApiSendMsg(groupId,s,2);
         }
 
-        Integer operatorSize = updateAllOperator(JsonId);
+//        Integer operatorSize = updateAllOperator(JsonId);
+        updateMapAndItem();
 
         for (Long groupId:groups){
             String s = "游戏数据更新完成\n--" + sdf.format(new Date());
             sendMsgUtil.CallOPQApiSendMsg(groupId,s,2);
         }
-        return operatorSize;
+//        return operatorSize;
+        return 0;
     }
 
     public Integer updateAllOperator(String JsonId){
@@ -102,6 +119,67 @@ public class UpdateDataServiceImpl implements UpdateDataService {
         String allEnemy = getJsonStringFromUrl(enemyListUrl);
         JSONArray json = new JSONArray(allEnemy);
         return 0;
+    }
+
+    /**
+     * 更新地图、材料基础信息
+     * @return
+     */
+    public Integer updateMapAndItem(){
+        log.info("从企鹅物流中拉取地图、材料数据");
+        MapJson[] maps = restTemplate
+                .getForObject(mapListUrl, MapJson[].class);
+        for (int i = 0; i < maps.length; i++){
+            updateMapper.updateStageData(maps[i]);
+        }
+
+        ZoneJson[] zones = restTemplate.getForObject(zoneListUrl,ZoneJson[].class);
+        for (int i = 0; i < zones.length; i++){
+            updateMapper.updateZoneData(zones[i]);
+        }
+
+        ItemJson[] items = restTemplate.getForObject(itemListUrl,ItemJson[].class);
+        for (int i = 0; i < items.length; i++){
+            try {
+                Integer id = Integer.parseInt(items[i].getItemId());
+                String name = items[i].getName();
+                updateMapper.updateItemData(id, name);
+            }catch (NumberFormatException e){
+                //忽略家具材料
+            }
+        }
+        //企鹅物流数据缺失双芯片数据，单独插入
+        Integer[] DoubleId = {3213,3223,3233,3243,3253,3263,3273,3283};
+        String[] DoubleName = {"先锋双芯片", "近卫双芯片", "重装双芯片", "狙击双芯片", "术师双芯片", "医疗双芯片", "辅助双芯片", "特种双芯片"};
+        for(int i = 0; i < 8; i++){
+            updateMapper.updateItemData(DoubleId[i],DoubleName[i]);
+        }
+
+        String matrixJsonStr = restTemplate.getForObject(matrixListUrl,String.class);
+        JSONArray matrixJsons = new JSONObject(matrixJsonStr).getJSONArray("matrix");
+        for (int i = 0; i < matrixJsons.length(); i++){
+            JSONObject matrix = matrixJsons.getJSONObject(i);
+            try {
+                String stageId = matrix.getString("stageId");
+                Integer itemId = Integer.parseInt(matrix.getString("itemId"));
+                Integer quantity = matrix.getInt("quantity");
+                Integer times = matrix.getInt("times");
+                updateMapper.updateMatrixData(stageId, itemId, quantity, times);
+            }catch (NumberFormatException e){
+                //忽略家具材料
+            }
+        }
+
+        return 0;
+    }
+
+    public static void main(String[] args) {
+        RestTemplate restTemplate = new RestTemplate();
+        MapJson[] maps = restTemplate
+                .getForObject("https://penguin-stats.cn/PenguinStats/api/v2/stages?server=CN", MapJson[].class);
+        for (int i=0;i<10;i++){
+            System.out.println(maps[i].getStageId());
+        }
     }
 
     //发送url的get请求获取结果json字符串
