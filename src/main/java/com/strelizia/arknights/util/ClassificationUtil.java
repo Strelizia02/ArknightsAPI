@@ -42,6 +42,7 @@ public class ClassificationUtil {
         map.put("获取途径",CaiLiaoHuoQu);
         map.put("材料关卡",CaiLiaoHuoQu);
         map.put("材料获取",CaiLiaoHuoQu);
+        map.put("材料掉落",CaiLiaoHuoQu);
         map.put("公招截图",GongZhaoJieTu);
         map.put("公开招募",GongKaiZhaoMu);
         map.put("涩图",SeTu);
