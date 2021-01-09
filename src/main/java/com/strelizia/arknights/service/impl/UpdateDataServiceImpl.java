@@ -84,15 +84,19 @@ public class UpdateDataServiceImpl implements UpdateDataService {
             sendMsgUtil.CallOPQApiSendMsg(groupId,s,2);
         }
 
-//        Integer operatorSize = updateAllOperator(JsonId);
+        Integer operatorSize = updateAllOperator(JsonId);
+        for (Long groupId:groups){
+            String s = "正在从企鹅物流搬运材料数据ing\n--" +
+                    sdf.format(new Date());
+            sendMsgUtil.CallOPQApiSendMsg(groupId,s,2);
+        }
         updateMapAndItem();
 
         for (Long groupId:groups){
             String s = "游戏数据更新完成\n--" + sdf.format(new Date());
             sendMsgUtil.CallOPQApiSendMsg(groupId,s,2);
         }
-//        return operatorSize;
-        return 0;
+        return operatorSize;
     }
 
     public Integer updateAllOperator(String JsonId){
@@ -157,7 +161,8 @@ public class UpdateDataServiceImpl implements UpdateDataService {
 
         String matrixJsonStr = restTemplate.getForObject(matrixListUrl,String.class);
         JSONArray matrixJsons = new JSONObject(matrixJsonStr).getJSONArray("matrix");
-        for (int i = 0; i < matrixJsons.length(); i++){
+        int length = matrixJsons.length();
+        for (int i = 0; i < length; i++){
             JSONObject matrix = matrixJsons.getJSONObject(i);
             try {
                 String stageId = matrix.getString("stageId");
@@ -169,17 +174,7 @@ public class UpdateDataServiceImpl implements UpdateDataService {
                 //忽略家具材料
             }
         }
-
         return 0;
-    }
-
-    public static void main(String[] args) {
-        RestTemplate restTemplate = new RestTemplate();
-        MapJson[] maps = restTemplate
-                .getForObject("https://penguin-stats.cn/PenguinStats/api/v2/stages?server=CN", MapJson[].class);
-        for (int i=0;i<10;i++){
-            System.out.println(maps[i].getStageId());
-        }
     }
 
     //发送url的get请求获取结果json字符串
@@ -229,7 +224,6 @@ public class UpdateDataServiceImpl implements UpdateDataService {
         operatorInfo.setOperator_class(operatorClass.get(jsonObj.getString("profession")));
 
         updateMapper.insertOperator(operatorInfo);
-        log.info("更新{}干员基础信息",name);
         Integer operatorId = updateMapper.selectOperatorIdByName(name);
 
         JSONArray phases = jsonObj.getJSONArray("phases");
@@ -249,7 +243,6 @@ public class UpdateDataServiceImpl implements UpdateDataService {
             operatorData.setBaseAttackTime(panelMax.getInt("baseAttackTime"));
             operatorData.setRespawnTime(panelMax.getInt("respawnTime"));
             updateMapper.updateOperatorData(operatorData);
-            log.info("更新{}干员面板信息",name);
 
             //封装干员精英化花费
             for (int i = 1; i < length; i++) {
@@ -268,7 +261,6 @@ public class UpdateDataServiceImpl implements UpdateDataService {
 
                     }
                 }
-                log.info("更新{}干员精英{}信息", name, i);
             }
 
             //封装干员技能
@@ -292,7 +284,6 @@ public class UpdateDataServiceImpl implements UpdateDataService {
                     ;
                     operatorSkillInfo.setSkillName(skillName);
                     updateMapper.insertOperatorSkill(operatorSkillInfo);
-                    log.info("更新{}干员{}技能{}基础信息", name, i + 1, skillName);
                     Integer skillId = updateMapper.selectSkillIdByName(skillName);
                     //获取技能等级列表(专一专二专三)
                     JSONArray levelUpCostCond = skills.getJSONObject(i).getJSONArray("levelUpCostCond");
@@ -310,7 +301,6 @@ public class UpdateDataServiceImpl implements UpdateDataService {
                                 updateMapper.insertSkillMater(skillMaterInfo);
                             }
                         }
-                        log.info("更新{}干员{}技能专精{}信息", name, i + 1, j + 1);
                     }
                 }
             }
