@@ -7,8 +7,22 @@
     </resultMap>
 
     <resultMap id="SourceResultMap" type="com.strelizia.arknights.model.SourcePlace" >
-        <result column="source_place" property="sourcePlace" jdbcType="VARCHAR" />
-        <result column="source_rate" property="sourceRate" jdbcType="INTEGER" />
+        <result column="zone_name" property="zone_name" jdbcType="VARCHAR" />
+        <result column="code" property="code" jdbcType="VARCHAR" />
+        <result column="rate" property="rate" jdbcType="DOUBLE" />
+    </resultMap>
+
+    <resultMap id="MatrixResultMap" type="com.strelizia.arknights.model.MapMatrixInfo" >
+        <result column="material_name" property="material_name" jdbcType="VARCHAR" />
+        <result column="rate" property="rate" jdbcType="DOUBLE" />
+        <result column="quantity" property="quantity" jdbcType="INTEGER" />
+        <result column="times" property="times" jdbcType="INTEGER" />
+    </resultMap>
+
+    <resultMap id="MapResultMap" type="com.strelizia.arknights.model.MapCostInfo" >
+        <result column="zone_name" property="zoneName" jdbcType="VARCHAR" />
+        <result column="code" property="code" jdbcType="VARCHAR" />
+        <result column="ap_cost" property="apCost" jdbcType="INTEGER" />
     </resultMap>
 
     <select id="selectMadeMater" parameterType="java.lang.String" resultMap="BaseResultMap">
@@ -30,11 +44,73 @@
 
     <select id="selectMaterSource" parameterType="java.lang.String" resultMap="SourceResultMap">
         SELECT
-            a.source_place,a.source_rate
+            z.zone_name,
+            s.code,
+            x.rate
         FROM
-            t_material_source a
-        LEFT JOIN t_material b ON a.material_id = b.material_id
+            t_matrix x
+        LEFT JOIN t_stage s ON x.stage_id = s.stage_id
+        LEFT JOIN t_material m ON x.item_id = m.material_id
+        LEFT JOIN t_zone z ON s.zone_id = z.zone_id
         WHERE
-            b.material_name = #{name}
+            LEFT(z.zone_id,4) = 'main' AND
+            m.material_name = #{name}
+        ORDER BY
+            rate DESC
+        LIMIT 10
+    </select>
+
+    <select id="selectMaterSourceAllStage" parameterType="java.lang.String" resultMap="SourceResultMap">
+        SELECT
+            z.zone_name,
+            s.code,
+            x.rate
+        FROM
+            t_matrix x
+        LEFT JOIN t_stage s ON x.stage_id = s.stage_id
+        LEFT JOIN t_material m ON x.item_id = m.material_id
+        LEFT JOIN t_zone z ON s.zone_id = z.zone_id
+        WHERE
+            m.material_name = #{name}
+        ORDER BY
+            rate DESC
+        LIMIT 10
+    </select>
+
+    <select id="selectMatrixByMap" parameterType="java.lang.String" resultMap="MatrixResultMap">
+        SELECT
+            m.material_name,
+            x.rate,
+            x.quantity,
+            x.times
+        FROM
+            t_matrix x
+        LEFT JOIN t_stage s ON x.stage_id = s.stage_id
+        LEFT JOIN t_material m ON x.item_id = m.material_id
+        LEFT JOIN t_zone z ON s.zone_id = z.zone_id
+        WHERE
+            s.code = #{MapId}
+        ORDER BY x.rate DESC
+    </select>
+
+    <select id="selectAllZone" resultType="java.lang.String">
+        SELECT zone_name from t_zone
+    </select>
+
+    <select id="selectAllMap" resultMap="MapResultMap">
+        SELECT
+            z.zone_name,s.code,s.ap_cost
+        FROM
+            t_stage s
+        LEFT JOIN t_zone z ON s.zone_id = z.zone_id
+    </select>
+
+    <select id="selectMapByZone" parameterType="java.lang.String" resultMap="MapResultMap">
+        SELECT
+            z.zone_name,s.`code`,s.ap_cost
+        FROM
+            t_stage s
+        LEFT JOIN t_zone z ON s.zone_id = z.zone_id
+        WHERE z.zone_name = #{zoneName}
     </select>
 </mapper>

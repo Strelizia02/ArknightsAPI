@@ -113,6 +113,9 @@ public class ArknightsController {
                         "11.涩图功能：{##涩图}\n" +
                         "12.上传涩图：{##给你涩图[图片]}或私聊{[图片]}\n" +
                         "13.干员面板：{##干员面板 干员名}\n" +
+                        "14.章节列表：{##章节列表}\n" +
+                        "15.地图列表：{##地图列表 章节名}\n" +
+                        "16.地图掉落：{##地图掉落 地图ID}\n" +
                         "过大的涩图将导致回复缓慢，请不要上传不能过审的图片";
                 break;
             case XiangXiCaiDan:
@@ -140,7 +143,8 @@ public class ArknightsController {
                                 "\t例：##合成路线 D32钢\n" +
                                 "8.查询材料掉落关卡：\n" +
                                 "\t使用方法：输入{##材料获取 材料名}\n" +
-                                "\t例：##材料获取 研磨石\n" +
+                                "\t例1：##材料获取 研磨石\n" +
+                                "\t例2：##材料获取 研磨石-all\n" +
                                 "9.公招结果查询：\n" +
                                 "\t使用方法：输入{##公招截图 [图片]}，自动识图并返回结果\n" +
                                 "10.公开招募tag组合查询：\n" +
@@ -155,6 +159,14 @@ public class ArknightsController {
                                 "13.干员面板：\n" +
                                 "\t使用方法：输入{##干员面板 干员名}\n" +
                                 "\t例：##干员面板 伊芙利特\n" +
+                                "14.章节列表：\n" +
+                                "\t使用方法：输入{##章节列表}\n" +
+                                "15.地图列表：\n" +
+                                "\t使用方法：{##地图列表 章节名}\n" +
+                                "\t例2：##地图列表 骑兵与猎人\n" +
+                                "16.地图掉落：\n" +
+                                "\t使用方法：{##地图掉落 地图ID}" +
+                                "\t例：##地图掉落 1-7" +
                                 "注：本项目需严格按照格式输入，自然语言处理功能将在后期优化";
                 break;
             case ShiLian:
@@ -205,6 +217,20 @@ public class ArknightsController {
             case GanYuanMianBan:
                 result = materialService.selectAgentData(s[1]);
                 break;
+            case DiTuDiaoLuo:
+                result = materialService.selectMaterByMap(s[1]);
+                break;
+            case ZhangJieLieBiao:
+                result = materialService.selectZoneList();
+                break;
+            case DiTuLieBiao:
+                if (s[1] == null) {
+                    result = materialService.selectMapList();
+                    break;
+                }else {
+                    result = materialService.selectMapList(s[1]);
+                    break;
+                }
             default:
                 result = "俺不晓得你在锁啥子";
         }

@@ -24,5 +24,8 @@ public enum ClassificationEnum {
     GeiNiSeTu,
     GeiNiBiaoQingBao,
     XiTongXinXi,
-    GanYuanMianBan
+    GanYuanMianBan,
+    DiTuDiaoLuo,
+    DiTuLieBiao,
+    ZhangJieLieBiao
 }

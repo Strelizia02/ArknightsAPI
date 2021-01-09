@@ -6,22 +6,31 @@ package com.strelizia.arknights.model;
  * 材料获取途径信息
  **/
 public class SourcePlace {
-    private String sourcePlace;
-    private Integer sourceRate;
+    private String zone_name;
+    private String code;
+    private Double rate;
 
-    public String getSourcePlace() {
-        return sourcePlace;
+    public String getZone_name() {
+        return zone_name;
     }
 
-    public void setSourcePlace(String sourcePlace) {
-        this.sourcePlace = sourcePlace;
+    public void setZone_name(String zone_name) {
+        this.zone_name = zone_name;
     }
 
-    public Integer getSourceRate() {
-        return sourceRate;
+    public String getCode() {
+        return code;
     }
 
-    public void setSourceRate(Integer sourceRate) {
-        this.sourceRate = sourceRate;
+    public void setCode(String code) {
+        this.code = code;
+    }
+
+    public Double getRate() {
+        return rate;
+    }
+
+    public void setRate(Double rate) {
+        this.rate = rate;
     }
 }

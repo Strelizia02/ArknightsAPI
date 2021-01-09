@@ -52,6 +52,14 @@ public class ClassificationUtil {
         map.put("干员面板",GanYuanMianBan);
         map.put("面板信息",GanYuanMianBan);
         map.put("面板",GanYuanMianBan);
+        map.put("地图掉落",DiTuDiaoLuo);
+        map.put("地图材料",DiTuDiaoLuo);
+        map.put("关卡掉落",DiTuDiaoLuo);
+        map.put("关卡材料",DiTuDiaoLuo);
+        map.put("地图列表",DiTuLieBiao);
+        map.put("全部地图",DiTuLieBiao);
+        map.put("章节列表",ZhangJieLieBiao);
+        map.put("全部章节",ZhangJieLieBiao);
         return map.get(s);
     }
 }
