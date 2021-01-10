@@ -3,6 +3,7 @@ package com.strelizia.arknights.util;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.strelizia.arknights.model.SendMsgRespInfo;
+import com.strelizia.arknights.model.Text;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -14,6 +15,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
 
 import javax.annotation.Resource;
+import java.awt.*;
 import java.util.*;
 
 /**
@@ -95,8 +97,21 @@ public class SendMsgUtil {
     }
 
     public void CallOPQApiSendMsg(Long groupId, String s, Integer sendToType){
-        poolTaskExecutor.execute(() -> sendTextMsgToGroup(restTemplate, groupId, s,
-                "http://" + OPQUrl + ":8888" + sendTextMsgApi + "?qq=" +  loginQq + "&funcname=SendMsg",sendToType));
+        poolTaskExecutor.execute(() -> {
+            try {
+                Text text = new Text(s);
+                if (text.getMaxRow().length() > 12 && text.getRowsNum() > 3) {
+                    //文字太长就发图片
+                    sendTextImgToGroup(restTemplate, groupId, null, SendMsgUtil.picBase64Buf, TextToImage.createImage(s, new Font("楷体", Font.PLAIN, 24)),
+                            "http://" + OPQUrl + ":8888" + sendTextMsgApi + "?qq=" +  loginQq + "&funcname=SendMsg",sendToType);
+                } else {
+                    sendTextMsgToGroup(restTemplate, groupId, s,
+                            "http://" + OPQUrl + ":8888" + sendTextMsgApi + "?qq=" + loginQq + "&funcname=SendMsg", sendToType);
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            });
         log.info("发送消息{}成功",s);
     }
 

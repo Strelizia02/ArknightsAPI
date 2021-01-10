@@ -11,17 +11,19 @@ public class FormatStringUtil {
     /**
      * 设置字符长度  不足者 右侧添加 指定字符
      * @param str1 元字符
-     * @param lenth 指定长度
-     * @param st2 指定字符
+     * @param length 指定长度
      * @return
      * @throws Exception
      */
-    public static String strAppendStr(String str1, int lenth, String st2) throws Exception {
+    public static String strAppendStr(String str1, int length) throws Exception {
+        if (str1 == null||str1.equals("")){
+            str1 = " ";
+        }
         StringBuilder strb1 = new StringBuilder(str1);
-        lenth = lenth - getChineseLength(str1, "utf-8");
-        while (lenth >= 0) {
-            lenth--;
-            strb1.append(st2);
+        length = length - getChineseLength(str1, "utf-8");
+        while (length >= 0) {
+            length--;
+            strb1.append(" ");
         }
         return strb1.toString();
     }

@@ -138,12 +138,12 @@ public class ImageUtil {
      * @param image
      * @return
      */
-    public String encode(byte[] image){
+    public static String encode(byte[] image){
         BASE64Encoder decoder = new BASE64Encoder();
         return replaceEnter(decoder.encode(image));
     }
 
-    public String replaceEnter(String str){
+    public static String replaceEnter(String str){
         String reg ="[\n-\r]";
         Pattern p = Pattern.compile(reg);
         Matcher m = p.matcher(str);
