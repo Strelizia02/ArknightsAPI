@@ -39,13 +39,13 @@ public class AgentServiceImpl implements AgentService {
 
     @Override
     public String chouKa(String pool,Long qq,String name,Long groupId) {
-        String s = name + "抽取" + foundLimit(1, pool, qq, name, groupId);
+        String s = name + "\n抽取" + foundLimit(1, pool, qq, name, groupId);
         return s;
     }
 
     @Override
     public String shiLian(String pool,Long qq,String name,Long groupId) {
-        String s = name + "抽取" + foundLimit(10, pool, qq, name, groupId);
+        String s = name + "\n抽取" + foundLimit(10, pool, qq, name, groupId);
         return s;
     }
 
