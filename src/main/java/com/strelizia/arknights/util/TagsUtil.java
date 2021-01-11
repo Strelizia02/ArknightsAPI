@@ -1,6 +1,7 @@
 package com.strelizia.arknights.util;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * @author wangzy

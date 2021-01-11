@@ -10,9 +10,7 @@ import java.awt.geom.AffineTransform;
 import java.awt.geom.Rectangle2D;
 import java.awt.image.BufferedImage;
 import java.io.ByteArrayOutputStream;
-import java.io.File;
 import java.io.IOException;
-import java.nio.file.Paths;
 
 import static com.strelizia.arknights.util.ImageUtil.replaceEnter;
 
