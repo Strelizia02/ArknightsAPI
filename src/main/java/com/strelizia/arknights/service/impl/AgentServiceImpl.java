@@ -181,7 +181,7 @@ public class AgentServiceImpl implements AgentService {
             int i = random.nextInt(agentList.size());
             String levelStar = FormatStringUtil.FormatStar(star);
             try {
-                s = s + " " + agentList.get(i).getName() + " " + levelStar + "\n";
+                s = s + " " + agentList.get(i).getName() + "\t" + levelStar + "\n";
             } catch (Exception e) {
                 e.printStackTrace();
             }
