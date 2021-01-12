@@ -224,13 +224,8 @@ public class ArknightsController {
                 result = materialService.selectZoneList();
                 break;
             case DiTuLieBiao:
-                if (s[1] == null) {
-                    result = materialService.selectMapList();
-                    break;
-                }else {
-                    result = materialService.selectMapList(s[1]);
-                    break;
-                }
+                result = materialService.selectMapList(s[1]);
+                break;
             default:
                 result = "俺不晓得你在锁啥子";
         }

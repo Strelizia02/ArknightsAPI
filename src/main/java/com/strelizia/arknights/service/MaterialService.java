@@ -24,7 +24,6 @@ public interface MaterialService {
     String selectMaterByMap(String MapId);
 
     //查询全部地图列表
-    String selectMapList();
     String selectMapList(String zoneName);
 
     //查询全部章节列表

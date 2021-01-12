@@ -154,16 +154,6 @@ public class MaterialServiceImpl implements MaterialService {
     }
 
     @Override
-    public String selectMapList() {
-        List<MapCostInfo> mapCostInfos = materialMadeMapper.selectAllMap();
-        String s = "地图ID以及理智花费为：";
-        for (MapCostInfo mapInfo:mapCostInfos){
-            s = s + "\n" + mapInfo.getZoneName() + "\t地图ID：" + mapInfo.getCode() + "\t理智消耗：" + mapInfo.getApCost();
-        }
-        return s;
-    }
-
-    @Override
     public String selectMapList(String zoneName) {
         List<MapCostInfo> mapCostInfos = materialMadeMapper.selectMapByZone(zoneName);
         String s = "地图ID以及理智花费为：";
