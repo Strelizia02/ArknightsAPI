@@ -27,8 +27,8 @@
             SELECT
                 ROUND(
                     RAND() * (
-                        (SELECT MAX(id) FROM a_image_url) - (SELECT MIN(id) FROM a_image_url)
-                    ) + (SELECT MIN(id) FROM a_image_url)
+                        (SELECT MAX(id) FROM a_image_url) - (SELECT MIN(id) FROM a_image_url) + 1
+                    ) + (SELECT MIN(id) FROM a_image_url) - 1
                 ) AS id
         ) AS t2
         WHERE
