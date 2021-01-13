@@ -78,11 +78,18 @@ public class ClassificationUtil {
         map.put("地图材料",DiTuDiaoLuo);
         map.put("关卡掉落",DiTuDiaoLuo);
         map.put("关卡材料",DiTuDiaoLuo);
+
         map.put("地图列表",DiTuLieBiao);
         map.put("全部地图",DiTuLieBiao);
 
         map.put("章节列表",ZhangJieLieBiao);
         map.put("全部章节",ZhangJieLieBiao);
+
+        map.put("动态查询",DongTaiChaXun);
+        map.put("B站动态",DongTaiChaXun);
+        map.put("b站动态",DongTaiChaXun);
+
+        map.put("关注列表",GuanZhuLieBiao);
         return map.get(s);
     }
 }

@@ -27,5 +27,7 @@ public enum ClassificationEnum {
     GanYuanMianBan,
     DiTuDiaoLuo,
     DiTuLieBiao,
-    ZhangJieLieBiao
+    ZhangJieLieBiao,
+    DongTaiChaXun,
+    GuanZhuLieBiao
 }

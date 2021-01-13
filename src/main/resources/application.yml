@@ -14,6 +14,7 @@ scheduled:
 # 每天4点抽卡次数清空
   cleanJob: 0 0 4 */1 * ?
   countJob: 0 0 20 */1 * ?
+  biliJob: 0 */5 * * * ?
 userConfig:
 # 每日抽卡的限制次数
   limit: 20

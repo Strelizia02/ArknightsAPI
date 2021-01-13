@@ -40,6 +40,9 @@ public class ArknightsController {
     @Autowired
     private SeTuService seTuService;
 
+    @Autowired
+    private BiliListeningService biliListeningService;
+
     /**
      * 消息处理总控制器，用于接收消息，并处理分流到不同的service
      */
@@ -116,6 +119,8 @@ public class ArknightsController {
                         "14.章节列表：{##章节列表}\n" +
                         "15.地图列表：{##地图列表 章节名}\n" +
                         "16.地图掉落：{##地图掉落 地图ID}\n" +
+                        "17.动态查询：{##动态查询 用户昵称 编号}\n" +
+                        "18.关注列表：{##关注列表}\n" +
                         "过大的涩图将导致回复缓慢，请不要上传不能过审的图片";
                 break;
             case XiangXiCaiDan:
@@ -167,6 +172,11 @@ public class ArknightsController {
                                 "16.地图掉落：\n" +
                                 "\t使用方法：{##地图掉落 地图ID}\n" +
                                 "\t例：##地图掉落 1-7\n" +
+                                "17.动态查询：\n" +
+                                "\t使用方法：{##动态查询 用户昵称 编号}\n" +
+                                "\t例：##动态查询 明日方舟 1\n" +
+                                "18.关注列表：\n" +
+                                "\t使用方法：{##关注列表}\n" +
                                 "注：本项目需严格按照格式输入，自然语言处理功能将在后期优化";
                 break;
             case ShiLian:
@@ -225,6 +235,13 @@ public class ArknightsController {
                 break;
             case DiTuLieBiao:
                 result = materialService.selectMapList(s[1]);
+                break;
+            case DongTaiChaXun:
+                biliListeningService.getDynamic(groupId, s[1], Integer.parseInt(s[2]));
+                result = "";
+                break;
+            case GuanZhuLieBiao:
+                result = biliListeningService.getBiliList();
                 break;
             default:
                 result = "俺不晓得你在锁啥子";

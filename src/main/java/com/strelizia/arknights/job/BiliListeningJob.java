@@ -1,6 +1,7 @@
 package com.strelizia.arknights.job;
 
-import com.strelizia.arknights.service.DailyCountService;
+import com.strelizia.arknights.service.BiliListeningService;
+import com.strelizia.arknights.util.SendMsgUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Async;
@@ -15,16 +16,15 @@ import java.util.Date;
  **/
 @Component
 @Slf4j
-public class DailyCountJob {
+public class BiliListeningJob {
+
     @Autowired
-    private DailyCountService dailyCountService;
+    private BiliListeningService biliListeningService;
 
     //每天晚上8点发送当日统计结果
-    @Scheduled(cron = "${scheduled.countJob}")
+    @Scheduled(cron = "${scheduled.biliJob}")
     @Async
     public void dailyCountJob(){
-        dailyCountService.SendDailyCount();
-        log.info("{}每日日报发送成功",new Date());
+        boolean b = biliListeningService.getDynamicList();
     }
-
 }
