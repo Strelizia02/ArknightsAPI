@@ -86,10 +86,16 @@ public class ClassificationUtil {
         map.put("全部章节",ZhangJieLieBiao);
 
         map.put("动态查询",DongTaiChaXun);
+        map.put("查询动态",DongTaiChaXun);
         map.put("B站动态",DongTaiChaXun);
         map.put("b站动态",DongTaiChaXun);
 
+        map.put("最新动态",ZuiXinDongTai);
+
         map.put("关注列表",GuanZhuLieBiao);
+
+        map.put("最新投稿",ZuiXinTouGao);
+        map.put("最新视频",ZuiXinTouGao);
         return map.get(s);
     }
 }

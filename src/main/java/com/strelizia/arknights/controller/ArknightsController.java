@@ -121,6 +121,7 @@ public class ArknightsController {
                         "16.地图掉落：{##地图掉落 地图ID}\n" +
                         "17.动态查询：{##动态查询 用户昵称 编号}\n" +
                         "18.关注列表：{##关注列表}\n" +
+                        "19.最新投稿：{##最新投稿 用户昵称}\n" +
                         "过大的涩图将导致回复缓慢，请不要上传不能过审的图片";
                 break;
             case XiangXiCaiDan:
@@ -177,6 +178,8 @@ public class ArknightsController {
                                 "\t例：##动态查询 明日方舟 1\n" +
                                 "18.关注列表：\n" +
                                 "\t使用方法：{##关注列表}\n" +
+                                "19.最新投稿：\n" +
+                                "\t使用方法：{##最新投稿 用户昵称}\n" +
                                 "注：本项目需严格按照格式输入，自然语言处理功能将在后期优化";
                 break;
             case ShiLian:
@@ -242,6 +245,13 @@ public class ArknightsController {
                 break;
             case GuanZhuLieBiao:
                 result = biliListeningService.getBiliList();
+                break;
+            case ZuiXinTouGao:
+                result = biliListeningService.getVideo(s[1]);
+                break;
+            case ZuiXinDongTai:
+                biliListeningService.getDynamic(groupId,s[1],1);
+                result = "";
                 break;
             default:
                 result = "俺不晓得你在锁啥子";

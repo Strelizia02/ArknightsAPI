@@ -17,7 +17,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 /**
@@ -51,6 +50,7 @@ public class BiliListeningServiceImpl implements BiliListeningService {
         List<BiliCount> biliCountList = biliMapper.getBiliCountList();
         boolean b = false;
         for (BiliCount bili:biliCountList) {
+            String biliSpace = "https://space.bilibili.com/" + bili.getUid() + "/dynamic";
             //1 -> 抓取置顶动态
             String topDynamic = restTemplate
                     .exchange(dynamicList + bili.getUid() + dynamicListUrl + 1, HttpMethod.GET, new HttpEntity<>(new HttpHeaders()), String.class).getBody();
@@ -87,7 +87,7 @@ public class BiliListeningServiceImpl implements BiliListeningService {
                 biliMapper.updateNewDynamic(bili);
                 result = name + "更新了一条" + newDetail.getType() + "动态\n" +
                         newDetail.getTitle() + "\n" +
-                        newDetail.getText();
+                        newDetail.getText() + "\n" + biliSpace;
                 log.info("{}有新动态", name);
                 b = true;
                 List<Long> groups = userFoundMapper.selectAllGroups();
@@ -107,8 +107,7 @@ public class BiliListeningServiceImpl implements BiliListeningService {
     @Override
     public DynamicDetail getDynamicDetail(Long DynamicId) {
         DynamicDetail dynamicDetail = new DynamicDetail();
-        String biliSpace = "https://space.bilibili.com/" + DynamicId + "/dynamic";
-        //获取动态的文字部分
+        //获取动态的Json消息
         HttpEntity<String> httpEntity = new HttpEntity<>(new HttpHeaders());
         String s = restTemplate
                 .exchange(dynamicDetailUrl + DynamicId, HttpMethod.GET, httpEntity, String.class).getBody();
@@ -145,7 +144,6 @@ public class BiliListeningServiceImpl implements BiliListeningService {
                 break;
             default:
                 title = "无法解析的json数据，请点击链接查看最新动态";
-                text = biliSpace;
                 break;
         }
         dynamicDetail.setName(name);
@@ -158,8 +156,13 @@ public class BiliListeningServiceImpl implements BiliListeningService {
     }
 
     @Override
-    public String getVideo() {
-        return null;
+    public String getVideo(String name) {
+        BiliCount bili = biliMapper.getOneDynamicByName(name);
+        String newBvstr = restTemplate
+                .exchange(videoHead + bili.getUid() + videoUrl, HttpMethod.GET, new HttpEntity<>(new HttpHeaders()), String.class).getBody();
+        JSONObject newBvJson = new JSONObject(newBvstr);
+        String newBv = newBvJson.getJSONObject("data").getJSONObject("list").getJSONArray("vlist").getJSONObject(0).getString("bvid");
+        return "https://www.bilibili.com/video/" + newBv;
     }
 
     @Override
