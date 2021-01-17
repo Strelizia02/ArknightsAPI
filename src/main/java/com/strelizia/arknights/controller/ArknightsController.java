@@ -43,6 +43,9 @@ public class ArknightsController {
     @Autowired
     private BiliListeningService biliListeningService;
 
+    @Autowired
+    private EnemyService enemyService;
+
     /**
      * 消息处理总控制器，用于接收消息，并处理分流到不同的service
      */
@@ -122,6 +125,8 @@ public class ArknightsController {
                         "17.动态查询：{##动态查询 用户昵称 编号}\n" +
                         "18.关注列表：{##关注列表}\n" +
                         "19.最新投稿：{##最新投稿 用户昵称}\n" +
+                        "20.敌人清单：{##敌人清单 名称关键字}\n" +
+                        "21.敌人信息：{##敌人信息 敌人名称}\n" +
                         "过大的涩图将导致回复缓慢，请不要上传不能过审的图片";
                 break;
             case XiangXiCaiDan:
@@ -180,6 +185,10 @@ public class ArknightsController {
                                 "\t使用方法：{##关注列表}\n" +
                                 "19.最新投稿：\n" +
                                 "\t使用方法：{##最新投稿 用户昵称}\n" +
+                                "20.敌人清单：\n" +
+                                "\t使用方法：{##敌人清单}或{##敌人清单 名称关键字}\n" +
+                                "21.敌人信息：\n" +
+                                "\t使用方法：{##敌人信息 敌人名称}\n" +
                                 "注：本项目需严格按照格式输入，自然语言处理功能将在后期优化";
                 break;
             case ShiLian:
@@ -252,6 +261,12 @@ public class ArknightsController {
             case ZuiXinDongTai:
                 biliListeningService.getDynamic(groupId,s[1],1);
                 result = "";
+                break;
+            case DiRenXinXi:
+                result = enemyService.getEnemyInfoByName(s[1]);
+                break;
+            case DiRenQuanMing:
+                result = enemyService.getEnemyListByName(s[1]);
                 break;
             default:
                 result = "俺不晓得你在锁啥子";

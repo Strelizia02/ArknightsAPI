@@ -16,10 +16,7 @@ import org.springframework.web.client.RestTemplate;
 import java.io.UnsupportedEncodingException;
 import java.net.InetSocketAddress;
 import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * @author wangzy
@@ -77,32 +74,40 @@ public class UpdateDataServiceImpl implements UpdateDataService {
         //获取kokodayo的Json数据Key
         String jsonStr = getJsonStringFromUrl(koKoDaYoKeyUrl);
         JSONObject keyJsonObj = new JSONObject(jsonStr);
+        String dataVersion = updateMapper.getVersion();
         String charKey = keyJsonObj.getJSONObject("result").getJSONObject("agent").getJSONObject("char").getString("key");
+        String enemyKey = keyJsonObj.getJSONObject("result").getJSONObject("level").getJSONObject("enemy").getString("key");
+        //版本不同才进行更新
+        if (!charKey.equals(dataVersion)) {
+            updateMapper.updateVersion(charKey);
+            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+            updateMapper.clearOperatorData();
+            List<Long> groups = userFoundMapper.selectAllGroups();
 
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-        updateMapper.clearOperatorData();
-        List<Long> groups = userFoundMapper.selectAllGroups();
+            for (Long groupId : groups) {
+                String s = "游戏数据闪断更新中，更新期间存在无响应情况，请耐心等待更新完成。\n" +
+                        "若十分钟后仍未收到更新完成信息，请联系开发者重新进行更新请求\n--" +
+                        sdf.format(new Date());
+                sendMsgUtil.CallOPQApiSendMsg(groupId, s, 2);
+            }
 
-        for (Long groupId:groups){
-            String s = "游戏数据闪断更新中，更新期间存在无响应情况，请耐心等待更新完成。\n" +
-                    "若十分钟后仍未收到更新完成信息，请联系开发者重新进行更新请求\n--" +
-                    sdf.format(new Date());
-            sendMsgUtil.CallOPQApiSendMsg(groupId,s,2);
+            updateAllOperator(charKey);
+            updateAllEnemy(enemyKey);
+
+            for (Long groupId : groups) {
+                String s = "正在从企鹅物流搬运材料数据ing\n--" +
+                        sdf.format(new Date());
+                sendMsgUtil.CallOPQApiSendMsg(groupId, s, 2);
+            }
+
+            updateMapAndItem();
+
+            for (Long groupId : groups) {
+                String s = "游戏数据更新完成\n--" + sdf.format(new Date());
+                sendMsgUtil.CallOPQApiSendMsg(groupId, s, 2);
+            }
         }
-
-        Integer operatorSize = updateAllOperator(charKey);
-        for (Long groupId:groups){
-            String s = "正在从企鹅物流搬运材料数据ing\n--" +
-                    sdf.format(new Date());
-            sendMsgUtil.CallOPQApiSendMsg(groupId,s,2);
-        }
-        updateMapAndItem();
-
-        for (Long groupId:groups){
-            String s = "游戏数据更新完成\n--" + sdf.format(new Date());
-            sendMsgUtil.CallOPQApiSendMsg(groupId,s,2);
-        }
-        return operatorSize;
+        return 0;
     }
 
     public Integer updateAllOperator(String JsonId){
@@ -122,11 +127,42 @@ public class UpdateDataServiceImpl implements UpdateDataService {
         return length;
     }
 
-    public Integer updateAllEnemy(){
-        //TODO 更新敌人数据，更新材料数据，更新关卡数据
-        //发送请求，封装所有的干员基础信息列表
-        String allEnemy = getJsonStringFromUrl(enemyListUrl);
-        JSONArray json = new JSONArray(allEnemy);
+    public Integer updateAllEnemy(String enemyKey){
+        log.info("开始更新敌人信息");
+        //发送请求，封装所有的敌人面板信息列表
+        String allEnemy = getJsonStringFromUrl(enemyListUrl + enemyKey + ".json");
+        JSONObject enemyobj = new JSONObject(allEnemy);
+        Set<String> enemyJson = enemyobj.keySet();
+        int length = enemyJson.size();
+        for(String enemyId:enemyJson) {
+            String enemyStr = getJsonStringFromUrl(enemyIdUrl + enemyId + ".json");
+            JSONArray enemyJsonObj = new JSONArray(enemyStr);
+            String name = enemyobj.getJSONObject(enemyId).getString("name");
+            for (int j = 0; j < enemyJsonObj.length(); j++) {
+                //一个敌人可能有多个阶段，比如我老婆霜星
+                JSONObject enemyData = enemyJsonObj.getJSONObject(j).getJSONObject("enemyData");
+                JSONObject attributes = enemyData.getJSONObject("attributes");
+                Integer atk = attributes.getJSONObject("atk").getInt("m_value");
+                Integer baseAttackTime = attributes.getJSONObject("baseAttackTime").getInt("m_value");
+                Integer def = attributes.getJSONObject("def").getInt("m_value");
+                Integer hpRecoveryPerSec = attributes.getJSONObject("hpRecoveryPerSec").getInt("m_value");
+                Integer magicResistance = attributes.getJSONObject("magicResistance").getInt("m_value");
+                Integer massLevel = attributes.getJSONObject("massLevel").getInt("m_value");
+                Integer maxHp = attributes.getJSONObject("maxHp").getInt("m_value");
+                Double moveSpeed = attributes.getJSONObject("moveSpeed").getDouble("m_value");
+                Double rangeRadius = enemyData.getJSONObject("rangeRadius").getDouble("m_value");
+                Integer silenceImmune = attributes.getJSONObject("silenceImmune").getBoolean("m_value") == true ? 0 : 1;
+                Integer sleepImmune = attributes.getJSONObject("sleepImmune").getBoolean("m_value") == true ? 0 : 1;
+                Integer stunImmune = attributes.getJSONObject("stunImmune").getBoolean("m_value") == true ? 0 : 1;
+
+                EnemyInfo enemyInfo = new EnemyInfo(enemyId, name, atk, baseAttackTime,
+                        def, hpRecoveryPerSec, magicResistance, massLevel, maxHp,
+                        moveSpeed, rangeRadius, silenceImmune, sleepImmune, stunImmune, j);
+
+                updateMapper.updateEnemy(enemyInfo);
+            }
+        }
+        log.info("敌人信息更新完成，共更新了{}个敌人信息",length);
         return 0;
     }
 

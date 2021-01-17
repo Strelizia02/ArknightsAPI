@@ -45,4 +45,10 @@ public interface UpdateMapper {
     //更新掉落数据
     Integer updateMatrixData(@Param("stageId") String stageId, @Param("itemId") Integer itemId
             , @Param("quantity") Integer quantity, @Param("times") Integer times);
+
+    Integer updateEnemy(EnemyInfo enemyInfo);
+
+    String getVersion();
+
+    Integer updateVersion(String newVersion);
 }

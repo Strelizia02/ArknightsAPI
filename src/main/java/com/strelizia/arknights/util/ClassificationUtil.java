@@ -96,6 +96,16 @@ public class ClassificationUtil {
 
         map.put("最新投稿",ZuiXinTouGao);
         map.put("最新视频",ZuiXinTouGao);
+
+        map.put("敌人信息",DiRenXinXi);
+        map.put("敌人查询",DiRenXinXi);
+        map.put("查询敌人",DiRenXinXi);
+
+        map.put("敌人全名",DiRenQuanMing);
+        map.put("敌人名称",DiRenQuanMing);
+        map.put("敌人名字",DiRenQuanMing);
+        map.put("敌人清单",DiRenQuanMing);
+        map.put("敌人列表",DiRenQuanMing);
         return map.get(s);
     }
 }

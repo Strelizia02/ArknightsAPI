@@ -27,6 +27,14 @@
         LIMIT 1
     </select>
 
+    <select id="getVersion" resultType="java.lang.String">
+        select data_version from a_data_version
+    </select>
+
+    <update id="updateVersion" parameterType="java.lang.String">
+        update a_data_version set data_version = #{newVersion}
+    </update>
+
     <insert id="insertOperator" parameterType="com.strelizia.arknights.model.OperatorInfo">
         INSERT INTO t_operator (
             operator_name,
@@ -112,6 +120,42 @@
             #{useMaterialId},#{useNumber})
     </insert>
 
+    <insert id="updateEnemy" parameterType="com.strelizia.arknights.model.EnemyInfo">
+        INSERT INTO t_enemy(
+            enemy_id,
+            name,
+            atk,
+            baseAttackTime,
+            def,
+            hpRecoveryPerSec,
+            magicResistance,
+            massLevel,
+            maxHp,
+            moveSpeed,
+            rangeRadius,
+            level,
+            silenceImmune,
+            sleepImmune,
+            stunImmune)
+        VALUES(
+            #{enemyId},
+            #{name},
+            #{atk},
+            #{baseAttackTime},
+            #{def},
+            #{hpRecoveryPerSec},
+            #{magicResistance},
+            #{massLevel},
+            #{maxHp},
+            #{moveSpeed},
+            #{rangeRadius},
+            #{level},
+            #{silenceImmune},
+            #{sleepImmune},
+            #{stunImmune}
+            )
+    </insert>
+
     <update id="updateOperatorData" parameterType="com.strelizia.arknights.model.OperatorData">
         UPDATE t_operator
         SET atk = #{atk},
@@ -135,6 +179,7 @@
         TRUNCATE TABLE t_operator_skill;
         DELETE FROM t_operator_skill_mastery_costs;
         TRUNCATE TABLE t_operator_skill_mastery_costs;
+        DELETE FROM t_enemy;
         DELETE FROM t_stage;
         DELETE FROM t_zone;
         DELETE FROM t_material;

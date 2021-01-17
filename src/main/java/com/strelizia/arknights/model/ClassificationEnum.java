@@ -31,5 +31,7 @@ public enum ClassificationEnum {
     DongTaiChaXun,
     GuanZhuLieBiao,
     ZuiXinTouGao,
-    ZuiXinDongTai
+    ZuiXinDongTai,
+    DiRenXinXi,
+    DiRenQuanMing
 }
