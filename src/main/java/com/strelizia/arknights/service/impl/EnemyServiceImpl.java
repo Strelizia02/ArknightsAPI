@@ -28,7 +28,7 @@ public class EnemyServiceImpl implements EnemyService {
         int size = enemyInfo.size();
         String s = "";
         if (size == 0){
-            s = "未找到该敌人的信息";
+            s = "\t未找到该敌人的信息";
         }else if (size == 1){
             s = enemyInfo.get(0).toString();
         }else {
