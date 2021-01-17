@@ -5,7 +5,7 @@ package com.strelizia.arknights.service;
  * @Date 2020/12/19 15:45
  **/
 public interface UpdateDataService {
-    Integer updateAllData(String JsonId);
+    Integer updateAllData();
 
     Integer updateOperatorByJson(String json);
 }

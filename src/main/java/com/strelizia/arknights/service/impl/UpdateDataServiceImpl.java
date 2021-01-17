@@ -29,6 +29,7 @@ import java.util.Map;
 @Slf4j
 public class UpdateDataServiceImpl implements UpdateDataService {
 
+    private final String koKoDaYoKeyUrl = "https://api.kokodayo.fun/api/base/info";
     //干员列表
     private final String operatorListUrl = "https://andata.somedata.top/data-2020/char/list/";
 
@@ -72,7 +73,12 @@ public class UpdateDataServiceImpl implements UpdateDataService {
     protected RestTemplate restTemplate;
 
     @Override
-    public Integer updateAllData(String JsonId) {
+    public Integer updateAllData() {
+        //获取kokodayo的Json数据Key
+        String jsonStr = getJsonStringFromUrl(koKoDaYoKeyUrl);
+        JSONObject keyJsonObj = new JSONObject(jsonStr);
+        String charKey = keyJsonObj.getJSONObject("result").getJSONObject("agent").getJSONObject("char").getString("key");
+
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         updateMapper.clearOperatorData();
         List<Long> groups = userFoundMapper.selectAllGroups();
@@ -84,7 +90,7 @@ public class UpdateDataServiceImpl implements UpdateDataService {
             sendMsgUtil.CallOPQApiSendMsg(groupId,s,2);
         }
 
-        Integer operatorSize = updateAllOperator(JsonId);
+        Integer operatorSize = updateAllOperator(charKey);
         for (Long groupId:groups){
             String s = "正在从企鹅物流搬运材料数据ing\n--" +
                     sdf.format(new Date());
@@ -100,7 +106,6 @@ public class UpdateDataServiceImpl implements UpdateDataService {
     }
 
     public Integer updateAllOperator(String JsonId){
-
         //发送请求，封装所有的干员基础信息列表
         String allOperator = getJsonStringFromUrl(operatorListUrl + JsonId + ".json");
 

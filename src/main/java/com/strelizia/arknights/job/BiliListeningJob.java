@@ -26,5 +26,6 @@ public class BiliListeningJob {
     @Async
     public void dailyCountJob(){
         boolean b = biliListeningService.getDynamicList();
+        log.info("拉取最新动态中{}",new Date());
     }
 }

@@ -2,6 +2,8 @@ package com.strelizia.arknights.model;
 
 import com.strelizia.arknights.util.FormatStringUtil;
 
+import java.text.SimpleDateFormat;
+
 /**
  * @author wangzy
  * @Date 2021/1/10 11:57
@@ -118,15 +120,4 @@ public class Text {
         this.maxRow = maxRow;
     }
 
-    public static void main(String[] args) throws Exception {
-        Text text = new Text("字符串为：\n" +
-                "a\tb\n" +
-                "aaaa\tbbbb\n" +
-                "aaa\tbbb\n" +
-                "结束语句");
-        String[] text1 = text.getText();
-        for (int i = 0; i < text1.length; i++) {
-            System.out.println(text1[i]);
-        }
-    }
 }

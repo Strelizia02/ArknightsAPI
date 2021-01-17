@@ -87,15 +87,15 @@ download(){
   else
     rm -f "${JAR_NAME}.temple"
     mv ${JAR_NAME} "${JAR_NAME}.temple"
-  fi
+  fi  
   wget -c ${fileUrl} -O ${JAR_NAME}
   restart
 }
 
 ##更新
 update(){
-  echo "更新json编号为：$1"
-  curl -X GET "http://localhost:8086/Update/AutoUpdate?JsonId=3204855389061" -H "accept: */*"
+  echo "数据自动更新中......"
+  curl -X GET "http://localhost:8086/Update/AutoUpdate" -H "accept: */*"
 }
 
 #根据输入参数，选择执行对应方法，不输入则执行使用说明
@@ -116,7 +116,7 @@ case "$1" in
     download $2
     ;;
   "update")
-    update $2
+    update
     ;;
   *)
     usage
