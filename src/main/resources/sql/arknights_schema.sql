@@ -42,6 +42,31 @@ CREATE TABLE `a_agent` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- ----------------------------
+-- Table structure for a_bili_dynamic
+-- ----------------------------
+DROP TABLE IF EXISTS `a_bili_dynamic`;
+CREATE TABLE `a_bili_dynamic` (
+  `uid` int(11) NOT NULL,
+  `name` varchar(255) DEFAULT NULL,
+  `top` bigint(255) DEFAULT '0',
+  `first` bigint(255) DEFAULT '0',
+  `second` bigint(255) DEFAULT '0',
+  `third` bigint(255) DEFAULT '0',
+  `fourth` bigint(255) DEFAULT '0',
+  `fifth` bigint(255) DEFAULT '0',
+  PRIMARY KEY (`uid`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- ----------------------------
+-- Table structure for a_data_version
+-- ----------------------------
+DROP TABLE IF EXISTS `a_data_version`;
+CREATE TABLE `a_data_version` (
+  `data_version` varchar(255) NOT NULL,
+  PRIMARY KEY (`data_version`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- ----------------------------
 -- Table structure for a_image_url
 -- ----------------------------
 DROP TABLE IF EXISTS `a_image_url`;
@@ -71,6 +96,29 @@ CREATE TABLE `a_user_found` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- ----------------------------
+-- Table structure for t_enemy
+-- ----------------------------
+DROP TABLE IF EXISTS `t_enemy`;
+CREATE TABLE `t_enemy` (
+  `enemy_id` varchar(255) NOT NULL,
+  `name` varchar(255) DEFAULT NULL,
+  `atk` int(255) DEFAULT '0',
+  `baseAttackTime` int(255) DEFAULT '0',
+  `def` int(255) DEFAULT '0',
+  `hpRecoveryPerSec` int(255) DEFAULT '0',
+  `magicResistance` int(255) DEFAULT '0',
+  `massLevel` int(255) DEFAULT '0',
+  `maxHp` int(255) DEFAULT '0',
+  `moveSpeed` double(255,1) DEFAULT '0.0',
+  `rangeRadius` double(255,1) DEFAULT '0.0',
+  `level` int(255) NOT NULL DEFAULT '0',
+  `silenceImmune` int(255) DEFAULT '0' COMMENT '沉默免疫',
+  `sleepImmune` int(255) DEFAULT '0' COMMENT '睡眠免疫',
+  `stunImmune` int(255) DEFAULT '0' COMMENT '眩晕免疫',
+  PRIMARY KEY (`enemy_id`,`level`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- ----------------------------
 -- Table structure for t_material
 -- ----------------------------
 DROP TABLE IF EXISTS `t_material`;
@@ -91,18 +139,6 @@ CREATE TABLE `t_material_made` (
   `use_number` int(11) DEFAULT NULL,
   PRIMARY KEY (`made_id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=79 DEFAULT CHARSET=latin1;
-
--- ----------------------------
--- Table structure for t_material_source
--- ----------------------------
-DROP TABLE IF EXISTS `t_material_source`;
-CREATE TABLE `t_material_source` (
-  `source_id` int(11) NOT NULL AUTO_INCREMENT,
-  `material_id` int(11) DEFAULT NULL,
-  `source_place` varchar(255) CHARACTER SET utf8 DEFAULT NULL,
-  `source_rate` tinyint(4) DEFAULT NULL COMMENT '罕见: 1,小概率: 2,中概率: 3,大概率: 4,固定: 5',
-  PRIMARY KEY (`source_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=102 DEFAULT CHARSET=latin1;
 
 -- ----------------------------
 -- Table structure for t_matrix
@@ -138,7 +174,7 @@ CREATE TABLE `t_operator` (
   `baseAttackTime` int(11) DEFAULT '0' COMMENT '攻击间隔',
   `respawnTime` int(11) DEFAULT '0' COMMENT '再部署时间',
   PRIMARY KEY (`operator_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=199 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- ----------------------------
 -- Table structure for t_operator_evolve_costs
@@ -151,7 +187,7 @@ CREATE TABLE `t_operator_evolve_costs` (
   `use_material_id` int(11) DEFAULT NULL,
   `use_number` tinyint(4) DEFAULT NULL,
   PRIMARY KEY (`cost_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=895 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- ----------------------------
 -- Table structure for t_operator_skill
@@ -163,7 +199,7 @@ CREATE TABLE `t_operator_skill` (
   `skill_index` tinyint(4) DEFAULT NULL,
   `skill_name` varchar(255) CHARACTER SET utf8 DEFAULT NULL,
   PRIMARY KEY (`skill_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=354 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- ----------------------------
 -- Table structure for t_operator_skill_mastery_costs
@@ -176,7 +212,7 @@ CREATE TABLE `t_operator_skill_mastery_costs` (
   `use_material_id` int(11) DEFAULT NULL,
   `use_number` int(11) DEFAULT NULL,
   PRIMARY KEY (`cost_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=2989 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- ----------------------------
 -- Table structure for t_operator_tags_relation
