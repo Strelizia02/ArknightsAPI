@@ -118,6 +118,7 @@ public class UpdateDataServiceImpl implements UpdateDataService {
         int length = json.length();
         for (int i = 0; i < length; i++){
             JSONObject operator = json.getJSONObject(i);
+            updateOperterTag(operator);
             String operatorId = operator.getString("No");
             //发送请求遍历干员详细信息
             String operatorJson = getJsonStringFromUrl(operatorIdUrl + operatorId + ".json");
@@ -125,6 +126,24 @@ public class UpdateDataServiceImpl implements UpdateDataService {
         }
         log.info("更新完成，共更新了{}个干员信息",length);
         return length;
+    }
+
+    private void updateOperterTag(JSONObject operator) {
+        if (operator.getBoolean("gkzm")) {
+            String name = operator.getString("name");
+            JSONArray tags = operator.getJSONArray("tags");
+            int rarity = tags.getInt(0) + 1;
+            String position = tags.getString(1).equals("MELEE")?"近战位":"远程位";
+            for (int i = 2; i < tags.length(); i++){
+                position += "," + tags.getString(i);
+            }
+            if (rarity==5){
+                position += "," + "资深干员";
+            }else if (rarity==6){
+                position += "," + "高级资深干员";
+            }
+            updateMapper.updateTags(name, rarity, position);
+        }
     }
 
     public Integer updateAllEnemy(String enemyKey){

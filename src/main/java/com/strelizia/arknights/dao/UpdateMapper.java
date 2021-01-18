@@ -48,6 +48,8 @@ public interface UpdateMapper {
 
     Integer updateEnemy(EnemyInfo enemyInfo);
 
+    Integer updateTags(@Param("name") String name, @Param("rarity") Integer rarity, @Param("tags") String tags);
+
     String getVersion();
 
     Integer updateVersion(String newVersion);

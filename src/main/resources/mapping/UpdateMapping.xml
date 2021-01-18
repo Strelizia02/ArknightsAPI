@@ -35,6 +35,12 @@
         update a_data_version set data_version = #{newVersion}
     </update>
 
+    <insert id="updateTags">
+        insert into t_operator_tags_relation
+        (operator_name,operator_rarity,operator_tags)
+        values (#{name},#{rarity},#{tags})
+    </insert>
+
     <insert id="insertOperator" parameterType="com.strelizia.arknights.model.OperatorInfo">
         INSERT INTO t_operator (
             operator_name,
@@ -179,6 +185,8 @@
         TRUNCATE TABLE t_operator_skill;
         DELETE FROM t_operator_skill_mastery_costs;
         TRUNCATE TABLE t_operator_skill_mastery_costs;
+        DELETE FROM t_operator_tags_relation;
+        TRUNCATE TABLE t_operator_tags_relation;
         DELETE FROM t_enemy;
         DELETE FROM t_stage;
         DELETE FROM t_zone;
