@@ -72,8 +72,8 @@ public class ArknightsController {
             }else if (text.startsWith("{\"FileID")){
                 JSONObject jsonObj = new JSONObject(text);
                 String fileID = jsonObj.getString("FileID");
-                log.info("获取到文件Id为{}",fileID);
-                sendMsgUtil.CallOPQApiSendMsg(groupId, fileID,2);
+                log.info("获取到文件Id为{}",fileID.substring(1));
+                sendMsgUtil.CallOPQApiSendMsg(groupId, fileID.substring(1),2);
             }else {
                 //split("~")，以防图片信息中多余的空格导致的json结构破坏
                 text = text.replace(" ","~");
