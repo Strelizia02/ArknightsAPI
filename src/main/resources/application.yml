@@ -11,12 +11,16 @@ spring:
       driver-class-name: com.mysql.jdbc.Driver
 
 scheduled:
-# 每天4点抽卡次数清空
+  # 每天4点抽卡次数清空
   cleanJob: 0 0 4 */1 * ?
+  # 每天晚8点日报统计
   countJob: 0 0 20 */1 * ?
-  biliJob: 0 */5 * * * ?
+  # 每3分钟监听一次B站动态
+  biliJob: 0 */3 * * * ?
+  # 每5分钟检查一次数据更新
   updateJob: 0 */5 * * * ?
-  exterminateJob: 0 50 9 ? * MON
+  # 每周五晚8点剿灭提醒
+  exterminateJob: 0 0 20 ? * MON
 userConfig:
 # 每日抽卡的限制次数
   limit: 20
