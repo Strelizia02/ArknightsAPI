@@ -18,11 +18,9 @@
 
 感谢[机器人框架](https://github.com/OPQBOT/OPQ/wiki)提供的技术支持，有关框架的部署请参考wiki文档。
 
-感谢[兔兔阿米娅](https://github.com/vivien8261/Amiya-Bot)，[企鹅物流](https://penguin-stats.cn/)提供的数据支持，因服务器性能原因，关闭了每日自动更新，采用脚本触发的模式。
+感谢[兔兔阿米娅](https://github.com/vivien8261/Amiya-Bot)，[企鹅物流](https://penguin-stats.cn/)，[kokodayo资料站](kokodayo.fun)提供的数据支持，数据每三分钟检查版本。
 
 感谢[百度智能云](https://console.bce.baidu.com/)提供的图像识别技术，公开招募截图可以直接截图查询。
-
-感谢[pixiv接口](https://github.com/ScienJus/pixiv-parser)提供pixiv网站接口。
 
 # 责任声明：
 
@@ -70,7 +68,7 @@ qq和name两个字段推荐从a_user_found中复制，默认权限都为0(无权
 ./run.sh download fileId
 ```
 
-5.更新数据
+5.手动更新数据
 
 ```shell
 ./run.sh update
@@ -79,6 +77,7 @@ qq和name两个字段推荐从a_user_found中复制，默认权限都为0(无权
 ## 0.菜单：
 
 	使用方法：输入{##菜单}或{##详细菜单}
+	获取全部功能菜单
 ## 1.模拟寻访：
 
 	使用方法：输入{##十连 卡池名}或{##单抽 卡池名}
