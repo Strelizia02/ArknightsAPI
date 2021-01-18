@@ -16,6 +16,7 @@ scheduled:
   countJob: 0 0 20 */1 * ?
   biliJob: 0 */5 * * * ?
   updateJob: 0 */5 * * * ?
+  exterminateJob: 0 50 9 ? * MON
 userConfig:
 # 每日抽卡的限制次数
   limit: 20

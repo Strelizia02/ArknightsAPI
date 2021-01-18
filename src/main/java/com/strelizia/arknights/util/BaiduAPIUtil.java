@@ -81,7 +81,7 @@ public class BaiduAPIUtil {
         return s;
     }
 
-    public static byte[] base64ToImgByteArray(String base64) throws IOException {
+    public byte[] base64ToImgByteArray(String base64) throws IOException {
         sun.misc.BASE64Decoder decoder = new sun.misc.BASE64Decoder();
         //因为参数base64来源不一样，需要将附件数据替换清空掉。如果此入参来自canvas.toDataURL("image/png");
         base64 = base64.replaceAll("data:image/png;base64,", "");

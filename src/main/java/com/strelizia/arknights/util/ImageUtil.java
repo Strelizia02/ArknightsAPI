@@ -178,40 +178,4 @@ public class ImageUtil {
             return false;
         }
     }
-//    public void getImgToLocal(String dir, Integer id, String base64){
-//        byte[] bs;
-//        bs = Base64.getMimeDecoder().decode(base64);
-//        BufferedOutputStream bos = null;
-//        FileOutputStream fos = null;
-//        File file;
-//        file = new File(dir + id + ".jpg");
-//        try {
-//            fos = new FileOutputStream(file);
-//            bos = new BufferedOutputStream(fos);
-//            bos.write(bs);
-//        } catch (Exception e) {
-//            e.printStackTrace();
-//        } finally {
-//            if (bos != null) {
-//                try {
-//                    bos.close();
-//                } catch (IOException e) {
-//                    e.printStackTrace();
-//                }
-//            }
-//            if (fos != null) {
-//                try {
-//                    fos.close();
-//                } catch (IOException e) {
-//                    e.printStackTrace();
-//                }
-//            }
-//        }
-//    }
-
-
-//    public static void main(String[] args) {
-//        ImageUtil imageUtil = new ImageUtil();
-//        System.out.println(imageUtil.getImageBase64ByUrl("http://gchat.qpic.cn/gchatpic_new/843853516/830405854-2534335053-925DAC7FE7CF96175B5DD5E69D4F4B1D/0?vuin=3022645754&term=255&pictype=0"));
-//    }
 }

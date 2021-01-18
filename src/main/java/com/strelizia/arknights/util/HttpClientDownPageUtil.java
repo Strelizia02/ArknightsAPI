@@ -64,7 +64,7 @@ public class HttpClientDownPageUtil {
     }
 
     public static void main(String[] args) {
-        String s = sendGet("https://kokodayo.fun/");
+        String s = sendGet("https://weibo.cn/arknights");
         System.out.println(s);
     }
 }
