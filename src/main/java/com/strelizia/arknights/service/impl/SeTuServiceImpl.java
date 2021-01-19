@@ -38,6 +38,7 @@ public class SeTuServiceImpl implements SeTuService {
     @Autowired
     private SendMsgUtil sendMsgUtil;
 
+    @Resource(name = "taskModuleExecutor")
     @Autowired
     private ThreadPoolTaskExecutor poolTaskExecutor;
 

@@ -92,7 +92,7 @@ public class UpdateDataServiceImpl implements UpdateDataService {
         int length = json.length();
         for (int i = 0; i < length; i++){
             JSONObject operator = json.getJSONObject(i);
-            updateOperaterTag(operator);
+            updateOperatorTag(operator);
             String operatorId = operator.getString("No");
             //发送请求遍历干员详细信息
             //干员ID信息
@@ -104,7 +104,7 @@ public class UpdateDataServiceImpl implements UpdateDataService {
         log.info("更新完成，共更新了{}个干员信息",length);
     }
 
-    private void updateOperaterTag(JSONObject operator) {
+    private void updateOperatorTag(JSONObject operator) {
         if (operator.getBoolean("gkzm")) {
             String name = operator.getString("name");
             JSONArray tags = operator.getJSONArray("tags");
