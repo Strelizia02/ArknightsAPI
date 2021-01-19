@@ -3,11 +3,9 @@ package com.strelizia.arknights.service.impl;
 import com.strelizia.arknights.dao.EnemyMapper;
 import com.strelizia.arknights.model.EnemyInfo;
 import com.strelizia.arknights.service.EnemyService;
-import org.aspectj.lang.annotation.Aspect;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.TreeSet;
@@ -32,8 +30,8 @@ public class EnemyServiceImpl implements EnemyService {
         }else if (size == 1){
             s = enemyInfo.get(0).toString();
         }else {
-            for (int i = 0; i < size; i++){
-                s += "\n" + enemyInfo.get(i).toString();
+            for (EnemyInfo info : enemyInfo) {
+                s += "\n" + info.toString();
             }
         }
         return s.substring(1);

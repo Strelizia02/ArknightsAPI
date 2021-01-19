@@ -36,7 +36,6 @@ public class SendMsgUtil {
 
     public static final String picBase64Buf = "picBase64Buf";
 
-    @Resource(name="taskModuleExecutor")
     @Autowired
     private ThreadPoolTaskExecutor poolTaskExecutor;
 

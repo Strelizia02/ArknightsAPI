@@ -27,12 +27,6 @@ import java.util.List;
 @Slf4j
 public class BiliListeningServiceImpl implements BiliListeningService {
 
-    private final String videoHead = "https://api.bilibili.com/x/space/arc/search?mid=";
-    private final String videoUrl = "&pn=1&ps=1&jsonp=jsonp";
-    private final String dynamicDetailUrl = "https://api.vc.bilibili.com/dynamic_svr/v1/dynamic_svr/get_dynamic_detail?dynamic_id=";
-    private final String dynamicList = "https://api.vc.bilibili.com/dynamic_svr/v1/dynamic_svr/space_history?host_uid=";
-    private final String dynamicListUrl =  "&offset_dynamic_id=0&need_top=";
-
     @Autowired
     private RestTemplate restTemplate;
 
@@ -52,13 +46,15 @@ public class BiliListeningServiceImpl implements BiliListeningService {
         for (BiliCount bili:biliCountList) {
             String biliSpace = "https://space.bilibili.com/" + bili.getUid() + "/dynamic";
             //1 -> 抓取置顶动态
+            String dynamicList = "https://api.vc.bilibili.com/dynamic_svr/v1/dynamic_svr/space_history?host_uid=";
+            String dynamicListUrl = "&offset_dynamic_id=0&need_top=";
             String topDynamic = restTemplate
                     .exchange(dynamicList + bili.getUid() + dynamicListUrl + 1, HttpMethod.GET, new HttpEntity<>(new HttpHeaders()), String.class).getBody();
             //解析动态列表json
             Long top = new JSONObject(topDynamic).getJSONObject("data").getJSONArray("cards").getJSONObject(0).getJSONObject("desc").getLong("dynamic_id");
             bili.setTop(top);
             //循环遍历每个被监听的账号
-            String result = null;
+            String result;
             String url = dynamicList + bili.getUid() + dynamicListUrl + 0;//0 -> 不抓取置顶动态
             HttpEntity<String> httpEntity = new HttpEntity<>(new HttpHeaders());
             String s = restTemplate
@@ -109,6 +105,7 @@ public class BiliListeningServiceImpl implements BiliListeningService {
         DynamicDetail dynamicDetail = new DynamicDetail();
         //获取动态的Json消息
         HttpEntity<String> httpEntity = new HttpEntity<>(new HttpHeaders());
+        String dynamicDetailUrl = "https://api.vc.bilibili.com/dynamic_svr/v1/dynamic_svr/get_dynamic_detail?dynamic_id=";
         String s = restTemplate
                 .exchange(dynamicDetailUrl + DynamicId, HttpMethod.GET, httpEntity, String.class).getBody();
         JSONObject detailJson = new JSONObject(s);
@@ -158,6 +155,8 @@ public class BiliListeningServiceImpl implements BiliListeningService {
     @Override
     public String getVideo(String name) {
         BiliCount bili = biliMapper.getOneDynamicByName(name);
+        String videoUrl = "&pn=1&ps=1&jsonp=jsonp";
+        String videoHead = "https://api.bilibili.com/x/space/arc/search?mid=";
         String newBvstr = restTemplate
                 .exchange(videoHead + bili.getUid() + videoUrl, HttpMethod.GET, new HttpEntity<>(new HttpHeaders()), String.class).getBody();
         JSONObject newBvJson = new JSONObject(newBvstr);

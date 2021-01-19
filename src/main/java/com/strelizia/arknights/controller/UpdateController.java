@@ -25,14 +25,14 @@ public class UpdateController {
     public Integer receive(
             @RequestBody String json
     ){
-        Integer i = updateDataService.updateOperatorByJson(json);
-        return i;
+        updateDataService.updateOperatorByJson(json);
+        return 0;
     }
 
     @GetMapping("AutoUpdate")
     public Integer update(){
-        Integer s = updateDataService.updateAllData();
-        return s;
+        updateDataService.updateAllData();
+        return 0;
     }
 
     //获取所有涩图到本地

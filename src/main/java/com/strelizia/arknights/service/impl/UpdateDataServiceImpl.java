@@ -13,8 +13,6 @@ import org.springframework.http.*;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
-import java.io.UnsupportedEncodingException;
-import java.net.InetSocketAddress;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
@@ -26,36 +24,8 @@ import java.util.*;
 @Slf4j
 public class UpdateDataServiceImpl implements UpdateDataService {
 
-    private final String koKoDaYoKeyUrl = "https://api.kokodayo.fun/api/base/info";
-    //干员列表
-    private final String operatorListUrl = "https://andata.somedata.top/data-2020/char/list/";
-
-    //敌人列表
-    private final String enemyListUrl = "https://andata.somedata.top/data-2020/lists/enemy/";
-
-    //干员ID信息
-    private final String operatorIdUrl = "https://andata.somedata.top/data-2020/char/data/";
-
-    //技能ID信息
-    private final String skillIdUrl = "https://andata.somedata.top/data-2020/skills/";
-
-    //敌人ID信息
-    private final String enemyIdUrl = "https://andata.somedata.top/data-2020/enemy/";
-
     //地图ID信息
-    private final String mapIdurl = "https://andata.somedata.top/data-2020/map/exData/";
-
-    //材料列表
-    private final String itemListUrl = "https://penguin-stats.cn/PenguinStats/api/v2/items";
-
-    //地图列表
-    private final String mapListUrl = "https://penguin-stats.cn/PenguinStats/api/v2/stages?server=CN";
-
-    //章节列表
-    private final String zoneListUrl = "https://penguin-stats.cn/PenguinStats/api/v2/zones";
-
-    //地图掉落关联表
-    private final String matrixListUrl = "https://penguin-stats.cn/PenguinStats/api/v2/_private/result/matrix/CN/global";
+//    private final String mapIdurl = "https://andata.somedata.top/data-2020/map/exData/";
 
     @Autowired
     private UserFoundMapper userFoundMapper;
@@ -70,8 +40,10 @@ public class UpdateDataServiceImpl implements UpdateDataService {
     protected RestTemplate restTemplate;
 
     @Override
-    public Integer updateAllData() {
+    public void updateAllData() {
         //获取kokodayo的Json数据Key
+        String koKoDaYoKeyUrl = "https://api.kokodayo.fun/api/base/info";
+
         String jsonStr = getJsonStringFromUrl(koKoDaYoKeyUrl);
         JSONObject keyJsonObj = new JSONObject(jsonStr);
         String dataVersion = updateMapper.getVersion();
@@ -107,28 +79,32 @@ public class UpdateDataServiceImpl implements UpdateDataService {
                 sendMsgUtil.CallOPQApiSendMsg(groupId, s, 2);
             }
         }
-        return 0;
     }
 
-    public Integer updateAllOperator(String JsonId){
+    public void updateAllOperator(String JsonId){
         //发送请求，封装所有的干员基础信息列表
+        //干员列表
+        String operatorListUrl = "https://andata.somedata.top/data-2020/char/list/";
+
         String allOperator = getJsonStringFromUrl(operatorListUrl + JsonId + ".json");
 
         JSONArray json = new JSONArray(allOperator);
         int length = json.length();
         for (int i = 0; i < length; i++){
             JSONObject operator = json.getJSONObject(i);
-            updateOperterTag(operator);
+            updateOperaterTag(operator);
             String operatorId = operator.getString("No");
             //发送请求遍历干员详细信息
+            //干员ID信息
+            String operatorIdUrl = "https://andata.somedata.top/data-2020/char/data/";
+
             String operatorJson = getJsonStringFromUrl(operatorIdUrl + operatorId + ".json");
             updateOperatorByJson(operatorJson);
         }
         log.info("更新完成，共更新了{}个干员信息",length);
-        return length;
     }
 
-    private void updateOperterTag(JSONObject operator) {
+    private void updateOperaterTag(JSONObject operator) {
         if (operator.getBoolean("gkzm")) {
             String name = operator.getString("name");
             JSONArray tags = operator.getJSONArray("tags");
@@ -146,14 +122,20 @@ public class UpdateDataServiceImpl implements UpdateDataService {
         }
     }
 
-    public Integer updateAllEnemy(String enemyKey){
+    public void updateAllEnemy(String enemyKey){
         log.info("开始更新敌人信息");
         //发送请求，封装所有的敌人面板信息列表
+        //敌人列表
+        String enemyListUrl = "https://andata.somedata.top/data-2020/lists/enemy/";
+
         String allEnemy = getJsonStringFromUrl(enemyListUrl + enemyKey + ".json");
         JSONObject enemyobj = new JSONObject(allEnemy);
         Set<String> enemyJson = enemyobj.keySet();
         int length = enemyJson.size();
         for(String enemyId:enemyJson) {
+            //敌人ID信息
+            String enemyIdUrl = "https://andata.somedata.top/data-2020/enemy/";
+
             String enemyStr = getJsonStringFromUrl(enemyIdUrl + enemyId + ".json");
             JSONArray enemyJsonObj = new JSONArray(enemyStr);
             String name = enemyobj.getJSONObject(enemyId).getString("name");
@@ -170,9 +152,9 @@ public class UpdateDataServiceImpl implements UpdateDataService {
                 Integer maxHp = attributes.getJSONObject("maxHp").getInt("m_value");
                 Double moveSpeed = attributes.getJSONObject("moveSpeed").getDouble("m_value");
                 Double rangeRadius = enemyData.getJSONObject("rangeRadius").getDouble("m_value");
-                Integer silenceImmune = attributes.getJSONObject("silenceImmune").getBoolean("m_value") == true ? 0 : 1;
-                Integer sleepImmune = attributes.getJSONObject("sleepImmune").getBoolean("m_value") == true ? 0 : 1;
-                Integer stunImmune = attributes.getJSONObject("stunImmune").getBoolean("m_value") == true ? 0 : 1;
+                Integer silenceImmune = attributes.getJSONObject("silenceImmune").getBoolean("m_value") ? 0 : 1;
+                Integer sleepImmune = attributes.getJSONObject("sleepImmune").getBoolean("m_value") ? 0 : 1;
+                Integer stunImmune = attributes.getJSONObject("stunImmune").getBoolean("m_value") ? 0 : 1;
 
                 EnemyInfo enemyInfo = new EnemyInfo(enemyId, name, atk, baseAttackTime,
                         def, hpRecoveryPerSec, magicResistance, massLevel, maxHp,
@@ -182,33 +164,40 @@ public class UpdateDataServiceImpl implements UpdateDataService {
             }
         }
         log.info("敌人信息更新完成，共更新了{}个敌人信息",length);
-        return 0;
     }
 
     /**
      * 更新地图、材料基础信息
-     * @return
      */
-    public Integer updateMapAndItem(){
+    public void updateMapAndItem(){
         log.info("从企鹅物流中拉取地图、材料数据");
+        //地图列表
+        String mapListUrl = "https://penguin-stats.cn/PenguinStats/api/v2/stages?server=CN";
+
         MapJson[] maps = restTemplate
                 .getForObject(mapListUrl, MapJson[].class);
-        for (int i = 0; i < maps.length; i++){
-            updateMapper.updateStageData(maps[i]);
+        for (MapJson map : maps) {
+            updateMapper.updateStageData(map);
         }
+
+        //章节列表
+        String zoneListUrl = "https://penguin-stats.cn/PenguinStats/api/v2/zones";
 
         ZoneJson[] zones = restTemplate.getForObject(zoneListUrl,ZoneJson[].class);
-        for (int i = 0; i < zones.length; i++){
-            updateMapper.updateZoneData(zones[i]);
+        for (ZoneJson zone : zones) {
+            updateMapper.updateZoneData(zone);
         }
 
+        //材料列表
+        String itemListUrl = "https://penguin-stats.cn/PenguinStats/api/v2/items";
+
         ItemJson[] items = restTemplate.getForObject(itemListUrl,ItemJson[].class);
-        for (int i = 0; i < items.length; i++){
+        for (ItemJson item : items) {
             try {
-                Integer id = Integer.parseInt(items[i].getItemId());
-                String name = items[i].getName();
+                Integer id = Integer.parseInt(item.getItemId());
+                String name = item.getName();
                 updateMapper.updateItemData(id, name);
-            }catch (NumberFormatException e){
+            } catch (NumberFormatException e) {
                 //忽略家具材料
             }
         }
@@ -218,6 +207,9 @@ public class UpdateDataServiceImpl implements UpdateDataService {
         for(int i = 0; i < 8; i++){
             updateMapper.updateItemData(DoubleId[i],DoubleName[i]);
         }
+
+        //地图掉落关联表
+        String matrixListUrl = "https://penguin-stats.cn/PenguinStats/api/v2/_private/result/matrix/CN/global";
 
         String matrixJsonStr = restTemplate.getForObject(matrixListUrl,String.class);
         JSONArray matrixJsons = new JSONObject(matrixJsonStr).getJSONArray("matrix");
@@ -234,7 +226,6 @@ public class UpdateDataServiceImpl implements UpdateDataService {
                 //忽略家具材料
             }
         }
-        return 0;
     }
 
     //发送url的get请求获取结果json字符串
@@ -250,7 +241,7 @@ public class UpdateDataServiceImpl implements UpdateDataService {
     }
 
     @Override
-    public Integer updateOperatorByJson(String json) {
+    public void updateOperatorByJson(String json) {
         Map<String, Integer> operatorClass = new HashMap<>(8);
         operatorClass.put("PIONEER", 1);
         operatorClass.put("WARRIOR", 2);
@@ -275,7 +266,7 @@ public class UpdateDataServiceImpl implements UpdateDataService {
         OperatorInfo operatorInfo = new OperatorInfo();
         operatorInfo.setOperator_name(name);
         operatorInfo.setOperator_rarity(rarity);
-        if (isNotObtainable == false) {
+        if (!isNotObtainable) {
             operatorInfo.setAvailable(1);
         } else {
             operatorInfo.setAvailable(0);
@@ -336,12 +327,15 @@ public class UpdateDataServiceImpl implements UpdateDataService {
                     httpHeaders.set("Host", "andata.somedata.top");
                     HttpEntity<String> httpEntity = new HttpEntity<>(httpHeaders);
                     //发送请求，封装结果数据
+                    //技能ID信息
+                    String skillIdUrl = "https://andata.somedata.top/data-2020/skills/";
+
                     String skillName = new JSONObject(restTemplate
                             .exchange(skillIdUrl + skills.getJSONObject(i).getString("skillId") + ".json", HttpMethod.GET, httpEntity, String.class).getBody())
                             .getJSONArray("levels")
                             .getJSONObject(0)
                             .getString("name");
-                    ;
+
                     operatorSkillInfo.setSkillName(skillName);
                     updateMapper.insertOperatorSkill(operatorSkillInfo);
                     Integer skillId = updateMapper.selectSkillIdByName(skillName);
@@ -365,6 +359,5 @@ public class UpdateDataServiceImpl implements UpdateDataService {
                 }
             }
         }
-        return 1;
     }
 }

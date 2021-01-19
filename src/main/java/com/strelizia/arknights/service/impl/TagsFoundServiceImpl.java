@@ -66,7 +66,7 @@ public class TagsFoundServiceImpl implements TagsfFoundService {
 
         //调用百度api图片识别
         String[] s = baiduAPIUtil.BaiduOCRGetTags(url);
-        log.info("识图获取到tag为：",Arrays.asList(s));
+        log.info("识图获取到tag为：{}",Arrays.asList(s));
 
         Map<List<String>, List<AgentTagsInfo>> map = FoundTagResultByArrays(s);
 
@@ -125,7 +125,7 @@ public class TagsFoundServiceImpl implements TagsfFoundService {
             }
             s = s  + "\n\n" + tags.substring(1) + "\n" + agents.substring(1);
         }
-        if (s == ""){
+        if (s.equals("")){
             s = "\t\tQAQ没有找到对应的稀有公招结果";
         }
         return s.substring(2);
