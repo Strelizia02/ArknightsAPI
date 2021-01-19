@@ -62,7 +62,7 @@ public class TextToImage {
         ByteArrayOutputStream out = new ByteArrayOutputStream();
         try {
             ImageIO.write(bImage, "png", out);
-        } catch (IOException e) {
+        } catch (IOException ignored) {
         }
         return out.toByteArray();
     }

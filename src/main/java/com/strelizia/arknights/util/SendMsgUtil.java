@@ -14,7 +14,6 @@ import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
 
-import javax.annotation.Resource;
 import java.awt.*;
 import java.util.*;
 
@@ -42,9 +41,9 @@ public class SendMsgUtil {
     @Autowired
     protected RestTemplate restTemplate;
 
-    private String sendTextMsgApi = "/v1/LuaApiCaller";
+    private final String sendTextMsgApi = "/v1/LuaApiCaller";
 
-    public SendMsgRespInfo sendTextMsgToGroup(RestTemplate restTemplate, Long groupId, String Text, String sendTextMsgUrl, Integer sendToType) {
+    public void sendTextMsgToGroup(RestTemplate restTemplate, Long groupId, String Text, String sendTextMsgUrl, Integer sendToType) {
         Map<String,Object> map = new HashMap<>(7);
         map.put("toUser",groupId);
         map.put("sendToType",sendToType);
@@ -56,7 +55,7 @@ public class SendMsgUtil {
         try {
             jsonData = new ObjectMapper().writeValueAsString(map);
         } catch (JsonProcessingException e) {
-            log.error("封装请求Body失败", e.getMessage());
+            log.error("封装请求Body失败{}", e.getMessage());
         }
         //获取请求头
         HttpHeaders httpHeaders = new HttpHeaders();
@@ -64,12 +63,10 @@ public class SendMsgUtil {
         httpHeaders.setContentType(type);
         HttpEntity<String> httpEntity = new HttpEntity<>(jsonData, httpHeaders);
         //发送请求，封装结果数据
-            SendMsgRespInfo body = restTemplate
-                    .postForEntity(sendTextMsgUrl, httpEntity, SendMsgRespInfo.class).getBody();
-        return body;
+        restTemplate.postForEntity(sendTextMsgUrl, httpEntity, SendMsgRespInfo.class).getBody();
     }
 
-    public SendMsgRespInfo sendTextImgToGroup(RestTemplate restTemplate, Long groupId, String Text, String picType, String url, String sendTextMsgUrl,Integer sendToType) {
+    public void sendTextImgToGroup(RestTemplate restTemplate, Long groupId, String Text, String picType, String url, String sendTextMsgUrl, Integer sendToType) {
         Map<String,Object> map = new HashMap<>(7);
         map.put("toUser",groupId);
         map.put("sendToType",sendToType);
@@ -82,7 +79,7 @@ public class SendMsgUtil {
         try {
             jsonData = new ObjectMapper().writeValueAsString(map);
         } catch (JsonProcessingException e) {
-            log.error("封装请求Body失败", e.getMessage());
+            log.error("封装请求Body失败{}", e.getMessage());
         }
         //获取请求头
         HttpHeaders httpHeaders = new HttpHeaders();
@@ -90,9 +87,7 @@ public class SendMsgUtil {
         httpHeaders.setContentType(type);
         HttpEntity<String> httpEntity = new HttpEntity<>(jsonData, httpHeaders);
         //发送请求，封装结果数据
-        SendMsgRespInfo body = restTemplate
-                .postForEntity(sendTextMsgUrl, httpEntity, SendMsgRespInfo.class).getBody();
-        return body;
+        restTemplate.postForEntity(sendTextMsgUrl, httpEntity, SendMsgRespInfo.class).getBody();
     }
 
     public void CallOPQApiSendMsg(Long groupId, String s, Integer sendToType){
