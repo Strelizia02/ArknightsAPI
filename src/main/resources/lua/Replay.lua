@@ -8,6 +8,8 @@ function ReceiveFriendMsg(CurrentQQ, data)
 end
 function ReceiveGroupMsg(CurrentQQ, data)
 	text = data.Content
+    text = string.gsub(text,"rr","日日")
+    text = string.gsub(text,"rua","日")
 	text = string.gsub(text," ","")
 	text = string.gsub(text,"曰","日")
 	text = string.gsub(text,"","")
