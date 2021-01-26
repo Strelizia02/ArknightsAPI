@@ -118,6 +118,20 @@ public class UpdateDataServiceImpl implements UpdateDataService {
             }else if (rarity==6){
                 position += "," + "高级资深干员";
             }
+            String profession = operator.getString("profession");
+
+            Map<String, String> operatorClass = new HashMap<>(8);
+            operatorClass.put("PIONEER", "先锋干员");
+            operatorClass.put("WARRIOR", "近卫干员");
+            operatorClass.put("TANK", "重装干员");
+            operatorClass.put("SNIPER", "狙击干员");
+            operatorClass.put("CASTER", "术师干员");
+            operatorClass.put("SUPPORT", "辅助干员");
+            operatorClass.put("MEDIC", "医疗干员");
+            operatorClass.put("SPECIAL", "特种干员");
+
+            position += "," + operatorClass.get(profession);
+
             updateMapper.updateTags(name, rarity, position);
         }
     }
