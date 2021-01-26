@@ -118,7 +118,7 @@ public class UpdateDataServiceImpl implements UpdateDataService {
             }else if (rarity==6){
                 position += "," + "高级资深干员";
             }
-            String profession = operator.getString("profession");
+            String profession = operator.getString("class");
 
             Map<String, String> operatorClass = new HashMap<>(8);
             operatorClass.put("PIONEER", "先锋干员");
