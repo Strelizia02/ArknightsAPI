@@ -18,4 +18,7 @@ public interface AgentMapper {
 
     //根据卡池名获取卡池内up干员数量
     List<AgentInfo> selectPoolAgent(String pool);
+
+    //查询这个池子是不是限定池
+    Integer selectPoolLimit(String pool);
 }

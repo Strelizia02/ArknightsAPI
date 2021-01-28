@@ -13,6 +13,16 @@
         where star = #{star} and pool = #{pool};
     </select>
 
+    <select id="selectPoolLimit" parameterType="java.lang.String" resultType="java.lang.Integer">
+        SELECT
+            `limit`
+        FROM
+            a_agent
+        WHERE
+            pool = #{pool}
+        LIMIT 1
+    </select>
+
     <select id="selectPool" resultType="java.lang.String">
         SELECT
             pool

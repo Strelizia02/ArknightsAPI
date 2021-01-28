@@ -144,20 +144,22 @@ public class AgentServiceImpl implements AgentService {
         String s = "";
         //循环抽卡
         for(int j = 0; j < count; j++) {
-            if (b){sum = 100;}
+            if (b) {
+                sum = 100;
+            }
             //获取干员稀有度
-            int star = FoundAgentUtil.FoundOneByMath(qq,sum);
-            if(star == 6){
+            int star = FoundAgentUtil.FoundOneByMath(qq, sum);
+            if (star == 6) {
                 //抽到六星垫刀归零
                 sum = 0;
                 userFoundMapper.updateUserFoundByQQ(qqMd5, name, groupId, sum);
                 userFoundMapper.updateSixByQq(qqMd5);
-            }else if (star == 5){
+            } else if (star == 5) {
                 //没有六星垫刀+1
                 sum = sum + 1;
                 userFoundMapper.updateUserFoundByQQ(qqMd5, name, groupId, sum);
                 userFoundMapper.updateFiveByQq(qqMd5);
-            }else {
+            } else {
                 //没有六星垫刀+1
                 sum = sum + 1;
                 userFoundMapper.updateUserFoundByQQ(qqMd5, name, groupId, sum);
@@ -166,11 +168,22 @@ public class AgentServiceImpl implements AgentService {
             List<AgentInfo> agentList;
             //使用不同的方法Math/Random进行随机运算，尽可能取消同一时间戳导致的相同随机数(虽然两个算法本质一样，这样做基本屁用没有)
             double r = Math.random();
-            if (r <= 0.5) {
-                //获取当前卡池三星/四星/五星/六星列表
-                agentList = agentMapper.selectAgentByStar(pool, star);
-            }else {
-                agentList = agentMapper.selectAgentByStar("常规", star);
+            //是不是限定池
+            Integer integers = agentMapper.selectPoolLimit(pool);
+            if (star == 6){
+                if (r <= 0.5 + 0.2 * integers) {
+                    //获取当前卡池三星/四星/五星/六星列表
+                    agentList = agentMapper.selectAgentByStar(pool, star);
+                } else {
+                    agentList = agentMapper.selectAgentByStar("常规", star);
+                }
+        }else {
+                if (r <= 0.5) {
+                    //获取当前卡池三星/四星/五星/六星列表
+                    agentList = agentMapper.selectAgentByStar(pool, star);
+                } else {
+                    agentList = agentMapper.selectAgentByStar("常规", star);
+                }
             }
             //有可能三星还去up池里找，因为三星不存在up所以报空，重新去常规池里找
             if (agentList.size() == 0){
