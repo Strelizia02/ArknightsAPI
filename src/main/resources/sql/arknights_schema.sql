@@ -13,6 +13,7 @@ File Encoding         : 65001
 Date: 2021-01-12 09:40:11
 */
 DROP DATABASE IF EXISTS `arknights`;
+CREATE DATABASE `arknights`;
 USE `arknights`;
 
 SET FOREIGN_KEY_CHECKS=0;
