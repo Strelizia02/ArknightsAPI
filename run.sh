@@ -92,6 +92,12 @@ download(){
   restart
 }
 
+#上传
+upload(){
+  echo "文件路径为：$1"
+  echo "Message Body Here" | mail -s "Subject Here" -a $1 [邮箱地址]
+}
+
 ##更新
 update(){
   echo "数据自动更新中......"
@@ -114,6 +120,9 @@ case "$1" in
     ;;
   "download")
     download $2
+    ;;
+  "upload")
+    upload $2
     ;;
   "update")
     update
