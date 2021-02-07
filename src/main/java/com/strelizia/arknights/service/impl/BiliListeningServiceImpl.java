@@ -120,6 +120,7 @@ public class BiliListeningServiceImpl implements BiliListeningService {
             case 1:
                 dType = "转发";
                 title = "请点击链接查看转发动态详情";
+                text = cardJson.getJSONObject("item").getString("content");
                 break;
             case 2://普通动态有图
                 dType = "图文";
