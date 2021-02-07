@@ -45,11 +45,10 @@ public class BiliListeningServiceImpl implements BiliListeningService {
         boolean b = false;
         for (BiliCount bili:biliCountList) {
             String biliSpace = "https://space.bilibili.com/" + bili.getUid() + "/dynamic";
-            //1 -> 抓取置顶动态
             String dynamicList = "https://api.vc.bilibili.com/dynamic_svr/v1/dynamic_svr/space_history?host_uid=";
             String dynamicListUrl = "&offset_dynamic_id=0&need_top=";
             String topDynamic = restTemplate
-                    .exchange(dynamicList + bili.getUid() + dynamicListUrl + 1, HttpMethod.GET, new HttpEntity<>(new HttpHeaders()), String.class).getBody();
+                    .exchange(dynamicList + bili.getUid() + dynamicListUrl + 1, HttpMethod.GET, new HttpEntity<>(new HttpHeaders()), String.class).getBody();//1 -> 抓取置顶动态
             //解析动态列表json
             Long top = new JSONObject(topDynamic).getJSONObject("data").getJSONArray("cards").getJSONObject(0).getJSONObject("desc").getLong("dynamic_id");
             bili.setTop(top);
@@ -119,7 +118,7 @@ public class BiliListeningServiceImpl implements BiliListeningService {
         String pic = null;
         switch (type){
             case 2://普通动态有图
-                dType = "动态";
+                dType = "图文";
                 text = cardJson.getJSONObject("item").getString("description");
                 pic = cardJson.getJSONObject("item").getJSONArray("pictures").getJSONObject(0).getString("img_src");
                 break;
@@ -130,7 +129,7 @@ public class BiliListeningServiceImpl implements BiliListeningService {
                 pic = cardJson.getJSONArray("image_urls").getString(0);
                 break;
             case 4://普通动态无图
-                dType = "动态";
+                dType = "文字";
                 text = cardJson.getJSONObject("item").getString("content");
                 break;
             case 8://视频动态
@@ -140,7 +139,7 @@ public class BiliListeningServiceImpl implements BiliListeningService {
                 text = "https://www.bilibili.com/video/" + detailJson.getJSONObject("data").getJSONObject("card").getJSONObject("desc").getString("bvid");
                 break;
             default:
-                title = "无法解析的json数据，请点击链接查看最新动态";
+                title = "请点击链接查看最新动态";
                 break;
         }
         dynamicDetail.setName(name);
