@@ -111,6 +111,15 @@ public class SendMsgUtil {
         log.info("发送消息{}成功",s);
     }
 
+    /**
+     * 不调用文字转图片，纯文字发送的方法
+     */
+//    public void CallOPQApiSendMsg(Long groupId, String s, Integer sendToType){
+//        poolTaskExecutor.execute(() -> sendTextMsgToGroup(restTemplate, groupId, s,
+//                "http://" + OPQUrl + ":8888" + sendTextMsgApi + "?qq=" +  loginQq + "&funcname=SendMsg",sendToType));
+//        log.info("发送消息{}成功",s);
+//    }
+
     public void CallOPQApiSendImg(Long groupId, String s, String picType, String imgUrl ,Integer sendToType){
         poolTaskExecutor.execute(() -> sendTextImgToGroup(restTemplate, groupId, s, picType, imgUrl,
                 "http://" + OPQUrl + ":8888" + sendTextMsgApi + "?qq=" +  loginQq + "&funcname=SendMsg",sendToType));
