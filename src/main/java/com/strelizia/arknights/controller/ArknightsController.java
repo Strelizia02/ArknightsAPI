@@ -46,6 +46,9 @@ public class ArknightsController {
     @Autowired
     private EnemyService enemyService;
 
+    @Autowired
+    private ExecuteSqlService executeSqlService;
+
     /**
      * 消息处理总控制器，用于接收消息，并处理分流到不同的service
      */
@@ -268,6 +271,9 @@ public class ArknightsController {
                 break;
             case DiRenQuanMing:
                 result = enemyService.getEnemyListByName(s[1]);
+                break;
+            case SQL:
+                result = executeSqlService.ExecuteSql(qq,text);
                 break;
             default:
                 result = "俺不晓得你在锁啥子";

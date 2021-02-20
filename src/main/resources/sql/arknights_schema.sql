@@ -28,6 +28,7 @@ CREATE TABLE `a_admin_user` (
   `found` int(2) DEFAULT '0' COMMENT '无限抽卡权限',
   `img` int(2) DEFAULT '0' COMMENT '无限涩图权限',
   `six` int(2) DEFAULT '0' COMMENT '概率拉满权限',
+  `sql` int(2) DEFAULT '0' COMMENT 'sql执行权限',
   PRIMARY KEY (`qq`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 

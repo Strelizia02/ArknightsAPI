@@ -33,5 +33,6 @@ public enum ClassificationEnum {
     ZuiXinTouGao,
     ZuiXinDongTai,
     DiRenXinXi,
-    DiRenQuanMing
+    DiRenQuanMing,
+    SQL
 }

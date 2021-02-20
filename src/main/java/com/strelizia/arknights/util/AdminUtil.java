@@ -53,4 +53,19 @@ public class AdminUtil {
         }
         return false;
     }
+
+    /**
+     * 返回用户有无sql权限
+     * @param qq qqMD5加密字符串
+     * @param admins 权限列表
+     * @return
+     */
+    public static boolean getSqlAdmin(String qq, List<AdminUserInfo> admins){
+        for (AdminUserInfo admin:admins){
+            if (admin.getQq().equals(qq) && admin.getSql() == 1){
+                return true;
+            }
+        }
+        return false;
+    }
 }

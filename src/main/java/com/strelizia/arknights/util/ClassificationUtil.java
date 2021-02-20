@@ -106,6 +106,10 @@ public class ClassificationUtil {
         map.put("敌人名字",DiRenQuanMing);
         map.put("敌人清单",DiRenQuanMing);
         map.put("敌人列表",DiRenQuanMing);
+
+        map.put("sql",SQL);
+        map.put("SQL",SQL);
+
         return map.get(s);
     }
 }

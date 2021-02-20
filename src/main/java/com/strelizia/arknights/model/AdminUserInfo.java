@@ -16,6 +16,8 @@ public class AdminUserInfo {
     private Integer img;
     //爆率拉满权限
     private Integer six;
+    //SQL查询权限
+    private Integer sql;
 
     public String getQq() {
         return qq;
@@ -55,5 +57,13 @@ public class AdminUserInfo {
 
     public void setSix(Integer six) {
         this.six = six;
+    }
+
+    public Integer getSql() {
+        return sql;
+    }
+
+    public void setSql(Integer sql) {
+        this.sql = sql;
     }
 }
