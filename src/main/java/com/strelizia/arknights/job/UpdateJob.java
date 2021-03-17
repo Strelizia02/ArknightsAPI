@@ -1,18 +1,11 @@
 package com.strelizia.arknights.job;
 
-import com.strelizia.arknights.service.BiliListeningService;
 import com.strelizia.arknights.service.UpdateDataService;
 import lombok.extern.slf4j.Slf4j;
-import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpEntity;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpMethod;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
-
-import java.util.Date;
 
 /**
  * @author wangzy
