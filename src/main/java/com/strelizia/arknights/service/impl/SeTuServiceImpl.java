@@ -4,6 +4,7 @@ import com.strelizia.arknights.dao.AdminUserMapper;
 import com.strelizia.arknights.dao.SeTuMapper;
 import com.strelizia.arknights.model.AdminUserInfo;
 import com.strelizia.arknights.model.ImgUrlInfo;
+import com.strelizia.arknights.service.GroupAdminInfoService;
 import com.strelizia.arknights.service.SeTuService;
 import com.strelizia.arknights.util.AdminUtil;
 import com.strelizia.arknights.util.ImageUtil;
@@ -12,7 +13,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 import org.springframework.stereotype.Service;
 import org.springframework.util.DigestUtils;
@@ -45,8 +45,9 @@ public class SeTuServiceImpl implements SeTuService {
     @Autowired
     private ImageUtil imageUtil;
 
-    @Value("${pixiv.count}")
-    private Integer count;
+    @Autowired
+    private GroupAdminInfoService groupAdminInfoService;
+
 
     @Override
     public String getImageIntoDb(String json, Integer type, String name) {
@@ -90,6 +91,7 @@ public class SeTuServiceImpl implements SeTuService {
         //判断是否有无限涩图权限
         boolean b = AdminUtil.getImgAdmin(qqMd5,admins);
         //只有在有无限涩图权限或者没有达到今日涩图上限的时候才发送涩图
+        Integer count = groupAdminInfoService.getGroupPictureAdmin(groupId);
         if (pixiv < count || b) {
             ImgUrlInfo img = seTuMapper.selectOneSeTuUrl(type);
             if (img == null){

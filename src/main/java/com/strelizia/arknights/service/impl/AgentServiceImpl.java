@@ -6,13 +6,13 @@ import com.strelizia.arknights.dao.UserFoundMapper;
 import com.strelizia.arknights.model.AdminUserInfo;
 import com.strelizia.arknights.model.AgentInfo;
 import com.strelizia.arknights.model.UserFoundInfo;
+import com.strelizia.arknights.service.GroupAdminInfoService;
 import com.strelizia.arknights.util.AdminUtil;
 import com.strelizia.arknights.util.FormatStringUtil;
 import com.strelizia.arknights.util.FoundAgentUtil;
 import com.strelizia.arknights.service.AgentService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.util.DigestUtils;
 
@@ -33,9 +33,9 @@ public class AgentServiceImpl implements AgentService {
     private UserFoundMapper userFoundMapper;
     @Autowired
     private AdminUserMapper adminUserMapper;
+    @Autowired
+    private GroupAdminInfoService groupAdminInfoService;
 
-    @Value("${userConfig.limit}")
-    private Integer limit;
 
     @Override
     public String chouKa(String pool,Long qq,String name,Long groupId) {
@@ -120,7 +120,8 @@ public class AgentServiceImpl implements AgentService {
         String s = "今日抽卡机会无了";
         List<AdminUserInfo> admins = adminUserMapper.selectAllAdmin();
         boolean b = AdminUtil.getFoundAdmin(qqMd5,admins);
-        if (today<limit||b) {
+        Integer limit = groupAdminInfoService.getGroupFoundAdmin(groupId);
+        if (today< limit ||b) {
             s = FoundAgentByNum(count, pool, qq, sum, name, groupId);
         }
         return s;

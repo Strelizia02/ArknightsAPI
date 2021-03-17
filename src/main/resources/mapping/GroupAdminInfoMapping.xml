@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.strelizia.arknights.dao.GroupAdminInfoMapper">
+    <resultMap id="BaseResultMap" type="com.strelizia.arknights.model.GroupAdminInfo">
+        <result column="found" property="found" jdbcType="INTEGER" />
+        <result column="picture" property="picture" jdbcType="INTEGER" />
+    </resultMap>
+
+
+    <select id="getGroupAdminNum" parameterType="java.lang.Long" resultMap="BaseResultMap">
+        SELECT
+            `found`,picture
+        FROM
+            a_group_admin
+        WHERE
+            group_id = #{groupId}
+    </select>
+
+    <insert id="insertGroupId">
+        insert into a_group_admin (group_id) VALUES (#{groupId})
+    </insert>
+</mapper>
