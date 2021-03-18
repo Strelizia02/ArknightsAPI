@@ -23,8 +23,8 @@ public class DailyCountServiceImpl implements DailyCountService {
     @Autowired
     private SendMsgUtil sendMsgUtil;
 
-    @Value("${userConfig.limit}")
-    private Integer todayCount;
+    @Autowired
+    private GroupAdminInfoServiceImpl groupAdminInfoService;
 
     /**
      * 每日日报的查询逻辑
@@ -32,6 +32,8 @@ public class DailyCountServiceImpl implements DailyCountService {
      * @return
      */
     public String jobMessageByGroupId(Long groupId){
+        Integer todayCount = groupAdminInfoService.getGroupFoundAdmin(groupId);
+
         UserGetInfo allSixMax = userFoundMapper.selectAllSixMax(groupId);
         UserGetInfo allRateMax = userFoundMapper.selectRateAllMax(groupId);
         UserGetInfo todaySixMax = userFoundMapper.selectTodaySixMax(groupId);
@@ -54,9 +56,10 @@ public class DailyCountServiceImpl implements DailyCountService {
     public void SendDailyCount() {
         List<Long> groups = userFoundMapper.selectAllActiveGroups();
         for (Long groupId:groups){
+            Integer todayCount = groupAdminInfoService.getGroupFoundAdmin(groupId);
             String s = jobMessageByGroupId(groupId);
             sendMsgUtil.CallOPQApiSendMsg(groupId,s,2);
+            userFoundMapper.giveMoreFoundToFeiQiu(groupId, todayCount);
         }
-        userFoundMapper.giveMoreFoundToFeiQiu(todayCount);
     }
 }

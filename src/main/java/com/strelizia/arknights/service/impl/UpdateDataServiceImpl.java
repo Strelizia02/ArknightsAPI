@@ -40,7 +40,12 @@ public class UpdateDataServiceImpl implements UpdateDataService {
     protected RestTemplate restTemplate;
 
     @Override
-    public void updateAllData() {
+    /**
+     * checkUpdate是否检查版本更新
+     *      —— 是，检查版本更新，版本不一致才进行更新
+     *      —— 否，不进行版本检查，强制更新
+     */
+    public void updateAllData(boolean checkUpdate) {
         //获取kokodayo的Json数据Key
         String koKoDaYoKeyUrl = "https://api.kokodayo.fun/api/base/info";
 
@@ -50,34 +55,35 @@ public class UpdateDataServiceImpl implements UpdateDataService {
         String charKey = keyJsonObj.getJSONObject("result").getJSONObject("agent").getJSONObject("char").getString("key");
         String enemyKey = keyJsonObj.getJSONObject("result").getJSONObject("level").getJSONObject("enemy").getString("key");
         //版本不同才进行更新
-        if (!charKey.equals(dataVersion)) {
-            updateMapper.updateVersion(charKey);
-            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-            updateMapper.clearOperatorData();
-            List<Long> groups = userFoundMapper.selectAllGroups();
+        if (charKey.equals(dataVersion) && checkUpdate) {
+            return;
+        }
+        updateMapper.updateVersion(charKey);
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        updateMapper.clearOperatorData();
+        List<Long> groups = userFoundMapper.selectAllGroups();
 
-            for (Long groupId : groups) {
-                String s = "游戏数据闪断更新中，更新期间存在无响应情况，请耐心等待更新完成。\n" +
-                        "若十分钟后仍未收到更新完成信息，请联系开发者重新进行更新请求\n--" +
-                        sdf.format(new Date());
-                sendMsgUtil.CallOPQApiSendMsg(groupId, s, 2);
-            }
+        for (Long groupId : groups) {
+            String s = "游戏数据闪断更新中，更新期间存在无响应情况，请耐心等待更新完成。\n" +
+                    "若十分钟后仍未收到更新完成信息，请联系开发者重新进行更新请求\n--" +
+                    sdf.format(new Date());
+            sendMsgUtil.CallOPQApiSendMsg(groupId, s, 2);
+        }
 
-            updateAllOperator(charKey);
-            updateAllEnemy(enemyKey);
+        updateAllOperator(charKey);
+        updateAllEnemy(enemyKey);
 
-            for (Long groupId : groups) {
-                String s = "正在从企鹅物流搬运材料数据ing\n--" +
-                        sdf.format(new Date());
-                sendMsgUtil.CallOPQApiSendMsg(groupId, s, 2);
-            }
+        for (Long groupId : groups) {
+            String s = "正在从企鹅物流搬运材料数据ing\n--" +
+                    sdf.format(new Date());
+            sendMsgUtil.CallOPQApiSendMsg(groupId, s, 2);
+        }
 
-            updateMapAndItem();
+        updateMapAndItem();
 
-            for (Long groupId : groups) {
-                String s = "游戏数据更新完成\n--" + sdf.format(new Date());
-                sendMsgUtil.CallOPQApiSendMsg(groupId, s, 2);
-            }
+        for (Long groupId : groups) {
+            String s = "游戏数据更新完成\n--" + sdf.format(new Date());
+            sendMsgUtil.CallOPQApiSendMsg(groupId, s, 2);
         }
     }
 

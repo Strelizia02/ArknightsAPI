@@ -92,6 +92,7 @@
         SET today_count = today_count - 10
         WHERE
             today_count = #{todayCount}
+        AND group_id = #{groupId}
         AND today_six = 0
     </update>
 

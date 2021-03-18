@@ -31,7 +31,7 @@ public class UpdateController {
 
     @GetMapping("AutoUpdate")
     public Integer update(){
-        updateDataService.updateAllData();
+        updateDataService.updateAllData(false);
         return 0;
     }
 

@@ -21,7 +21,7 @@ public class UpdateJob {
     //每5分钟判断是否有数据更新
     @Scheduled(cron = "${scheduled.updateJob}")
     @Async
-    public void uapdateJob(){
-        updateDataService.updateAllData();
+    public void updateJob(){
+        updateDataService.updateAllData(true);
     }
 }
