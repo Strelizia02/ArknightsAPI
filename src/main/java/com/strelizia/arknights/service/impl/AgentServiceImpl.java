@@ -178,18 +178,27 @@ public class AgentServiceImpl implements AgentService {
                 } else {
                     agentList = agentMapper.selectAgentByStar("常规", star);
                 }
-        }else {
+            }else if(star == 5){
                 if (r <= 0.5) {
                     //获取当前卡池三星/四星/五星/六星列表
                     agentList = agentMapper.selectAgentByStar(pool, star);
                 } else {
                     agentList = agentMapper.selectAgentByStar("常规", star);
                 }
-            }
-            //有可能三星还去up池里找，因为三星不存在up所以报空，重新去常规池里找
-            if (agentList.size() == 0){
+            }else if(star == 4){
+                if (r <= 0.2) {
+                    //获取当前卡池三星/四星/五星/六星列表
+                    agentList = agentMapper.selectAgentByStar(pool, star);
+                } else {
+                    agentList = agentMapper.selectAgentByStar("常规", star);
+                }
+            }else {
                 agentList = agentMapper.selectAgentByStar("常规", star);
             }
+            //有可能三星还去up池里找，因为三星不存在up所以报空，重新去常规池里找
+//            if (agentList.size() == 0){
+//                agentList = agentMapper.selectAgentByStar("常规", star);
+//            }
             //随机数种子采用纳秒数+毫秒/qq，尽可能减少时间戳导致的不随机
             Random random = new Random(System.nanoTime() +  System.currentTimeMillis() / qq);
             int i = random.nextInt(agentList.size());
