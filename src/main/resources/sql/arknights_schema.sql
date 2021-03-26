@@ -70,6 +70,17 @@ CREATE TABLE `a_data_version` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- ----------------------------
+-- Table structure for a_group_admin
+-- ----------------------------
+DROP TABLE IF EXISTS `a_group_admin`;
+CREATE TABLE `a_group_admin` (
+  `group_id` int(255) NOT NULL,
+  `found` int(255) DEFAULT '20',
+  `picture` int(255) DEFAULT '5',
+  PRIMARY KEY (`group_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- ----------------------------
 -- Table structure for a_image_url
 -- ----------------------------
 DROP TABLE IF EXISTS `a_image_url`;
