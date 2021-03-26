@@ -196,9 +196,9 @@ public class AgentServiceImpl implements AgentService {
                 agentList = agentMapper.selectAgentByStar("常规", star);
             }
             //有可能三星还去up池里找，因为三星不存在up所以报空，重新去常规池里找
-//            if (agentList.size() == 0){
-//                agentList = agentMapper.selectAgentByStar("常规", star);
-//            }
+            if (agentList.size() == 0){
+                agentList = agentMapper.selectAgentByStar("常规", star);
+            }
             //随机数种子采用纳秒数+毫秒/qq，尽可能减少时间戳导致的不随机
             Random random = new Random(System.nanoTime() +  System.currentTimeMillis() / qq);
             int i = random.nextInt(agentList.size());
