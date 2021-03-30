@@ -110,6 +110,29 @@ public class ClassificationUtil {
         map.put("sql",SQL);
         map.put("SQL",SQL);
 
+        map.put("所有微博",WeiBoLieBiao);
+        map.put("微博列表",WeiBoLieBiao);
+
+        map.put("微博正文",WeiBoZhengWen);
+
+        map.put("干员列表",GanYuanLieBiao);
+        map.put("搜索干员",GanYuanLieBiao);
+        map.put("查找干员",GanYuanLieBiao);
+        map.put("干员查询",GanYuanLieBiao);
+
+        map.put("干员档案",GanYuanDangAn);
+        map.put("详细档案",GanYuanDangAn);
+
+        map.put("声优列表",ShengYouLieBiao);
+        map.put("声优查询",ShengYouLieBiao);
+        map.put("查询声优",ShengYouLieBiao);
+        map.put("声优",ShengYouLieBiao);
+        map.put("CV",ShengYouLieBiao);
+
+        map.put("画师查询",HuaShiLieBiao);
+        map.put("查询画师",HuaShiLieBiao);
+        map.put("画师列表",HuaShiLieBiao);
+
         return map.get(s);
     }
 }

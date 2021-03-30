@@ -176,6 +176,29 @@
             operator_id = #{id}
     </update>
 
+    <update id="updateOperatorInfo" parameterType="com.strelizia.arknights.model.OperatorBasicInfo">
+        UPDATE t_operator
+        SET char_id=#{charId},
+        draw_name = #{drawName},
+        info_name = #{infoName},
+        code_name = #{codeName},
+        sex = #{sex},
+        come_from = #{comeFrom},
+        birthday = #{birthday},
+        race = #{race},
+        height = #{height},
+        infection = #{infection},
+        comprehensive_test = #{comprehensiveTest},
+        objective_resume = #{objectiveResume},
+        clinical_diagnosis = #{clinicalDiagnosis},
+        archives1 = #{archives1},
+        archives2 = #{archives2},
+        archives3 = #{archives3},
+        archives4 = #{archives4},
+        promotion_info = #{promotionInfo}
+        where operator_id = #{operatorId}
+    </update>
+
     <delete id="clearOperatorData">
         DELETE FROM t_operator;
         TRUNCATE TABLE t_operator;

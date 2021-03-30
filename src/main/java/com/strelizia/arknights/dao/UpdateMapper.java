@@ -53,4 +53,6 @@ public interface UpdateMapper {
     String getVersion();
 
     Integer updateVersion(String newVersion);
+
+    Integer updateOperatorInfo(OperatorBasicInfo operatorInfo);
 }

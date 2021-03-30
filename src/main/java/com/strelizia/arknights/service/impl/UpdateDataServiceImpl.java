@@ -105,9 +105,103 @@ public class UpdateDataServiceImpl implements UpdateDataService {
             String operatorIdUrl = "https://andata.somedata.top/data-2020/char/data/";
 
             String operatorJson = getJsonStringFromUrl(operatorIdUrl + operatorId + ".json");
-            updateOperatorByJson(operatorJson);
+            Integer operatorNum = updateOperatorByJson(operatorJson);
+            if (!operator.getString("class").equals("TOKEN")) {
+                //只获取干员信息
+                updateOperatorInfoById(operatorId, operatorNum);
+            }
         }
         log.info("更新完成，共更新了{}个干员信息",length);
+    }
+
+    private void updateOperatorInfoById(String operatorId, Integer operatorNum) {
+        //干员基础信息
+        String infoUrl = "https://andata.somedata.top/data-2020/char/info/";
+
+        String infoJson = getJsonStringFromUrl(infoUrl + operatorId + ".json");
+        if (infoJson != null) {
+            JSONObject infoJsonObj = new JSONObject(infoJson);
+
+            OperatorBasicInfo operatorBasicInfo = new OperatorBasicInfo();
+            operatorBasicInfo.setOperatorId(operatorNum);
+            operatorBasicInfo.setCharId(operatorId);
+            operatorBasicInfo.setDrawName(infoJsonObj.getString("drawName"));
+            operatorBasicInfo.setInfoName(infoJsonObj.getString("infoName"));
+
+            JSONArray storyTextAudio = infoJsonObj.getJSONArray("storyTextAudio");
+            for (int i = 0; i < storyTextAudio.length(); i++) {
+                JSONObject story = storyTextAudio.getJSONObject(i);
+                String storyText = story.getJSONArray("stories").getJSONObject(0).getString("storyText");
+                String storyTitle = story.getString("storyTitle");
+                switch (storyTitle) {
+                    case "基础档案":
+                        String[] split = storyText.split("\n");
+                        operatorBasicInfo.setInfection(split[split.length - 1]);
+                        for (String s : split) {
+                            if (s.length() < 1) {
+                                break;
+                            }
+                            String[] basicText = s.substring(1).split("】");
+                            switch (basicText[0]) {
+                                case "代号":
+                                    operatorBasicInfo.setCodeName(basicText[1]);
+                                    break;
+                                case "性别":
+                                    operatorBasicInfo.setSex(basicText[1]);
+                                    break;
+                                case "出身地":
+                                    operatorBasicInfo.setComeFrom(basicText[1]);
+                                    break;
+                                case "生日":
+                                    operatorBasicInfo.setBirthday(basicText[1]);
+                                    break;
+                                case "种族":
+                                    operatorBasicInfo.setRace(basicText[1]);
+                                    break;
+                                case "身高":
+                                    String str = basicText[1];
+                                    String str2 = "";
+                                    if (str != null && !"".equals(str)) {
+                                        for (int j = 0; j < str.length(); j++) {
+                                            if (str.charAt(j) >= 48 && str.charAt(j) <= 57) {
+                                                str2 += str.charAt(j);
+                                            }
+                                        }
+                                    }
+                                    operatorBasicInfo.setHeight(Integer.parseInt(str2));
+                                    break;
+                            }
+                        }
+                        break;
+                    case "综合体检测试":
+                        operatorBasicInfo.setComprehensiveTest(storyText);
+                        break;
+                    case "客观履历":
+                        operatorBasicInfo.setObjectiveResume(storyText);
+                        break;
+                    case "临床诊断分析":
+                        operatorBasicInfo.setClinicalDiagnosis(storyText);
+                        break;
+                    case "档案资料一":
+                        operatorBasicInfo.setArchives1(storyText);
+                        break;
+                    case "档案资料二":
+                        operatorBasicInfo.setArchives2(storyText);
+                        break;
+                    case "档案资料三":
+                        operatorBasicInfo.setArchives3(storyText);
+                        break;
+                    case "档案资料四":
+                        operatorBasicInfo.setArchives4(storyText);
+                        break;
+                    case "晋升记录":
+                    case "晋升资料":
+                        operatorBasicInfo.setPromotionInfo(storyText);
+                        break;
+                }
+            }
+            updateMapper.updateOperatorInfo(operatorBasicInfo);
+        }
     }
 
     private void updateOperatorTag(JSONObject operator) {
@@ -255,13 +349,19 @@ public class UpdateDataServiceImpl implements UpdateDataService {
         httpHeaders.set("Authorization","2");
         httpHeaders.set("Host","andata.somedata.top");
         HttpEntity<String> httpEntity = new HttpEntity<>(httpHeaders);
-        String s = restTemplate
-                .exchange(url, HttpMethod.GET, httpEntity, String.class).getBody();
+        String s = null;
+        try {
+            s = restTemplate
+                    .exchange(url, HttpMethod.GET, httpEntity, String.class).getBody();
+        }catch (Exception e){
+
+        }
+
         return s;
     }
 
     @Override
-    public void updateOperatorByJson(String json) {
+    public Integer updateOperatorByJson(String json) {
         Map<String, Integer> operatorClass = new HashMap<>(8);
         operatorClass.put("PIONEER", 1);
         operatorClass.put("WARRIOR", 2);
@@ -379,5 +479,8 @@ public class UpdateDataServiceImpl implements UpdateDataService {
                 }
             }
         }
+
+        return operatorId;
     }
+
 }

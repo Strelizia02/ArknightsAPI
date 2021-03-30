@@ -21,14 +21,6 @@ public class UpdateController {
     @Autowired
     private SeTuService seTuService;
 
-    @PostMapping("update")
-    public Integer receive(
-            @RequestBody String json
-    ){
-        updateDataService.updateOperatorByJson(json);
-        return 0;
-    }
-
     @GetMapping("AutoUpdate")
     public Integer update(){
         updateDataService.updateAllData(false);

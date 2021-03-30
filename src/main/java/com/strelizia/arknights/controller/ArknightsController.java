@@ -49,6 +49,11 @@ public class ArknightsController {
     @Autowired
     private ExecuteSqlService executeSqlService;
 
+    @Autowired
+    private SinaListeningService sinaListeningService;
+
+    @Autowired OperatorInfoService operatorInfoService;
+
     /**
      * 消息处理总控制器，用于接收消息，并处理分流到不同的service
      */
@@ -128,8 +133,12 @@ public class ArknightsController {
                         "17.动态查询：{##动态查询 用户昵称 编号}\n" +
                         "18.关注列表：{##关注列表}\n" +
                         "19.最新投稿：{##最新投稿 用户昵称}\n" +
-                        "20.敌人清单：{##敌人清单 名称关键字}\n" +
+                        "20.敌人清单：{##敌人清单 关键字}\n" +
                         "21.敌人信息：{##敌人信息 敌人名称}\n" +
+                        "22.干员列表：{##干员列表 [条件1] [条件2]}\n" +
+                        "23.干员档案：{##干员档案 干员名 [档案名]}\n" +
+                        "24.声优列表：{##声优列表 关键字}\n" +
+                        "24.画师列表：{##画师列表 关键字}\n" +
                         "过大的涩图将导致回复缓慢，请不要上传不能过审的图片";
                 break;
             case XiangXiCaiDan:
@@ -190,9 +199,21 @@ public class ArknightsController {
                                 "19.最新投稿：\n" +
                                 "\t使用方法：{##最新投稿 用户昵称}\n" +
                                 "20.敌人清单：\n" +
-                                "\t使用方法：{##敌人清单}或{##敌人清单 名称关键字}\n" +
+                                "\t使用方法：{##敌人清单}或{##敌人清单 关键字}\n" +
                                 "21.敌人信息：\n" +
                                 "\t使用方法：{##敌人信息 敌人名称}\n" +
+                                "22.干员列表：\n" +
+                                "\t使用方法：{##干员列表 [条件1] [条件2]}\n" +
+                                "\t例1：##干员列表\n" +
+                                "\t例2：##干员列表 女 瓦伊凡\n" +
+                                "23.干员档案：\n" +
+                                "\t使用方法：{##干员档案 干员名 [档案名]}\n" +
+                                "\t例1：干员档案 风笛\n" +
+                                "\t例2：干员档案 安洁莉娜 基础档案\n" +
+                                "24.声优列表：\n" +
+                                "\t使用方法：{##声优列表 关键字}\n" +
+                                "24.画师列表：\n" +
+                                "\t使用方法：{##画师列表 关键字}\n" +
                                 "注：本项目需严格按照格式输入，自然语言处理功能将在后期优化";
                 break;
             case ShiLian:
@@ -274,6 +295,25 @@ public class ArknightsController {
                 break;
             case SQL:
                 result = executeSqlService.ExecuteSql(qq,text);
+                break;
+            case WeiBoLieBiao:
+                sinaListeningService.GetWeiBoList();
+                result = "";
+                break;
+            case WeiBoZhengWen:
+                result = "";
+                break;
+            case GanYuanLieBiao:
+                result = operatorInfoService.getOperatorByInfos(s);
+                break;
+            case GanYuanDangAn:
+                result = operatorInfoService.getOperatorInfo(s[1],s[2]);
+                break;
+            case HuaShiLieBiao:
+                result = operatorInfoService.getDrawByName(s[1]);
+                break;
+            case ShengYouLieBiao:
+                result = operatorInfoService.getCVByName(s[1]);
                 break;
             default:
                 result = "俺不晓得你在锁啥子";

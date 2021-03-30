@@ -99,7 +99,7 @@ public class SeTuServiceImpl implements SeTuService {
             }else {
                 String url = img.getUrl();
                 log.info("发送编号为{}的涩图",img.getId());
-                sendMsgUtil.CallOPQApiSendImg(groupId, null,SendMsgUtil.picBase64Buf, url,2);
+                sendMsgUtil.CallOPQApiSendImg(groupId, img.getId().toString(),SendMsgUtil.picBase64Buf, url,2);
                 //更新请求涩图数量
                 seTuMapper.updateTodaySeTu(qqMd5,name,groupId);
                 //空字符串不返回文字信息

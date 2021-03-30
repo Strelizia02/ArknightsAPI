@@ -34,5 +34,11 @@ public enum ClassificationEnum {
     ZuiXinDongTai,
     DiRenXinXi,
     DiRenQuanMing,
-    SQL
+    SQL,
+    WeiBoLieBiao,
+    WeiBoZhengWen,
+    GanYuanDangAn,
+    GanYuanLieBiao,
+    ShengYouLieBiao,
+    HuaShiLieBiao
 }
