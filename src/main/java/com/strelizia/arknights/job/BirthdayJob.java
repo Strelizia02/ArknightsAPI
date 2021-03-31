@@ -37,11 +37,20 @@ public class BirthdayJob {
     @Scheduled(cron = "${scheduled.birthdayJob}")
     @Async
     public void birthdayJob(){
-        SimpleDateFormat sdf = new SimpleDateFormat("MM月dd日");
-        String today = sdf.format(new Date());
-        if (today.startsWith("0")){
-            today = today.substring(1);
+        SimpleDateFormat month = new SimpleDateFormat("MM");
+        SimpleDateFormat day = new SimpleDateFormat("dd");
+        Date date = new Date();
+
+        String monthStr = month.format(date);
+        String dayStr = day.format(date);
+        if (monthStr.startsWith("0")){
+            monthStr = monthStr.substring(1);
         }
+        if (dayStr.startsWith("0")){
+            dayStr = dayStr.substring(1);
+        }
+        String today = monthStr + "月" + dayStr + "日";
+
         String s = "今天是" + today + "祝 ";
         List<String> operatorByBirthday = operatorInfoMapper.getOperatorByBirthday(today);
         if (operatorByBirthday != null && operatorByBirthday.size() > 0){
