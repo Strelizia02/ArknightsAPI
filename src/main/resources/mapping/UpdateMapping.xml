@@ -202,6 +202,8 @@
     <delete id="clearOperatorData">
         DELETE FROM t_operator;
         TRUNCATE TABLE t_operator;
+        DELETE FROM t_operator_building_skill;
+        TRUNCATE TABLE t_operator_building_skill;
         DELETE FROM t_operator_evolve_costs;
         TRUNCATE TABLE t_operator_evolve_costs;
         DELETE FROM t_operator_skill;

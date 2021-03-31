@@ -136,6 +136,8 @@ public class ClassificationUtil {
         map.put("消息群发",QunFaXiaoXi);
         map.put("群发消息",QunFaXiaoXi);
 
+        map.put("基建技能",JiJianJiNeng);
+
         return map.get(s);
     }
 }

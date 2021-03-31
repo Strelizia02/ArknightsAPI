@@ -1,5 +1,6 @@
 package com.strelizia.arknights.service.impl;
 
+import com.strelizia.arknights.dao.BuildingSkillMapper;
 import com.strelizia.arknights.dao.UpdateMapper;
 import com.strelizia.arknights.dao.UserFoundMapper;
 import com.strelizia.arknights.model.*;
@@ -15,6 +16,8 @@ import org.springframework.web.client.RestTemplate;
 
 import java.text.SimpleDateFormat;
 import java.util.*;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  * @author wangzy
@@ -38,6 +41,9 @@ public class UpdateDataServiceImpl implements UpdateDataService {
 
     @Autowired
     protected RestTemplate restTemplate;
+
+    @Autowired
+    private BuildingSkillMapper buildingSkillMapper;
 
     @Override
     /**
@@ -496,12 +502,14 @@ public class UpdateDataServiceImpl implements UpdateDataService {
                         buildingSkill.setLevel(buildObj.getJSONObject("cond").getInt("level"));
                         buildingSkill.setBuffName(buildObj.getJSONObject("data").getString("buffName"));
                         buildingSkill.setRoomType(buildObj.getJSONObject("data").getString("roomType"));
-                        buildingSkill.setDescription(buildObj.getJSONObject("data").getString("description"));
-
+                        //正则表达式去除标签
+                        Pattern pattern = Pattern.compile("<(.*?)>");
+                        Matcher matcher = pattern.matcher(buildObj.getJSONObject("data").getString("description"));
+                        buildingSkill.setDescription(matcher.replaceAll(""));
+                        buildingSkillMapper.insertBuildingSkill(buildingSkill);
                     }
                 }
             }
-
         }
 
         return operatorId;

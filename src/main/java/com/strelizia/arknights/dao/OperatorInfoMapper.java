@@ -34,4 +34,7 @@ public interface OperatorInfoMapper {
     //根据生日查找干员
     List<String> getOperatorByBirthday(String birthday);
 
+    //根据ID查找干员名
+    String getOperatorNameById(Integer id);
+
 }

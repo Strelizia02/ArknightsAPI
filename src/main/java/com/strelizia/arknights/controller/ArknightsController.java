@@ -52,7 +52,11 @@ public class ArknightsController {
     @Autowired
     private SinaListeningService sinaListeningService;
 
-    @Autowired OperatorInfoService operatorInfoService;
+    @Autowired
+    private OperatorInfoService operatorInfoService;
+
+    @Autowired
+    private BuildingSkillService buildingSkillService;
 
     /**
      * 消息处理总控制器，用于接收消息，并处理分流到不同的service
@@ -317,6 +321,9 @@ public class ArknightsController {
                 break;
             case QunFaXiaoXi:
                 result = executeSqlService.sendGroupMessage(qq, s[1]);
+                break;
+            case JiJianJiNeng:
+                result = buildingSkillService.getBuildSkillNameServiceByInfos(s);
                 break;
             default:
                 result = "俺不晓得你在锁啥子";

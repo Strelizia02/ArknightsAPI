@@ -53,6 +53,16 @@
             t_operator
     </select>
 
+    <select id="getOperatorNameById" resultType="java.lang.String">
+        SELECT
+            operator_name
+        FROM
+            t_operator
+        WHERE
+            operator_id = #{id}
+    </select>
+
+
     <select id="getOperatorInfoByName" parameterType="java.lang.String" resultMap="BaseResultMap">
         SELECT
             operator_id,
