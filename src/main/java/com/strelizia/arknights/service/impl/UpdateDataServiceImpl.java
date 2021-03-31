@@ -482,6 +482,26 @@ public class UpdateDataServiceImpl implements UpdateDataService {
                     }
                 }
             }
+
+            //封装干员基建技能
+            if (jsonObj.get("buildingData") instanceof JSONArray) {
+                JSONArray buildingData = jsonObj.getJSONArray("buildingData");
+                for (int i = 0; i< buildingData.length(); i++){
+                    JSONArray build1 = buildingData.getJSONArray(i);
+                    for (int j = 0; j < build1.length(); j++){
+                        BuildingSkill buildingSkill = new BuildingSkill();
+                        JSONObject buildObj = build1.getJSONObject(j);
+                        buildingSkill.setOperatorId(operatorId);
+                        buildingSkill.setPhase(buildObj.getJSONObject("cond").getInt("phase"));
+                        buildingSkill.setLevel(buildObj.getJSONObject("cond").getInt("level"));
+                        buildingSkill.setBuffName(buildObj.getJSONObject("data").getString("buffName"));
+                        buildingSkill.setRoomType(buildObj.getJSONObject("data").getString("roomType"));
+                        buildingSkill.setDescription(buildObj.getJSONObject("data").getString("description"));
+
+                    }
+                }
+            }
+
         }
 
         return operatorId;

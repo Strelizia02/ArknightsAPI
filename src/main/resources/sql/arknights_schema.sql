@@ -187,7 +187,39 @@ CREATE TABLE `t_operator` (
   `cost` int(11) DEFAULT '0' COMMENT '费用消耗',
   `baseAttackTime` int(11) DEFAULT '0' COMMENT '攻击间隔',
   `respawnTime` int(11) DEFAULT '0' COMMENT '再部署时间',
+  `draw_name` text COMMENT '画师',
+  `info_name` varchar(255) DEFAULT NULL COMMENT '声优',
+  `code_name` varchar(255) DEFAULT NULL COMMENT '代号',
+  `sex` varchar(255) DEFAULT NULL,
+  `come_from` varchar(255) DEFAULT NULL COMMENT '出身地',
+  `birthday` varchar(255) DEFAULT NULL,
+  `race` varchar(255) DEFAULT NULL COMMENT '种族',
+  `height` int(255) DEFAULT NULL COMMENT '身高',
+  `infection` varchar(255) DEFAULT NULL COMMENT '感染情况',
+  `comprehensive_test` text COMMENT '综合体检测试',
+  `objective_resume` text COMMENT '客观履历',
+  `clinical_diagnosis` text COMMENT '临床诊断分析',
+  `archives1` text,
+  `archives2` text,
+  `archives3` text,
+  `archives4` text,
+  `promotion_info` text COMMENT '晋升资料',
   PRIMARY KEY (`operator_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- ----------------------------
+-- Table structure for t_operator_building_skill
+-- ----------------------------
+DROP TABLE IF EXISTS `t_operator_building_skill`;
+CREATE TABLE `t_operator_building_skill` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `operator_id` int(255) DEFAULT NULL,
+  `phase` int(255) DEFAULT NULL,
+  `level` int(11) DEFAULT NULL,
+  `buff_name` varchar(255) DEFAULT NULL,
+  `room_type` varchar(255) DEFAULT NULL,
+  `description` varchar(255) DEFAULT NULL,
+  PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- ----------------------------
