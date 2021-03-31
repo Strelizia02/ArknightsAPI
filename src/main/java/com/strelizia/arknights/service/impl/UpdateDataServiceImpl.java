@@ -106,6 +106,10 @@ public class UpdateDataServiceImpl implements UpdateDataService {
 
             String operatorJson = getJsonStringFromUrl(operatorIdUrl + operatorId + ".json");
             Integer operatorNum = updateOperatorByJson(operatorJson);
+            //近卫兔兔单独处理
+            if (operatorId.equals("char_1001_amiya2")){
+                operatorId = "char_002_amiya";
+            }
             if (!operator.getString("class").equals("TOKEN")) {
                 //只获取干员信息
                 updateOperatorInfoById(operatorId, operatorNum);

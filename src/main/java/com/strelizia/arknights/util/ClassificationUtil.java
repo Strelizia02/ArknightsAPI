@@ -133,6 +133,9 @@ public class ClassificationUtil {
         map.put("查询画师",HuaShiLieBiao);
         map.put("画师列表",HuaShiLieBiao);
 
+        map.put("消息群发",QunFaXiaoXi);
+        map.put("群发消息",QunFaXiaoXi);
+
         return map.get(s);
     }
 }

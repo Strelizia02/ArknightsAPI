@@ -315,6 +315,9 @@ public class ArknightsController {
             case ShengYouLieBiao:
                 result = operatorInfoService.getCVByName(s[1]);
                 break;
+            case QunFaXiaoXi:
+                result = executeSqlService.sendGroupMessage(qq, s[1]);
+                break;
             default:
                 result = "俺不晓得你在锁啥子";
         }

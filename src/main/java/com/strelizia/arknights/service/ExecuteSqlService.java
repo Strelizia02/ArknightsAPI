@@ -7,4 +7,6 @@ package com.strelizia.arknights.service;
 public interface ExecuteSqlService {
 
     String ExecuteSql(Long qq, String text);
+
+    String sendGroupMessage(Long qq, String text);
 }
