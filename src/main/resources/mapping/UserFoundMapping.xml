@@ -78,12 +78,7 @@
     </select>
 
     <select id="selectAllGroups" resultType="java.lang.Long">
-        SELECT
-            group_id
-        FROM
-            a_user_found
-        GROUP BY
-            group_id
+        SELECT group_id FROM a_group_admin
     </select>
 
     <!--  额外再发十抽  -->

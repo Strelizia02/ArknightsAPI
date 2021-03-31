@@ -15,6 +15,8 @@ scheduled:
   cleanJob: 0 0 4 */1 * ?
   # 每天晚8点日报统计
   countJob: 0 0 20 */1 * ?
+  # 每天早8点播报干员庆生
+  birthdayJob: 0 0 8 */1 * ?
   # 每3分钟监听一次B站动态
   biliJob: 0 */3 * * * ?
   # 每3分钟监听一次微博动态

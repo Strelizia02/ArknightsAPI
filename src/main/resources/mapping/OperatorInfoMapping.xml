@@ -37,6 +37,15 @@
         OR race = #{info}
     </select>
 
+    <select id="getOperatorByBirthday" parameterType="java.lang.String" resultType="java.lang.String">
+        SELECT
+            operator_name
+        FROM
+            t_operator
+        WHERE
+            birthday = #{birthday}
+    </select>
+
     <select id="getAllOperator" resultType="java.lang.String">
         SELECT
             operator_name

@@ -31,4 +31,7 @@ public interface OperatorInfoMapper {
     //条件模糊查询声优
     List<String> getAllInfoNameLikeStr(String str);
 
+    //根据生日查找干员
+    List<String> getOperatorByBirthday(String birthday);
+
 }
