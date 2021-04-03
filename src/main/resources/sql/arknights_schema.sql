@@ -248,6 +248,24 @@ CREATE TABLE `t_operator_skill` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- ----------------------------
+-- Table structure for t_operator_skill_desc
+-- ----------------------------
+DROP TABLE IF EXISTS `t_operator_skill_desc`;
+CREATE TABLE `t_operator_skill_desc` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `skill_id` int(11) DEFAULT NULL,
+  `skill_type` int(11) DEFAULT NULL COMMENT '0->被动,1->手动触发,2->自动触发',
+  `sp_type` int(11) DEFAULT NULL COMMENT '1->自动回复,2->攻击回复,3->,4->受击回复,8->被动?',
+  `sp_cost` int(11) DEFAULT NULL COMMENT '技力消耗',
+  `sp_init` int(11) DEFAULT NULL COMMENT '初始技力',
+  `duration` int(11) DEFAULT NULL COMMENT '持续时间',
+  `description` varchar(255) DEFAULT NULL COMMENT '技能描述',
+  `skill_level` int(11) DEFAULT NULL COMMENT '技能等级',
+  `max_charge` int(11) DEFAULT NULL COMMENT '最大充能数',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=3131 DEFAULT CHARSET=utf8;
+
+-- ----------------------------
 -- Table structure for t_operator_skill_mastery_costs
 -- ----------------------------
 DROP TABLE IF EXISTS `t_operator_skill_mastery_costs`;
