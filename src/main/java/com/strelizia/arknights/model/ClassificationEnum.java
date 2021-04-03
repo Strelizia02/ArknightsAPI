@@ -42,5 +42,6 @@ public enum ClassificationEnum {
     ShengYouLieBiao,
     HuaShiLieBiao,
     QunFaXiaoXi,
-    JiJianJiNeng
+    JiJianJiNeng,
+    JiNengXiangQing
 }

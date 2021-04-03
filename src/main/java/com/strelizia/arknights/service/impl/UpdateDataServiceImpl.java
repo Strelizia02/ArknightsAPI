@@ -14,6 +14,7 @@ import org.springframework.http.*;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
+import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.*;
 import java.util.regex.Matcher;
@@ -460,8 +461,10 @@ public class UpdateDataServiceImpl implements UpdateDataService {
                     //技能ID信息
                     String skillIdUrl = "https://andata.somedata.top/data-2020/skills/";
 
-                    String skillName = new JSONObject(restTemplate
-                            .exchange(skillIdUrl + skills.getJSONObject(i).getString("skillId") + ".json", HttpMethod.GET, httpEntity, String.class).getBody())
+                    JSONObject skillObj = new JSONObject(restTemplate
+                            .exchange(skillIdUrl + skills.getJSONObject(i).getString("skillId") + ".json", HttpMethod.GET, httpEntity, String.class).getBody());
+
+                    String skillName = skillObj
                             .getJSONArray("levels")
                             .getJSONObject(0)
                             .getString("name");
@@ -469,6 +472,65 @@ public class UpdateDataServiceImpl implements UpdateDataService {
                     operatorSkillInfo.setSkillName(skillName);
                     updateMapper.insertOperatorSkill(operatorSkillInfo);
                     Integer skillId = updateMapper.selectSkillIdByName(skillName);
+
+                    JSONArray levels = skillObj.getJSONArray("levels");
+                    for (int level = 0; level < levels.length(); level++) {
+                        JSONObject skillDescJson = levels.getJSONObject(level);
+                        SkillDesc skillDesc = new SkillDesc();
+                        skillDesc.setSkillId(skillId);
+                        skillDesc.setSkillLevel(level + 1);
+                        skillDesc.setSkillType(skillDescJson.getInt("skillType"));
+
+                        //获取key-value列表
+                        Map<String,Double> parameters = new HashMap<>();
+                        JSONArray mapList = skillDescJson.getJSONArray("blackboard");
+                        for (int keyId = 0; keyId < mapList.length(); keyId++){
+                            parameters.put(mapList.getJSONObject(keyId).getString("key").toLowerCase(),
+                                    mapList.getJSONObject(keyId).getDouble("value"));
+                        }
+
+                        Pattern pattern = Pattern.compile("<(.*?)>");
+                        Matcher matcher = pattern.matcher(skillDescJson.getString("description"));
+
+                        //使用正则表达式替换参数
+                        Pattern p = Pattern.compile("(\\{-?([a-zA-Z/.\\]\\[0-9_@]+):?([0-9.]*)(%?)\\})");
+                        //代码可以运行不要乱改.jpg、
+                        //这个正则已经不断进化成我看不懂的形式了
+                        Matcher m = p.matcher(matcher.replaceAll(""));
+                        StringBuffer stringBuffer = new StringBuffer();
+
+                        while (m.find()){
+                            String key = m.group(2).toLowerCase();
+                            String title = m.group(3);
+                            String percent = m.group(4);
+
+                            Double val = parameters.get(key);
+                            String value;
+
+                            if (!percent.equals("")){
+                                val = val * 100;
+                            }
+                            if (title.equals("0.0")){
+                                value = new DecimalFormat("#.0").format(val) + percent;
+                            }else{
+                                value = new DecimalFormat("#").format(val) + percent;
+                            }
+
+                            m.appendReplacement(stringBuffer,value);
+                        }
+
+                        skillDesc.setDescription(m.appendTail(stringBuffer).toString().replace("--","-"));
+
+                        skillDesc.setSpType(skillDescJson.getJSONObject("spData").getInt("spType"));
+                        skillDesc.setMaxCharge(skillDescJson.getJSONObject("spData").getInt("maxChargeTime"));
+                        skillDesc.setSpCost(skillDescJson.getJSONObject("spData").getInt("spCost"));
+                        skillDesc.setSpInit(skillDescJson.getJSONObject("spData").getInt("initSp"));
+                        skillDesc.setDuration(skillDescJson.getInt("duration"));
+
+                        updateMapper.updateSkillDecs(skillDesc);
+
+                    }
+
                     //获取技能等级列表(专一专二专三)
                     JSONArray levelUpCostCond = skills.getJSONObject(i).getJSONArray("levelUpCostCond");
                     //该技能专j+1的花费

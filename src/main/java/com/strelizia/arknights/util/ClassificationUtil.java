@@ -138,6 +138,9 @@ public class ClassificationUtil {
 
         map.put("基建技能",JiJianJiNeng);
 
+        map.put("技能描述",JiNengXiangQing);
+        map.put("技能详情",JiNengXiangQing);
+
         return map.get(s);
     }
 }

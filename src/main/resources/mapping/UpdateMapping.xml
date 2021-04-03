@@ -162,6 +162,30 @@
             )
     </insert>
 
+    <insert id="updateSkillDecs" parameterType="com.strelizia.arknights.model.SkillDesc">
+        INSERT INTO t_operator_skill_desc (
+            skill_id,
+            skill_type,
+            sp_type,
+            sp_cost,
+            sp_init,
+            duration,
+            description,
+            skill_level,
+            max_charge
+        )
+        VALUES
+            (#{skillId},
+            #{skillType},
+            #{spType},
+            #{spCost},
+            #{spInit},
+            #{duration},
+            #{description},
+            #{skillLevel},
+            #{maxCharge})
+    </insert>
+
     <update id="updateOperatorData" parameterType="com.strelizia.arknights.model.OperatorData">
         UPDATE t_operator
         SET atk = #{atk},
@@ -208,6 +232,8 @@
         TRUNCATE TABLE t_operator_evolve_costs;
         DELETE FROM t_operator_skill;
         TRUNCATE TABLE t_operator_skill;
+        DELETE FROM t_operator_skill_desc;
+        TRUNCATE TABLE t_operator_skill_desc;
         DELETE FROM t_operator_skill_mastery_costs;
         TRUNCATE TABLE t_operator_skill_mastery_costs;
         DELETE FROM t_operator_tags_relation;

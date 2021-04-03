@@ -58,6 +58,9 @@ public class ArknightsController {
     @Autowired
     private BuildingSkillService buildingSkillService;
 
+    @Autowired
+    private SkillDescService skillDescService;
+
     /**
      * 消息处理总控制器，用于接收消息，并处理分流到不同的service
      */
@@ -144,6 +147,7 @@ public class ArknightsController {
                         "24.声优列表：{##声优列表 关键字}\n" +
                         "24.画师列表：{##画师列表 关键字}\n" +
                         "25.基建技能：{##基建技能 干员名}\n" +
+                        "26.技能详情：{##技能详情 干员名/技能名 [等级]}\n" +
                         "过大的涩图将导致回复缓慢，请不要上传不能过审的图片";
                 break;
             case XiangXiCaiDan:
@@ -213,16 +217,23 @@ public class ArknightsController {
                                 "\t例2：##干员列表 女 瓦伊凡\n" +
                                 "23.干员档案：\n" +
                                 "\t使用方法：{##干员档案 干员名 [档案名]}\n" +
-                                "\t例1：干员档案 风笛\n" +
-                                "\t例2：干员档案 安洁莉娜 基础档案\n" +
+                                "\t例1：##干员档案 风笛\n" +
+                                "\t例2：##干员档案 安洁莉娜 基础档案\n" +
                                 "24.声优列表：\n" +
                                 "\t使用方法：{##声优列表 关键字}\n" +
                                 "24.画师列表：\n" +
                                 "\t使用方法：{##画师列表 关键字}\n" +
                                 "25.基建技能：\n" +
                                 "\t使用方法：{##基建技能 干员名}\n" +
-                                "\t例1：基建技能 玫兰莎\n" +
-                                "\t例2：基建技能 玫兰莎 制造站\n" +
+                                "\t例1：##基建技能 玫兰莎\n" +
+                                "\t例2：##基建技能 玫兰莎 制造站\n" +
+                                "26.技能详情：\n" +
+                                "\t使用方法：{##技能详情 干员名/技能名 [等级]}\n" +
+                                "\t注：使用干员名查询会返回该干员所有技能\n" +
+                                "\t等级可不填，不填默认返回专一、专二、专三等级\n" +
+                                "\t例1：##技能详情 银灰\n" +
+                                "\t例2：##技能详情 真银斩 10\n" +
+                                "\t例3：##技能详情 艾雅法拉 7-专三\n" +
                                 "注：本项目需严格按照格式输入，自然语言处理功能将在后期优化";
                 break;
             case ShiLian:
@@ -329,6 +340,9 @@ public class ArknightsController {
                 break;
             case JiJianJiNeng:
                 result = buildingSkillService.getBuildSkillNameServiceByInfos(s);
+                break;
+            case JiNengXiangQing:
+                result = skillDescService.getSkillDescByInfo(s);
                 break;
             default:
                 result = "俺不晓得你在锁啥子";

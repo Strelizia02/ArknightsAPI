@@ -55,4 +55,6 @@ public interface UpdateMapper {
     Integer updateVersion(String newVersion);
 
     Integer updateOperatorInfo(OperatorBasicInfo operatorInfo);
+
+    Integer updateSkillDecs(SkillDesc skillDesc);
 }
