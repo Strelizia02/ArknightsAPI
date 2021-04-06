@@ -104,6 +104,12 @@ update(){
   curl -X GET "http://localhost:8086/Update/AutoUpdate" -H "accept: */*"
 }
 
+##导出涩图
+exportImg(){
+  echo "涩图导出中......"
+  curl -X POST "http://192.168.1.11:8086/Update/getImg" -H "accept: */*" -H "Content-Type: application/json" -d "/root/img/"
+}
+
 #根据输入参数，选择执行对应方法，不输入则执行使用说明
 case "$1" in
   "start")
@@ -126,6 +132,9 @@ case "$1" in
     ;;
   "update")
     update
+    ;;
+  "exportImg")
+    exportImg
     ;;
   *)
     usage
