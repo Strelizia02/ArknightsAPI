@@ -273,7 +273,7 @@ public class ArknightsController {
                 result = name + "\n" + tagsfFoundService.FoundAgentByArray(s[1].split(",|，"));
                 break;
             case SeTu:
-                result = seTuService.sendImageByType(qq,groupId,1,name);
+                result = seTuService.sendImageByType(qq,groupId,1,name,s[1]);
                 break;
             case GeiNiSeTu:
                 result = seTuService.getImageIntoDb(s[1],1,name);
@@ -343,6 +343,9 @@ public class ArknightsController {
                 break;
             case JiNengXiangQing:
                 result = skillDescService.getSkillDescByInfo(s);
+                break;
+            case ShanChuSeTu:
+                result = seTuService.deleteSeTuById(qq, groupId, Integer.parseInt(s[1]));
                 break;
             default:
                 result = "俺不晓得你在锁啥子";

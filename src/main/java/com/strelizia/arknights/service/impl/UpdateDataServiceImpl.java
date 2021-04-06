@@ -494,7 +494,7 @@ public class UpdateDataServiceImpl implements UpdateDataService {
 
                         //使用正则表达式替换参数
                         Pattern p = Pattern.compile("(\\{-?([a-zA-Z/.\\]\\[0-9_@]+):?([0-9.]*)(%?)\\})");
-                        //代码可以运行不要乱改.jpg、
+                        //代码可以运行不要乱改.jpg
                         //这个正则已经不断进化成我看不懂的形式了
                         Matcher m = p.matcher(matcher.replaceAll(""));
                         StringBuffer stringBuffer = new StringBuffer();

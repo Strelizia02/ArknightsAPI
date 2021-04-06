@@ -141,6 +141,8 @@ public class ClassificationUtil {
         map.put("技能描述",JiNengXiangQing);
         map.put("技能详情",JiNengXiangQing);
 
+        map.put("删除涩图",ShanChuSeTu);
+
         return map.get(s);
     }
 }

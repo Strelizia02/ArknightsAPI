@@ -9,7 +9,9 @@ public interface SeTuService {
 
     String PrivategetImageIntoDb(String url, Integer type);
 
-    String sendImageByType(Long qq, Long groupId, Integer type, String name);
+    String sendImageByType(Long qq, Long groupId, Integer type, String name, String imageId);
 
     Integer getAllImageIntoLocal(String dir);
+
+    String deleteSeTuById(Long qq, Long groupId, Integer id);
 }

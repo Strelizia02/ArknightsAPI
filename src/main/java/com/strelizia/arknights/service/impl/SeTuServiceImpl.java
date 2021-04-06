@@ -9,6 +9,7 @@ import com.strelizia.arknights.service.SeTuService;
 import com.strelizia.arknights.util.AdminUtil;
 import com.strelizia.arknights.util.ImageUtil;
 import com.strelizia.arknights.util.SendMsgUtil;
+import io.swagger.models.auth.In;
 import lombok.extern.slf4j.Slf4j;
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -78,7 +79,7 @@ public class SeTuServiceImpl implements SeTuService {
     }
 
     @Override
-    public String sendImageByType(Long qq, Long groupId, Integer type, String name) {
+    public String sendImageByType(Long qq, Long groupId, Integer type, String name, String imageId) {
         String qqMd5 = DigestUtils.md5DigestAsHex(qq.toString().getBytes());
         //获取，某人的今日涩图数
         Integer pixiv = seTuMapper.selectTodaySeTuByQQ(qqMd5);
@@ -93,13 +94,26 @@ public class SeTuServiceImpl implements SeTuService {
         //只有在有无限涩图权限或者没有达到今日涩图上限的时候才发送涩图
         Integer count = groupAdminInfoService.getGroupPictureAdmin(groupId);
         if (pixiv < count || b) {
-            ImgUrlInfo img = seTuMapper.selectOneSeTuUrl(type);
+            ImgUrlInfo img;
+
+            Integer id = null;
+            try {
+                //尝试获取涩图Id
+                id = Integer.parseInt(imageId);
+            }catch (Exception ignored){
+            }
+
+            if (id == null) {//如果没有涩图Id就随机获取
+                img = seTuMapper.selectOneSeTuUrl(type);
+            }else {//有Id，则获取对应Id涩图
+                img = seTuMapper.selectOneSeTuUrlById(id);
+            }
             if (img == null){
                 return "没有找到涩图哦,可以发送[##给你涩图 图片]尝试上传一张涩图";
             }else {
                 String url = img.getUrl();
                 log.info("发送编号为{}的涩图",img.getId());
-                sendMsgUtil.CallOPQApiSendImg(groupId, img.getId().toString(),SendMsgUtil.picBase64Buf, url,2);
+                sendMsgUtil.CallOPQApiSendImg(groupId, img.getId().toString(), SendMsgUtil.picBase64Buf, url,2);
                 //更新请求涩图数量
                 seTuMapper.updateTodaySeTu(qqMd5,name,groupId);
                 //空字符串不返回文字信息
@@ -124,6 +138,26 @@ public class SeTuServiceImpl implements SeTuService {
             i++;
         }
         return i;
+    }
+
+    @Override
+    public String deleteSeTuById(Long qq, Long groupId, Integer id) {
+        List<AdminUserInfo> admins = adminUserMapper.selectAllAdmin();
+        String qqMd5 = DigestUtils.md5DigestAsHex(qq.toString().getBytes());
+        boolean b = AdminUtil.getSqlAdmin(qqMd5,admins);
+        String s = "您没有删除涩图权限";
+        if (b) {
+            ImgUrlInfo imgUrlInfo = seTuMapper.selectOneSeTuUrlById(id);
+            if (imgUrlInfo != null) {
+                seTuMapper.deleteSeTuById(id);
+                sendMsgUtil.CallOPQApiSendImg(groupId, "该图已经删除", SendMsgUtil.picBase64Buf, imgUrlInfo.getUrl(), 2);
+                s = "";
+            }else {
+                s = "该编号没有对应的涩图哦";
+            }
+
+        }
+        return s;
     }
 
 }

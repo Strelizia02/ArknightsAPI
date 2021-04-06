@@ -12,7 +12,6 @@ function ReceiveGroupMsg(CurrentQQ, data)
     text = string.gsub(text,"rua","日")
 	text = string.gsub(text," ","")
 	text = string.gsub(text,"曰","日")
-	text = string.gsub(text,"","")
     if (string.find(text, "日日") == 1 and data.FromUserId ~= 0) then
         luaRes =
             Api.Api_SendMsg(

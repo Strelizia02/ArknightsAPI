@@ -38,6 +38,17 @@
         LIMIT 1;
     </select>
 
+    <select id="selectOneSeTuUrlById" resultMap="BaseResultMap">
+        SELECT
+            id,
+            url,
+            type
+        FROM
+            a_image_url
+        WHERE
+            id=#{id}
+    </select>
+
     <insert id="insertSeTuUrl">
         INSERT INTO a_image_url
             (url,type)
@@ -54,4 +65,8 @@
         name = #{name},
         pixiv = pixiv + 1
     </insert>
+
+    <delete id="deleteSeTuById" parameterType="java.lang.Integer">
+        delete from a_image_url where id=#{id}
+    </delete>
 </mapper>
