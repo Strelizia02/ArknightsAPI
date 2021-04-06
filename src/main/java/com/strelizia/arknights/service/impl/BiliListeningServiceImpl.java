@@ -108,7 +108,7 @@ public class BiliListeningServiceImpl implements BiliListeningService {
         String s = restTemplate
                 .exchange(dynamicDetailUrl + DynamicId, HttpMethod.GET, httpEntity, String.class).getBody();
         JSONObject detailJson = new JSONObject(s);
-        Integer type = detailJson.getJSONObject("data").getJSONObject("card").getJSONObject("desc").getInt("type");
+        int type = detailJson.getJSONObject("data").getJSONObject("card").getJSONObject("desc").getInt("type");
         String cardStr = detailJson.getJSONObject("data").getJSONObject("card").getString("card");
         JSONObject cardJson = new JSONObject(cardStr);
         String text = "";
@@ -204,9 +204,9 @@ public class BiliListeningServiceImpl implements BiliListeningService {
     @Override
     public String getBiliList() {
         List<BiliCount> bilis = biliMapper.getBiliCountList();
-        String s = "";
+        StringBuilder s = new StringBuilder();
         for (BiliCount bili: bilis){
-            s += "\n用户：" + bili.getName() + "\tUid:" + bili.getUid();
+            s.append("\n用户：").append(bili.getName()).append("\tUid:").append(bili.getUid());
         }
         return s.substring(1);
     }

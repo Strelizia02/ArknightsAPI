@@ -3,7 +3,6 @@ package com.strelizia.arknights.service.impl;
 import com.strelizia.arknights.dao.SkillDescMapper;
 import com.strelizia.arknights.model.SkillDesc;
 import com.strelizia.arknights.service.SkillDescService;
-import io.swagger.models.auth.In;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

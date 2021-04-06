@@ -24,14 +24,14 @@ public class EnemyServiceImpl implements EnemyService {
     public String getEnemyInfoByName(String name) {
         List<EnemyInfo> enemyInfo = enemyMapper.selectEnemyByName(name);
         int size = enemyInfo.size();
-        String s = "";
+        StringBuilder s = new StringBuilder();
         if (size == 0){
-            s = "\t未找到该敌人的信息";
+            s = new StringBuilder("\t未找到该敌人的信息");
         }else if (size == 1){
-            s = enemyInfo.get(0).toString();
+            s = new StringBuilder(enemyInfo.get(0).toString());
         }else {
             for (EnemyInfo info : enemyInfo) {
-                s += "\n" + info.toString();
+                s.append("\n").append(info.toString());
             }
         }
         return s.substring(1);
@@ -44,10 +44,10 @@ public class EnemyServiceImpl implements EnemyService {
         }
         List<String> nameList = enemyMapper.selectEnemyListByName(name);
         Set<String> names = new TreeSet<>(nameList);
-        String s = "搜索到的敌人名称为：";
+        StringBuilder s = new StringBuilder("搜索到的敌人名称为：");
         for (String enemyName:names){
-            s += "\n" + enemyName;
+            s.append("\n").append(enemyName);
         }
-        return s;
+        return s.toString();
     }
 }

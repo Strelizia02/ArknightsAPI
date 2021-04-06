@@ -24,7 +24,6 @@ public class DescriptionTransformationUtil {
         cnToNum.put("1",1);
         cnToNum.put("2",2);
         cnToNum.put("3",3);
-        Integer num = cnToNum.get(arg);
-        return num;
+        return cnToNum.get(arg);
     }
 }

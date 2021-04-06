@@ -51,17 +51,17 @@ public class BirthdayJob {
         }
         String today = monthStr + "月" + dayStr + "日";
 
-        String s = "今天是" + today + "祝 ";
+        StringBuilder s = new StringBuilder("今天是" + today + "祝 ");
         List<String> operatorByBirthday = operatorInfoMapper.getOperatorByBirthday(today);
         if (operatorByBirthday != null && operatorByBirthday.size() > 0){
             //今日有干员过生日才推送
             for (String name : operatorByBirthday){
-                s += name + " ";
+                s.append(name).append(" ");
             }
-            s += "干员生日快乐";
+            s.append("干员生日快乐");
             List<Long> groups = userFoundMapper.selectAllGroups();
             for (Long groupId:groups){
-                sendMsgUtil.CallOPQApiSendMsg(groupId,s,2);
+                sendMsgUtil.CallOPQApiSendMsg(groupId, s.toString(),2);
             }
             log.info("{}每日干员生日推送发送成功",new Date());
         }

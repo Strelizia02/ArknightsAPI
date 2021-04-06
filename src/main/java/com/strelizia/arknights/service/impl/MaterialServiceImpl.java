@@ -50,78 +50,78 @@ public class MaterialServiceImpl implements MaterialService {
             materialInfos = null;
         }
 
-        String s = skillName + "专精" + level + "材料为：";
+        StringBuilder s = new StringBuilder(skillName + "专精" + level + "材料为：");
         if (materialInfos ==null||materialInfos.size() == 0){
-            s = "找不到查询的内容";
+            s = new StringBuilder("找不到查询的内容");
         }else {
             for (MaterialInfo m:materialInfos){
-                s = s + "\n" + m.getMaterialName() + "*" + m.getMaterialNum() + "个";
+                s.append("\n").append(m.getMaterialName()).append("*").append(m.getMaterialNum()).append("个");
             }
         }
-        return s;
+        return s.toString();
     }
 
     @Override
     public String JingYingHuaCaiLiao(String agent, Integer level) {
         List<MaterialInfo> materialInfos = operatorEvolveMapper.selectOperatorEvolveByName(agent, level);
-        String s = agent + "干员精英" + level + "需要的材料为：";
+        StringBuilder s = new StringBuilder(agent + "干员精英" + level + "需要的材料为：");
         if (materialInfos.size() == 0){
-            s = "找不到查询的材料";
+            s = new StringBuilder("找不到查询的材料");
         }else {
             for (MaterialInfo m:materialInfos){
-                s = s + "\n" + m.getMaterialName() + "*" + m.getMaterialNum() + "个";
+                s.append("\n").append(m.getMaterialName()).append("*").append(m.getMaterialNum()).append("个");
             }
         }
-        return s;
+        return s.toString();
     }
 
     @Override
     public String HeChengLuXian(String name) {
         List<MaterialInfo> materialInfos = materialMadeMapper.selectMadeMater(name);
-        String s = name + "的合成路线为：";
+        StringBuilder s = new StringBuilder(name + "的合成路线为：");
         if (materialInfos.size() == 0){
-            s = "找不到该材料的合成路线";
+            s = new StringBuilder("找不到该材料的合成路线");
         }else {
             for (MaterialInfo m:materialInfos){
-                s = s + "\n" + m.getMaterialName() + "*" + m.getMaterialNum() + "个";
+                s.append("\n").append(m.getMaterialName()).append("*").append(m.getMaterialNum()).append("个");
             }
         }
-        return s;
+        return s.toString();
     }
 
     @Override
     public String HuoQuTuJing(String name) {
-        String s;
+        StringBuilder s;
         if (!name.endsWith("-all")) {
             List<SourcePlace> sourcePlaces = materialMadeMapper.selectMaterSource(name);
-            s = name + "的主线关卡掉率排行前十为：";
+            s = new StringBuilder(name + "的主线关卡掉率排行前十为：");
             if (sourcePlaces.size() == 0) {
-                s = "找不到该材料的获取关卡";
+                s = new StringBuilder("找不到该材料的获取关卡");
             } else {
                 for (SourcePlace p : sourcePlaces) {
                     String zoneName = p.getZone_name();
                     String code = p.getCode();
                     Double rate = p.getRate();
-                    s = s + "\n关卡名称：" + zoneName + "\t" + code + "\t掉落概率:" + rate + "%";
+                    s.append("\n关卡名称：").append(zoneName).append("\t").append(code).append("\t掉落概率:").append(rate).append("%");
                 }
             }
-            s = s + "\n如需查看活动关卡，请在材料名后面加-all，中间无空格";
+            s.append("\n如需查看活动关卡，请在材料名后面加-all，中间无空格");
         }else {
             name = name.replace("-all","");
             List<SourcePlace> sourcePlaces = materialMadeMapper.selectMaterSourceAllStage(name);
-            s = name + "的全部关卡（包含活动关卡）掉率排行前十为：";
+            s = new StringBuilder(name + "的全部关卡（包含活动关卡）掉率排行前十为：");
             if (sourcePlaces.size() == 0) {
-                s = "找不到该材料的获取关卡";
+                s = new StringBuilder("找不到该材料的获取关卡");
             } else {
                 for (SourcePlace p : sourcePlaces) {
                     String zoneName = p.getZone_name();
                     String code = p.getCode();
                     Double rate = p.getRate();
-                    s = s + "\n关卡名称：" + zoneName + "\t" + code + "\t掉落概率:" + rate + "%";
+                    s.append("\n关卡名称：").append(zoneName).append("\t").append(code).append("\t掉落概率:").append(rate).append("%");
                 }
             }
         }
-        return s;
+        return s.toString();
     }
 
     @Override
@@ -141,35 +141,34 @@ public class MaterialServiceImpl implements MaterialService {
     @Override
     public String selectMaterByMap(String MapId) {
         List<MapMatrixInfo> mapMatrixInfos = materialMadeMapper.selectMatrixByMap(MapId);
-        String s = MapId + "掉落的材料列表为：";
+        StringBuilder s = new StringBuilder(MapId + "掉落的材料列表为：");
         if (mapMatrixInfos.size() == 0){
-            s = "没有找到该地图掉落的材料";
+            s = new StringBuilder("没有找到该地图掉落的材料");
         }else {
             for (MapMatrixInfo matrix : mapMatrixInfos) {
-                s = s + "\n" + matrix.getMaterial_name() + "\t掉率：" + matrix.getRate() + "%\t测试次数："
-                        + matrix.getTimes() + "\t掉落个数：" + matrix.getQuantity();
+                s.append("\n").append(matrix.getMaterial_name()).append("\t掉率：").append(matrix.getRate()).append("%\t测试次数：").append(matrix.getTimes()).append("\t掉落个数：").append(matrix.getQuantity());
             }
         }
-        return s;
+        return s.toString();
     }
 
     @Override
     public String selectMapList(String zoneName) {
         List<MapCostInfo> mapCostInfos = materialMadeMapper.selectMapByZone(zoneName);
-        String s = "地图ID以及理智花费为：";
+        StringBuilder s = new StringBuilder("地图ID以及理智花费为：");
         for (MapCostInfo mapInfo:mapCostInfos){
-            s = s + "\n" + mapInfo.getZoneName() + "\t地图ID：" + mapInfo.getCode() + "\t理智消耗：" + mapInfo.getApCost();
+            s.append("\n").append(mapInfo.getZoneName()).append("\t地图ID：").append(mapInfo.getCode()).append("\t理智消耗：").append(mapInfo.getApCost());
         }
-        return s;
+        return s.toString();
     }
 
     @Override
     public String selectZoneList() {
         List<String> zones = materialMadeMapper.selectAllZone();
-        String s = "当前所有章节列表：";
+        StringBuilder s = new StringBuilder("当前所有章节列表：");
         for (String zone: zones){
-            s = s + "\n" + zone;
+            s.append("\n").append(zone);
         }
-        return s;
+        return s.toString();
     }
 }

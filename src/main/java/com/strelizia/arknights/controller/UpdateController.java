@@ -32,7 +32,6 @@ public class UpdateController {
     public Integer getAllImg(
             @RequestBody String dir
     ){
-        Integer i = seTuService.getAllImageIntoLocal(dir);
-        return i;
+        return seTuService.getAllImageIntoLocal(dir);
     }
 }

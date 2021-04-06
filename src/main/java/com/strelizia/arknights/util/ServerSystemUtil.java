@@ -27,7 +27,7 @@ public class ServerSystemUtil {
 
         GlobalMemory memory = hal.getMemory();
         Sensors sensors = hal.getSensors();
-        String s = "系统时间：" + sdf.format(new Date()) +
+        StringBuilder s = new StringBuilder("系统时间：" + sdf.format(new Date()) +
                 "\n服务器操作系统：" + os +
                 "\nCPU参数： 制造商：" + hal.getComputerSystem().getManufacturer() +
                 " CPU核心数：" + hal.getProcessor().getPhysicalProcessorCount() +
@@ -35,16 +35,16 @@ public class ServerSystemUtil {
                 " 风扇转速：" + Arrays.toString(sensors.getFanSpeeds()) +
                 "\n内存使用量：" + FormatUtil.formatBytes(memory.getAvailable()) + "/" + FormatUtil.formatBytes(memory.getTotal()) +
                 "\n系统进程总数：" + os.getProcessCount() + "个，线程总数：" + os.getThreadCount() +
-                "\n磁盘使用量：" ;
+                "\n磁盘使用量：");
         OSFileStore[] fsArray = os.getFileSystem().getFileStores();
         for (OSFileStore fs : fsArray) {
             long usable = fs.getUsableSpace();
             long total = fs.getTotalSpace();
-            s = s + "\n\t" + fs.getName()+ " 磁盘格式：" + fs.getType() + " 磁盘使用：" +FormatUtil.formatBytes(usable) + "/" + FormatUtil.formatBytes(total);
+            s.append("\n\t").append(fs.getName()).append(" 磁盘格式：").append(fs.getType()).append(" 磁盘使用：").append(FormatUtil.formatBytes(usable)).append("/").append(FormatUtil.formatBytes(total));
         }
         NetworkParams networkParams = os.getNetworkParams();
-        s = s + "\n网络参数： 主机名：" + networkParams.getHostName() + " IPv4：" + networkParams.getIpv4DefaultGateway();
+        s.append("\n网络参数： 主机名：").append(networkParams.getHostName()).append(" IPv4：").append(networkParams.getIpv4DefaultGateway());
 
-        return s;
+        return s.toString();
     }
 }

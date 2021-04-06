@@ -71,7 +71,7 @@ public class ArknightsController {
         //获取发送消息的群友qq
         Long qq = message.getQq();
         //不处理自身发送的消息
-        if (qq != loginQq) {
+        if (!qq.equals(loginQq)) {
             log.info("接受到消息:{}",message.getText());
             //获取群号、昵称、消息
             Long groupId = message.getGroupId();
@@ -96,8 +96,7 @@ public class ArknightsController {
             //触发关键字是##，目前机器人还没名字，本来就是功能性的。
             if (text.startsWith("##")) {
                 String messages = text.substring(2);
-                String s = queryKeyword(qq, groupId, name, messages);
-                return s;
+                return queryKeyword(qq, groupId, name, messages);
             }
         }
         return null;
@@ -106,7 +105,7 @@ public class ArknightsController {
     //消息分流方法，使用switch进行模式匹配，具体消息类型有枚举类。
     public String queryKeyword(Long qq, Long groupId,String name, String text){
         String[] a = text.split("~");
-        /**
+        /*
          * 用一个固定长度10的数组承接a的内容，防止数组溢出
          * 当需要数组内某个值的时候，选择s[i]，10位以内不会存在数组溢出
          * 当需要数组本身的时候选择a，原始长度数组
@@ -187,6 +186,7 @@ public class ArknightsController {
                                 "\t例：##公开招募 爆发,近战位,高级资深干员\n" +
                                 "11.涩图功能：\n" +
                                 "\t使用方法：输入{##涩图}\n" +
+                                "\t例：##涩图 1\n" +
                                 "\t由于涩图大小原因，回复会产生一定的延迟，若涩图无响应请等待至少10秒钟再次请求\n" +
                                 "12.上传涩图：\n" +
                                 "\t使用方法：输入{##给你涩图[图片]}或纯图片私聊{[图片]}\n" +
@@ -282,7 +282,7 @@ public class ArknightsController {
                 result = name + ":\n" + tagsfFoundService.FoundAgentByJson(s[1]);
                 break;
             case GongKaiZhaoMu:
-                result = name + "\n" + tagsfFoundService.FoundAgentByArray(s[1].split(",|，"));
+                result = name + "\n" + tagsfFoundService.FoundAgentByArray(s[1].split("[,，]"));
                 break;
             case SeTu:
                 result = seTuService.sendImageByType(qq,groupId,1,name,s[1]);

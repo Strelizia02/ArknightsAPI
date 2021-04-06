@@ -47,7 +47,7 @@ public class ImageUtil {
             is = httpUrl.getInputStream();
             outStream = new FileOutputStream(new File(path));
             byte[] buffer = new byte[1024];
-            int len = 0;
+            int len;
             while( (len=is.read(buffer)) != -1 ){
                 outStream.write(buffer, 0, len);
             }
@@ -99,7 +99,7 @@ public class ImageUtil {
             is = httpUrl.getInputStream();
             outStream = new ByteArrayOutputStream();
             byte[] buffer = new byte[1024];
-            int len = 0;
+            int len;
             while( (len=is.read(buffer)) != -1 ){
                 outStream.write(buffer, 0, len);
             }
@@ -171,7 +171,7 @@ public class ImageUtil {
             out.write(bytes);
             out.flush();
             out.close();
-        } catch (Exception e) {
+        } catch (Exception ignored) {
         }
     }
 }

@@ -171,15 +171,15 @@ public class UpdateDataServiceImpl implements UpdateDataService {
                                     break;
                                 case "身高":
                                     String str = basicText[1];
-                                    String str2 = "";
+                                    StringBuilder str2 = new StringBuilder();
                                     if (str != null && !"".equals(str)) {
                                         for (int j = 0; j < str.length(); j++) {
                                             if (str.charAt(j) >= 48 && str.charAt(j) <= 57) {
-                                                str2 += str.charAt(j);
+                                                str2.append(str.charAt(j));
                                             }
                                         }
                                     }
-                                    operatorBasicInfo.setHeight(Integer.parseInt(str2));
+                                    operatorBasicInfo.setHeight(Integer.parseInt(str2.toString()));
                                     break;
                             }
                         }
@@ -220,14 +220,14 @@ public class UpdateDataServiceImpl implements UpdateDataService {
             String name = operator.getString("name");
             JSONArray tags = operator.getJSONArray("tags");
             int rarity = tags.getInt(0) + 1;
-            String position = tags.getString(1).equals("MELEE")?"近战位":"远程位";
+            StringBuilder position = new StringBuilder(tags.getString(1).equals("MELEE") ? "近战位" : "远程位");
             for (int i = 2; i < tags.length(); i++){
-                position += "," + tags.getString(i);
+                position.append(",").append(tags.getString(i));
             }
             if (rarity==5){
-                position += "," + "资深干员";
+                position.append("," + "资深干员");
             }else if (rarity==6){
-                position += "," + "高级资深干员";
+                position.append("," + "高级资深干员");
             }
             String profession = operator.getString("class");
 
@@ -241,9 +241,9 @@ public class UpdateDataServiceImpl implements UpdateDataService {
             operatorClass.put("MEDIC", "医疗干员");
             operatorClass.put("SPECIAL", "特种干员");
 
-            position += "," + operatorClass.get(profession);
+            position.append(",").append(operatorClass.get(profession));
 
-            updateMapper.updateTags(name, rarity, position);
+            updateMapper.updateTags(name, rarity, position.toString());
         }
     }
 
@@ -364,7 +364,7 @@ public class UpdateDataServiceImpl implements UpdateDataService {
         try {
             s = restTemplate
                     .exchange(url, HttpMethod.GET, httpEntity, String.class).getBody();
-        }catch (Exception e){
+        }catch (Exception ignored){
 
         }
 

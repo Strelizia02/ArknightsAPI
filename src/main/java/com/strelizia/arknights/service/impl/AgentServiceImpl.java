@@ -39,26 +39,23 @@ public class AgentServiceImpl implements AgentService {
 
     @Override
     public String chouKa(String pool,Long qq,String name,Long groupId) {
-        String s = name + "\n抽取" + foundLimit(1, pool, qq, name, groupId);
-        return s;
+        return name + "\n抽取" + foundLimit(1, pool, qq, name, groupId);
     }
 
     @Override
     public String shiLian(String pool,Long qq,String name,Long groupId) {
-        String s = name + "\n抽取" + foundLimit(10, pool, qq, name, groupId);
-        return s;
+        return name + "\n抽取" + foundLimit(10, pool, qq, name, groupId);
     }
 
     @Override
     public String selectPool() {
         List<String> poolList = agentMapper.selectPool();
-        String str = "";
+        StringBuilder str = new StringBuilder();
         for (String line : poolList) {
-            str = str + "\n" + line;
+            str.append("\n").append(line);
         }
         //去掉头部换行
-        String s = str.substring(1);
-        return s;
+        return str.substring(1);
     }
 
     @Override
@@ -79,8 +76,7 @@ public class AgentServiceImpl implements AgentService {
             //六星概率默认2%
             sixStar = 2;
         }
-        String s = name + "的当前垫刀数为：" + foundCount + "\n当前六星概率为：" + sixStar + "%" + "\n今日已抽卡次数：" + todayCount;
-        return s;
+        return name + "的当前垫刀数为：" + foundCount + "\n当前六星概率为：" + sixStar + "%" + "\n今日已抽卡次数：" + todayCount;
     }
 
     @Override
@@ -89,11 +85,11 @@ public class AgentServiceImpl implements AgentService {
             return "没有找到该卡池哦";
         }
         List<AgentInfo> agents = agentMapper.selectPoolAgent(pool);
-        String s = "卡池[" + pool + "]中概率up干员为：";
+        StringBuilder s = new StringBuilder("卡池[" + pool + "]中概率up干员为：");
         for (AgentInfo agent:agents){
-            s = s + "\n" + agent.getName() + FormatStringUtil.FormatStar(agent.getStar());
+            s.append("\n").append(agent.getName()).append(FormatStringUtil.FormatStar(agent.getStar()));
         }
-        return s;
+        return s.toString();
     }
 
     /**
@@ -142,7 +138,7 @@ public class AgentServiceImpl implements AgentService {
         if (pool==null||agentMapper.selectAgentByStar(pool,6).size()==0){
             pool = "常规";
         }
-        String s = "";
+        StringBuilder s = new StringBuilder();
         //循环抽卡
         for(int j = 0; j < count; j++) {
             if (b) {
@@ -204,7 +200,7 @@ public class AgentServiceImpl implements AgentService {
             int i = random.nextInt(agentList.size());
             String levelStar = FormatStringUtil.FormatStar(star);
             try {
-                s = s + " " + agentList.get(i).getName() + "\t" + levelStar + "\n";
+                s.append(" ").append(agentList.get(i).getName()).append("\t").append(levelStar).append("\n");
             } catch (Exception e) {
                 e.printStackTrace();
             }

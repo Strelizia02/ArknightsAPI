@@ -1,7 +1,6 @@
 package com.strelizia.arknights.job;
 
 import com.strelizia.arknights.service.BiliListeningService;
-import com.strelizia.arknights.util.SendMsgUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Async;
@@ -25,7 +24,7 @@ public class BiliListeningJob {
     @Scheduled(cron = "${scheduled.biliJob}")
     @Async
     public void dailyCountJob(){
-        boolean b = biliListeningService.getDynamicList();
+        biliListeningService.getDynamicList();
         log.info("拉取最新动态中{}",new Date());
     }
 }

@@ -86,7 +86,6 @@ public class FormatStringUtil {
         map.put(3,"☆☆☆");
         map.put(2,"☆☆");
         map.put(1,"☆");
-        String s = map.get(star);
-        return s;
+        return map.get(star);
     }
 }

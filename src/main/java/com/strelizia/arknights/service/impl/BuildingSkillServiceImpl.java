@@ -50,22 +50,21 @@ public class BuildingSkillServiceImpl implements BuildingSkillService {
             List<BuildingSkill> buildingSkillByInfo = buildingSkillMapper.getBuildingSkillByInfo(info);
             allBuildingSkill.retainAll(buildingSkillByInfo);
         }
-        String s = "查询到的基建技能为：\n";
+        StringBuilder s = new StringBuilder("查询到的基建技能为：\n");
         if (allBuildingSkill.size() == 0) {
             return "";
         }else if (allBuildingSkill.size() >= 4){
             for (BuildingSkill b: allBuildingSkill){
-                s += b.getBuffName() + "\n";
+                s.append(b.getBuffName()).append("\n");
             }
-            s += "结果过多，只显示对应基建技能名称。\n如需查看基建技能详细信息，请缩小搜索范围，比如使用技能名或者干员名来查询";
+            s.append("结果过多，只显示对应基建技能名称。\n如需查看基建技能详细信息，请缩小搜索范围，比如使用技能名或者干员名来查询");
         }else{
             for (BuildingSkill b: allBuildingSkill){
                 String name = operatorInfoMapper.getOperatorNameById(b.getOperatorId());
-                s += name + " " + b.getBuffName() + " 精英" + b.getPhase() + "/" + b.getLevel() + "级解锁\n\t"
-                        + b.getDescription() + "\n";
+                s.append(name).append(" ").append(b.getBuffName()).append(" 精英").append(b.getPhase()).append("/").append(b.getLevel()).append("级解锁\n\t").append(b.getDescription()).append("\n");
             }
         }
-        return s;
+        return s.toString();
     }
 
 }

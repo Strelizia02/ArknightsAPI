@@ -41,15 +41,13 @@ public class TagsFoundServiceImpl implements TagsfFoundService {
     @Override
     public String FoundAgentByJson(String Json) {
         Map<List<String>, List<AgentTagsInfo>> listListMap = FoundTagsByImg(Json);
-        String s = MapToString(listListMap);
-        return s;
+        return MapToString(listListMap);
     }
 
     @Override
     public String FoundAgentByArray(String[] array) {
         Map<List<String>, List<AgentTagsInfo>> listMap = FoundTagResultByArrays(array);
-        String s = MapToString(listMap);
-        return s;
+        return MapToString(listMap);
     }
 
     public Map<List<String>, List<AgentTagsInfo>> FoundTagsByImg(String Json) {
@@ -68,9 +66,7 @@ public class TagsFoundServiceImpl implements TagsfFoundService {
         String[] s = baiduAPIUtil.BaiduOCRGetTags(url);
         log.info("识图获取到tag为：{}",Arrays.asList(s));
 
-        Map<List<String>, List<AgentTagsInfo>> map = FoundTagResultByArrays(s);
-
-        return map;
+        return FoundTagResultByArrays(s);
     }
 
     public Map<List<String>, List<AgentTagsInfo>> FoundTagResultByArrays(String[] s){
@@ -100,7 +96,7 @@ public class TagsFoundServiceImpl implements TagsfFoundService {
     //把Map转换成特定格式字符串
     public String MapToString(Map<List<String>, List<AgentTagsInfo>> map){
         //保存结果
-        String s = "";
+        StringBuilder s = new StringBuilder();
         //循环遍历Map
         for (Map.Entry<List<String>, List<AgentTagsInfo>> m:map.entrySet()){
             //获取到Key，Value
@@ -108,11 +104,11 @@ public class TagsFoundServiceImpl implements TagsfFoundService {
             List<AgentTagsInfo> value = m.getValue();
             //如果组合中没有值，或者组合中不能确定稀有干员，则直接进行下次循环
             if (value.size() == 0||isThreeOrTwoInMap(value)) continue;
-            String tags = "";
-            String agents = "";
+            StringBuilder tags = new StringBuilder();
+            StringBuilder agents = new StringBuilder();
             //用key的标签组合作为head
             for (String tag:key){
-                tags = tags + ","+ tag;
+                tags.append(",").append(tag);
             }
             //用干员名字+星星的列表作为body
             for (AgentTagsInfo agent:value){
@@ -121,12 +117,12 @@ public class TagsFoundServiceImpl implements TagsfFoundService {
                 //不要三星两星的结果
                 if (star == 3|| star == 2) break;
                 levelStar = FormatStringUtil.FormatStar(star);
-                agents = agents + "\n" + agent.getAgentName() + levelStar;
+                agents.append("\n").append(agent.getAgentName()).append(levelStar);
             }
-            s = s  + "\n\n" + tags.substring(1) + "\n" + agents.substring(1);
+            s.append("\n\n").append(tags.substring(1)).append("\n").append(agents.substring(1));
         }
-        if (s.equals("")){
-            s = "\t\tQAQ没有找到对应的稀有公招结果";
+        if (s.toString().equals("")){
+            s = new StringBuilder("\t\tQAQ没有找到对应的稀有公招结果");
         }
         return s.substring(2);
     }

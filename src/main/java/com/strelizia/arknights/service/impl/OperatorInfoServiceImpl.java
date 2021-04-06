@@ -6,7 +6,6 @@ import com.strelizia.arknights.service.OperatorInfoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -23,7 +22,7 @@ public class OperatorInfoServiceImpl implements OperatorInfoService {
     @Override
     public String getOperatorByInfos(String[] infos) {
         List<String> operators = operatorInfoMapper.getAllOperator();
-        String s = "符合 ";
+        StringBuilder s = new StringBuilder("符合 ");
         for (int i = 1; i < infos.length; i++){
             String info = infos[i];
             if (info == null)
@@ -32,13 +31,13 @@ public class OperatorInfoServiceImpl implements OperatorInfoService {
             }
             List<String> operatorNameByInfo = operatorInfoMapper.getOperatorNameByInfo(info);
             operators.retainAll(operatorNameByInfo);
-            s += info + " ";
+            s.append(info).append(" ");
         }
-        s += "条件的干员为：\n";
+        s.append("条件的干员为：\n");
         for (String name: operators){
-            s += name + "\n";
+            s.append(name).append("\n");
         }
-        return s;
+        return s.toString();
     }
 
     @Override
@@ -94,31 +93,31 @@ public class OperatorInfoServiceImpl implements OperatorInfoService {
     @Override
     public String getCVByName(String str) {
         List<String> allCV;
-                String s = "";
+                StringBuilder s = new StringBuilder();
         if (str == null){
             allCV = operatorInfoMapper.getAllInfoName();
         }else {
             allCV = operatorInfoMapper.getAllInfoNameLikeStr(str);
         }
         for (String name: allCV){
-            s += name + '\n';
+            s.append(name).append('\n');
         }
-        return s;
+        return s.toString();
     }
 
     @Override
     public String getDrawByName(String str) {
         List<String> allDraw;
-        String s = "";
+        StringBuilder s = new StringBuilder();
         if (str == null){
             allDraw = operatorInfoMapper.getAllDrawName();
         }else {
             allDraw = operatorInfoMapper.getAllDrawNameLikeStr(str);
         }
         for (String name: allDraw){
-            s += name + '\n';
+            s.append(name).append('\n');
         }
-        return s;
+        return s.toString();
     }
 
 

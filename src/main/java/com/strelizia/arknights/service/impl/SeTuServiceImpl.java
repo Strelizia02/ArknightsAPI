@@ -10,7 +10,6 @@ import com.strelizia.arknights.service.SeTuService;
 import com.strelizia.arknights.util.AdminUtil;
 import com.strelizia.arknights.util.ImageUtil;
 import com.strelizia.arknights.util.SendMsgUtil;
-import io.swagger.models.auth.In;
 import lombok.extern.slf4j.Slf4j;
 import org.json.JSONArray;
 import org.json.JSONObject;
