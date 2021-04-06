@@ -19,4 +19,12 @@
     <insert id="insertGroupId">
         insert into a_group_admin (group_id) VALUES (#{groupId})
     </insert>
+
+    <update id="updatePictureAdmin">
+        update a_group_admin
+        set
+            picture = #{picture}
+        where
+            group_id = #{groupId}
+    </update>
 </mapper>

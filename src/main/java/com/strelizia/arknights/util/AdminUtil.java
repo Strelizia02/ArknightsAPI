@@ -68,4 +68,19 @@ public class AdminUtil {
         }
         return false;
     }
+
+    /**
+     * 返回用户有无涩图管理权限
+     * @param qq qqMD5加密字符串
+     * @param admins 权限列表
+     * @return
+     */
+    public static boolean getupLoadAdmin(String qq, List<AdminUserInfo> admins){
+        for (AdminUserInfo admin:admins){
+            if (admin.getQq().equals(qq) && admin.getUpload() == 1){
+                return true;
+            }
+        }
+        return false;
+    }
 }

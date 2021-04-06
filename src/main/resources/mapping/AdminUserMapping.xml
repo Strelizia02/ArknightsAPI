@@ -8,9 +8,10 @@
         <result column="img" property="img" jdbcType="INTEGER" />
         <result column="six" property="six" jdbcType="INTEGER" />
         <result column="sql" property="sql" jdbcType="INTEGER" />
+        <result column="upload" property="upload" jdbcType="INTEGER" />
     </resultMap>
 
     <select id="selectAllAdmin" resultMap="BaseResultMap">
-        SELECT qq, name, found, img, six, `sql` from a_admin_user
+        SELECT qq, name, found, img, six, `sql`, upload from a_admin_user
     </select>
 </mapper>

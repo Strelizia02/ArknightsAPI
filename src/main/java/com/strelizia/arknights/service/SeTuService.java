@@ -14,4 +14,6 @@ public interface SeTuService {
     Integer getAllImageIntoLocal(String dir);
 
     String deleteSeTuById(Long qq, Long groupId, Integer id);
+
+    String changePictureStat(Long qq, Long groupId, Integer type);
 }

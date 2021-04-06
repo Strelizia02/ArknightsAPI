@@ -1,6 +1,7 @@
 package com.strelizia.arknights.service.impl;
 
 import com.strelizia.arknights.dao.AdminUserMapper;
+import com.strelizia.arknights.dao.GroupAdminInfoMapper;
 import com.strelizia.arknights.dao.SeTuMapper;
 import com.strelizia.arknights.model.AdminUserInfo;
 import com.strelizia.arknights.model.ImgUrlInfo;
@@ -48,6 +49,9 @@ public class SeTuServiceImpl implements SeTuService {
 
     @Autowired
     private GroupAdminInfoService groupAdminInfoService;
+
+    @Autowired
+    private GroupAdminInfoMapper groupAdminInfoMapper;
 
 
     @Override
@@ -145,7 +149,7 @@ public class SeTuServiceImpl implements SeTuService {
     public String deleteSeTuById(Long qq, Long groupId, Integer id) {
         List<AdminUserInfo> admins = adminUserMapper.selectAllAdmin();
         String qqMd5 = DigestUtils.md5DigestAsHex(qq.toString().getBytes());
-        boolean b = AdminUtil.getSqlAdmin(qqMd5,admins);
+        boolean b = AdminUtil.getupLoadAdmin(qqMd5,admins);
         String s = "您没有删除涩图权限";
         if (b) {
             ImgUrlInfo imgUrlInfo = seTuMapper.selectOneSeTuUrlById(id);
@@ -157,6 +161,23 @@ public class SeTuServiceImpl implements SeTuService {
                 s = "该编号没有对应的涩图哦";
             }
 
+        }
+        return s;
+    }
+
+
+    @Override
+    public String changePictureStat(Long qq, Long groupId, Integer type) {
+        List<AdminUserInfo> admins = adminUserMapper.selectAllAdmin();
+        String qqMd5 = DigestUtils.md5DigestAsHex(qq.toString().getBytes());
+        boolean b = AdminUtil.getupLoadAdmin(qqMd5,admins);
+        String s = "您没有更改涩图功能的权限";
+        if (b) {
+            if (type != 0 && groupAdminInfoService.getGroupPictureAdmin(groupId) != 0){
+                return "本群涩图功能已开启，无需调整";
+            }
+            groupAdminInfoMapper.updatePictureAdmin(groupId,type);
+            s = "本群涩图功能" + (type==0?"关闭":"打开") + "成功";
         }
         return s;
     }

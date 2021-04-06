@@ -44,5 +44,7 @@ public enum ClassificationEnum {
     QunFaXiaoXi,
     JiJianJiNeng,
     JiNengXiangQing,
-    ShanChuSeTu
+    ShanChuSeTu,
+    GuanBiSeTu,
+    DaKaiSeTu
 }

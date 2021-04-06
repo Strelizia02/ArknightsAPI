@@ -347,6 +347,12 @@ public class ArknightsController {
             case ShanChuSeTu:
                 result = seTuService.deleteSeTuById(qq, groupId, Integer.parseInt(s[1]));
                 break;
+            case DaKaiSeTu:
+                result = seTuService.changePictureStat(qq, groupId , 5);
+                break;
+            case GuanBiSeTu:
+                result = seTuService.changePictureStat(qq, groupId, 0);
+                break;
             default:
                 result = "俺不晓得你在锁啥子";
         }

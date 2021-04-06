@@ -2,6 +2,7 @@ package com.strelizia.arknights.dao;
 
 import com.strelizia.arknights.model.GroupAdminInfo;
 import io.swagger.models.auth.In;
+import org.apache.ibatis.annotations.Param;
 
 /**
  * @author wangzy
@@ -12,4 +13,6 @@ public interface GroupAdminInfoMapper {
     GroupAdminInfo getGroupAdminNum(Long groupId);
 
     Integer insertGroupId(Long groupId);
+
+    Integer updatePictureAdmin(@Param("groupId") Long groupId, @Param("picture") Integer picture);
 }

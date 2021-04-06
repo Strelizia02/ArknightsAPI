@@ -143,6 +143,10 @@ public class ClassificationUtil {
 
         map.put("删除涩图",ShanChuSeTu);
 
+        map.put("关闭涩图",GuanBiSeTu);
+
+        map.put("打开涩图",DaKaiSeTu);
+
         return map.get(s);
     }
 }

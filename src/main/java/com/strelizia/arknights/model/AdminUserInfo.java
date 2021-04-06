@@ -18,6 +18,16 @@ public class AdminUserInfo {
     private Integer six;
     //SQL查询权限
     private Integer sql;
+    //涩图管理权限
+    private Integer upload;
+
+    public Integer getUpload() {
+        return upload;
+    }
+
+    public void setUpload(Integer upload) {
+        this.upload = upload;
+    }
 
     public String getQq() {
         return qq;
