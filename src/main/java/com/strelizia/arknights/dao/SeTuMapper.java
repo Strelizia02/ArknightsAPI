@@ -25,7 +25,7 @@ public interface SeTuMapper {
     ImgUrlInfo selectOneSeTuUrl(@Param("type")Integer type);
 
     //根据图片类型查找所有图片
-    List<ImgUrlInfo> selectAllSeTuUrl(@Param("type")Integer type);
+    List<Integer> selectAllSeTuUrl(@Param("type")Integer type);
 
     Integer deleteSeTuById(Integer id);
 

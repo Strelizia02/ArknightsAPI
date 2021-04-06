@@ -131,10 +131,11 @@ public class SeTuServiceImpl implements SeTuService {
      */
     @Override
     public Integer getAllImageIntoLocal(String dir) {
-        List<ImgUrlInfo> imgUrlInfos = seTuMapper.selectAllSeTuUrl(1);
+        List<Integer> ids = seTuMapper.selectAllSeTuUrl(1);
         int i = 0;
-        for (ImgUrlInfo img:imgUrlInfos) {
-            imageUtil.getImgToLocal(dir, img.getId(),img.getUrl());
+        for (Integer id:ids) {
+            String url = seTuMapper.selectOneSeTuUrlById(id).getUrl();
+            imageUtil.getImgToLocal(dir, id, url);
             i++;
         }
         return i;

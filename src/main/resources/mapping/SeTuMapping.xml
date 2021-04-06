@@ -11,8 +11,8 @@
         SELECT pixiv from a_user_found WHERE qq = #{qq} LIMIT 1
     </select>
 
-    <select id="selectAllSeTuUrl" resultMap="BaseResultMap">
-        SELECT id,url,type from a_image_url WHERE type = #{type}
+    <select id="selectAllSeTuUrl" resultMap="java.lang.Integer">
+        SELECT id from a_image_url WHERE type = #{type}
     </select>
 
     <!--  优化版随机取数sql，比直接order by rand()效率高了10倍  -->
