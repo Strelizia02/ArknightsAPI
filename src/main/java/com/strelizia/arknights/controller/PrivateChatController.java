@@ -42,7 +42,7 @@ public class PrivateChatController {
         String result = null;
         //发送的是图片才触发
         if (text.startsWith("{\"")) {
-            result = seTuService.PrivategetImageIntoDb(text, 1);
+            result = seTuService.PrivateGetImageIntoDb(text, 1,qq);
             sendMsgUtil.CallOPQApiSendMsg(qq, result, 1);
         }
         return result;

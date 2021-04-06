@@ -276,7 +276,7 @@ public class ArknightsController {
                 result = seTuService.sendImageByType(qq,groupId,1,name,s[1]);
                 break;
             case GeiNiSeTu:
-                result = seTuService.getImageIntoDb(s[1],1,name);
+                result = seTuService.getImageIntoDb(s[1],1,name,qq);
                 break;
             case XiTongXinXi:
                 result = new ServerSystemUtil().getSystemInfo();

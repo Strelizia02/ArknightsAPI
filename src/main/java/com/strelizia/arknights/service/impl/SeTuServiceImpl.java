@@ -55,22 +55,34 @@ public class SeTuServiceImpl implements SeTuService {
 
 
     @Override
-    public String getImageIntoDb(String json, Integer type, String name) {
-        //获取json
-        JSONObject jsonObj = new JSONObject(json);
-        //解析里面图片url
-        JSONArray array = new JSONArray(jsonObj.get("GroupPic").toString());
-        String url = array.getJSONObject(0).getString("Url");
-        //开一个线程url转换为base64
-        poolTaskExecutor.execute(() -> {
-            String base64 = imageUtil.getImageBase64ByUrl(url);
-            seTuMapper.insertSeTuUrl(base64, type);
-        });
-        return "感谢[" + name + "]的涩图";
+    public String getImageIntoDb(String json, Integer type, String name, Long qq) {
+        List<AdminUserInfo> admins = adminUserMapper.selectAllAdmin();
+        String qqMd5 = DigestUtils.md5DigestAsHex(qq.toString().getBytes());
+        boolean b = AdminUtil.getupLoadAdmin(qqMd5,admins);
+        String s = "您无权上传涩图";
+        if (b) {
+            //获取json
+            JSONObject jsonObj = new JSONObject(json);
+            //解析里面图片url
+            JSONArray array = new JSONArray(jsonObj.get("GroupPic").toString());
+            String url = array.getJSONObject(0).getString("Url");
+            //开一个线程url转换为base64
+            poolTaskExecutor.execute(() -> {
+                String base64 = imageUtil.getImageBase64ByUrl(url);
+                seTuMapper.insertSeTuUrl(base64, type);
+            });
+            s = "感谢[" + name + "]的涩图";
+        }
+        return s;
     }
 
     @Override
-    public String PrivategetImageIntoDb(String json, Integer type) {
+    public String PrivateGetImageIntoDb(String json, Integer type, Long qq) {
+        List<AdminUserInfo> admins = adminUserMapper.selectAllAdmin();
+        String qqMd5 = DigestUtils.md5DigestAsHex(qq.toString().getBytes());
+        boolean b = AdminUtil.getupLoadAdmin(qqMd5,admins);
+        String s = "您无权上传涩图";
+        if (b) {
         //私聊信息涩图保存，逻辑同上
         JSONObject jsonObj = new JSONObject(json);
         JSONArray array = new JSONArray(jsonObj.get("FriendPic").toString());
@@ -79,7 +91,9 @@ public class SeTuServiceImpl implements SeTuService {
             String base64 = imageUtil.getImageBase64ByUrl(url);
             seTuMapper.insertSeTuUrl(base64, type);
         });
-        return "涩图已收到get√";
+            s = "涩图已收到get√";
+        }
+        return s;
     }
 
     @Override
