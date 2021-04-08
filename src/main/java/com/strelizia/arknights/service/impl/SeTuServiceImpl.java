@@ -3,6 +3,7 @@ package com.strelizia.arknights.service.impl;
 import com.strelizia.arknights.dao.AdminUserMapper;
 import com.strelizia.arknights.dao.GroupAdminInfoMapper;
 import com.strelizia.arknights.dao.SeTuMapper;
+import com.strelizia.arknights.dao.SkinInfoMapper;
 import com.strelizia.arknights.model.AdminUserInfo;
 import com.strelizia.arknights.model.ImgUrlInfo;
 import com.strelizia.arknights.service.GroupAdminInfoService;
@@ -51,6 +52,9 @@ public class SeTuServiceImpl implements SeTuService {
 
     @Autowired
     private GroupAdminInfoMapper groupAdminInfoMapper;
+
+    @Autowired
+    private SkinInfoMapper skinInfoMapper;
 
 
     @Override
@@ -152,8 +156,13 @@ public class SeTuServiceImpl implements SeTuService {
         int i = 0;
         for (Integer id:ids) {
             String url = seTuMapper.selectOneSeTuUrlById(id).getUrl();
-            imageUtil.getImgToLocal(dir, id, url);
+            imageUtil.getImgToLocal(dir, id, url, "jpg");
             i++;
+        }
+        int skinIds = skinInfoMapper.selectMaxId();
+        for (int j = 1; j <= skinIds; j++){
+            String base64 = skinInfoMapper.selectSkinById(j);
+            imageUtil.getImgToLocal(dir + "/skin/", j, base64, "png");
         }
         return i;
     }

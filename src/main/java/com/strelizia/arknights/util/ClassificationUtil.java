@@ -147,6 +147,9 @@ public class ClassificationUtil {
 
         map.put("打开涩图",DaKaiSeTu);
 
+        map.put("皮肤查询",PiFuChaXun);
+        map.put("时装查询",PiFuChaXun);
+
         return map.get(s);
     }
 }

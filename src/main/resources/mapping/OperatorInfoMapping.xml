@@ -89,6 +89,10 @@
         WHERE
             operator_name = #{name}
     </select>
+
+    <select id="getOperatorIdByChar" parameterType="java.lang.String" resultType="java.lang.Integer">
+        select operator_id from t_operator where char_id=#{charId}
+    </select>
     
     <select id="getAllDrawName" resultType="java.lang.String">
         SELECT draw_name from t_operator GROUP BY draw_name

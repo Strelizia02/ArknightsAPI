@@ -61,6 +61,9 @@ public class ArknightsController {
     @Autowired
     private SkillDescService skillDescService;
 
+    @Autowired
+    private SkinInfoService skinInfoService;
+
     /**
      * 消息处理总控制器，用于接收消息，并处理分流到不同的service
      */
@@ -150,6 +153,7 @@ public class ArknightsController {
                         "27.删除涩图：{##删除涩图 [编号]}\n" +
                         "28.打开涩图：{##打开涩图}\n" +
                         "29.关闭涩图：{##关闭涩图}\n" +
+                        "30.时装查询：{##皮肤查询 [条件]}\n" +
                         "过大的涩图将导致回复缓慢，请不要上传不能过审的图片";
                 break;
             case XiangXiCaiDan:
@@ -246,6 +250,10 @@ public class ArknightsController {
                                 "29.关闭涩图：\n" +
                                 "\t使用方法：{##关闭涩图}\n" +
                                 "\t注：关闭涩图功能需要找开发者py权限\n" +
+                                "30.时装查询：\n" +
+                                "\t使用方法：{##皮肤查询 [条件]}\n" +
+                                "\t例1：{##皮肤查询 艾雅法拉}\n" +
+                                "\t例2：{##时装查询 珊瑚海岸}\n" +
                                 "注：本项目需严格按照格式输入，自然语言处理功能将在后期优化";
                 break;
             case ShiLian:
@@ -364,6 +372,9 @@ public class ArknightsController {
                 break;
             case GuanBiSeTu:
                 result = seTuService.changePictureStat(qq, groupId, 0);
+                break;
+            case PiFuChaXun:
+                result = skinInfoService.getOperatorSkinByInfo(groupId, s[1]);
                 break;
             default:
                 result = "俺不晓得你在锁啥子";

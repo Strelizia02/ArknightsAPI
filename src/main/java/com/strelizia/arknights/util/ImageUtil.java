@@ -105,7 +105,22 @@ public class ImageUtil {
             }
             return encode(outStream.toByteArray());
         }catch (Exception e) {
-            e.printStackTrace();
+            try{//重试一次
+                url = new URL(imgUrl);
+                httpUrl = (HttpURLConnection) url.openConnection();
+                httpUrl.connect();
+                httpUrl.getInputStream();
+                is = httpUrl.getInputStream();
+                outStream = new ByteArrayOutputStream();
+                byte[] buffer = new byte[1024];
+                int len;
+                while( (len=is.read(buffer)) != -1 ){
+                    outStream.write(buffer, 0, len);
+                }
+                return encode(outStream.toByteArray());
+            }catch (Exception e1) {
+                e1.printStackTrace();
+            }
         }finally{
             if(is != null)
             {
@@ -153,7 +168,7 @@ public class ImageUtil {
      * @param base64 base64字符串
      *
      */
-    public void getImgToLocal(String dir, Integer id, String base64) {
+    public void getImgToLocal(String dir, Integer id, String base64, String type) {
         if (base64 == null) // 图像数据为空
             return;
         BASE64Decoder decoder = new BASE64Decoder();
@@ -165,7 +180,7 @@ public class ImageUtil {
                     bytes[i] += 256;
                 }
             }
-            String imgFilePath = dir + id + ".jpg";
+            String imgFilePath = dir + id + "." + type;
             // 生成jpeg图片
             OutputStream out = new FileOutputStream(imgFilePath);
             out.write(bytes);

@@ -37,4 +37,7 @@ public interface OperatorInfoMapper {
     //根据ID查找干员名
     String getOperatorNameById(Integer id);
 
+    //根据char_id查找干员id
+    Integer getOperatorIdByChar(String charId);
+
 }

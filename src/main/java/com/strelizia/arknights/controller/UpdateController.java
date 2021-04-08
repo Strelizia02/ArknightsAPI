@@ -24,8 +24,10 @@ public class UpdateController {
     @GetMapping("AutoUpdate")
     public Integer update(){
         updateDataService.updateAllData(false);
+        updateDataService.updateSkin();
         return 0;
     }
+
 
     //获取所有涩图到本地
     @PostMapping("getImg")

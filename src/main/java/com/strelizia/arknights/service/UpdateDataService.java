@@ -8,4 +8,6 @@ public interface UpdateDataService {
     void updateAllData(boolean checkUpdate);
 
     Integer updateOperatorByJson(String json);
+
+    void updateSkin();
 }

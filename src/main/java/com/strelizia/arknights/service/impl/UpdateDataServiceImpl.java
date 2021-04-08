@@ -1,10 +1,9 @@
 package com.strelizia.arknights.service.impl;
 
-import com.strelizia.arknights.dao.BuildingSkillMapper;
-import com.strelizia.arknights.dao.UpdateMapper;
-import com.strelizia.arknights.dao.UserFoundMapper;
+import com.strelizia.arknights.dao.*;
 import com.strelizia.arknights.model.*;
 import com.strelizia.arknights.service.UpdateDataService;
+import com.strelizia.arknights.util.ImageUtil;
 import com.strelizia.arknights.util.SendMsgUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.json.JSONArray;
@@ -45,6 +44,15 @@ public class UpdateDataServiceImpl implements UpdateDataService {
 
     @Autowired
     private BuildingSkillMapper buildingSkillMapper;
+
+    @Autowired
+    private SkinInfoMapper skinInfoMapper;
+
+    @Autowired
+    private OperatorInfoMapper operatorInfoMapper;
+
+    @Autowired
+    private ImageUtil imageUtil;
 
     @Override
     /**
@@ -349,6 +357,37 @@ public class UpdateDataServiceImpl implements UpdateDataService {
                 updateMapper.updateMatrixData(stageId, itemId, quantity, times);
             }catch (NumberFormatException e){
                 //忽略家具材料
+            }
+        }
+    }
+
+    /**
+     * 更新皮肤信息
+     */
+    public void updateSkin(){
+        log.info("拉取皮肤数据");
+        String skinListUrl = "https://andata.somedata.top/data-2020/char/extraSkins.json";
+        String jsonStringFromUrl = getJsonStringFromUrl(skinListUrl);
+        JSONArray skinJson = new JSONArray(jsonStringFromUrl);
+        //皮肤只需要增量更新
+        Integer maxId = skinInfoMapper.selectMaxId();
+        int max = maxId==null?0: maxId;
+        if (max < skinJson.length()){
+            for (int i = max; i < skinJson.length(); i++){
+                JSONObject skinObj = skinJson.getJSONObject(i);
+                SkinInfo skinInfo = new SkinInfo();
+                skinInfo.setSkinName(skinObj.getJSONObject("displaySkin").getString("skinName"));
+                skinInfo.setDialog(skinObj.getJSONObject("displaySkin").getString("dialog"));
+                skinInfo.setDrawerName(skinObj.getJSONObject("displaySkin").getString("drawerName"));
+                skinInfo.setOperatorId(operatorInfoMapper.getOperatorIdByChar(skinObj.getString("charId")));
+                skinInfo.setSkinGroupName(skinObj.getJSONObject("displaySkin").getString("skinGroupName"));
+
+                String avatarId = skinObj.getString("avatarId");
+                String[] split = avatarId.split("#");
+                String skinImgUrl = "https://andata.somedata.top/dataX/char/halfPic/";
+                skinInfo.setSkinBase64(imageUtil.getImageBase64ByUrl(skinImgUrl + split[0] + "%23" + split[1] + ".png"));
+
+                skinInfoMapper.insertBySkinInfo(skinInfo);
             }
         }
     }
