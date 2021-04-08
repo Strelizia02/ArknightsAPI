@@ -38,6 +38,11 @@ public class SkinInfoServiceImpl implements SkinInfoService {
                             "\n画师：" + skinInfo.getDrawerName() + " " + skinInfo.getSkinGroupName() + "系列\n" +
                             skinInfo.getDialog();
                     sendMsgUtil.CallOPQApiSendImg(groupId, result, SendMsgUtil.picBase64Buf, skinInfo.getSkinBase64(), 2);
+                    try {
+                        Thread.sleep(500);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
                 }
                 return "";
             }else {
