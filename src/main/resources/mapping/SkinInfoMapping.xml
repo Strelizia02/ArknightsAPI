@@ -36,12 +36,30 @@
 
     <select id="selectSkinById" parameterType="java.lang.Integer" resultType="java.lang.String">
         SELECT
-            a.skin_base64
+            skin_base64
         FROM
             t_operator_skin
         WHERE
             id = #{id}
     </select>
+
+    <select id="selectBase64IsUrl" resultType="java.lang.Integer">
+        SELECT
+            id
+        FROM
+            t_operator_skin
+        WHERE
+            INSTR(skin_base64,'https://')
+    </select>
+
+    <update id="updateBaseStrById">
+        UPDATE
+            t_operator_skin
+        SET
+            skin_base64 = #{skinBase64}
+        WHERE
+            id = #{id}
+	</update>
 
     <insert id="insertBySkinInfo" parameterType="com.strelizia.arknights.model.SkinInfo">
         INSERT INTO t_operator_skin (

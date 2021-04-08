@@ -5,6 +5,7 @@ import com.strelizia.arknights.model.*;
 import com.strelizia.arknights.service.UpdateDataService;
 import com.strelizia.arknights.util.ImageUtil;
 import com.strelizia.arknights.util.SendMsgUtil;
+import io.swagger.models.auth.In;
 import lombok.extern.slf4j.Slf4j;
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -389,6 +390,19 @@ public class UpdateDataServiceImpl implements UpdateDataService {
 
                 skinInfoMapper.insertBySkinInfo(skinInfo);
             }
+            log.info("原有时装{}个，当前时装{}个",max,skinJson.length());
+        }
+        //查找仍然是url的结果(上次更新url转base64失败的)
+        List<Integer> ids = skinInfoMapper.selectBase64IsUrl();
+        if (ids != null && ids.size() > 0){
+            int i = 0;
+            for (Integer id: ids) {
+                skinInfoMapper.updateBaseStrById(id,
+                        imageUtil.getImageBase64ByUrl(skinInfoMapper.selectSkinById(id)));
+                i++;
+            }
+            if (i != 0)
+                log.info("修复上次未获取的图片{}个",i);
         }
     }
 
