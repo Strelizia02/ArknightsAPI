@@ -31,7 +31,7 @@
     </select>
 
     <select id="selectMaxId" resultType="java.lang.Integer">
-        select max(id) from t_operator_skin
+        select count(id) from t_operator_skin
     </select>
 
     <select id="selectSkinById" parameterType="java.lang.Integer" resultType="java.lang.String">

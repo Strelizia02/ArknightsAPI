@@ -28,6 +28,12 @@ public class UpdateController {
         return 0;
     }
 
+    @GetMapping("AutoUpdateSkin")
+    public Integer updateSkin(){
+        updateDataService.updateSkin();
+        return 0;
+    }
+
 
     //获取所有涩图到本地
     @PostMapping("getImg")

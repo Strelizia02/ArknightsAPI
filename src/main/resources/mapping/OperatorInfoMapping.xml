@@ -91,7 +91,7 @@
     </select>
 
     <select id="getOperatorIdByChar" parameterType="java.lang.String" resultType="java.lang.Integer">
-        select operator_id from t_operator where char_id=#{charId}
+        select operator_id from t_operator where char_id=#{charId} limit 1
     </select>
     
     <select id="getAllDrawName" resultType="java.lang.String">
