@@ -96,9 +96,9 @@ public class SendMsgUtil {
         poolTaskExecutor.execute(() -> {
             try {
                 Text text = new Text(s);
-                if (text.getMaxRow().length() > 12 && text.getRowsNum() > 5) {
+                if (text.getMaxRow().length() > 15 && text.getRowsNum() > 5) {
                     //文字太长就发图片
-                    sendTextImgToGroup(restTemplate, groupId, null, SendMsgUtil.picBase64Buf, TextToImage.createImage(s, new Font("楷体", Font.PLAIN, 24)),
+                    sendTextImgToGroup(restTemplate, groupId, null, SendMsgUtil.picBase64Buf, TextToImage.createImage(s, new Font("楷体", Font.PLAIN, 100)),
                             "http://" + OPQUrl + ":8888" + sendTextMsgApi + "?qq=" +  loginQq + "&funcname=SendMsg",sendToType);
                 } else {
                     sendTextMsgToGroup(restTemplate, groupId, s,
