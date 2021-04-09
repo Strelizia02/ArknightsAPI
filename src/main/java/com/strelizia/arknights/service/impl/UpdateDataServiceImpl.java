@@ -55,6 +55,9 @@ public class UpdateDataServiceImpl implements UpdateDataService {
     @Autowired
     private ImageUtil imageUtil;
 
+    @Autowired
+    private MaterialMadeMapper materialMadeMapper;
+
     @Override
     /**
      * checkUpdate是否检查版本更新
@@ -403,6 +406,16 @@ public class UpdateDataServiceImpl implements UpdateDataService {
             }
             if (i != 0)
                 log.info("修复上次未获取的图片{}个",i);
+        }
+
+        log.info("开始拉取最新材料图标");
+        List<Integer> maters = materialMadeMapper.selectAllMaterId();
+        for (Integer id: maters){
+            String picBase64 = materialMadeMapper.selectMaterialPicById(id);
+            if (picBase64 == null || picBase64.startsWith("https://")){
+                String iconId = new JSONObject(getJsonStringFromUrl("https://andata.somedata.top/data-2020/item/" + id + ".json")).getString("iconId");
+                materialMadeMapper.updateBase64ById(imageUtil.getImageBase64ByUrl("https://andata.somedata.top/dataX/item/pic/" + iconId + ".png"), id);
+            }
         }
     }
 

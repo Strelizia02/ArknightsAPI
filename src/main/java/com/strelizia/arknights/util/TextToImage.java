@@ -58,7 +58,7 @@ public class TextToImage {
     /**
      * BufferedImage转byte[]
      */
-    private static byte[] imageToBytes(BufferedImage bImage) {
+    public static byte[] imageToBytes(BufferedImage bImage) {
         ByteArrayOutputStream out = new ByteArrayOutputStream();
         try {
             ImageIO.write(bImage, "png", out);

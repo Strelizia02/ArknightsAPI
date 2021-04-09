@@ -272,16 +272,16 @@ public class ArknightsController {
                 result = agentService.selectFoundCount(qq,name);
                 break;
             case ZhuanJingCaiLiao:
-                result = materialService.ZhuanJingCaiLiao(a);
+                result = materialService.ZhuanJingCaiLiao(groupId, a);
                 break;
             case JingYiCaiLiao:
-                result = materialService.JingYingHuaCaiLiao(s[1], 1);
+                result = materialService.JingYingHuaCaiLiao(groupId, s[1], 1);
                 break;
             case JingErCaiLiao:
-                result = materialService.JingYingHuaCaiLiao(s[1], 2);
+                result = materialService.JingYingHuaCaiLiao(groupId, s[1], 2);
                 break;
             case HeChengLuXian:
-                result = materialService.HeChengLuXian(s[1]);
+                result = materialService.HeChengLuXian(groupId, s[1]);
                 break;
             case CaiLiaoHuoQu:
                 result = materialService.HuoQuTuJing(s[1]);
@@ -305,7 +305,7 @@ public class ArknightsController {
                 result = materialService.selectAgentData(s[1]);
                 break;
             case DiTuDiaoLuo:
-                result = materialService.selectMaterByMap(s[1]);
+                result = materialService.selectMaterByMap(groupId, s[1]);
                 break;
             case ZhangJieLieBiao:
                 result = materialService.selectZoneList();

@@ -42,6 +42,10 @@
             )
     </select>
 
+    <select id="selectMaterialPicByName" parameterType="java.lang.String" resultType="java.lang.String">
+        select material_pic from t_material where material_name = #{name}
+    </select>
+
     <select id="selectMaterSource" parameterType="java.lang.String" resultMap="SourceResultMap">
         SELECT
             z.zone_name,
@@ -113,4 +117,16 @@
         LEFT JOIN t_zone z ON s.zone_id = z.zone_id
         WHERE z.zone_name = #{zoneName}
     </select>
+
+    <select id="selectAllMaterId" resultType="java.lang.Integer">
+        select material_id from t_material
+    </select>
+
+    <select id="selectMaterialPicById" parameterType="java.lang.Integer" resultType="java.lang.String">
+        select material_pic from t_material where material_id = #{id}
+    </select>
+
+    <update id="updateBase64ById">
+        UPDATE t_material set material_pic = #{base64} where material_id = #{id}
+    </update>
 </mapper>

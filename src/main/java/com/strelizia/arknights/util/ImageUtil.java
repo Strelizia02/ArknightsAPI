@@ -1,5 +1,6 @@
 package com.strelizia.arknights.util;
 
+import java.awt.image.BufferedImage;
 import java.io.*;
 import java.net.HttpURLConnection;
 import java.net.URL;
@@ -12,6 +13,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 import sun.misc.BASE64Decoder;
 import sun.misc.BASE64Encoder;
+
+import javax.imageio.ImageIO;
 
 
 /**
@@ -188,5 +191,24 @@ public class ImageUtil {
             out.close();
         } catch (Exception ignored) {
         }
+    }
+
+    public static BufferedImage Base64ToImageBuffer(String base64){
+        if (base64 == null) // 图像数据为空
+            return null;
+        BASE64Decoder decoder = new BASE64Decoder();
+        try {
+            // Base64解码
+            byte[] bytes = decoder.decodeBuffer(base64);
+            for (int i = 0; i < bytes.length; ++i) {
+                if (bytes[i] < 0) {// 调整异常数据
+                    bytes[i] += 256;
+                }
+            }
+            ByteArrayInputStream bais = new ByteArrayInputStream(bytes);
+            return ImageIO.read(bais);
+        } catch (Exception ignored) {
+        }
+        return null;
     }
 }

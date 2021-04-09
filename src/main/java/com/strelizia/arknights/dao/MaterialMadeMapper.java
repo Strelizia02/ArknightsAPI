@@ -4,6 +4,8 @@ import com.strelizia.arknights.model.MapCostInfo;
 import com.strelizia.arknights.model.MapMatrixInfo;
 import com.strelizia.arknights.model.MaterialInfo;
 import com.strelizia.arknights.model.SourcePlace;
+import io.swagger.models.auth.In;
+import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 
@@ -33,4 +35,14 @@ public interface MaterialMadeMapper {
 
     //查询地图掉落材料
     List<MapMatrixInfo> selectMatrixByMap(String MapId);
+
+    //查询材料图标base64
+    String selectMaterialPicByName(String name);
+    String selectMaterialPicById(Integer id);
+
+    //查询全部材料id
+    List<Integer> selectAllMaterId();
+
+    //更新材料图标
+    Integer updateBase64ById(@Param("base64") String base64, @Param("id") Integer id);
 }
