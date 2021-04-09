@@ -101,9 +101,10 @@ public class SendMsgUtil {
                     if (text.getRowsNum() > 10){
                         sendTextImgToGroup(restTemplate, groupId, null, SendMsgUtil.picBase64Buf, TextToImage.createImage(s, new Font("楷体", Font.PLAIN, 50)),
                                 "http://" + OPQUrl + ":8888" + sendTextMsgApi + "?qq=" +  loginQq + "&funcname=SendMsg",sendToType);
+                    }else {
+                        sendTextImgToGroup(restTemplate, groupId, null, SendMsgUtil.picBase64Buf, TextToImage.createImage(s, new Font("楷体", Font.PLAIN, 100)),
+                                "http://" + OPQUrl + ":8888" + sendTextMsgApi + "?qq=" + loginQq + "&funcname=SendMsg", sendToType);
                     }
-                    sendTextImgToGroup(restTemplate, groupId, null, SendMsgUtil.picBase64Buf, TextToImage.createImage(s, new Font("楷体", Font.PLAIN, 100)),
-                            "http://" + OPQUrl + ":8888" + sendTextMsgApi + "?qq=" +  loginQq + "&funcname=SendMsg",sendToType);
                 } else {
                     sendTextMsgToGroup(restTemplate, groupId, s,
                             "http://" + OPQUrl + ":8888" + sendTextMsgApi + "?qq=" + loginQq + "&funcname=SendMsg", sendToType);
