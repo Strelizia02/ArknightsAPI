@@ -98,6 +98,10 @@ public class SendMsgUtil {
                 Text text = new Text(s);
                 if (text.getMaxRow().length() > 15 && text.getRowsNum() > 5) {
                     //文字太长就发图片
+                    if (text.getRowsNum() > 10){
+                        sendTextImgToGroup(restTemplate, groupId, null, SendMsgUtil.picBase64Buf, TextToImage.createImage(s, new Font("楷体", Font.PLAIN, 50)),
+                                "http://" + OPQUrl + ":8888" + sendTextMsgApi + "?qq=" +  loginQq + "&funcname=SendMsg",sendToType);
+                    }
                     sendTextImgToGroup(restTemplate, groupId, null, SendMsgUtil.picBase64Buf, TextToImage.createImage(s, new Font("楷体", Font.PLAIN, 100)),
                             "http://" + OPQUrl + ":8888" + sendTextMsgApi + "?qq=" +  loginQq + "&funcname=SendMsg",sendToType);
                 } else {
