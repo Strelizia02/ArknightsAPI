@@ -151,20 +151,20 @@ public class MaterialServiceImpl implements MaterialService {
         if (mapMatrixInfos.size() == 0){
             return "没有找到该地图掉落的材料";
         }else {
-            int height = 100 * mapMatrixInfos.size() + 120;
-            BufferedImage image = new BufferedImage(3000, height,
+            int height = 50 * mapMatrixInfos.size() + 60;
+            BufferedImage image = new BufferedImage(1500, height,
                     BufferedImage.TYPE_INT_BGR);//创建图片画布
             Graphics g = image.getGraphics();
             g.setColor(Color.WHITE); // 先用白色填充整张图片,也就是背景
-            g.fillRect(0, 0, 3000, height);//画出矩形区域，以便于在矩形区域内写入文字
+            g.fillRect(0, 0, 1500, height);//画出矩形区域，以便于在矩形区域内写入文字
             g.setColor(Color.black);// 再换成黑色，以便于写入文字
-            g.setFont(new Font("楷体", Font.PLAIN, 100));// 设置画笔字体
-            g.drawString(MapId + "掉落的材料列表为：", 0, 100);
+            g.setFont(new Font("楷体", Font.PLAIN, 50));// 设置画笔字体
+            g.drawString(MapId + "掉落的材料列表为：", 0, 50);
             for (int i = 0; i < mapMatrixInfos.size(); i++) {
                 MapMatrixInfo matrix = mapMatrixInfos.get(i);
                 String imgBase64 = materialMadeMapper.selectMaterialPicByName(matrix.getMaterial_name());
-                g.drawImage(ImageUtil.Base64ToImageBuffer(imgBase64), 0, (i + 1) * 100, 100, 100, null);// 画出材料图标
-                g.drawString(matrix.getMaterial_name() + "\t掉率：" + matrix.getRate() + "%\t测试次数：" + matrix.getTimes() + "\t掉落个数：" + matrix.getQuantity(), 100, (i + 2) * 100);
+                g.drawImage(ImageUtil.Base64ToImageBuffer(imgBase64), 0, (i + 1) * 50, 50, 50, null);// 画出材料图标
+                g.drawString(matrix.getMaterial_name() + "\t掉率：" + matrix.getRate() + "%\t测试次数：" + matrix.getTimes() + "\t掉落个数：" + matrix.getQuantity(), 50, (i + 2) * 50);
             }
             g.dispose();
             sendMsgUtil.CallOPQApiSendImg(groupId, null, SendMsgUtil.picBase64Buf,

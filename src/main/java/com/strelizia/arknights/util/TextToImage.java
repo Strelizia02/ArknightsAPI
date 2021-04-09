@@ -11,6 +11,7 @@ import java.awt.geom.Rectangle2D;
 import java.awt.image.BufferedImage;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.util.regex.Pattern;
 
 import static com.strelizia.arknights.util.ImageUtil.replaceEnter;
 
@@ -47,8 +48,17 @@ public class TextToImage {
         g.setColor(Color.black);// 再换成黑色，以便于写入文字
         g.setFont(font);// 设置画笔字体
         String[] rows = t.getText();
+        Pattern pattern = Pattern.compile("[0-9]*");
         for (int i = 0; i < t.getRowsNum(); i++){
-            g.drawString(rows[i], 0, (i + 1) * font.getSize() + 1);// 画出一行字符串
+            if (pattern.matcher(rows[i].charAt(0)+"").matches()){
+                g.setFont(new Font("楷体", Font.BOLD, 50));
+                g.setColor(Color.BLUE);
+                g.drawString(rows[i], 0, (i + 1) * font.getSize() + 1);// 画出一行字符串
+                g.setFont(font);
+                g.setColor(Color.black);
+            }else {
+                g.drawString(rows[i], 0, (i + 1) * font.getSize() + 1);// 画出一行字符串
+            }
         }
         g.dispose();
         BASE64Encoder decoder = new BASE64Encoder();
