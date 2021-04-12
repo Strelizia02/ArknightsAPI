@@ -10,4 +10,6 @@ public interface UpdateDataService {
     Integer updateOperatorByJson(String json);
 
     void updateSkin();
+
+    void updateMapAndItem();
 }

@@ -34,6 +34,12 @@ public class UpdateController {
         return 0;
     }
 
+    @GetMapping("AutoUpdateSkin")
+    public Integer updateMapAndItem(){
+        updateDataService.updateMapAndItem();
+        return 0;
+    }
+
 
     //获取所有涩图到本地
     @PostMapping("getImg")
