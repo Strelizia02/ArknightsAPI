@@ -34,7 +34,7 @@ public class EnemyServiceImpl implements EnemyService {
                 s.append("\n").append(info.toString());
             }
         }
-        return s.substring(1);
+        return s.toString();
     }
 
     @Override

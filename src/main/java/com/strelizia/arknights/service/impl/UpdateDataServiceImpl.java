@@ -89,15 +89,8 @@ public class UpdateDataServiceImpl implements UpdateDataService {
             sendMsgUtil.CallOPQApiSendMsg(groupId, s, 2);
         }
 
-        updateAllOperator(charKey);
-        updateAllEnemy(enemyKey);
-
-        for (Long groupId : groups) {
-            String s = "正在从企鹅物流搬运材料数据ing\n--" +
-                    sdf.format(new Date());
-            sendMsgUtil.CallOPQApiSendMsg(groupId, s, 2);
-        }
-
+//        updateAllOperator(charKey);
+//        updateAllEnemy(enemyKey);
         updateMapAndItem();
 
         for (Long groupId : groups) {
@@ -327,13 +320,19 @@ public class UpdateDataServiceImpl implements UpdateDataService {
 
         //材料列表
         String itemListUrl = "https://penguin-stats.cn/PenguinStats/api/v2/items";
+        List<Integer> ids = materialMadeMapper.selectAllMaterId();
 
         ItemJson[] items = restTemplate.getForObject(itemListUrl,ItemJson[].class);
         for (ItemJson item : items) {
             try {
                 Integer id = Integer.parseInt(item.getItemId());
-                String name = item.getName();
-                updateMapper.updateItemData(id, name);
+                //增量更新
+                if (!ids.contains(id)) {
+                    String name = item.getName();
+                    updateMapper.updateItemData(id, name);
+                    //更新合成信息
+                    updateItemFormula(id);
+                }
             } catch (NumberFormatException e) {
                 //忽略家具材料
             }
@@ -342,7 +341,10 @@ public class UpdateDataServiceImpl implements UpdateDataService {
         Integer[] DoubleId = {3213,3223,3233,3243,3253,3263,3273,3283};
         String[] DoubleName = {"先锋双芯片", "近卫双芯片", "重装双芯片", "狙击双芯片", "术师双芯片", "医疗双芯片", "辅助双芯片", "特种双芯片"};
         for(int i = 0; i < 8; i++){
-            updateMapper.updateItemData(DoubleId[i],DoubleName[i]);
+            if (!ids.contains(DoubleId[i])) {
+                updateMapper.updateItemData(DoubleId[i], DoubleName[i]);
+                updateItemFormula(DoubleId[i]);
+            }
         }
 
         //地图掉落关联表
@@ -361,6 +363,36 @@ public class UpdateDataServiceImpl implements UpdateDataService {
                 updateMapper.updateMatrixData(stageId, itemId, quantity, times);
             }catch (NumberFormatException e){
                 //忽略家具材料
+            }
+        }
+    }
+
+    public void updateItemFormula(Integer itemId){
+        //根据材料id，更新材料合成公式
+
+        String itemUrl = "https://andata.somedata.top/data-2020/item/" + itemId + ".json";
+        JSONArray buildingProductList = new JSONObject(getJsonStringFromUrl(itemUrl)).getJSONArray("buildingProductList");
+        if (buildingProductList != null && buildingProductList.length() > 0) {
+            String roomType = buildingProductList.getJSONObject(0).getString("roomType");
+            String formulaId = buildingProductList.getJSONObject(0).getString("formulaId");
+
+            String materialMadeUrl = "https://cdn.jsdelivr.net/gh/Kengxxiao/ArknightsGameData@master/zh_CN/gamedata/excel/building_data.json";
+
+            JSONArray formulaObj;
+            if (roomType.equals("WORKSHOP")) {
+                formulaObj = new JSONObject(getJsonStringFromUrl(materialMadeUrl)).getJSONObject("workshopFormulas").getJSONObject(formulaId).getJSONArray("costs");
+                for (int i = 0; i < formulaObj.length(); i++) {
+                    updateMapper.insertMaterialMade(itemId
+                            , Integer.parseInt(formulaObj.getJSONObject(i).getString("id"))
+                            , formulaObj.getJSONObject(i).getInt("count"));
+                }
+            } else if (roomType.equals("MANUFACTURE")) {
+                formulaObj = new JSONObject(getJsonStringFromUrl(materialMadeUrl)).getJSONObject("manufactFormulas").getJSONObject(formulaId).getJSONArray("costs");
+                for (int i = 0; i < formulaObj.length(); i++) {
+                    updateMapper.insertMaterialMade(itemId
+                            , Integer.parseInt(formulaObj.getJSONObject(i).getString("id"))
+                            , formulaObj.getJSONObject(i).getInt("count"));
+                }
             }
         }
     }

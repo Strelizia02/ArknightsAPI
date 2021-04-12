@@ -186,6 +186,18 @@
             #{maxCharge})
     </insert>
 
+    <insert id="insertMaterialMade">
+        INSERT INTO t_material_made (
+            material_id,
+            use_material_id,
+            use_number
+        )
+        VALUES
+            (#{materialId},
+            #{useMaterialId},
+            #{useNumber})
+    </insert>
+
     <update id="updateOperatorData" parameterType="com.strelizia.arknights.model.OperatorData">
         UPDATE t_operator
         SET atk = #{atk},
@@ -241,7 +253,6 @@
         DELETE FROM t_enemy;
         DELETE FROM t_stage;
         DELETE FROM t_zone;
-        DELETE FROM t_material;
         DELETE FROM t_matrix;
         TRUNCATE TABLE t_matrix;
     </delete>

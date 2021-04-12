@@ -12,6 +12,13 @@ import static com.strelizia.arknights.model.ClassificationEnum.*;
  * @Date 2020/12/22 11:36
  **/
 public class ClassificationUtil {
+    /**
+     * 如果需要关闭某些功能，建议从本方法中删除对应的map
+     * 不建议删除功能相关源码，部分功能有耦合
+     * 代码已经可以运行了，不要乱动.jpg
+     * @param s
+     * @return
+     */
     public static ClassificationEnum GetClass(String s){
         Map<String,ClassificationEnum> map = new HashMap<>();
         map.put("菜单",CaiDan);
