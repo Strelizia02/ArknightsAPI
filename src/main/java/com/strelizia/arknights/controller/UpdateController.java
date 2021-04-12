@@ -21,20 +21,20 @@ public class UpdateController {
     @Autowired
     private SeTuService seTuService;
 
-    @GetMapping("AutoUpdate")
+    @GetMapping("update")
     public Integer update(){
         updateDataService.updateAllData(false);
         updateDataService.updateSkin();
         return 0;
     }
 
-    @GetMapping("AutoUpdateSkin")
+    @GetMapping("updateSkin")
     public Integer updateSkin(){
         updateDataService.updateSkin();
         return 0;
     }
 
-    @GetMapping("AutoUpdateSkin")
+    @GetMapping("updateMapAndItem")
     public Integer updateMapAndItem(){
         updateDataService.updateMapAndItem();
         return 0;
