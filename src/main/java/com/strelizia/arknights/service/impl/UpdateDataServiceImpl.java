@@ -318,6 +318,29 @@ public class UpdateDataServiceImpl implements UpdateDataService {
             updateMapper.updateZoneData(zone);
         }
 
+        updateItemAndFormula();
+
+        //地图掉落关联表
+        String matrixListUrl = "https://penguin-stats.cn/PenguinStats/api/v2/_private/result/matrix/CN/global";
+
+        String matrixJsonStr = restTemplate.getForObject(matrixListUrl,String.class);
+        JSONArray matrixJsons = new JSONObject(matrixJsonStr).getJSONArray("matrix");
+        int length = matrixJsons.length();
+        for (int i = 0; i < length; i++){
+            JSONObject matrix = matrixJsons.getJSONObject(i);
+            try {
+                String stageId = matrix.getString("stageId");
+                Integer itemId = Integer.parseInt(matrix.getString("itemId"));
+                Integer quantity = matrix.getInt("quantity");
+                Integer times = matrix.getInt("times");
+                updateMapper.updateMatrixData(stageId, itemId, quantity, times);
+            }catch (NumberFormatException e){
+                //忽略家具材料
+            }
+        }
+    }
+
+    public void updateItemAndFormula(){
         //材料列表
         String itemListUrl = "https://penguin-stats.cn/PenguinStats/api/v2/items";
         List<Integer> ids = materialMadeMapper.selectAllMaterId();
@@ -346,25 +369,7 @@ public class UpdateDataServiceImpl implements UpdateDataService {
                 updateItemFormula(DoubleId[i]);
             }
         }
-
-        //地图掉落关联表
-        String matrixListUrl = "https://penguin-stats.cn/PenguinStats/api/v2/_private/result/matrix/CN/global";
-
-        String matrixJsonStr = restTemplate.getForObject(matrixListUrl,String.class);
-        JSONArray matrixJsons = new JSONObject(matrixJsonStr).getJSONArray("matrix");
-        int length = matrixJsons.length();
-        for (int i = 0; i < length; i++){
-            JSONObject matrix = matrixJsons.getJSONObject(i);
-            try {
-                String stageId = matrix.getString("stageId");
-                Integer itemId = Integer.parseInt(matrix.getString("itemId"));
-                Integer quantity = matrix.getInt("quantity");
-                Integer times = matrix.getInt("times");
-                updateMapper.updateMatrixData(stageId, itemId, quantity, times);
-            }catch (NumberFormatException e){
-                //忽略家具材料
-            }
-        }
+        updateItemIcon();
     }
 
     public void updateItemFormula(Integer itemId){
@@ -439,7 +444,11 @@ public class UpdateDataServiceImpl implements UpdateDataService {
             if (i != 0)
                 log.info("修复上次未获取的图片{}个",i);
         }
+        updateItemIcon();
+    }
 
+
+    public void updateItemIcon(){
         log.info("开始拉取最新材料图标");
         List<Integer> maters = materialMadeMapper.selectAllMaterId();
         for (Integer id: maters){

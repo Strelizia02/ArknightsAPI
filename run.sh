@@ -101,7 +101,7 @@ upload(){
 ##更新
 update(){
   echo "数据自动更新中......"
-  curl -X GET "http://localhost:8086/Update/AutoUpdate" -H "accept: */*"
+  curl -X GET "http://localhost:8086/Update/update" -H "accept: */*"
 }
 
 ##导出涩图

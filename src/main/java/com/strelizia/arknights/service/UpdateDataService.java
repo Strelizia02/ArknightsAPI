@@ -11,5 +11,5 @@ public interface UpdateDataService {
 
     void updateSkin();
 
-    void updateMapAndItem();
+    void updateItemAndFormula();
 }
