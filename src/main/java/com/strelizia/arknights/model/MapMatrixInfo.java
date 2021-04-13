@@ -7,17 +7,17 @@ import io.swagger.models.auth.In;
  * @Date 2021/1/9 20:01
  **/
 public class MapMatrixInfo {
-    private String material_name;
+    private String materialName;
     private Double rate;
     private Integer quantity;
     private Integer times;
 
-    public String getMaterial_name() {
-        return material_name;
+    public String getMaterialName() {
+        return materialName;
     }
 
-    public void setMaterial_name(String material_name) {
-        this.material_name = material_name;
+    public void setMaterialName(String materialName) {
+        this.materialName = materialName;
     }
 
     public Double getRate() {

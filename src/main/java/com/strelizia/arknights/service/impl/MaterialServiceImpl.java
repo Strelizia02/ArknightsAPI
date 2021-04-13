@@ -105,10 +105,12 @@ public class MaterialServiceImpl implements MaterialService {
                 s = new StringBuilder("找不到该材料的获取关卡");
             } else {
                 for (SourcePlace p : sourcePlaces) {
-                    String zoneName = p.getZone_name();
+                    String zoneName = p.getZoneName();
                     String code = p.getCode();
                     Double rate = p.getRate();
-                    s.append("\n关卡名称：").append(zoneName).append("\t").append(code).append("\t掉落概率:").append(rate).append("%");
+                    Double cost = p.getApCost()/rate*100;
+
+                    s.append("\n关卡名称：").append(zoneName).append("\t").append(code).append("\t掉落概率:").append(rate).append("%").append("\t期望理智：").append(String.format("%.2f",cost));
                 }
             }
             s.append("\n如需查看活动关卡，请在材料名后面加-all，中间无空格");
@@ -120,10 +122,11 @@ public class MaterialServiceImpl implements MaterialService {
                 s = new StringBuilder("找不到该材料的获取关卡");
             } else {
                 for (SourcePlace p : sourcePlaces) {
-                    String zoneName = p.getZone_name();
+                    String zoneName = p.getZoneName();
                     String code = p.getCode();
                     Double rate = p.getRate();
-                    s.append("\n关卡名称：").append(zoneName).append("\t").append(code).append("\t掉落概率:").append(rate).append("%");
+                    Double cost = p.getApCost()/rate*100;
+                    s.append("\n关卡名称：").append(zoneName).append("\t").append(code).append("\t掉落概率:").append(rate).append("%").append("\t期望理智：").append(String.format("%.2f",cost));
                 }
             }
         }
@@ -159,12 +162,12 @@ public class MaterialServiceImpl implements MaterialService {
             g.fillRect(0, 0, 1500, height);//画出矩形区域，以便于在矩形区域内写入文字
             g.setColor(Color.black);// 再换成黑色，以便于写入文字
             g.setFont(new Font("楷体", Font.PLAIN, 50));// 设置画笔字体
-            g.drawString(MapId + "掉落的材料列表为：", 0, 50);
+            g.drawString(MapId + "消耗理智" + materialMadeMapper.selectStageCost(MapId) + " 掉落的材料列表为：", 0, 50);
             for (int i = 0; i < mapMatrixInfos.size(); i++) {
                 MapMatrixInfo matrix = mapMatrixInfos.get(i);
-                String imgBase64 = materialMadeMapper.selectMaterialPicByName(matrix.getMaterial_name());
+                String imgBase64 = materialMadeMapper.selectMaterialPicByName(matrix.getMaterialName());
                 g.drawImage(ImageUtil.Base64ToImageBuffer(imgBase64), 0, (i + 1) * 50, 50, 50, null);// 画出材料图标
-                g.drawString(matrix.getMaterial_name() + "\t掉率：" + matrix.getRate() + "%\t测试次数：" + matrix.getTimes() + "\t掉落个数：" + matrix.getQuantity(), 50, (i + 2) * 50);
+                g.drawString(matrix.getMaterialName() + "\t掉率：" + matrix.getRate() + "%\t测试次数：" + matrix.getTimes() + "\t掉落个数：" + matrix.getQuantity(), 50, (i + 2) * 50);
             }
             g.dispose();
             sendMsgUtil.CallOPQApiSendImg(groupId, null, SendMsgUtil.picBase64Buf,

@@ -7,13 +7,14 @@
     </resultMap>
 
     <resultMap id="SourceResultMap" type="com.strelizia.arknights.model.SourcePlace" >
-        <result column="zone_name" property="zone_name" jdbcType="VARCHAR" />
+        <result column="zone_name" property="zoneName" jdbcType="VARCHAR" />
+        <result column="ap_cost" property="apCost" jdbcType="INTEGER" />
         <result column="code" property="code" jdbcType="VARCHAR" />
         <result column="rate" property="rate" jdbcType="DOUBLE" />
     </resultMap>
 
     <resultMap id="MatrixResultMap" type="com.strelizia.arknights.model.MapMatrixInfo" >
-        <result column="material_name" property="material_name" jdbcType="VARCHAR" />
+        <result column="material_name" property="materialName" jdbcType="VARCHAR" />
         <result column="rate" property="rate" jdbcType="DOUBLE" />
         <result column="quantity" property="quantity" jdbcType="INTEGER" />
         <result column="times" property="times" jdbcType="INTEGER" />
@@ -50,6 +51,7 @@
         SELECT
             z.zone_name,
             s.code,
+            s.ap_cost,
             x.rate
         FROM
             t_matrix x
@@ -69,6 +71,7 @@
         SELECT
             z.zone_name,
             s.code,
+            s.ap_cost,
             x.rate
         FROM
             t_matrix x
@@ -96,6 +99,10 @@
         WHERE
             s.code = #{MapId}
         ORDER BY x.rate DESC
+    </select>
+
+    <select id="selectStageCost" parameterType="java.lang.String" resultType="java.lang.Integer">
+        select ap_cost from t_stage where code = #{MapId}
     </select>
 
     <select id="selectAllZone" resultType="java.lang.String">
