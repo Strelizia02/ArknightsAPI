@@ -278,3 +278,8 @@ INSERT INTO `a_agent` VALUES ('麦哲伦', '6', '常规', '0');
 INSERT INTO `a_agent` VALUES ('黑', '6', '常规', '0');
 INSERT INTO `a_agent` VALUES ('黑', '6', '深夏的守夜人', '0');
 INSERT INTO `a_agent` VALUES ('黑角', '2', '公招', '0');
+INSERT INTO `a_agent` VALUES ('异客', '6', '沙海过客', '1');
+INSERT INTO `a_agent` VALUES ('熔泉', '5', '沙海过客', '1');
+INSERT INTO `a_agent` VALUES ('慑砂', '5', '沙海过客', '1');
+INSERT INTO `a_agent` VALUES ('异客', '6', '常规', '1');
+INSERT INTO `a_agent` VALUES ('熔泉', '5', '常规', '1');

@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50725
 File Encoding         : 65001
 
-Date: 2021-01-12 09:40:11
+Date: 2021-04-13 14:17:30
 */
 DROP DATABASE IF EXISTS `arknights`;
 CREATE DATABASE `arknights`;
@@ -140,6 +140,8 @@ DROP TABLE IF EXISTS `t_material`;
 CREATE TABLE `t_material` (
   `material_id` int(11) NOT NULL,
   `material_name` varchar(255) DEFAULT NULL,
+  `material_icon` varchar(255) DEFAULT NULL,
+  `material_pic` longtext,
   PRIMARY KEY (`material_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
@@ -175,6 +177,7 @@ CREATE TABLE `t_matrix` (
 DROP TABLE IF EXISTS `t_operator`;
 CREATE TABLE `t_operator` (
   `operator_id` int(11) NOT NULL AUTO_INCREMENT,
+  `char_id` text COMMENT '官方id',
   `operator_name` varchar(255) DEFAULT NULL,
   `operator_rarity` tinyint(4) DEFAULT NULL,
   `operator_class` tinyint(4) DEFAULT NULL COMMENT '先锋: 1,近卫: 2,重装: 3,狙击: 4,术师: 5,辅助: 6,医疗: 7,特种: 8',
@@ -264,7 +267,7 @@ CREATE TABLE `t_operator_skill_desc` (
   `skill_level` int(11) DEFAULT NULL COMMENT '技能等级',
   `max_charge` int(11) DEFAULT NULL COMMENT '最大充能数',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=3131 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Table structure for t_operator_skill_mastery_costs
@@ -277,6 +280,21 @@ CREATE TABLE `t_operator_skill_mastery_costs` (
   `use_material_id` int(11) DEFAULT NULL,
   `use_number` int(11) DEFAULT NULL,
   PRIMARY KEY (`cost_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- ----------------------------
+-- Table structure for t_operator_skin
+-- ----------------------------
+DROP TABLE IF EXISTS `t_operator_skin`;
+CREATE TABLE `t_operator_skin` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `operator_id` int(11) DEFAULT NULL COMMENT '干员id',
+  `skin_group_name` varchar(255) DEFAULT NULL,
+  `skin_name` varchar(255) DEFAULT NULL COMMENT '皮肤代号',
+  `skin_base64` longtext COMMENT '图片base64编码',
+  `dialog` varchar(255) DEFAULT NULL COMMENT '描述',
+  `drawer_name` varchar(255) DEFAULT NULL COMMENT '画师名',
+  PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- ----------------------------
