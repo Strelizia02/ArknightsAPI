@@ -16,9 +16,9 @@
 
 项目主要实现机器人的自定义事件触发、自动回复。
 
-感谢[机器人框架](https://github.com/OPQBOT/OPQ/wiki)提供的技术支持，有关框架的部署请参考wiki文档。
+感谢[OPQ机器人框架](https://github.com/OPQBOT/OPQ/wiki)提供的技术支持，有关框架的部署请参考wiki文档。
 
-感谢[兔兔阿米娅](https://github.com/vivien8261/Amiya-Bot)，[企鹅物流](https://penguin-stats.cn/)，[kokodayo资料站](https://kokodayo.fun/)提供的数据支持。
+感谢[兔兔阿米娅](https://github.com/vivien8261/Amiya-Bot)，[企鹅物流](https://penguin-stats.cn/)，[kokodayo资料站](https://kokodayo.fun/)，[ArknightsGameData](https://github.com/Kengxxiao/ArknightsGameData)提供的数据支持。
 
 感谢[百度智能云](https://cloud.baidu.com/)提供的图像识别技术，公开招募可以直接截图查询。
 
