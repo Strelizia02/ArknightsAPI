@@ -342,33 +342,38 @@ public class UpdateDataServiceImpl implements UpdateDataService {
 
     public void updateItemAndFormula(){
         //材料列表
-        String itemListUrl = "https://penguin-stats.cn/PenguinStats/api/v2/items";
+        String itemListUrl = "https://cdn.jsdelivr.net/gh/Kengxxiao/ArknightsGameData@master/zh_CN/gamedata/excel/item_table.json";
         List<Integer> ids = materialMadeMapper.selectAllMaterId();
 
-        ItemJson[] items = restTemplate.getForObject(itemListUrl,ItemJson[].class);
-        for (ItemJson item : items) {
-            try {
-                Integer id = Integer.parseInt(item.getItemId());
+        JSONObject items = new JSONObject(getJsonStringFromUrl(itemListUrl)).getJSONObject("items");
+        Pattern pattern = Pattern.compile("[0-9]*");
+        Iterator<String> keys = items.keys();
+
+        while (keys.hasNext()) {
+            String key = keys.next();
+            //只更新数字id（字母id是一些抽奖券干员信物之类的）
+            if (pattern.matcher(key).matches()) {
+                JSONObject itemObj = items.getJSONObject(key);
+                Integer id = Integer.parseInt(itemObj.getString("itemId"));
                 //增量更新
                 if (!ids.contains(id)) {
-                    String name = item.getName();
-                    updateMapper.updateItemData(id, name);
+                    String name = itemObj.getString("name");
+                    String icon = itemObj.getString("iconId");
+                    updateMapper.updateItemData(id, name, icon);
                     //更新合成信息
                     updateItemFormula(id);
                 }
-            } catch (NumberFormatException e) {
-                //忽略家具材料
             }
         }
         //企鹅物流数据缺失双芯片数据，单独插入
-        Integer[] DoubleId = {3213,3223,3233,3243,3253,3263,3273,3283};
-        String[] DoubleName = {"先锋双芯片", "近卫双芯片", "重装双芯片", "狙击双芯片", "术师双芯片", "医疗双芯片", "辅助双芯片", "特种双芯片"};
-        for(int i = 0; i < 8; i++){
-            if (!ids.contains(DoubleId[i])) {
-                updateMapper.updateItemData(DoubleId[i], DoubleName[i]);
-                updateItemFormula(DoubleId[i]);
-            }
-        }
+//        Integer[] DoubleId = {3213,3223,3233,3243,3253,3263,3273,3283};
+//        String[] DoubleName = {"先锋双芯片", "近卫双芯片", "重装双芯片", "狙击双芯片", "术师双芯片", "医疗双芯片", "辅助双芯片", "特种双芯片"};
+//        for(int i = 0; i < 8; i++){
+//            if (!ids.contains(DoubleId[i])) {
+//                updateMapper.updateItemData(DoubleId[i], DoubleName[i]);
+//                updateItemFormula(DoubleId[i]);
+//            }
+//        }
         updateItemIcon();
     }
 

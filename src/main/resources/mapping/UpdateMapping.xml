@@ -101,10 +101,10 @@
 
     <insert id="updateItemData">
         INSERT INTO t_material
-            (material_id,material_name)
+            (material_id,material_name,material_icon)
         VALUES
         (
-            #{id},#{name}
+            #{id},#{name},#{icon}
         )
     </insert>
 

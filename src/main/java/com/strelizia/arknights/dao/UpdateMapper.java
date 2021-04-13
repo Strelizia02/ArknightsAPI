@@ -43,7 +43,7 @@ public interface UpdateMapper {
     Integer updateZoneData(ZoneJson zoneJson);
 
     //更新材料数据
-    Integer updateItemData(@Param("id") Integer id, @Param("name") String name);
+    Integer updateItemData(@Param("id") Integer id, @Param("name") String name, @Param("icon") String icon);
 
     //更新掉落数据
     Integer updateMatrixData(@Param("stageId") String stageId, @Param("itemId") Integer itemId
