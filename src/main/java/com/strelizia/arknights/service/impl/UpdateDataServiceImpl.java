@@ -89,8 +89,8 @@ public class UpdateDataServiceImpl implements UpdateDataService {
             sendMsgUtil.CallOPQApiSendMsg(groupId, s, 2);
         }
 
-//        updateAllOperator(charKey);
-//        updateAllEnemy(enemyKey);
+        updateAllOperator(charKey);
+        updateAllEnemy(enemyKey);
         updateMapAndItem();
 
         for (Long groupId : groups) {
