@@ -310,6 +310,21 @@ CREATE TABLE `t_operator_tags_relation` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 -- ----------------------------
+-- Table structure for t_operator_talent
+-- ----------------------------
+DROP TABLE IF EXISTS `t_operator_talent`;
+CREATE TABLE `t_operator_talent` (
+  `talent_id` int(11) NOT NULL AUTO_INCREMENT COMMENT '天赋id',
+  `operator_id` int(11) DEFAULT NULL COMMENT '干员id',
+  `talent_name` varchar(255) DEFAULT NULL COMMENT '天赋名称',
+  `description` varchar(255) DEFAULT NULL COMMENT '天赋描述',
+  `phase` int(11) DEFAULT NULL COMMENT '解锁精英化',
+  `level` int(11) DEFAULT NULL COMMENT '解锁等级',
+  `potential` int(11) DEFAULT NULL COMMENT '解锁潜能',
+  PRIMARY KEY (`talent_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- ----------------------------
 -- Table structure for t_stage
 -- ----------------------------
 DROP TABLE IF EXISTS `t_stage`;
