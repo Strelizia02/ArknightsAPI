@@ -157,6 +157,9 @@ public class ClassificationUtil {
         map.put("皮肤查询",PiFuChaXun);
         map.put("时装查询",PiFuChaXun);
 
+        map.put("天赋查询",TianFuChaXun);
+        map.put("干员天赋",TianFuChaXun);
+
         return map.get(s);
     }
 }

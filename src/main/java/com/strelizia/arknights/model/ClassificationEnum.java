@@ -47,5 +47,6 @@ public enum ClassificationEnum {
     ShanChuSeTu,
     GuanBiSeTu,
     DaKaiSeTu,
-    PiFuChaXun
+    PiFuChaXun,
+    TianFuChaXun
 }

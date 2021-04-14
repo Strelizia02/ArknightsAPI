@@ -162,6 +162,24 @@
             )
     </insert>
 
+    <insert id="insertOperatorTalent" parameterType="com.strelizia.arknights.model.TalentInfo">
+        INSERT INTO t_operator_talent (
+            operator_id,
+            talent_name,
+            description,
+            phase,
+            level,
+            potential
+        )
+        VALUES
+            (#{operatorId},
+            #{talentName},
+            #{description},
+            #{phase},
+            #{level},
+            #{potential})
+    </insert>
+
     <insert id="updateSkillDecs" parameterType="com.strelizia.arknights.model.SkillDesc">
         INSERT INTO t_operator_skill_desc (
             skill_id,
@@ -236,20 +254,14 @@
     </update>
 
     <delete id="clearOperatorData">
-        DELETE FROM t_operator;
         TRUNCATE TABLE t_operator;
-        DELETE FROM t_operator_building_skill;
         TRUNCATE TABLE t_operator_building_skill;
-        DELETE FROM t_operator_evolve_costs;
         TRUNCATE TABLE t_operator_evolve_costs;
-        DELETE FROM t_operator_skill;
         TRUNCATE TABLE t_operator_skill;
-        DELETE FROM t_operator_skill_desc;
         TRUNCATE TABLE t_operator_skill_desc;
-        DELETE FROM t_operator_skill_mastery_costs;
         TRUNCATE TABLE t_operator_skill_mastery_costs;
-        DELETE FROM t_operator_tags_relation;
         TRUNCATE TABLE t_operator_tags_relation;
+        TRUNCATE TABLE t_operator_talent;
         DELETE FROM t_enemy;
         DELETE FROM t_stage;
         DELETE FROM t_zone;

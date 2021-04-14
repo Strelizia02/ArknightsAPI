@@ -557,6 +557,27 @@ public class UpdateDataServiceImpl implements UpdateDataService {
                 }
             }
 
+            //封装干员天赋
+            if (jsonObj.get("talents") instanceof JSONArray) {
+                JSONArray talents = jsonObj.getJSONArray("talents");
+                for (int i = 0; i < talents.length(); i++) {
+                    JSONArray candidates = talents.getJSONObject(i).getJSONArray("candidates");
+                    for (int j = 0; j < candidates.length(); j++) {
+                        TalentInfo talentInfo = new TalentInfo();
+                        JSONObject candidate = candidates.getJSONObject(j);
+                        talentInfo.setTalentName(candidate.getString("name"));
+                        Pattern pattern = Pattern.compile("<(.*?)>");
+                        Matcher matcher = pattern.matcher(candidate.getString("description"));
+                        talentInfo.setDescription(matcher.replaceAll(""));
+                        talentInfo.setLevel(candidate.getJSONObject("unlockCondition").getInt("level"));
+                        talentInfo.setPhase(candidate.getJSONObject("unlockCondition").getInt("phase"));
+                        talentInfo.setPotential(candidate.getInt("requiredPotentialRank"));
+                        talentInfo.setOperatorId(operatorId);
+                        updateMapper.insertOperatorTalent(talentInfo);
+                    }
+                }
+            }
+
             //封装干员技能
             JSONArray skills = jsonObj.getJSONArray("skills");
             for (int i = 0; i < skills.length(); i++) {

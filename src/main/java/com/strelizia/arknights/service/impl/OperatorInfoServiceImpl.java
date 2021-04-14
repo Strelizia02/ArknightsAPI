@@ -2,6 +2,7 @@ package com.strelizia.arknights.service.impl;
 
 import com.strelizia.arknights.dao.OperatorInfoMapper;
 import com.strelizia.arknights.model.OperatorBasicInfo;
+import com.strelizia.arknights.model.TalentInfo;
 import com.strelizia.arknights.service.OperatorInfoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -118,6 +119,21 @@ public class OperatorInfoServiceImpl implements OperatorInfoService {
             s.append(name).append('\n');
         }
         return s.toString();
+    }
+
+    @Override
+    public String getTalentByName(String name) {
+        List<TalentInfo> operatorTalent = operatorInfoMapper.getOperatorTalent(name);
+        if (operatorTalent != null && operatorTalent.size() > 0) {
+            StringBuilder s = new StringBuilder(name).append("干员的天赋为：");
+            for (TalentInfo t : operatorTalent) {
+                s.append("\n").append(t.getTalentName()).append("\t解锁条件：精英化").append(t.getPhase()).append("等级")
+                        .append(t.getLevel()).append("潜能").append(t.getPotential())
+                        .append("\n\t").append(t.getDescription());
+            }
+            return s.toString();
+        }
+        return "未找到该干员的天赋";
     }
 
 

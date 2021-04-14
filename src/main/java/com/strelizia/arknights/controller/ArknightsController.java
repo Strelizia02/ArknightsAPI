@@ -154,6 +154,7 @@ public class ArknightsController {
                         "28.打开涩图：{##打开涩图}\n" +
                         "29.关闭涩图：{##关闭涩图}\n" +
                         "30.时装查询：{##皮肤查询 [条件]}\n" +
+                        "31.天赋查询：{##干员天赋 干员名}\n" +
                         "过大的涩图将导致回复缓慢，请不要上传不能过审的图片";
                 break;
             case XiangXiCaiDan:
@@ -254,6 +255,9 @@ public class ArknightsController {
                                 "\t使用方法：{##皮肤查询 [条件]}\n" +
                                 "\t例1：{##皮肤查询 艾雅法拉}\n" +
                                 "\t例2：{##时装查询 珊瑚海岸}\n" +
+                                "31.天赋查询：\n" +
+                                "\t使用方法：{##干员天赋 干员名}\n" +
+                                "\t例：##干员天赋 塞雷娅\n" +
                                 "注：本项目需严格按照格式输入，自然语言处理功能将在后期优化";
                 break;
             case ShiLian:
@@ -375,6 +379,9 @@ public class ArknightsController {
                 break;
             case PiFuChaXun:
                 result = skinInfoService.getOperatorSkinByInfo(groupId, s[1]);
+                break;
+            case TianFuChaXun:
+                result = operatorInfoService.getTalentByName(s[1]);
                 break;
             default:
                 result = "俺不晓得你在锁啥子";

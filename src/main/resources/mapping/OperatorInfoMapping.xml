@@ -23,6 +23,15 @@
         <result column="promotion_info" property="promotionInfo" jdbcType="VARCHAR" />
     </resultMap>
 
+    <resultMap id="TalentResultMap" type="com.strelizia.arknights.model.TalentInfo" >
+        <result column="operator_id" property="operatorId" jdbcType="INTEGER" />
+        <result column="talent_name" property="talentName" jdbcType="VARCHAR" />
+        <result column="description" property="description" jdbcType="VARCHAR" />
+        <result column="phase" property="phase" jdbcType="INTEGER" />
+        <result column="level" property="level" jdbcType="INTEGER" />
+        <result column="potential" property="potential" jdbcType="INTEGER" />
+    </resultMap>
+
     <select id="getOperatorNameByInfo" parameterType="java.lang.String" resultType="java.lang.String">
         SELECT
             operator_name
@@ -60,6 +69,22 @@
             t_operator
         WHERE
             operator_id = #{id}
+    </select>
+
+    <select id="getOperatorTalent" parameterType="java.lang.String" resultMap="TalentResultMap">
+        select
+            operator_id,
+            talent_name,
+            description,
+            phase,
+            level,
+            potential
+        from t_operator_talent
+        where operator_id = (
+            select operator_id
+            from t_operator
+            where operator_name = #{name}
+        )
     </select>
 
 

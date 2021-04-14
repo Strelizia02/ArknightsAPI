@@ -23,4 +23,7 @@ public interface OperatorInfoService {
     //根据关键字查找画师
     String getDrawByName(String str);
 
+    //根据干员名查找天赋
+    String getTalentByName(String name);
+
 }

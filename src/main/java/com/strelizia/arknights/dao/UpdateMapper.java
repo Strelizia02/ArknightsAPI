@@ -21,6 +21,9 @@ public interface UpdateMapper {
     //插入一个干员技能信息
     Integer insertOperatorSkill(OperatorSkillInfo operatorSkillInfo);
 
+    //插入一个干员天赋信息
+    Integer insertOperatorTalent(TalentInfo talentInfo);
+
     //根据技能名获取技能id
     Integer selectSkillIdByName(String SkillName);
 

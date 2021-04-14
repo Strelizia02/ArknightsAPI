@@ -1,6 +1,7 @@
 package com.strelizia.arknights.dao;
 
 import com.strelizia.arknights.model.OperatorBasicInfo;
+import com.strelizia.arknights.model.TalentInfo;
 
 import java.util.List;
 import java.util.Set;
@@ -39,5 +40,8 @@ public interface OperatorInfoMapper {
 
     //根据char_id查找干员id
     Integer getOperatorIdByChar(String charId);
+
+    //根据干员名查找干员天赋
+    List<TalentInfo> getOperatorTalent(String name);
 
 }
