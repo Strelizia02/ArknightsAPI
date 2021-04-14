@@ -177,7 +177,7 @@ CREATE TABLE `t_matrix` (
 DROP TABLE IF EXISTS `t_operator`;
 CREATE TABLE `t_operator` (
   `operator_id` int(11) NOT NULL AUTO_INCREMENT,
-  `char_id` text COMMENT '官方id',
+  `char_id` varchar(255) DEFAULT NULL COMMENT '官方id',
   `operator_name` varchar(255) DEFAULT NULL,
   `operator_rarity` tinyint(4) DEFAULT NULL,
   `operator_class` tinyint(4) DEFAULT NULL COMMENT '先锋: 1,近卫: 2,重装: 3,狙击: 4,术师: 5,辅助: 6,医疗: 7,特种: 8',
