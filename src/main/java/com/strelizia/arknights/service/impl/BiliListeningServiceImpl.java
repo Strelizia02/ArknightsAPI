@@ -88,11 +88,11 @@ public class BiliListeningServiceImpl implements BiliListeningService {
                 List<Long> groups = userFoundMapper.selectAllGroups();
                 for (Long groupId:groups){
                     String pic = newDetail.getPicUrl();
-                    if (pic == null) {
+//                    if (pic == null) {
                         sendMsgUtil.CallOPQApiSendMsg(groupId,result,2);
-                    }else {
-                        sendMsgUtil.CallOPQApiSendImg(groupId,result,SendMsgUtil.picUrl, pic,2);
-                    }
+//                    }else {
+//                        sendMsgUtil.CallOPQApiSendImg(groupId,result,SendMsgUtil.picUrl, pic,2);
+//                    }
                 }
             }
         }
@@ -197,7 +197,7 @@ public class BiliListeningServiceImpl implements BiliListeningService {
         String result = name + "的" + d.getType() + "动态\n" +
                 d.getTitle() + "\n" +
                 d.getText();
-        sendMsgUtil.CallOPQApiSendImg(groupId,result,SendMsgUtil.picUrl,d.getPicUrl(),2);
+        sendMsgUtil.CallOPQApiSendMsg(groupId,result,2);
         return "";
     }
 
