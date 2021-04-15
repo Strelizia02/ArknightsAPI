@@ -640,15 +640,24 @@ public class UpdateDataServiceImpl implements UpdateDataService {
                             Double val = parameters.get(key);
                             String value;
 
-                            if (!percent.equals("")){
-                                val = val * 100;
-                            }
-                            if (title.equals("0.0")){
-                                value = new DecimalFormat("#.0").format(val) + percent;
-                            }else{
-                                value = new DecimalFormat("#").format(val) + percent;
-                            }
+                            if (val != null) {
+                                if (!percent.equals("")) {
+                                    val = val * 100;
+                                }
+                                if (title.equals("0.0")) {
+                                    value = new DecimalFormat("#.0").format(val) + percent;
+                                } else {
+                                    value = new DecimalFormat("#").format(val) + percent;
+                                }
 
+                            }else {
+                                try {
+                                    value = "" + skillDescJson.getInt(key);
+                                }catch (Exception e){
+                                    value = key;
+                                }
+
+                            }
                             m.appendReplacement(stringBuffer,value);
                         }
 
