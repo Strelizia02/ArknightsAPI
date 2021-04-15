@@ -92,38 +92,38 @@ public class SendMsgUtil {
         restTemplate.postForEntity(sendTextMsgUrl, httpEntity, SendMsgRespInfo.class).getBody();
     }
 
-//    public void CallOPQApiSendMsg(Long groupId, String s, Integer sendToType){
-//        poolTaskExecutor.execute(() -> {
-//            try {
-//                Text text = new Text(s);
-//                if (text.getMaxRow().length() > 15 && text.getRowsNum() > 5) {
-//                    //文字太长就发图片
-//                    if (text.getRowsNum() > 7){
-//                        sendTextImgToGroup(restTemplate, groupId, null, SendMsgUtil.picBase64Buf, TextToImage.createImage(s, new Font("楷体", Font.PLAIN, 50)),
-//                                "http://" + OPQUrl + ":8888" + sendTextMsgApi + "?qq=" +  loginQq + "&funcname=SendMsg",sendToType);
-//                    }else {
-//                        sendTextImgToGroup(restTemplate, groupId, null, SendMsgUtil.picBase64Buf, TextToImage.createImage(s, new Font("楷体", Font.PLAIN, 100)),
-//                                "http://" + OPQUrl + ":8888" + sendTextMsgApi + "?qq=" + loginQq + "&funcname=SendMsg", sendToType);
-//                    }
-//                } else {
-//                    sendTextMsgToGroup(restTemplate, groupId, s,
-//                            "http://" + OPQUrl + ":8888" + sendTextMsgApi + "?qq=" + loginQq + "&funcname=SendMsg", sendToType);
-//                }
-//            } catch (Exception e) {
-//                e.printStackTrace();
-//            }
-//            });
-//        log.info("发送消息{}成功",s);
-//    }
+    public void CallOPQApiSendMsg(Long groupId, String s, Integer sendToType){
+        poolTaskExecutor.execute(() -> {
+            try {
+                Text text = new Text(s);
+                if (text.getMaxRow().length() > 15 && text.getRowsNum() > 5) {
+                    //文字太长就发图片
+                    if (text.getRowsNum() > 7){
+                        sendTextImgToGroup(restTemplate, groupId, null, SendMsgUtil.picBase64Buf, TextToImage.createImage(s, new Font("楷体", Font.PLAIN, 50)),
+                                "http://" + OPQUrl + ":8888" + sendTextMsgApi + "?qq=" +  loginQq + "&funcname=SendMsg",sendToType);
+                    }else {
+                        sendTextImgToGroup(restTemplate, groupId, null, SendMsgUtil.picBase64Buf, TextToImage.createImage(s, new Font("楷体", Font.PLAIN, 100)),
+                                "http://" + OPQUrl + ":8888" + sendTextMsgApi + "?qq=" + loginQq + "&funcname=SendMsg", sendToType);
+                    }
+                } else {
+                    sendTextMsgToGroup(restTemplate, groupId, s,
+                            "http://" + OPQUrl + ":8888" + sendTextMsgApi + "?qq=" + loginQq + "&funcname=SendMsg", sendToType);
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            });
+        log.info("发送消息{}成功",s);
+    }
 
     /**
      * 不调用文字转图片，纯文字发送的方法
      */
-    public void CallOPQApiSendMsg(Long groupId, String s, Integer sendToType){
-        poolTaskExecutor.execute(() -> sendTextMsgToGroup(restTemplate, groupId, s,
-                "http://" + OPQUrl + ":8888" + sendTextMsgApi + "?qq=" +  loginQq + "&funcname=SendMsg",sendToType));
-        log.info("发送消息{}成功",s);
-    }
+//    public void CallOPQApiSendMsg(Long groupId, String s, Integer sendToType){
+//        poolTaskExecutor.execute(() -> sendTextMsgToGroup(restTemplate, groupId, s,
+//                "http://" + OPQUrl + ":8888" + sendTextMsgApi + "?qq=" +  loginQq + "&funcname=SendMsg",sendToType));
+//        log.info("发送消息{}成功",s);
+//    }
 
     public void CallOPQApiSendImg(Long groupId, String s, String picType, String imgUrl ,Integer sendToType){
         poolTaskExecutor.execute(() -> sendTextImgToGroup(restTemplate, groupId, s, picType, imgUrl,

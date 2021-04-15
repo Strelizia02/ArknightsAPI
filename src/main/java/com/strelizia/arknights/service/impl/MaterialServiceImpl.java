@@ -66,14 +66,10 @@ public class MaterialServiceImpl implements MaterialService {
         if (materialInfos ==null || materialInfos.size() == 0){
             return "找不到查询的内容";
         }else {
-//            sendImageWithPicAndStr(groupId, materialInfos, skillName + " 专精" + level + " 材料为：");
-            String s =  skillName + " 专精" + level + " 材料为：";
-            for (MaterialInfo m:materialInfos){
-                s += "\n" + m.getMaterialName() + "*" + m.getMaterialNum() + "个";
-            }
-            return s;
+            sendImageWithPicAndStr(groupId, materialInfos, skillName + " 专精" + level + " 材料为：");
         }
 
+        return "";
     }
 
     @Override
@@ -82,13 +78,9 @@ public class MaterialServiceImpl implements MaterialService {
         if (materialInfos.size() == 0){
             return "找不到查询的材料";
         }else {
-//            sendImageWithPicAndStr(groupId, materialInfos, agent + "干员 精英" + level + " 需要的材料为：");
-            String s = agent + "干员 精英" + level + " 需要的材料为：";
-            for (MaterialInfo m:materialInfos){
-                s += "\n" + m.getMaterialName() + "*" + m.getMaterialNum() + "个";
-            }
-            return s;
+            sendImageWithPicAndStr(groupId, materialInfos, agent + "干员 精英" + level + " 需要的材料为：");
         }
+        return "";
     }
 
     @Override
@@ -99,11 +91,8 @@ public class MaterialServiceImpl implements MaterialService {
             s = new StringBuilder("找不到该材料的合成路线");
         }else {
             sendImageWithPicAndStr(groupId, materialInfos, name + "的合成路线为：");
-            for (MaterialInfo m:materialInfos){
-                s.append("\n").append(m.getMaterialName()).append("*").append(m.getMaterialNum()).append("个");
-            }
         }
-        return s.toString();
+        return "";
     }
 
     @Override
@@ -165,31 +154,26 @@ public class MaterialServiceImpl implements MaterialService {
         if (mapMatrixInfos.size() == 0){
             return "没有找到该地图掉落的材料";
         }else {
-//            int height = 50 * mapMatrixInfos.size() + 60;
-//            BufferedImage image = new BufferedImage(1500, height,
-//                    BufferedImage.TYPE_INT_BGR);//创建图片画布
-//            Graphics g = image.getGraphics();
-//            g.setColor(Color.WHITE); // 先用白色填充整张图片,也就是背景
-//            g.fillRect(0, 0, 1500, height);//画出矩形区域，以便于在矩形区域内写入文字
-//            g.setColor(Color.black);// 再换成黑色，以便于写入文字
-//            g.setFont(new Font("楷体", Font.PLAIN, 50));// 设置画笔字体
-//            g.drawString(MapId + "消耗理智" + materialMadeMapper.selectStageCost(MapId) + " 掉落的材料列表为：", 0, 50);
-//            for (int i = 0; i < mapMatrixInfos.size(); i++) {
-//                MapMatrixInfo matrix = mapMatrixInfos.get(i);
-//                String imgBase64 = materialMadeMapper.selectMaterialPicByName(matrix.getMaterialName());
-//                g.drawImage(ImageUtil.Base64ToImageBuffer(imgBase64), 0, (i + 1) * 50, 50, 50, null);// 画出材料图标
-//                g.drawString(matrix.getMaterialName() + "\t掉率：" + matrix.getRate() + "%\t测试次数：" + matrix.getTimes() + "\t掉落个数：" + matrix.getQuantity(), 50, (i + 2) * 50);
-//            }
-//            g.dispose();
-//            sendMsgUtil.CallOPQApiSendImg(groupId, null, SendMsgUtil.picBase64Buf,
-//                    replaceEnter(new BASE64Encoder().encode(TextToImage.imageToBytes(image))),2);
-
-            StringBuilder s = new StringBuilder(MapId + "消耗理智" + materialMadeMapper.selectStageCost(MapId) + " 掉落的材料列表为：");
-            for (MapMatrixInfo matrix:mapMatrixInfos){
-                s.append("\n").append(matrix.getMaterialName()).append("\t掉率：").append(matrix.getRate()).append("%\t测试次数：").append(matrix.getTimes()).append("\t掉落个数：").append(matrix.getQuantity());
+            int height = 50 * mapMatrixInfos.size() + 60;
+            BufferedImage image = new BufferedImage(1500, height,
+                    BufferedImage.TYPE_INT_BGR);//创建图片画布
+            Graphics g = image.getGraphics();
+            g.setColor(Color.WHITE); // 先用白色填充整张图片,也就是背景
+            g.fillRect(0, 0, 1500, height);//画出矩形区域，以便于在矩形区域内写入文字
+            g.setColor(Color.black);// 再换成黑色，以便于写入文字
+            g.setFont(new Font("楷体", Font.PLAIN, 50));// 设置画笔字体
+            g.drawString(MapId + "消耗理智" + materialMadeMapper.selectStageCost(MapId) + " 掉落的材料列表为：", 0, 50);
+            for (int i = 0; i < mapMatrixInfos.size(); i++) {
+                MapMatrixInfo matrix = mapMatrixInfos.get(i);
+                String imgBase64 = materialMadeMapper.selectMaterialPicByName(matrix.getMaterialName());
+                g.drawImage(ImageUtil.Base64ToImageBuffer(imgBase64), 0, (i + 1) * 50, 50, 50, null);// 画出材料图标
+                g.drawString(matrix.getMaterialName() + "\t掉率：" + matrix.getRate() + "%\t测试次数：" + matrix.getTimes() + "\t掉落个数：" + matrix.getQuantity(), 50, (i + 2) * 50);
             }
-            return s.toString();
+            g.dispose();
+            sendMsgUtil.CallOPQApiSendImg(groupId, null, SendMsgUtil.picBase64Buf,
+                    replaceEnter(new BASE64Encoder().encode(TextToImage.imageToBytes(image))),2);
         }
+        return "";
     }
 
     @Override
@@ -236,7 +220,7 @@ public class MaterialServiceImpl implements MaterialService {
             g.drawString(m.getMaterialName() + "*" + m.getMaterialNum() + "个", 100, (i + 2) * 100);
         }
         g.dispose();
-//        sendMsgUtil.CallOPQApiSendImg(groupId, null, SendMsgUtil.picBase64Buf,
-//                replaceEnter(new BASE64Encoder().encode(TextToImage.imageToBytes(image))),2);
+        sendMsgUtil.CallOPQApiSendImg(groupId, null, SendMsgUtil.picBase64Buf,
+                replaceEnter(new BASE64Encoder().encode(TextToImage.imageToBytes(image))),2);
     }
 }

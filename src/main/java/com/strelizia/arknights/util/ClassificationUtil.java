@@ -67,11 +67,11 @@ public class ClassificationUtil {
         map.put("公招截图",GongZhaoJieTu);
         map.put("公开招募",GongKaiZhaoMu);
 
-//        map.put("涩图",SeTu);
-//        map.put("不够涩",SeTu);
-//
-//        map.put("给你涩图",GeiNiSeTu);
-//        map.put("上传涩图",GeiNiSeTu);
+        map.put("涩图",SeTu);
+        map.put("不够涩",SeTu);
+
+        map.put("给你涩图",GeiNiSeTu);
+        map.put("上传涩图",GeiNiSeTu);
 
         map.put("服务器查询",XiTongXinXi);
         map.put("系统信息",XiTongXinXi);
