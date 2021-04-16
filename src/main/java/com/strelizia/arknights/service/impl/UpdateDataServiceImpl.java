@@ -3,12 +3,14 @@ package com.strelizia.arknights.service.impl;
 import com.strelizia.arknights.dao.*;
 import com.strelizia.arknights.model.*;
 import com.strelizia.arknights.service.UpdateDataService;
+import com.strelizia.arknights.util.AdminUtil;
 import com.strelizia.arknights.util.ImageUtil;
 import com.strelizia.arknights.util.SendMsgUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.*;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
@@ -60,6 +62,8 @@ public class UpdateDataServiceImpl implements UpdateDataService {
     @Autowired
     private EnemyMapper enemyMapper;
 
+    @Value("${userConfig.loginQq}")
+    private Long loginQq;
 
     @Override
     /**
@@ -83,23 +87,28 @@ public class UpdateDataServiceImpl implements UpdateDataService {
         updateMapper.updateVersion(charKey);
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 
-        List<Long> groups = userFoundMapper.selectAllGroups();
-
-        for (Long groupId : groups) {
-            String s = "游戏数据闪断更新中，更新期间存在无响应情况，请耐心等待更新完成。\n" +
-                    "若十分钟后仍未收到更新完成信息，请联系开发者重新进行更新请求\n--" +
-                    sdf.format(new Date());
-            sendMsgUtil.CallOPQApiSendMsg(groupId, s, 2);
-        }
+//        List<Long> groups = userFoundMapper.selectAllGroups();
+//
+//        for (Long groupId : groups) {
+//            String s = "游戏数据闪断更新中，更新期间存在无响应情况，请耐心等待更新完成。\n" +
+//                    "若十分钟后仍未收到更新完成信息，请联系开发者重新进行更新请求\n--" +
+//                    sdf.format(new Date());
+//            sendMsgUtil.CallOPQApiSendMsg(groupId, s, 2);
+//        }
+        sendMsgUtil.CallOPQApiSendMsg(loginQq,"游戏数据闪断更新中，更新期间存在无响应情况，请耐心等待更新完成。\n" +
+                "若十分钟后仍未收到更新完成信息，请联系开发者重新进行更新请求\n--"
+                +sdf.format(new Date()), 1);
 
         updateAllOperator(charKey);
         updateAllEnemy(enemyKey);
         updateMapAndItem();
 
-        for (Long groupId : groups) {
-            String s = "游戏数据更新完成\n--" + sdf.format(new Date());
-            sendMsgUtil.CallOPQApiSendMsg(groupId, s, 2);
-        }
+        sendMsgUtil.CallOPQApiSendMsg(loginQq,"游戏数据更新完成\n--" + sdf.format(new Date()), 1);
+
+//        for (Long groupId : groups) {
+//            String s = "游戏数据更新完成\n--" + sdf.format(new Date());
+//            sendMsgUtil.CallOPQApiSendMsg(groupId, s, 2);
+//        }
     }
 
     /**
