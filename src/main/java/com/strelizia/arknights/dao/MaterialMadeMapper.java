@@ -30,6 +30,12 @@ public interface MaterialMadeMapper {
     //查询所有地图
     List<MapCostInfo> selectAllMap();
 
+    //查询所有章节Id
+    List<String> selectAllZoneId();
+
+    //查询所有地图Id
+    List<String> selectAllMapId();
+
     //查询地图消耗理智
     Integer selectStageCost(String MapId);
 

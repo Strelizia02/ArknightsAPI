@@ -5,7 +5,6 @@ import com.strelizia.arknights.model.*;
 import com.strelizia.arknights.service.UpdateDataService;
 import com.strelizia.arknights.util.ImageUtil;
 import com.strelizia.arknights.util.SendMsgUtil;
-import io.swagger.models.auth.In;
 import lombok.extern.slf4j.Slf4j;
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -58,6 +57,10 @@ public class UpdateDataServiceImpl implements UpdateDataService {
     @Autowired
     private MaterialMadeMapper materialMadeMapper;
 
+    @Autowired
+    private EnemyMapper enemyMapper;
+
+
     @Override
     /**
      * checkUpdate是否检查版本更新
@@ -79,7 +82,7 @@ public class UpdateDataServiceImpl implements UpdateDataService {
         }
         updateMapper.updateVersion(charKey);
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-        updateMapper.clearOperatorData();
+
         List<Long> groups = userFoundMapper.selectAllGroups();
 
         for (Long groupId : groups) {
@@ -99,11 +102,17 @@ public class UpdateDataServiceImpl implements UpdateDataService {
         }
     }
 
+    /**
+     * 全量更新干员相关信息
+     * @param JsonId Json版本Id
+     */
     public void updateAllOperator(String JsonId){
         //发送请求，封装所有的干员基础信息列表
         //干员列表
         String operatorListUrl = "https://andata.somedata.top/data-2020/char/list/";
-
+        //清理干员数据(因部分召唤物无char_id，不方便进行增量更新)
+        updateMapper.clearOperatorData();
+        //获取干员列表
         String allOperator = getJsonStringFromUrl(operatorListUrl + JsonId + ".json");
 
         JSONArray json = new JSONArray(allOperator);
@@ -130,6 +139,11 @@ public class UpdateDataServiceImpl implements UpdateDataService {
         log.info("更新完成，共更新了{}个干员信息",length);
     }
 
+    /**
+     * 插入一条干员基础信息（档案、声优、画师）
+     * @param operatorId 干员char_id
+     * @param operatorNum 数据库中的干员Id
+     */
     private void updateOperatorInfoById(String operatorId, Integer operatorNum) {
         //干员基础信息
         String infoUrl = "https://andata.somedata.top/data-2020/char/info/";
@@ -220,6 +234,10 @@ public class UpdateDataServiceImpl implements UpdateDataService {
         }
     }
 
+    /**
+     * 获取干员的标签tag
+     * @param operator 干员Json数据
+     */
     private void updateOperatorTag(JSONObject operator) {
         if (operator.getBoolean("gkzm")) {
             String name = operator.getString("name");
@@ -252,6 +270,10 @@ public class UpdateDataServiceImpl implements UpdateDataService {
         }
     }
 
+    /**
+     * 增量更新敌人面板信息
+     * @param enemyKey
+     */
     public void updateAllEnemy(String enemyKey){
         log.info("开始更新敌人信息");
         //发送请求，封装所有的敌人面板信息列表
@@ -259,38 +281,42 @@ public class UpdateDataServiceImpl implements UpdateDataService {
         String enemyListUrl = "https://andata.somedata.top/data-2020/lists/enemy/";
 
         String allEnemy = getJsonStringFromUrl(enemyListUrl + enemyKey + ".json");
-        JSONObject enemyobj = new JSONObject(allEnemy);
-        Set<String> enemyJson = enemyobj.keySet();
-        int length = enemyJson.size();
+        JSONObject enemyObj = new JSONObject(allEnemy);
+        Set<String> enemyJson = enemyObj.keySet();
+        int length = 0;
+        List<String> allEnemyId = enemyMapper.selectAllEnemyId();
         for(String enemyId:enemyJson) {
-            //敌人ID信息
-            String enemyIdUrl = "https://andata.somedata.top/data-2020/enemy/";
+            if (!allEnemyId.contains(enemyId)) {
+                //敌人ID信息
+                String enemyIdUrl = "https://andata.somedata.top/data-2020/enemy/";
 
-            String enemyStr = getJsonStringFromUrl(enemyIdUrl + enemyId + ".json");
-            JSONArray enemyJsonObj = new JSONArray(enemyStr);
-            String name = enemyobj.getJSONObject(enemyId).getString("name");
-            for (int j = 0; j < enemyJsonObj.length(); j++) {
-                //一个敌人可能有多个阶段，比如我老婆霜星
-                JSONObject enemyData = enemyJsonObj.getJSONObject(j).getJSONObject("enemyData");
-                JSONObject attributes = enemyData.getJSONObject("attributes");
-                Integer atk = attributes.getJSONObject("atk").getInt("m_value");
-                Integer baseAttackTime = attributes.getJSONObject("baseAttackTime").getInt("m_value");
-                Integer def = attributes.getJSONObject("def").getInt("m_value");
-                Integer hpRecoveryPerSec = attributes.getJSONObject("hpRecoveryPerSec").getInt("m_value");
-                Integer magicResistance = attributes.getJSONObject("magicResistance").getInt("m_value");
-                Integer massLevel = attributes.getJSONObject("massLevel").getInt("m_value");
-                Integer maxHp = attributes.getJSONObject("maxHp").getInt("m_value");
-                Double moveSpeed = attributes.getJSONObject("moveSpeed").getDouble("m_value");
-                Double rangeRadius = enemyData.getJSONObject("rangeRadius").getDouble("m_value");
-                Integer silenceImmune = attributes.getJSONObject("silenceImmune").getBoolean("m_value") ? 0 : 1;
-                Integer sleepImmune = attributes.getJSONObject("sleepImmune").getBoolean("m_value") ? 0 : 1;
-                Integer stunImmune = attributes.getJSONObject("stunImmune").getBoolean("m_value") ? 0 : 1;
+                String enemyStr = getJsonStringFromUrl(enemyIdUrl + enemyId + ".json");
+                JSONArray enemyJsonObj = new JSONArray(enemyStr);
+                String name = enemyObj.getJSONObject(enemyId).getString("name");
+                for (int j = 0; j < enemyJsonObj.length(); j++) {
+                    //一个敌人可能有多个阶段，比如我老婆霜星
+                    JSONObject enemyData = enemyJsonObj.getJSONObject(j).getJSONObject("enemyData");
+                    JSONObject attributes = enemyData.getJSONObject("attributes");
+                    Integer atk = attributes.getJSONObject("atk").getInt("m_value");
+                    Integer baseAttackTime = attributes.getJSONObject("baseAttackTime").getInt("m_value");
+                    Integer def = attributes.getJSONObject("def").getInt("m_value");
+                    Integer hpRecoveryPerSec = attributes.getJSONObject("hpRecoveryPerSec").getInt("m_value");
+                    Integer magicResistance = attributes.getJSONObject("magicResistance").getInt("m_value");
+                    Integer massLevel = attributes.getJSONObject("massLevel").getInt("m_value");
+                    Integer maxHp = attributes.getJSONObject("maxHp").getInt("m_value");
+                    Double moveSpeed = attributes.getJSONObject("moveSpeed").getDouble("m_value");
+                    Double rangeRadius = enemyData.getJSONObject("rangeRadius").getDouble("m_value");
+                    Integer silenceImmune = attributes.getJSONObject("silenceImmune").getBoolean("m_value") ? 0 : 1;
+                    Integer sleepImmune = attributes.getJSONObject("sleepImmune").getBoolean("m_value") ? 0 : 1;
+                    Integer stunImmune = attributes.getJSONObject("stunImmune").getBoolean("m_value") ? 0 : 1;
 
-                EnemyInfo enemyInfo = new EnemyInfo(enemyId, name, atk, baseAttackTime,
-                        def, hpRecoveryPerSec, magicResistance, massLevel, maxHp,
-                        moveSpeed, rangeRadius, silenceImmune, sleepImmune, stunImmune, j);
+                    EnemyInfo enemyInfo = new EnemyInfo(enemyId, name, atk, baseAttackTime,
+                            def, hpRecoveryPerSec, magicResistance, massLevel, maxHp,
+                            moveSpeed, rangeRadius, silenceImmune, sleepImmune, stunImmune, j);
 
-                updateMapper.updateEnemy(enemyInfo);
+                    updateMapper.updateEnemy(enemyInfo);
+                    length++;
+                }
             }
         }
         log.info("敌人信息更新完成，共更新了{}个敌人信息",length);
@@ -306,23 +332,37 @@ public class UpdateDataServiceImpl implements UpdateDataService {
 
         MapJson[] maps = restTemplate
                 .getForObject(mapListUrl, MapJson[].class);
+        int newMap = 0;
         for (MapJson map : maps) {
-            updateMapper.updateStageData(map);
+            List<String> mapIds = materialMadeMapper.selectAllMapId();
+            if (!mapIds.contains(map.getStageId())) {
+                updateMapper.updateStageData(map);
+                newMap++;
+            }
         }
+        log.info("新增地图{}个",newMap);
 
         //章节列表
         String zoneListUrl = "https://penguin-stats.cn/PenguinStats/api/v2/zones";
 
+        int newZone = 0;
         ZoneJson[] zones = restTemplate.getForObject(zoneListUrl,ZoneJson[].class);
         for (ZoneJson zone : zones) {
-            updateMapper.updateZoneData(zone);
+            List<String> zoneIds = materialMadeMapper.selectAllZoneId();
+            if (!zoneIds.contains(zone.getZoneId())) {
+                updateMapper.updateZoneData(zone);
+                newZone++;
+            }
         }
+        log.info("新增章节{}个",newZone);
 
         updateItemAndFormula();
 
         //地图掉落关联表
         String matrixListUrl = "https://penguin-stats.cn/PenguinStats/api/v2/_private/result/matrix/CN/global";
 
+        //全量更新所有掉落信息
+        updateMapper.clearMatrixData();
         String matrixJsonStr = restTemplate.getForObject(matrixListUrl,String.class);
         JSONArray matrixJsons = new JSONObject(matrixJsonStr).getJSONArray("matrix");
         int length = matrixJsons.length();
@@ -340,6 +380,9 @@ public class UpdateDataServiceImpl implements UpdateDataService {
         }
     }
 
+    /**
+     * 增量更新材料以及合成公式
+     */
     public void updateItemAndFormula(){
         //材料列表
         String itemListUrl = "https://cdn.jsdelivr.net/gh/Kengxxiao/ArknightsGameData@master/zh_CN/gamedata/excel/item_table.json";
@@ -348,7 +391,7 @@ public class UpdateDataServiceImpl implements UpdateDataService {
         JSONObject items = new JSONObject(getJsonStringFromUrl(itemListUrl)).getJSONObject("items");
         Pattern pattern = Pattern.compile("[0-9]*");
         Iterator<String> keys = items.keys();
-
+        int newItem = 0;
         while (keys.hasNext()) {
             String key = keys.next();
             //只更新数字id（字母id是一些抽奖券干员信物之类的）
@@ -362,9 +405,11 @@ public class UpdateDataServiceImpl implements UpdateDataService {
                     updateMapper.updateItemData(id, name, icon);
                     //更新合成信息
                     updateItemFormula(id);
+                    newItem++;
                 }
             }
         }
+        log.info("新增材料{}个",newItem);
         //企鹅物流数据缺失双芯片数据，单独插入
 //        Integer[] DoubleId = {3213,3223,3233,3243,3253,3263,3273,3283};
 //        String[] DoubleName = {"先锋双芯片", "近卫双芯片", "重装双芯片", "狙击双芯片", "术师双芯片", "医疗双芯片", "辅助双芯片", "特种双芯片"};
@@ -377,6 +422,10 @@ public class UpdateDataServiceImpl implements UpdateDataService {
         updateItemIcon();
     }
 
+    /**
+     * 根据材料Id获取合成公式
+     * @param itemId 材料Id
+     */
     public void updateItemFormula(Integer itemId){
         //根据材料id，更新材料合成公式
 
@@ -408,7 +457,7 @@ public class UpdateDataServiceImpl implements UpdateDataService {
     }
 
     /**
-     * 更新皮肤信息
+     * 增量更新皮肤信息（根据Id，要是yj背刺删了一个皮肤就会有问题
      */
     public void updateSkin(){
         log.info("拉取皮肤数据");
@@ -452,7 +501,9 @@ public class UpdateDataServiceImpl implements UpdateDataService {
         updateItemIcon();
     }
 
-
+    /**
+     * 更新材料图标，以材料表为基础update，只更新非base64的字段
+     */
     public void updateItemIcon(){
         log.info("开始拉取最新材料图标");
         List<Integer> maters = materialMadeMapper.selectAllMaterId();
@@ -465,7 +516,11 @@ public class UpdateDataServiceImpl implements UpdateDataService {
         }
     }
 
-    //发送url的get请求获取结果json字符串
+    /**
+     * 发送url的get请求获取结果json字符串
+     * @param url url
+     * @return 返回结果String
+     */
     public String getJsonStringFromUrl(String url){
         HttpHeaders httpHeaders = new HttpHeaders();
         httpHeaders.set("User-Agent","PostmanRuntime/7.26.8");
@@ -483,6 +538,11 @@ public class UpdateDataServiceImpl implements UpdateDataService {
         return s;
     }
 
+    /**
+     * 更新单个干员详细信息。包括技能天赋
+     * @param json 单个干员详细json
+     * @return 返回更新数量
+     */
     @Override
     public Integer updateOperatorByJson(String json) {
         Map<String, Integer> operatorClass = new HashMap<>(8);

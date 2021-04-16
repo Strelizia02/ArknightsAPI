@@ -262,10 +262,9 @@
         TRUNCATE TABLE t_operator_skill_mastery_costs;
         TRUNCATE TABLE t_operator_tags_relation;
         TRUNCATE TABLE t_operator_talent;
-        DELETE FROM t_enemy;
-        DELETE FROM t_stage;
-        DELETE FROM t_zone;
-        DELETE FROM t_matrix;
+    </delete>
+
+    <delete id="clearMatrixData">
         TRUNCATE TABLE t_matrix;
     </delete>
 </mapper>

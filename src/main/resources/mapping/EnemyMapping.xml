@@ -43,4 +43,8 @@
     <select id="selectEnemyListByName" parameterType="java.lang.String" resultType="java.lang.String">
         SELECT name from t_enemy WHERE name LIKE CONCAT('%',#{name},'%')
     </select>
+
+    <select id="selectAllEnemyId" resultType="java.lang.String">
+        select enemy_id from t_enemy
+    </select>
 </mapper>

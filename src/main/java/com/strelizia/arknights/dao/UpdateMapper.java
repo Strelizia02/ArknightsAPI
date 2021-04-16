@@ -36,6 +36,9 @@ public interface UpdateMapper {
     //清空数据库重新插入
     Integer clearOperatorData();
 
+    //清空地图信息
+    Integer clearMatrixData();
+
     //更新干员面板数据
     Integer updateOperatorData(OperatorData operatorData);
 

@@ -117,6 +117,17 @@
         LEFT JOIN t_zone z ON s.zone_id = z.zone_id
     </select>
 
+    <select id="selectAllZoneId" resultType="java.lang.String">
+        SELECT zone_id from t_zone
+    </select>
+
+    <select id="selectAllMapId" resultType="java.lang.String">
+        SELECT
+            stage_id
+        FROM
+            t_stage
+    </select>
+
     <select id="selectMapByZone" parameterType="java.lang.String" resultMap="MapResultMap">
         SELECT
             z.zone_name,s.`code`,s.ap_cost

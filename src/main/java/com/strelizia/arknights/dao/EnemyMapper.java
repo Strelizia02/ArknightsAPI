@@ -14,4 +14,7 @@ public interface EnemyMapper {
 
     //关键字模糊搜素敌人列表
     List<String> selectEnemyListByName(String name);
+
+    //获取全部敌人Id
+    List<String> selectAllEnemyId();
 }
