@@ -45,7 +45,7 @@ public class SendMsgUtil {
 
     private final String sendTextMsgApi = "/v1/LuaApiCaller";
 
-    public void sendTextMsgToGroup(RestTemplate restTemplate, Long groupId, String Text, String sendTextMsgUrl, Integer sendToType) {
+    private void sendTextMsgToGroup(RestTemplate restTemplate, Long groupId, String Text, String sendTextMsgUrl, Integer sendToType) {
         Map<String,Object> map = new HashMap<>(7);
         map.put("toUser",groupId);
         map.put("sendToType",sendToType);
@@ -68,7 +68,7 @@ public class SendMsgUtil {
         restTemplate.postForEntity(sendTextMsgUrl, httpEntity, SendMsgRespInfo.class).getBody();
     }
 
-    public void sendTextImgToGroup(RestTemplate restTemplate, Long groupId, String Text, String picType, String url, String sendTextMsgUrl, Integer sendToType) {
+    private void sendTextImgToGroup(RestTemplate restTemplate, Long groupId, String Text, String picType, String url, String sendTextMsgUrl, Integer sendToType) {
         Map<String,Object> map = new HashMap<>(7);
         map.put("toUser",groupId);
         map.put("sendToType",sendToType);
@@ -131,4 +131,8 @@ public class SendMsgUtil {
         log.info("发送消息图片+文字{}成功",s);
     }
 
+    public void CallOPQApiSendMyself(String s){
+        poolTaskExecutor.execute(() -> sendTextMsgToGroup(restTemplate, loginQq, s,
+                "http://" + OPQUrl + ":8888" + sendTextMsgApi + "?qq=" +  loginQq + "&funcname=SendMsg",1));
+    }
 }

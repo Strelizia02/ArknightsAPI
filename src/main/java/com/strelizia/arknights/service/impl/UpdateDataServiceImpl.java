@@ -3,7 +3,6 @@ package com.strelizia.arknights.service.impl;
 import com.strelizia.arknights.dao.*;
 import com.strelizia.arknights.model.*;
 import com.strelizia.arknights.service.UpdateDataService;
-import com.strelizia.arknights.util.AdminUtil;
 import com.strelizia.arknights.util.ImageUtil;
 import com.strelizia.arknights.util.SendMsgUtil;
 import lombok.extern.slf4j.Slf4j;
@@ -95,20 +94,21 @@ public class UpdateDataServiceImpl implements UpdateDataService {
 //                    sdf.format(new Date());
 //            sendMsgUtil.CallOPQApiSendMsg(groupId, s, 2);
 //        }
-        sendMsgUtil.CallOPQApiSendMsg(loginQq,"游戏数据闪断更新中，更新期间存在无响应情况，请耐心等待更新完成。\n" +
+        sendMsgUtil.CallOPQApiSendMyself("游戏数据闪断更新中，更新期间存在无响应情况，请耐心等待更新完成。\n" +
                 "若十分钟后仍未收到更新完成信息，请联系开发者重新进行更新请求\n--"
-                +sdf.format(new Date()), 1);
+                +sdf.format(new Date()));
 
         updateAllOperator(charKey);
         updateAllEnemy(enemyKey);
         updateMapAndItem();
 
-        sendMsgUtil.CallOPQApiSendMsg(loginQq,"游戏数据更新完成\n--" + sdf.format(new Date()), 1);
+        sendMsgUtil.CallOPQApiSendMyself("游戏数据更新完成\n--" + sdf.format(new Date()));
 
 //        for (Long groupId : groups) {
 //            String s = "游戏数据更新完成\n--" + sdf.format(new Date());
 //            sendMsgUtil.CallOPQApiSendMsg(groupId, s, 2);
 //        }
+
     }
 
     /**
@@ -281,10 +281,11 @@ public class UpdateDataServiceImpl implements UpdateDataService {
 
     /**
      * 增量更新敌人面板信息
-     * @param enemyKey
+     * @param enemyKey 敌人数据key
      */
     public void updateAllEnemy(String enemyKey){
         log.info("开始更新敌人信息");
+
         //发送请求，封装所有的敌人面板信息列表
         //敌人列表
         String enemyListUrl = "https://andata.somedata.top/data-2020/lists/enemy/";
@@ -328,6 +329,8 @@ public class UpdateDataServiceImpl implements UpdateDataService {
                 }
             }
         }
+
+
         log.info("敌人信息更新完成，共更新了{}个敌人信息",length);
     }
 
@@ -335,6 +338,7 @@ public class UpdateDataServiceImpl implements UpdateDataService {
      * 更新地图、材料基础信息
      */
     public void updateMapAndItem(){
+
         log.info("从企鹅物流中拉取地图、材料数据");
         //地图列表
         String mapListUrl = "https://penguin-stats.cn/PenguinStats/api/v2/stages?server=CN";
@@ -349,6 +353,8 @@ public class UpdateDataServiceImpl implements UpdateDataService {
                 newMap++;
             }
         }
+
+
         log.info("新增地图{}个",newMap);
 
         //章节列表
@@ -363,6 +369,8 @@ public class UpdateDataServiceImpl implements UpdateDataService {
                 newZone++;
             }
         }
+
+
         log.info("新增章节{}个",newZone);
 
         updateItemAndFormula();
@@ -418,6 +426,8 @@ public class UpdateDataServiceImpl implements UpdateDataService {
                 }
             }
         }
+
+
         log.info("新增材料{}个",newItem);
         //企鹅物流数据缺失双芯片数据，单独插入
 //        Integer[] DoubleId = {3213,3223,3233,3243,3253,3263,3273,3283};
