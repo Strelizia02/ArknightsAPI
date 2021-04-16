@@ -50,9 +50,6 @@ public class ArknightsController {
     private ExecuteSqlService executeSqlService;
 
     @Autowired
-    private SinaListeningService sinaListeningService;
-
-    @Autowired
     private OperatorInfoService operatorInfoService;
 
     @Autowired
@@ -339,10 +336,6 @@ public class ArknightsController {
                 break;
             case SQL:
                 result = executeSqlService.ExecuteSql(qq,text);
-                break;
-            case WeiBoLieBiao:
-                sinaListeningService.GetWeiBoList();
-                result = "";
                 break;
             case WeiBoZhengWen:
                 result = "";
