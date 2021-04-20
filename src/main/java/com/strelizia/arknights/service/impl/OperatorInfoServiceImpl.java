@@ -1,5 +1,6 @@
 package com.strelizia.arknights.service.impl;
 
+import com.strelizia.arknights.dao.NickNameMapper;
 import com.strelizia.arknights.dao.OperatorInfoMapper;
 import com.strelizia.arknights.model.OperatorBasicInfo;
 import com.strelizia.arknights.model.TalentInfo;
@@ -19,6 +20,9 @@ public class OperatorInfoServiceImpl implements OperatorInfoService {
     @Autowired
     private OperatorInfoMapper operatorInfoMapper;
 
+    @Autowired
+    private NickNameMapper nickNameMapper;
+
 
     @Override
     public String getOperatorByInfos(String[] infos) {
@@ -30,6 +34,11 @@ public class OperatorInfoServiceImpl implements OperatorInfoService {
             {
                 break;
             }
+
+            String realName = nickNameMapper.selectNameByNickName(info);
+            if (realName != null && !realName.equals(""))
+                info = realName;
+
             List<String> operatorNameByInfo = operatorInfoMapper.getOperatorNameByInfo(info);
             operators.retainAll(operatorNameByInfo);
             s.append(info).append(" ");
@@ -43,6 +52,11 @@ public class OperatorInfoServiceImpl implements OperatorInfoService {
 
     @Override
     public String getOperatorInfo(String name, String where) {
+
+        String realName = nickNameMapper.selectNameByNickName(name);
+        if (realName != null && !realName.equals(""))
+            name = realName;
+
         OperatorBasicInfo operatorInfoByName = operatorInfoMapper.getOperatorInfoByName(name);
         String s = name + "干员的档案为：\n";
         if (where == null){
@@ -123,6 +137,11 @@ public class OperatorInfoServiceImpl implements OperatorInfoService {
 
     @Override
     public String getTalentByName(String name) {
+
+        String realName = nickNameMapper.selectNameByNickName(name);
+        if (realName != null && !realName.equals(""))
+            name = realName;
+
         List<TalentInfo> operatorTalent = operatorInfoMapper.getOperatorTalent(name);
         if (operatorTalent != null && operatorTalent.size() > 0) {
             StringBuilder s = new StringBuilder(name).append("干员的天赋为：");

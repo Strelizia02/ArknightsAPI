@@ -1,6 +1,7 @@
 package com.strelizia.arknights.service.impl;
 
 import com.strelizia.arknights.dao.BuildingSkillMapper;
+import com.strelizia.arknights.dao.NickNameMapper;
 import com.strelizia.arknights.dao.OperatorInfoMapper;
 import com.strelizia.arknights.model.BuildingSkill;
 import com.strelizia.arknights.service.BuildingSkillService;
@@ -23,6 +24,9 @@ public class BuildingSkillServiceImpl implements BuildingSkillService {
 
     @Autowired
     private OperatorInfoMapper operatorInfoMapper;
+
+    @Autowired
+    private NickNameMapper nickNameMapper;
 
 
     @Override
@@ -47,6 +51,11 @@ public class BuildingSkillServiceImpl implements BuildingSkillService {
             if (roomTypeMap.containsKey(info)){
                 info = roomTypeMap.get(info);
             }
+
+            String name = nickNameMapper.selectNameByNickName(info);
+            if (name != null && !name.equals(""))
+                info = name;
+
             List<BuildingSkill> buildingSkillByInfo = buildingSkillMapper.getBuildingSkillByInfo(info);
             allBuildingSkill.retainAll(buildingSkillByInfo);
         }

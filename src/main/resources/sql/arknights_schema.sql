@@ -93,6 +93,17 @@ CREATE TABLE `a_image_url` (
 ) ENGINE=InnoDB AUTO_INCREMENT=27 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
+-- Table structure for a_nick_name
+-- ----------------------------
+DROP TABLE IF EXISTS `a_nick_name`;
+CREATE TABLE `a_nick_name` (
+  `nick_name` varchar(255) NOT NULL,
+  `name` varchar(255) NOT NULL,
+  PRIMARY KEY (`nick_name`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+
+-- ----------------------------
 -- Table structure for a_user_found
 -- ----------------------------
 DROP TABLE IF EXISTS `a_user_found`;

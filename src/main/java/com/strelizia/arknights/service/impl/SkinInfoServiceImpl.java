@@ -1,5 +1,6 @@
 package com.strelizia.arknights.service.impl;
 
+import com.strelizia.arknights.dao.NickNameMapper;
 import com.strelizia.arknights.dao.SkinInfoMapper;
 import com.strelizia.arknights.model.SkinInfo;
 import com.strelizia.arknights.service.SkinInfoService;
@@ -22,14 +23,25 @@ public class SkinInfoServiceImpl implements SkinInfoService {
     @Autowired
     private SendMsgUtil sendMsgUtil;
 
+    @Autowired
+    private NickNameMapper nickNameMapper;
+
 
     @Override
     public String getOperatorSkinByInfo(Long groupId, String info) {
+
+        String realName = nickNameMapper.selectNameByNickName(info);
+        if (realName != null && !realName.equals(""))
+            info = realName;
+
         List<SkinInfo> skinInfos = skinInfoMapper.selectSkinByInfo(info);
         String s = "没有找到对应的皮肤";
-        if (info.equals("艾雅法拉") || info.equals("小羊")){
-            s = "呜呜呜小羊现在还没有皮肤QAQ，yj你没有❤";
+        if (info.equals("艾雅法拉") || info.equals("小羊")) {
+            if (skinInfos == null || skinInfos.size() <= 0) {
+                return "呜呜呜小羊现在还没有皮肤QAQ，yj你没有❤";
+            }
         }
+
 
         if (skinInfos != null && skinInfos.size() > 0) {
             if (skinInfos.size() <= 5) {

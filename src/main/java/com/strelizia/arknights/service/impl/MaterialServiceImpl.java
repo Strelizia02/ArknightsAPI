@@ -1,6 +1,7 @@
 package com.strelizia.arknights.service.impl;
 
 import com.strelizia.arknights.dao.MaterialMadeMapper;
+import com.strelizia.arknights.dao.NickNameMapper;
 import com.strelizia.arknights.dao.OperatorEvolveMapper;
 import com.strelizia.arknights.dao.SkillMateryMapper;
 import com.strelizia.arknights.model.*;
@@ -42,6 +43,9 @@ public class MaterialServiceImpl implements MaterialService {
     @Autowired
     private SendMsgUtil sendMsgUtil;
 
+    @Autowired
+    private NickNameMapper nickNameMapper;
+
     @Override
     public String ZhuanJingCaiLiao(Long groupId, String[] args) {
         List<MaterialInfo> materialInfos;
@@ -52,6 +56,11 @@ public class MaterialServiceImpl implements MaterialService {
             //四个参数就是##专精材料-干员—第几技能-专精等级
             Integer index = DescriptionTransformationUtil.ChangeStringToInt(args[2]);
             level = DescriptionTransformationUtil.ChangeStringToInt(args[3]);
+
+            String name = nickNameMapper.selectNameByNickName(args[1]);
+            if (name != null && !name.equals(""))
+                args[1] = name;
+
             skillName = skillMateryMapper.selectSkillNameByAgentIndex(args[1],index);
             materialInfos = skillMateryMapper.selectSkillUpByAgentAndIndex(args[1], index, level);
         }else if (args.length == 3){
@@ -74,6 +83,11 @@ public class MaterialServiceImpl implements MaterialService {
 
     @Override
     public String JingYingHuaCaiLiao(Long groupId, String agent, Integer level) {
+
+        String name = nickNameMapper.selectNameByNickName(agent);
+        if (name != null && !name.equals(""))
+            agent = name;
+
         List<MaterialInfo> materialInfos = operatorEvolveMapper.selectOperatorEvolveByName(agent, level);
         if (materialInfos.size() == 0){
             return "找不到查询的材料";
@@ -97,6 +111,11 @@ public class MaterialServiceImpl implements MaterialService {
 
     @Override
     public String HuoQuTuJing(String name) {
+
+        String realName = nickNameMapper.selectNameByNickName(name);
+        if (realName != null && !realName.equals(""))
+            name = realName;
+
         StringBuilder s;
         if (!name.endsWith("-all")) {
             List<SourcePlace> sourcePlaces = materialMadeMapper.selectMaterSource(name);
@@ -135,6 +154,11 @@ public class MaterialServiceImpl implements MaterialService {
 
     @Override
     public String selectAgentData(String name) {
+
+        String realName = nickNameMapper.selectNameByNickName(name);
+        if (realName != null && !realName.equals(""))
+            name = realName;
+
         OperatorData operatorData = operatorEvolveMapper.selectOperatorData(name);
         String s = "未找到该干员数据";
         if (operatorData.getAtk() != null) {

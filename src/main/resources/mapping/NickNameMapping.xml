@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.strelizia.arknights.dao.NickNameMapper">
+    <resultMap id="BaseResultMap" type="com.strelizia.arknights.model.NickName">
+        <result column="nick_name" property="nickName" jdbcType="VARCHAR" />
+        <result column="name" property="name" jdbcType="VARCHAR" />
+    </resultMap>
+
+    <select id="selectNameByNickName" resultType="java.lang.String">
+        select name from a_nick_name where nick_name = #{name} limit 1
+    </select>
+
+    <select id="selectAllNickName" resultMap="BaseResultMap">
+        select nick_name,name from a_nick_name
+    </select>
+</mapper>

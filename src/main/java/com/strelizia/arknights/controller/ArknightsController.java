@@ -95,8 +95,11 @@ public class ArknightsController {
                 text = text.replace(" ","~");
             }
             //触发关键字是##，目前机器人还没名字，本来就是功能性的。
-            if (text.startsWith("##")) {
+            if (text.startsWith("##")||text.startsWith("洁哥")||text.startsWith("杰哥")) {
                 String messages = text.substring(2);
+                return queryKeyword(qq, groupId, name, messages);
+            }else if (text.startsWith("安洁莉娜")){
+                String messages = text.substring(4);
                 return queryKeyword(qq, groupId, name, messages);
             }
         }
