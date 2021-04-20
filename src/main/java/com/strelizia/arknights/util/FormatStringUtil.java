@@ -88,4 +88,13 @@ public class FormatStringUtil {
         map.put(1,"☆");
         return map.get(star);
     }
+
+    public static String FormatDouble2String(Double val){
+        if (val -val.intValue()<0.01){
+            return String.format("%.0f",val);
+        }else {
+            return "" + val;
+        }
+    }
+
 }

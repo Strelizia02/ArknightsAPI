@@ -34,8 +34,8 @@ public class UpdateController {
         return 0;
     }
 
-    @GetMapping("updateMapAndItem")
-    public Integer updateMapAndItem(){
+    @GetMapping("updateItem")
+    public Integer updateItem(){
         updateDataService.updateItemAndFormula();
         return 0;
     }

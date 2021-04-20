@@ -3,6 +3,7 @@ package com.strelizia.arknights.service.impl;
 import com.strelizia.arknights.dao.*;
 import com.strelizia.arknights.model.*;
 import com.strelizia.arknights.service.UpdateDataService;
+import com.strelizia.arknights.util.FormatStringUtil;
 import com.strelizia.arknights.util.ImageUtil;
 import com.strelizia.arknights.util.SendMsgUtil;
 import lombok.extern.slf4j.Slf4j;
@@ -14,7 +15,6 @@ import org.springframework.http.*;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
-import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.*;
 import java.util.regex.Matcher;
@@ -404,32 +404,32 @@ public class UpdateDataServiceImpl implements UpdateDataService {
         //材料列表
         String itemListUrl = "https://cdn.jsdelivr.net/gh/Kengxxiao/ArknightsGameData@master/zh_CN/gamedata/excel/item_table.json";
         List<Integer> ids = materialMadeMapper.selectAllMaterId();
-
-        JSONObject items = new JSONObject(getJsonStringFromUrl(itemListUrl)).getJSONObject("items");
-        Pattern pattern = Pattern.compile("[0-9]*");
-        Iterator<String> keys = items.keys();
-        int newItem = 0;
-        while (keys.hasNext()) {
-            String key = keys.next();
-            //只更新数字id（字母id是一些抽奖券干员信物之类的）
-            if (pattern.matcher(key).matches()) {
-                JSONObject itemObj = items.getJSONObject(key);
-                Integer id = Integer.parseInt(itemObj.getString("itemId"));
-                //增量更新
-                if (!ids.contains(id)) {
-                    String name = itemObj.getString("name");
-                    String icon = itemObj.getString("iconId");
-                    updateMapper.updateItemData(id, name, icon);
-                    //更新合成信息
-                    updateItemFormula(id);
-                    newItem++;
+        String jsonStringFromUrl = getJsonStringFromUrl(itemListUrl);
+        if (jsonStringFromUrl != null) {
+            JSONObject items = new JSONObject(jsonStringFromUrl).getJSONObject("items");
+            Pattern pattern = Pattern.compile("[0-9]*");
+            Iterator<String> keys = items.keys();
+            int newItem = 0;
+            while (keys.hasNext()) {
+                String key = keys.next();
+                //只更新数字id（字母id是一些抽奖券干员信物之类的）
+                if (pattern.matcher(key).matches()) {
+                    JSONObject itemObj = items.getJSONObject(key);
+                    Integer id = Integer.parseInt(itemObj.getString("itemId"));
+                    //增量更新
+                    if (!ids.contains(id)) {
+                        String name = itemObj.getString("name");
+                        String icon = itemObj.getString("iconId");
+                        updateMapper.updateItemData(id, name, icon);
+                        //更新合成信息
+                        updateItemFormula(id);
+                        newItem++;
+                    }
                 }
             }
-        }
 
-
-        log.info("新增材料{}个",newItem);
-        //企鹅物流数据缺失双芯片数据，单独插入
+            log.info("新增材料{}个", newItem);
+            //企鹅物流数据缺失双芯片数据，单独插入
 //        Integer[] DoubleId = {3213,3223,3233,3243,3253,3263,3273,3283};
 //        String[] DoubleName = {"先锋双芯片", "近卫双芯片", "重装双芯片", "狙击双芯片", "术师双芯片", "医疗双芯片", "辅助双芯片", "特种双芯片"};
 //        for(int i = 0; i < 8; i++){
@@ -438,7 +438,8 @@ public class UpdateDataServiceImpl implements UpdateDataService {
 //                updateItemFormula(DoubleId[i]);
 //            }
 //        }
-        updateItemIcon();
+            updateItemIcon();
+        }
     }
 
     /**
@@ -713,7 +714,6 @@ public class UpdateDataServiceImpl implements UpdateDataService {
 
                         while (m.find()){
                             String key = m.group(2).toLowerCase();
-                            String title = m.group(3);
                             String percent = m.group(4);
 
                             Double val = parameters.get(key);
@@ -723,12 +723,7 @@ public class UpdateDataServiceImpl implements UpdateDataService {
                                 if (!percent.equals("")) {
                                     val = val * 100;
                                 }
-                                if (title.equals("0.0")) {
-                                    value = new DecimalFormat("#.0").format(val) + percent;
-                                } else {
-                                    value = new DecimalFormat("#").format(val) + percent;
-                                }
-
+                                value = FormatStringUtil.FormatDouble2String(val) + percent;
                             }else {
                                 try {
                                     value = "" + skillDescJson.getInt(key);
