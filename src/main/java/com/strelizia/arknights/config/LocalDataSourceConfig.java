@@ -21,53 +21,54 @@ import javax.sql.DataSource;
  **/
 @Configuration
 @MapperScan(basePackages = "com.strelizia.arknights.dao",
-    sqlSessionTemplateRef ="localSqlSessionTemplate")
+        sqlSessionTemplateRef = "localSqlSessionTemplate")
 public class LocalDataSourceConfig {
 
-  @Autowired
-  private LocalDataSourceProperties prop;
+    @Autowired
+    private LocalDataSourceProperties prop;
 
-  /**
-   * 创建数据源
-    */
-  @Bean(name = "localDataSource")
-  public DataSource getFirstDataSource() {
-    DataSource build =  DataSourceBuilder.create()
-        .driverClassName(prop.getDriverClassName())
-        .url(prop.getUrl())
-        .username(prop.getUsername())
-        .password(prop.getPassword())
-        .build();
-    return build;
-  }
-  @Bean(name = "localSqlSessionFactory")
-  public SqlSessionFactory localSqlSessionFactory(
-      @Qualifier("localDataSource") DataSource dataSource) throws Exception {
-    SqlSessionFactoryBean bean = new SqlSessionFactoryBean();
-    bean.setMapperLocations(new PathMatchingResourcePatternResolver()
-        .getResources("classpath:mapping/*.xml"));
+    /**
+     * 创建数据源
+     */
+    @Bean(name = "localDataSource")
+    public DataSource getFirstDataSource() {
+        DataSource build = DataSourceBuilder.create()
+                .driverClassName(prop.getDriverClassName())
+                .url(prop.getUrl())
+                .username(prop.getUsername())
+                .password(prop.getPassword())
+                .build();
+        return build;
+    }
 
-    bean.setDataSource(dataSource);
-    return bean.getObject();
-  }
+    @Bean(name = "localSqlSessionFactory")
+    public SqlSessionFactory localSqlSessionFactory(
+            @Qualifier("localDataSource") DataSource dataSource) throws Exception {
+        SqlSessionFactoryBean bean = new SqlSessionFactoryBean();
+        bean.setMapperLocations(new PathMatchingResourcePatternResolver()
+                .getResources("classpath:mapping/*.xml"));
 
-  @Bean("localTransactionManger")
-  public DataSourceTransactionManager localTransactionManger(
-      @Qualifier("localDataSource") DataSource dataSource){
-    return new DataSourceTransactionManager(dataSource);
-  }
+        bean.setDataSource(dataSource);
+        return bean.getObject();
+    }
 
-  // 创建SqlSessionTemplate
+    @Bean("localTransactionManger")
+    public DataSourceTransactionManager localTransactionManger(
+            @Qualifier("localDataSource") DataSource dataSource) {
+        return new DataSourceTransactionManager(dataSource);
+    }
 
-  @Bean(name = "localSqlSessionTemplate")
-  public SqlSessionTemplate localSqlSessionTemplate(
-      @Qualifier("localSqlSessionFactory") SqlSessionFactory sqlSessionFactory){
-    return new SqlSessionTemplate(sqlSessionFactory);
-  }
+    // 创建SqlSessionTemplate
 
-  @Bean
-  public RestTemplate restTemplate() {
-    return new RestTemplate();
-  }
+    @Bean(name = "localSqlSessionTemplate")
+    public SqlSessionTemplate localSqlSessionTemplate(
+            @Qualifier("localSqlSessionFactory") SqlSessionFactory sqlSessionFactory) {
+        return new SqlSessionTemplate(sqlSessionFactory);
+    }
+
+    @Bean
+    public RestTemplate restTemplate() {
+        return new RestTemplate();
+    }
 
 }

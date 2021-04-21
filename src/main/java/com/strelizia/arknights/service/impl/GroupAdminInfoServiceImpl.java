@@ -19,7 +19,7 @@ public class GroupAdminInfoServiceImpl implements GroupAdminInfoService {
     @Override
     public Integer getGroupFoundAdmin(Long groupId) {
         GroupAdminInfo groupAdminNum = groupAdminInfoMapper.getGroupAdminNum(groupId);
-        if (groupAdminNum == null){
+        if (groupAdminNum == null) {
             groupAdminInfoMapper.insertGroupId(groupId);
             groupAdminNum = groupAdminInfoMapper.getGroupAdminNum(groupId);
         }
@@ -29,7 +29,7 @@ public class GroupAdminInfoServiceImpl implements GroupAdminInfoService {
     @Override
     public Integer getGroupPictureAdmin(Long groupId) {
         GroupAdminInfo groupAdminNum = groupAdminInfoMapper.getGroupAdminNum(groupId);
-        if (groupAdminNum == null){
+        if (groupAdminNum == null) {
             groupAdminInfoMapper.insertGroupId(groupId);
             groupAdminNum = groupAdminInfoMapper.getGroupAdminNum(groupId);
         }

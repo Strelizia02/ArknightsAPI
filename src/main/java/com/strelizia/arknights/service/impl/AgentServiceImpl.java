@@ -38,12 +38,12 @@ public class AgentServiceImpl implements AgentService {
 
 
     @Override
-    public String chouKa(String pool,Long qq,String name,Long groupId) {
+    public String chouKa(String pool, Long qq, String name, Long groupId) {
         return name + "\n抽取" + foundLimit(1, pool, qq, name, groupId);
     }
 
     @Override
-    public String shiLian(String pool,Long qq,String name,Long groupId) {
+    public String shiLian(String pool, Long qq, String name, Long groupId) {
         return name + "\n抽取" + foundLimit(10, pool, qq, name, groupId);
     }
 
@@ -69,10 +69,9 @@ public class AgentServiceImpl implements AgentService {
             todayCount = userFoundInfo.getTodayCount();
         }
         int sixStar;
-        if (foundCount>50)
-        {
+        if (foundCount > 50) {
             sixStar = 2 + (foundCount - 50) * 2;
-        }else {
+        } else {
             //六星概率默认2%
             sixStar = 2;
         }
@@ -81,12 +80,12 @@ public class AgentServiceImpl implements AgentService {
 
     @Override
     public String selectPoolAgent(String pool) {
-        if (pool.equals("凭证兑换") || pool.equals("活动") || pool.equals("公招") || pool.equals("初始")){
+        if (pool.equals("凭证兑换") || pool.equals("活动") || pool.equals("公招") || pool.equals("初始")) {
             return "没有找到该卡池哦";
         }
         List<AgentInfo> agents = agentMapper.selectPoolAgent(pool);
         StringBuilder s = new StringBuilder("卡池[" + pool + "]中概率up干员为：");
-        for (AgentInfo agent:agents){
+        for (AgentInfo agent : agents) {
             s.append("\n").append(agent.getName()).append(FormatStringUtil.FormatStar(agent.getStar()));
         }
         return s.toString();
@@ -94,15 +93,16 @@ public class AgentServiceImpl implements AgentService {
 
     /**
      * 限制每日的抽卡次数
+     *
      * @param count
      * @param pool
      * @param qq
      * @return
      */
-    public String foundLimit(int count,String pool,Long qq,String name,Long groupId){
+    public String foundLimit(int count, String pool, Long qq, String name, Long groupId) {
         String qqMd5 = DigestUtils.md5DigestAsHex(qq.toString().getBytes());
         UserFoundInfo userFoundInfo = userFoundMapper.selectUserFoundByQQ(qqMd5);
-        if (userFoundInfo == null){
+        if (userFoundInfo == null) {
             userFoundInfo = new UserFoundInfo();
             //MD5加密
             userFoundInfo.setQq(qqMd5);
@@ -115,9 +115,9 @@ public class AgentServiceImpl implements AgentService {
         Integer today = userFoundInfo.getTodayCount();
         String s = "今日抽卡机会无了";
         List<AdminUserInfo> admins = adminUserMapper.selectAllAdmin();
-        boolean b = AdminUtil.getFoundAdmin(qqMd5,admins);
+        boolean b = AdminUtil.getFoundAdmin(qqMd5, admins);
         Integer limit = groupAdminInfoService.getGroupFoundAdmin(groupId);
-        if (today< limit ||b) {
+        if (today < limit || b) {
             s = FoundAgentByNum(count, pool, qq, sum, name, groupId);
         }
         return s;
@@ -125,22 +125,23 @@ public class AgentServiceImpl implements AgentService {
 
     /**
      * 抽卡通用方法
+     *
      * @param count 抽几张卡
      * @param pool  卡池名称
      * @param qq    抽取人qq
      * @return
      */
-    public String FoundAgentByNum(int count,String pool,Long qq,Integer sum,String name,Long groupId){
+    public String FoundAgentByNum(int count, String pool, Long qq, Integer sum, String name, Long groupId) {
         List<AdminUserInfo> admins = adminUserMapper.selectAllAdmin();
         String qqMd5 = DigestUtils.md5DigestAsHex(qq.toString().getBytes());
         boolean b = AdminUtil.getSixAdmin(qqMd5, admins);
         //如果没输入卡池名或者卡池不存在
-        if (pool==null||agentMapper.selectAgentByStar(pool,6).size()==0){
+        if (pool == null || agentMapper.selectAgentByStar(pool, 6).size() == 0) {
             pool = "常规";
         }
         StringBuilder s = new StringBuilder();
         //循环抽卡
-        for(int j = 0; j < count; j++) {
+        for (int j = 0; j < count; j++) {
             if (b) {
                 sum = 100;
             }
@@ -167,36 +168,36 @@ public class AgentServiceImpl implements AgentService {
             double r = Math.random();
             //是不是限定池
             Integer integers = agentMapper.selectPoolLimit(pool);
-            if (star == 6){
+            if (star == 6) {
                 if (r <= 0.5 + 0.2 * integers) {
                     //获取当前卡池三星/四星/五星/六星列表
                     agentList = agentMapper.selectAgentByStar(pool, star);
                 } else {
                     agentList = agentMapper.selectAgentByStar("常规", star);
                 }
-            }else if(star == 5){
+            } else if (star == 5) {
                 if (r <= 0.5) {
                     //获取当前卡池三星/四星/五星/六星列表
                     agentList = agentMapper.selectAgentByStar(pool, star);
                 } else {
                     agentList = agentMapper.selectAgentByStar("常规", star);
                 }
-            }else if(star == 4){
+            } else if (star == 4) {
                 if (r <= 0.2) {
                     //获取当前卡池三星/四星/五星/六星列表
                     agentList = agentMapper.selectAgentByStar(pool, star);
                 } else {
                     agentList = agentMapper.selectAgentByStar("常规", star);
                 }
-            }else {
+            } else {
                 agentList = agentMapper.selectAgentByStar("常规", star);
             }
             //有可能三星还去up池里找，因为三星不存在up所以报空，重新去常规池里找
-            if (agentList.size() == 0){
+            if (agentList.size() == 0) {
                 agentList = agentMapper.selectAgentByStar("常规", star);
             }
             //随机数种子采用纳秒数+毫秒/qq，尽可能减少时间戳导致的不随机
-            Random random = new Random(System.nanoTime() +  System.currentTimeMillis() / qq);
+            Random random = new Random(System.nanoTime() + System.currentTimeMillis() / qq);
             int i = random.nextInt(agentList.size());
             String levelStar = FormatStringUtil.FormatStar(star);
             try {
@@ -205,6 +206,6 @@ public class AgentServiceImpl implements AgentService {
                 e.printStackTrace();
             }
         }
-        return pool+"池：\n"+s;
+        return pool + "池：\n" + s;
     }
 }

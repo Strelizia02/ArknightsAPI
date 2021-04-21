@@ -27,24 +27,25 @@ public class SwaggerConfig {
 
     @Bean
     public Docket api() {
-      return new Docket(DocumentationType.SWAGGER_2)
-          .enable(false)
-          .apiInfo(apiInfo())
-          .select()
-          .apis(basePackage("com.strelizia.arknights.controller"))
-          .paths(PathSelectors.any())
-          .build();
-  }
-  private ApiInfo apiInfo() {
-    return new ApiInfoBuilder()
-        //页面标题
-        .title("Spring Boot Swagger2 构建RESTful API")
-        //条款地址
-        .termsOfServiceUrl("http://despairyoke.github.io/")
-        .contact("zwd")
-        .version("1.0")
-        //描述
-        .description("API 描述")
-        .build();
-  }
+        return new Docket(DocumentationType.SWAGGER_2)
+                .enable(false)
+                .apiInfo(apiInfo())
+                .select()
+                .apis(basePackage("com.strelizia.arknights.controller"))
+                .paths(PathSelectors.any())
+                .build();
+    }
+
+    private ApiInfo apiInfo() {
+        return new ApiInfoBuilder()
+                //页面标题
+                .title("Spring Boot Swagger2 构建RESTful API")
+                //条款地址
+                .termsOfServiceUrl("http://despairyoke.github.io/")
+                .contact("zwd")
+                .version("1.0")
+                //描述
+                .description("API 描述")
+                .build();
+    }
 }

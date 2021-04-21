@@ -57,7 +57,7 @@ public class SkinInfoServiceImpl implements SkinInfoService {
                     }
                 }
                 return "";
-            }else {
+            } else {
                 String result = "当前搜索结果过多，如需查看皮肤立绘请缩小搜索范围";
                 for (SkinInfo skinInfo : skinInfos) {
                     result += "\n干员名：" + skinInfo.getOperatorName() + " 皮肤名：" + skinInfo.getSkinName() +

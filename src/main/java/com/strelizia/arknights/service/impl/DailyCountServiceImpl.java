@@ -27,10 +27,11 @@ public class DailyCountServiceImpl implements DailyCountService {
 
     /**
      * 每日日报的查询逻辑
+     *
      * @param groupId
      * @return
      */
-    public String jobMessageByGroupId(Long groupId){
+    public String jobMessageByGroupId(Long groupId) {
         Integer todayCount = groupAdminInfoService.getGroupFoundAdmin(groupId);
 
         UserGetInfo allSixMax = userFoundMapper.selectAllSixMax(groupId);
@@ -60,10 +61,10 @@ public class DailyCountServiceImpl implements DailyCountService {
     @Override
     public void SendDailyCount() {
         List<Long> groups = userFoundMapper.selectAllActiveGroups();
-        for (Long groupId:groups){
+        for (Long groupId : groups) {
             Integer todayCount = groupAdminInfoService.getGroupFoundAdmin(groupId);
             String s = jobMessageByGroupId(groupId);
-            sendMsgUtil.CallOPQApiSendMsg(groupId,s,2);
+            sendMsgUtil.CallOPQApiSendMsg(groupId, s, 2);
             userFoundMapper.giveMoreFoundToFeiQiu(groupId, todayCount);
         }
     }

@@ -43,7 +43,7 @@ public class BiliListeningServiceImpl implements BiliListeningService {
     public boolean getDynamicList() {
         List<BiliCount> biliCountList = biliMapper.getBiliCountList();
         boolean b = false;
-        for (BiliCount bili:biliCountList) {
+        for (BiliCount bili : biliCountList) {
             String biliSpace = "https://space.bilibili.com/" + bili.getUid() + "/dynamic";
             String dynamicList = "https://api.vc.bilibili.com/dynamic_svr/v1/dynamic_svr/space_history?host_uid=";
             String dynamicListUrl = "&offset_dynamic_id=0&need_top=";
@@ -63,13 +63,13 @@ public class BiliListeningServiceImpl implements BiliListeningService {
             JSONArray dynamics = dynamicJson.getJSONObject("data").getJSONArray("cards");
             //获取当前的最新5动态
             List<Long> newList = new ArrayList<>(5);
-            for (int i = 0; i < 5; i++){
+            for (int i = 0; i < 5; i++) {
                 newList.add(dynamics.getJSONObject(i).getJSONObject("desc").getLong("dynamic_id"));
             }
             //对比第一条动态
             Long newId = newList.get(0);
             Long first = bili.getFirst();
-            if (!first.equals(newId)){
+            if (!first.equals(newId)) {
                 bili.setFirst(newId);
                 bili.setSecond(newList.get(1));
                 bili.setThird(newList.get(2));
@@ -86,12 +86,12 @@ public class BiliListeningServiceImpl implements BiliListeningService {
                 log.info("{}有新动态", name);
                 b = true;
                 List<Long> groups = userFoundMapper.selectAllGroups();
-                for (Long groupId:groups){
+                for (Long groupId : groups) {
                     String pic = newDetail.getPicUrl();
                     if (pic == null) {
-                        sendMsgUtil.CallOPQApiSendMsg(groupId,result,2);
-                    }else {
-                        sendMsgUtil.CallOPQApiSendImg(groupId,result,SendMsgUtil.picUrl, pic,2);
+                        sendMsgUtil.CallOPQApiSendMsg(groupId, result, 2);
+                    } else {
+                        sendMsgUtil.CallOPQApiSendImg(groupId, result, SendMsgUtil.picUrl, pic, 2);
                     }
                 }
             }
@@ -116,7 +116,7 @@ public class BiliListeningServiceImpl implements BiliListeningService {
         String dType = "";
         String title = "";
         String pic = null;
-        switch (type){
+        switch (type) {
             case 1:
                 dType = "转发";
                 title = "请点击链接查看转发动态详情";
@@ -171,11 +171,11 @@ public class BiliListeningServiceImpl implements BiliListeningService {
     @Override
     public String getDynamic(Long groupId, String name, int index) {
         BiliCount dynamics = biliMapper.getOneDynamicByName(name);
-        if (dynamics == null){
+        if (dynamics == null) {
             return "机器人尚未监听该用户，请联系管理员监听";
         }
         DynamicDetail d;
-        switch (index){
+        switch (index) {
             case 1:
                 d = getDynamicDetail(dynamics.getFirst());
                 break;
@@ -197,7 +197,7 @@ public class BiliListeningServiceImpl implements BiliListeningService {
         String result = name + "的" + d.getType() + "动态\n" +
                 d.getTitle() + "\n" +
                 d.getText();
-        sendMsgUtil.CallOPQApiSendImg(groupId,result,SendMsgUtil.picUrl,d.getPicUrl(),2);
+        sendMsgUtil.CallOPQApiSendImg(groupId, result, SendMsgUtil.picUrl, d.getPicUrl(), 2);
         return "";
     }
 
@@ -205,7 +205,7 @@ public class BiliListeningServiceImpl implements BiliListeningService {
     public String getBiliList() {
         List<BiliCount> bilis = biliMapper.getBiliCountList();
         StringBuilder s = new StringBuilder();
-        for (BiliCount bili: bilis){
+        for (BiliCount bili : bilis) {
             s.append("\n用户：").append(bili.getName()).append("\tUid:").append(bili.getUid());
         }
         return s.substring(1);

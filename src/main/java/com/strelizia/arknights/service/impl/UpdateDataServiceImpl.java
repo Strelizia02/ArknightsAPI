@@ -96,7 +96,7 @@ public class UpdateDataServiceImpl implements UpdateDataService {
 //        }
         sendMsgUtil.CallOPQApiSendMyself("游戏数据闪断更新中，更新期间存在无响应情况，请耐心等待更新完成。\n" +
                 "若十分钟后仍未收到更新完成信息，请联系开发者重新进行更新请求\n--"
-                +sdf.format(new Date()));
+                + sdf.format(new Date()));
 
         updateAllOperator(charKey);
         updateAllEnemy(enemyKey);
@@ -113,9 +113,10 @@ public class UpdateDataServiceImpl implements UpdateDataService {
 
     /**
      * 全量更新干员相关信息
+     *
      * @param JsonId Json版本Id
      */
-    public void updateAllOperator(String JsonId){
+    public void updateAllOperator(String JsonId) {
         //发送请求，封装所有的干员基础信息列表
         //干员列表
         String operatorListUrl = "https://andata.somedata.top/data-2020/char/list/";
@@ -126,7 +127,7 @@ public class UpdateDataServiceImpl implements UpdateDataService {
 
         JSONArray json = new JSONArray(allOperator);
         int length = json.length();
-        for (int i = 0; i < length; i++){
+        for (int i = 0; i < length; i++) {
             JSONObject operator = json.getJSONObject(i);
             updateOperatorTag(operator);
             String operatorId = operator.getString("No");
@@ -137,7 +138,7 @@ public class UpdateDataServiceImpl implements UpdateDataService {
             String operatorJson = getJsonStringFromUrl(operatorIdUrl + operatorId + ".json");
             Integer operatorNum = updateOperatorByJson(operatorJson);
             //近卫兔兔单独处理
-            if (operatorId.equals("char_1001_amiya2")){
+            if (operatorId.equals("char_1001_amiya2")) {
                 operatorId = "char_002_amiya";
             }
             if (!operator.getString("class").equals("TOKEN")) {
@@ -145,12 +146,13 @@ public class UpdateDataServiceImpl implements UpdateDataService {
                 updateOperatorInfoById(operatorId, operatorNum);
             }
         }
-        log.info("更新完成，共更新了{}个干员信息",length);
+        log.info("更新完成，共更新了{}个干员信息", length);
     }
 
     /**
      * 插入一条干员基础信息（档案、声优、画师）
-     * @param operatorId 干员char_id
+     *
+     * @param operatorId  干员char_id
      * @param operatorNum 数据库中的干员Id
      */
     private void updateOperatorInfoById(String operatorId, Integer operatorNum) {
@@ -245,6 +247,7 @@ public class UpdateDataServiceImpl implements UpdateDataService {
 
     /**
      * 获取干员的标签tag
+     *
      * @param operator 干员Json数据
      */
     private void updateOperatorTag(JSONObject operator) {
@@ -253,12 +256,12 @@ public class UpdateDataServiceImpl implements UpdateDataService {
             JSONArray tags = operator.getJSONArray("tags");
             int rarity = tags.getInt(0) + 1;
             StringBuilder position = new StringBuilder(tags.getString(1).equals("MELEE") ? "近战位" : "远程位");
-            for (int i = 2; i < tags.length(); i++){
+            for (int i = 2; i < tags.length(); i++) {
                 position.append(",").append(tags.getString(i));
             }
-            if (rarity==5){
+            if (rarity == 5) {
                 position.append("," + "资深干员");
-            }else if (rarity==6){
+            } else if (rarity == 6) {
                 position.append("," + "高级资深干员");
             }
             String profession = operator.getString("class");
@@ -281,9 +284,10 @@ public class UpdateDataServiceImpl implements UpdateDataService {
 
     /**
      * 增量更新敌人面板信息
+     *
      * @param enemyKey 敌人数据key
      */
-    public void updateAllEnemy(String enemyKey){
+    public void updateAllEnemy(String enemyKey) {
         log.info("开始更新敌人信息");
 
         //发送请求，封装所有的敌人面板信息列表
@@ -295,7 +299,7 @@ public class UpdateDataServiceImpl implements UpdateDataService {
         Set<String> enemyJson = enemyObj.keySet();
         int length = 0;
         List<String> allEnemyId = enemyMapper.selectAllEnemyId();
-        for(String enemyId:enemyJson) {
+        for (String enemyId : enemyJson) {
             if (!allEnemyId.contains(enemyId)) {
                 //敌人ID信息
                 String enemyIdUrl = "https://andata.somedata.top/data-2020/enemy/";
@@ -331,13 +335,13 @@ public class UpdateDataServiceImpl implements UpdateDataService {
         }
 
 
-        log.info("敌人信息更新完成，共更新了{}个敌人信息",length);
+        log.info("敌人信息更新完成，共更新了{}个敌人信息", length);
     }
 
     /**
      * 更新地图、材料基础信息
      */
-    public void updateMapAndItem(){
+    public void updateMapAndItem() {
 
         log.info("从企鹅物流中拉取地图、材料数据");
         //地图列表
@@ -355,13 +359,13 @@ public class UpdateDataServiceImpl implements UpdateDataService {
         }
 
 
-        log.info("新增地图{}个",newMap);
+        log.info("新增地图{}个", newMap);
 
         //章节列表
         String zoneListUrl = "https://penguin-stats.cn/PenguinStats/api/v2/zones";
 
         int newZone = 0;
-        ZoneJson[] zones = restTemplate.getForObject(zoneListUrl,ZoneJson[].class);
+        ZoneJson[] zones = restTemplate.getForObject(zoneListUrl, ZoneJson[].class);
         for (ZoneJson zone : zones) {
             List<String> zoneIds = materialMadeMapper.selectAllZoneId();
             if (!zoneIds.contains(zone.getZoneId())) {
@@ -371,7 +375,7 @@ public class UpdateDataServiceImpl implements UpdateDataService {
         }
 
 
-        log.info("新增章节{}个",newZone);
+        log.info("新增章节{}个", newZone);
 
         updateItemAndFormula();
 
@@ -380,10 +384,10 @@ public class UpdateDataServiceImpl implements UpdateDataService {
 
         //全量更新所有掉落信息
         updateMapper.clearMatrixData();
-        String matrixJsonStr = restTemplate.getForObject(matrixListUrl,String.class);
+        String matrixJsonStr = restTemplate.getForObject(matrixListUrl, String.class);
         JSONArray matrixJsons = new JSONObject(matrixJsonStr).getJSONArray("matrix");
         int length = matrixJsons.length();
-        for (int i = 0; i < length; i++){
+        for (int i = 0; i < length; i++) {
             JSONObject matrix = matrixJsons.getJSONObject(i);
             try {
                 String stageId = matrix.getString("stageId");
@@ -391,7 +395,7 @@ public class UpdateDataServiceImpl implements UpdateDataService {
                 Integer quantity = matrix.getInt("quantity");
                 Integer times = matrix.getInt("times");
                 updateMapper.updateMatrixData(stageId, itemId, quantity, times);
-            }catch (NumberFormatException e){
+            } catch (NumberFormatException e) {
                 //忽略家具材料
             }
         }
@@ -400,7 +404,7 @@ public class UpdateDataServiceImpl implements UpdateDataService {
     /**
      * 增量更新材料以及合成公式
      */
-    public void updateItemAndFormula(){
+    public void updateItemAndFormula() {
         //材料列表
         String itemListUrl = "https://cdn.jsdelivr.net/gh/Kengxxiao/ArknightsGameData@master/zh_CN/gamedata/excel/item_table.json";
         List<Integer> ids = materialMadeMapper.selectAllMaterId();
@@ -444,9 +448,10 @@ public class UpdateDataServiceImpl implements UpdateDataService {
 
     /**
      * 根据材料Id获取合成公式
+     *
      * @param itemId 材料Id
      */
-    public void updateItemFormula(Integer itemId){
+    public void updateItemFormula(Integer itemId) {
         //根据材料id，更新材料合成公式
 
         String itemUrl = "https://andata.somedata.top/data-2020/item/" + itemId + ".json";
@@ -479,16 +484,16 @@ public class UpdateDataServiceImpl implements UpdateDataService {
     /**
      * 增量更新皮肤信息（根据Id，要是yj背刺删了一个皮肤就会有问题
      */
-    public void updateSkin(){
+    public void updateSkin() {
         log.info("拉取皮肤数据");
         String skinListUrl = "https://andata.somedata.top/data-2020/char/extraSkins.json";
         String jsonStringFromUrl = getJsonStringFromUrl(skinListUrl);
         JSONArray skinJson = new JSONArray(jsonStringFromUrl);
         //皮肤只需要增量更新
         Integer maxId = skinInfoMapper.selectMaxId();
-        int max = maxId==null?0: maxId;
-        if (max < skinJson.length()){
-            for (int i = max; i < skinJson.length(); i++){
+        int max = maxId == null ? 0 : maxId;
+        if (max < skinJson.length()) {
+            for (int i = max; i < skinJson.length(); i++) {
                 JSONObject skinObj = skinJson.getJSONObject(i);
                 SkinInfo skinInfo = new SkinInfo();
                 skinInfo.setSkinName(skinObj.getJSONObject("displaySkin").getString("skinName"));
@@ -504,19 +509,19 @@ public class UpdateDataServiceImpl implements UpdateDataService {
 
                 skinInfoMapper.insertBySkinInfo(skinInfo);
             }
-            log.info("原有时装{}个，当前时装{}个",max,skinJson.length());
+            log.info("原有时装{}个，当前时装{}个", max, skinJson.length());
         }
         //查找仍然是url的结果(上次更新url转base64失败的)
         List<Integer> ids = skinInfoMapper.selectBase64IsUrl();
-        if (ids != null && ids.size() > 0){
+        if (ids != null && ids.size() > 0) {
             int i = 0;
-            for (Integer id: ids) {
+            for (Integer id : ids) {
                 skinInfoMapper.updateBaseStrById(id,
                         imageUtil.getImageBase64ByUrl(skinInfoMapper.selectSkinById(id)));
                 i++;
             }
             if (i != 0)
-                log.info("修复上次未获取的图片{}个",i);
+                log.info("修复上次未获取的图片{}个", i);
         }
         updateItemIcon();
     }
@@ -524,12 +529,12 @@ public class UpdateDataServiceImpl implements UpdateDataService {
     /**
      * 更新材料图标，以材料表为基础update，只更新非base64的字段
      */
-    public void updateItemIcon(){
+    public void updateItemIcon() {
         log.info("开始拉取最新材料图标");
         List<Integer> maters = materialMadeMapper.selectAllMaterId();
-        for (Integer id: maters){
+        for (Integer id : maters) {
             String picBase64 = materialMadeMapper.selectMaterialPicById(id);
-            if (picBase64 == null || picBase64.startsWith("https://")){
+            if (picBase64 == null || picBase64.startsWith("https://")) {
                 String iconId = new JSONObject(getJsonStringFromUrl("https://andata.somedata.top/data-2020/item/" + id + ".json")).getString("iconId");
                 materialMadeMapper.updateBase64ById(imageUtil.getImageBase64ByUrl("https://andata.somedata.top/dataX/item/pic/" + iconId + ".png"), id);
             }
@@ -538,20 +543,21 @@ public class UpdateDataServiceImpl implements UpdateDataService {
 
     /**
      * 发送url的get请求获取结果json字符串
+     *
      * @param url url
      * @return 返回结果String
      */
-    public String getJsonStringFromUrl(String url){
+    public String getJsonStringFromUrl(String url) {
         HttpHeaders httpHeaders = new HttpHeaders();
-        httpHeaders.set("User-Agent","PostmanRuntime/7.26.8");
-        httpHeaders.set("Authorization","2");
-        httpHeaders.set("Host","andata.somedata.top");
+        httpHeaders.set("User-Agent", "PostmanRuntime/7.26.8");
+        httpHeaders.set("Authorization", "2");
+        httpHeaders.set("Host", "andata.somedata.top");
         HttpEntity<String> httpEntity = new HttpEntity<>(httpHeaders);
         String s = null;
         try {
             s = restTemplate
                     .exchange(url, HttpMethod.GET, httpEntity, String.class).getBody();
-        }catch (Exception ignored){
+        } catch (Exception ignored) {
 
         }
 
@@ -560,6 +566,7 @@ public class UpdateDataServiceImpl implements UpdateDataService {
 
     /**
      * 更新单个干员详细信息。包括技能天赋
+     *
      * @param json 单个干员详细json
      * @return 返回更新数量
      */
@@ -578,7 +585,7 @@ public class UpdateDataServiceImpl implements UpdateDataService {
         JSONObject jsonObj = new JSONObject(json);
         String name = jsonObj.getString("name");
         //近卫兔兔改个名
-        if (jsonObj.getJSONArray("phases").getJSONObject(0).getString("characterPrefabKey").equals("char_1001_amiya2")){
+        if (jsonObj.getJSONArray("phases").getJSONObject(0).getString("characterPrefabKey").equals("char_1001_amiya2")) {
             name = "近卫阿米娅";
         }
         int rarity = jsonObj.getInt("rarity") + 1;
@@ -695,9 +702,9 @@ public class UpdateDataServiceImpl implements UpdateDataService {
                         skillDesc.setSkillType(skillDescJson.getInt("skillType"));
 
                         //获取key-value列表
-                        Map<String,Double> parameters = new HashMap<>();
+                        Map<String, Double> parameters = new HashMap<>();
                         JSONArray mapList = skillDescJson.getJSONArray("blackboard");
-                        for (int keyId = 0; keyId < mapList.length(); keyId++){
+                        for (int keyId = 0; keyId < mapList.length(); keyId++) {
                             parameters.put(mapList.getJSONObject(keyId).getString("key").toLowerCase(),
                                     mapList.getJSONObject(keyId).getDouble("value"));
                         }
@@ -712,7 +719,7 @@ public class UpdateDataServiceImpl implements UpdateDataService {
                         Matcher m = p.matcher(matcher.replaceAll(""));
                         StringBuffer stringBuffer = new StringBuffer();
 
-                        while (m.find()){
+                        while (m.find()) {
                             String key = m.group(2).toLowerCase();
                             String percent = m.group(4);
 
@@ -724,18 +731,18 @@ public class UpdateDataServiceImpl implements UpdateDataService {
                                     val = val * 100;
                                 }
                                 value = FormatStringUtil.FormatDouble2String(val) + percent;
-                            }else {
+                            } else {
                                 try {
                                     value = "" + skillDescJson.getInt(key);
-                                }catch (Exception e){
+                                } catch (Exception e) {
                                     value = key;
                                 }
 
                             }
-                            m.appendReplacement(stringBuffer,value);
+                            m.appendReplacement(stringBuffer, value);
                         }
 
-                        skillDesc.setDescription(m.appendTail(stringBuffer).toString().replace("--","-"));
+                        skillDesc.setDescription(m.appendTail(stringBuffer).toString().replace("--", "-"));
 
                         skillDesc.setSpType(skillDescJson.getJSONObject("spData").getInt("spType"));
                         skillDesc.setMaxCharge(skillDescJson.getJSONObject("spData").getInt("maxChargeTime"));
@@ -770,9 +777,9 @@ public class UpdateDataServiceImpl implements UpdateDataService {
             //封装干员基建技能
             if (jsonObj.get("buildingData") instanceof JSONArray) {
                 JSONArray buildingData = jsonObj.getJSONArray("buildingData");
-                for (int i = 0; i< buildingData.length(); i++){
+                for (int i = 0; i < buildingData.length(); i++) {
                     JSONArray build1 = buildingData.getJSONArray(i);
-                    for (int j = 0; j < build1.length(); j++){
+                    for (int j = 0; j < build1.length(); j++) {
                         BuildingSkill buildingSkill = new BuildingSkill();
                         JSONObject buildObj = build1.getJSONObject(j);
                         buildingSkill.setOperatorId(operatorId);

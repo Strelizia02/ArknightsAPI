@@ -25,11 +25,11 @@ public class EnemyServiceImpl implements EnemyService {
         List<EnemyInfo> enemyInfo = enemyMapper.selectEnemyByName(name);
         int size = enemyInfo.size();
         StringBuilder s = new StringBuilder();
-        if (size == 0){
+        if (size == 0) {
             s = new StringBuilder("\t未找到该敌人的信息");
-        }else if (size == 1){
+        } else if (size == 1) {
             s = new StringBuilder(enemyInfo.get(0).toString());
-        }else {
+        } else {
             for (EnemyInfo info : enemyInfo) {
                 s.append("\n").append(info.toString());
             }
@@ -39,13 +39,13 @@ public class EnemyServiceImpl implements EnemyService {
 
     @Override
     public String getEnemyListByName(String name) {
-        if (name == null){
+        if (name == null) {
             name = "";
         }
         List<String> nameList = enemyMapper.selectEnemyListByName(name);
         Set<String> names = new TreeSet<>(nameList);
         StringBuilder s = new StringBuilder("搜索到的敌人名称为：");
-        for (String enemyName:names){
+        for (String enemyName : names) {
             s.append("\n").append(enemyName);
         }
         return s.toString();

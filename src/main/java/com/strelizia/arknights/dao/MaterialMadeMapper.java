@@ -47,6 +47,7 @@ public interface MaterialMadeMapper {
 
     //查询材料图标base64
     String selectMaterialPicByName(String name);
+
     String selectMaterialPicById(Integer id);
 
     //查询全部材料id

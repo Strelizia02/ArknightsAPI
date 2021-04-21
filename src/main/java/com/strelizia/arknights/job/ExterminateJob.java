@@ -25,7 +25,7 @@ public class ExterminateJob {
 
     @Scheduled(cron = "${scheduled.exterminateJob}")
     @Async
-    public void exterminateJob(){
+    public void exterminateJob() {
         List<Long> groups = userFoundMapper.selectAllGroups();
 
         for (Long groupId : groups) {

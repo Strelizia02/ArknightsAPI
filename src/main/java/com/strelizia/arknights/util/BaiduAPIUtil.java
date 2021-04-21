@@ -25,15 +25,15 @@ public class BaiduAPIUtil {
     public String API_KEY;
     public String SECRET_KEY;
 
-    public BaiduAPIUtil(String APP_ID, String API_KEY, String SECRET_KEY){
+    public BaiduAPIUtil(String APP_ID, String API_KEY, String SECRET_KEY) {
         this.APP_ID = APP_ID;
         this.API_KEY = API_KEY;
         this.SECRET_KEY = SECRET_KEY;
     }
 
-    public static BaiduAPIUtil getInstance(String APP_ID, String API_KEY, String SECRET_KEY){
+    public static BaiduAPIUtil getInstance(String APP_ID, String API_KEY, String SECRET_KEY) {
         if (instance == null) {
-            synchronized(BaiduAPIUtil.class) {
+            synchronized (BaiduAPIUtil.class) {
                 if (instance == null) {
                     instance = new BaiduAPIUtil(APP_ID, API_KEY, SECRET_KEY);
                 }
@@ -45,10 +45,11 @@ public class BaiduAPIUtil {
     /**
      * 根据图片url，调用百度识图api获取文字列表
      * 白底黑字的截图有可能一行读取为一个单词
+     *
      * @param url
      * @return
      */
-    public String[] BaiduOCRGetTags(String url){
+    public String[] BaiduOCRGetTags(String url) {
         // 初始化一个AipOcr
         AipOcr client = new AipOcr(APP_ID, API_KEY, SECRET_KEY);
 
@@ -70,9 +71,9 @@ public class BaiduAPIUtil {
         JSONObject res = client.basicGeneralUrl(url, new HashMap<>());
         JSONArray words_result = new JSONArray(res.get("words_result").toString());
         List<String> str = new ArrayList<>();
-        for (int i = 0;i<words_result.length();i++){
+        for (int i = 0; i < words_result.length(); i++) {
             String words = words_result.getJSONObject(i).getString("words");
-            if (allTag.contains(words)){
+            if (allTag.contains(words)) {
                 str.add(words);
             }
         }

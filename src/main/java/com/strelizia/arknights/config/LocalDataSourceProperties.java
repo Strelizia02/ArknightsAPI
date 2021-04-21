@@ -17,8 +17,8 @@ import org.springframework.stereotype.Component;
  */
 public class LocalDataSourceProperties {
 
-  private String url;
-  private String username;
-  private String password;
-  private String driverClassName;
+    private String url;
+    private String username;
+    private String password;
+    private String driverClassName;
 }

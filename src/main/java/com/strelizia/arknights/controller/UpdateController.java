@@ -22,20 +22,20 @@ public class UpdateController {
     private SeTuService seTuService;
 
     @GetMapping("update")
-    public Integer update(){
+    public Integer update() {
         updateDataService.updateAllData(false);
         updateDataService.updateSkin();
         return 0;
     }
 
     @GetMapping("updateSkin")
-    public Integer updateSkin(){
+    public Integer updateSkin() {
         updateDataService.updateSkin();
         return 0;
     }
 
     @GetMapping("updateItem")
-    public Integer updateItem(){
+    public Integer updateItem() {
         updateDataService.updateItemAndFormula();
         return 0;
     }
@@ -45,7 +45,7 @@ public class UpdateController {
     @PostMapping("getImg")
     public Integer getAllImg(
             @RequestBody String dir
-    ){
+    ) {
         return seTuService.getAllImageIntoLocal(dir);
     }
 }

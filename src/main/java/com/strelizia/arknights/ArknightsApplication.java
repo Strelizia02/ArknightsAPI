@@ -8,7 +8,7 @@ import org.springframework.scheduling.annotation.EnableScheduling;
 import springfox.documentation.swagger2.annotations.EnableSwagger2;
 
 @SpringBootApplication
-@MapperScan(basePackages ={"com.strelizia.arknights.dao"})
+@MapperScan(basePackages = {"com.strelizia.arknights.dao"})
 @EnableSwagger2
 @EnableScheduling
 @EnableAsync

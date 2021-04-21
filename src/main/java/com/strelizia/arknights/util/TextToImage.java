@@ -49,14 +49,14 @@ public class TextToImage {
         g.setFont(font);// 设置画笔字体
         String[] rows = t.getText();
         Pattern pattern = Pattern.compile("[0-9]*");
-        for (int i = 0; i < t.getRowsNum(); i++){
-            if (rows[i].length() > 0 && pattern.matcher(rows[i].charAt(0)+"").matches()){
+        for (int i = 0; i < t.getRowsNum(); i++) {
+            if (rows[i].length() > 0 && pattern.matcher(rows[i].charAt(0) + "").matches()) {
                 g.setFont(new Font("楷体", Font.BOLD, font.getSize()));
                 g.setColor(Color.BLUE);
                 g.drawString(rows[i], 0, (i + 1) * font.getSize() + 1);// 画出一行字符串
                 g.setFont(font);
                 g.setColor(Color.black);
-            }else {
+            } else {
                 g.drawString(rows[i], 0, (i + 1) * font.getSize() + 1);// 画出一行字符串
             }
         }

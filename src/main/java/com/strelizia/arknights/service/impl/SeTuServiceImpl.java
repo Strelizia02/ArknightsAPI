@@ -61,7 +61,7 @@ public class SeTuServiceImpl implements SeTuService {
     public String getImageIntoDb(String json, Integer type, String name, Long qq) {
         List<AdminUserInfo> admins = adminUserMapper.selectAllAdmin();
         String qqMd5 = DigestUtils.md5DigestAsHex(qq.toString().getBytes());
-        boolean b = AdminUtil.getupLoadAdmin(qqMd5,admins);
+        boolean b = AdminUtil.getupLoadAdmin(qqMd5, admins);
         String s = "您无权上传涩图";
         if (b) {
             //获取json
@@ -83,17 +83,17 @@ public class SeTuServiceImpl implements SeTuService {
     public String PrivateGetImageIntoDb(String json, Integer type, Long qq) {
         List<AdminUserInfo> admins = adminUserMapper.selectAllAdmin();
         String qqMd5 = DigestUtils.md5DigestAsHex(qq.toString().getBytes());
-        boolean b = AdminUtil.getupLoadAdmin(qqMd5,admins);
+        boolean b = AdminUtil.getupLoadAdmin(qqMd5, admins);
         String s = "您无权上传涩图";
         if (b) {
-        //私聊信息涩图保存，逻辑同上
-        JSONObject jsonObj = new JSONObject(json);
-        JSONArray array = new JSONArray(jsonObj.get("FriendPic").toString());
-        String url = array.getJSONObject(0).getString("Url");
-        poolTaskExecutor.execute(() -> {
-            String base64 = imageUtil.getImageBase64ByUrl(url);
-            seTuMapper.insertSeTuUrl(base64, type);
-        });
+            //私聊信息涩图保存，逻辑同上
+            JSONObject jsonObj = new JSONObject(json);
+            JSONArray array = new JSONArray(jsonObj.get("FriendPic").toString());
+            String url = array.getJSONObject(0).getString("Url");
+            poolTaskExecutor.execute(() -> {
+                String base64 = imageUtil.getImageBase64ByUrl(url);
+                seTuMapper.insertSeTuUrl(base64, type);
+            });
             s = "涩图已收到get√";
         }
         return s;
@@ -105,13 +105,13 @@ public class SeTuServiceImpl implements SeTuService {
         //获取，某人的今日涩图数
         Integer pixiv = seTuMapper.selectTodaySeTuByQQ(qqMd5);
         //新人玩涩图从0开始
-        if (pixiv == null){
+        if (pixiv == null) {
             pixiv = 0;
         }
         //查询管理员列表
         List<AdminUserInfo> admins = adminUserMapper.selectAllAdmin();
         //判断是否有无限涩图权限
-        boolean b = AdminUtil.getImgAdmin(qqMd5,admins);
+        boolean b = AdminUtil.getImgAdmin(qqMd5, admins);
         //只有在有无限涩图权限或者没有达到今日涩图上限的时候才发送涩图
         Integer count = groupAdminInfoService.getGroupPictureAdmin(groupId);
         if (pixiv < count || b) {
@@ -121,32 +121,33 @@ public class SeTuServiceImpl implements SeTuService {
             try {
                 //尝试获取涩图Id
                 id = Integer.parseInt(imageId);
-            }catch (Exception ignored){
+            } catch (Exception ignored) {
             }
 
             if (id == null) {//如果没有涩图Id就随机获取
                 img = seTuMapper.selectOneSeTuUrl(type);
-            }else {//有Id，则获取对应Id涩图
+            } else {//有Id，则获取对应Id涩图
                 img = seTuMapper.selectOneSeTuUrlById(id);
             }
-            if (img == null){
+            if (img == null) {
                 return "没有找到涩图哦,可以发送[##给你涩图 图片]尝试上传一张涩图";
-            }else {
+            } else {
                 String url = img.getUrl();
-                log.info("发送编号为{}的涩图",img.getId());
-                sendMsgUtil.CallOPQApiSendImg(groupId, img.getId().toString(), SendMsgUtil.picBase64Buf, url,2);
+                log.info("发送编号为{}的涩图", img.getId());
+                sendMsgUtil.CallOPQApiSendImg(groupId, img.getId().toString(), SendMsgUtil.picBase64Buf, url, 2);
                 //更新请求涩图数量
-                seTuMapper.updateTodaySeTu(qqMd5,name,groupId);
+                seTuMapper.updateTodaySeTu(qqMd5, name, groupId);
                 //空字符串不返回文字信息
                 return "";
             }
-        }else {
-            return name + "别冲了，一天就"+ count +"张涩图";
+        } else {
+            return name + "别冲了，一天就" + count + "张涩图";
         }
     }
 
     /**
      * 涩图输出到指定目录
+     *
      * @param dir
      * @return
      */
@@ -154,13 +155,13 @@ public class SeTuServiceImpl implements SeTuService {
     public Integer getAllImageIntoLocal(String dir) {
         List<Integer> ids = seTuMapper.selectAllSeTuUrl(1);
         int i = 0;
-        for (Integer id:ids) {
+        for (Integer id : ids) {
             String url = seTuMapper.selectOneSeTuUrlById(id).getUrl();
             imageUtil.getImgToLocal(dir, id, url, "jpg");
             i++;
         }
         int skinIds = skinInfoMapper.selectMaxId();
-        for (int j = 1; j <= skinIds; j++){
+        for (int j = 1; j <= skinIds; j++) {
             String base64 = skinInfoMapper.selectSkinById(j);
             imageUtil.getImgToLocal(dir + "/skin/", j, base64, "png");
         }
@@ -171,7 +172,7 @@ public class SeTuServiceImpl implements SeTuService {
     public String deleteSeTuById(Long qq, Long groupId, Integer id) {
         List<AdminUserInfo> admins = adminUserMapper.selectAllAdmin();
         String qqMd5 = DigestUtils.md5DigestAsHex(qq.toString().getBytes());
-        boolean b = AdminUtil.getupLoadAdmin(qqMd5,admins);
+        boolean b = AdminUtil.getupLoadAdmin(qqMd5, admins);
         String s = "您没有删除涩图权限";
         if (b) {
             ImgUrlInfo imgUrlInfo = seTuMapper.selectOneSeTuUrlById(id);
@@ -179,7 +180,7 @@ public class SeTuServiceImpl implements SeTuService {
                 seTuMapper.deleteSeTuById(id);
                 sendMsgUtil.CallOPQApiSendImg(groupId, "该图已经删除", SendMsgUtil.picBase64Buf, imgUrlInfo.getUrl(), 2);
                 s = "";
-            }else {
+            } else {
                 s = "该编号没有对应的涩图哦";
             }
 
@@ -192,14 +193,14 @@ public class SeTuServiceImpl implements SeTuService {
     public String changePictureStat(Long qq, Long groupId, Integer type) {
         List<AdminUserInfo> admins = adminUserMapper.selectAllAdmin();
         String qqMd5 = DigestUtils.md5DigestAsHex(qq.toString().getBytes());
-        boolean b = AdminUtil.getupLoadAdmin(qqMd5,admins);
+        boolean b = AdminUtil.getupLoadAdmin(qqMd5, admins);
         String s = "您没有更改涩图功能的权限";
         if (b) {
-            if (type != 0 && groupAdminInfoService.getGroupPictureAdmin(groupId) != 0){
+            if (type != 0 && groupAdminInfoService.getGroupPictureAdmin(groupId) != 0) {
                 return "本群涩图功能已开启，无需调整";
             }
-            groupAdminInfoMapper.updatePictureAdmin(groupId,type);
-            s = "本群涩图功能" + (type==0?"关闭":"打开") + "成功";
+            groupAdminInfoMapper.updatePictureAdmin(groupId, type);
+            s = "本群涩图功能" + (type == 0 ? "关闭" : "打开") + "成功";
         }
         return s;
     }

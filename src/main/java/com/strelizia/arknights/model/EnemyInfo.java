@@ -167,7 +167,7 @@ public class EnemyInfo {
         String silence = silenceImmune == 0 ? "有" : "无";
         String sleep = sleepImmune == 0 ? "有" : "无";
         String stun = stunImmune == 0 ? "有" : "无";
-        return "敌人" + name + "第"+ level + "阶段的基础信息为:\n" +
+        return "敌人" + name + "第" + level + "阶段的基础信息为:\n" +
                 "攻击力：" + atk +
                 "\t 攻击间隔：" + baseAttackTime +
                 "秒\n防御：" + def +

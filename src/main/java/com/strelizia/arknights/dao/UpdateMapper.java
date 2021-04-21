@@ -31,7 +31,7 @@ public interface UpdateMapper {
     Integer insertSkillMater(SkillMaterInfo skillMaterInfo);
 
     //插入一个材料合成公式
-    Integer insertMaterialMade(@Param("materialId")Integer material_id, @Param("useMaterialId")Integer useMaterialId, @Param("useNumber")Integer useNumber);
+    Integer insertMaterialMade(@Param("materialId") Integer material_id, @Param("useMaterialId") Integer useMaterialId, @Param("useNumber") Integer useNumber);
 
     //清空数据库重新插入
     Integer clearOperatorData();

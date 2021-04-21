@@ -9,10 +9,10 @@ import java.util.List;
  **/
 public class TagsUtil {
 
-    public static boolean isHave(List<String> str, String s){
+    public static boolean isHave(List<String> str, String s) {
         int i = str.size();
-        while (i-- > 0){
-            if(str.get(i).equals(s)){
+        while (i-- > 0) {
+            if (str.get(i).equals(s)) {
                 return true;
             }
         }
@@ -30,12 +30,12 @@ public class TagsUtil {
      */
     public static List<List<String>> getAllCompose(List<String> list) {
         List<List<String>> result = new ArrayList<>();
-        long n = (long)Math.pow(2,list.size());
+        long n = (long) Math.pow(2, list.size());
         List<String> combine;
-        for (long l=0L; l<n; l++) {
+        for (long l = 0L; l < n; l++) {
             combine = new ArrayList<>();
-            for (int i=0; i<list.size(); i++) {
-                if ((l>>>i&1) == 1)
+            for (int i = 0; i < list.size(); i++) {
+                if ((l >>> i & 1) == 1)
                     combine.add(list.get(i));
             }
             result.add(combine);

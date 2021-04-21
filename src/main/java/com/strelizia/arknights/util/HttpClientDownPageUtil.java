@@ -21,7 +21,8 @@ public class HttpClientDownPageUtil {
      * 爬虫类，尚未完善，在考虑绕过权限的问题
      */
     private static final String USER_AGENT = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/87.0.4280.88 Safari/537.36";
-    public static String sendGet(String url){
+
+    public static String sendGet(String url) {
         //1.生成httpclient，相当于该打开一个浏览器
         CloseableHttpClient httpClient = HttpClients.createDefault();
         //设置请求和传输超时时间
@@ -31,12 +32,12 @@ public class HttpClientDownPageUtil {
         //2.创建get请求，相当于在浏览器地址栏输入 网址
         HttpGet request = new HttpGet(url);
         try {
-            request.setHeader("User-Agent",USER_AGENT);
+            request.setHeader("User-Agent", USER_AGENT);
             request.setConfig(requestConfig);
             //3.执行get请求，相当于在输入地址栏后敲回车键
             response = httpClient.execute(request);
             //4.判断响应状态为200，进行处理
-            if(response.getStatusLine().getStatusCode() == HttpStatus.SC_OK) {
+            if (response.getStatusLine().getStatusCode() == HttpStatus.SC_OK) {
                 //5.获取响应内容
                 HttpEntity httpEntity = response.getEntity();
                 html = EntityUtils.toString(httpEntity, "UTF-8");

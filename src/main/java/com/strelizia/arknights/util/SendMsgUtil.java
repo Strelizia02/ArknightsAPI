@@ -46,12 +46,12 @@ public class SendMsgUtil {
     private final String sendTextMsgApi = "/v1/LuaApiCaller";
 
     private void sendTextMsgToGroup(RestTemplate restTemplate, Long groupId, String Text, String sendTextMsgUrl, Integer sendToType) {
-        Map<String,Object> map = new HashMap<>(7);
-        map.put("toUser",groupId);
-        map.put("sendToType",sendToType);
-        map.put("sendMsgType","TextMsg");
-        map.put("content",Text);
-        map.put("group",0);
+        Map<String, Object> map = new HashMap<>(7);
+        map.put("toUser", groupId);
+        map.put("sendToType", sendToType);
+        map.put("sendMsgType", "TextMsg");
+        map.put("content", Text);
+        map.put("group", 0);
 
         String jsonData = null;
         try {
@@ -69,13 +69,13 @@ public class SendMsgUtil {
     }
 
     private void sendTextImgToGroup(RestTemplate restTemplate, Long groupId, String Text, String picType, String url, String sendTextMsgUrl, Integer sendToType) {
-        Map<String,Object> map = new HashMap<>(7);
-        map.put("toUser",groupId);
-        map.put("sendToType",sendToType);
-        map.put("sendMsgType","PicMsg");
-        map.put("content",Text);
-        map.put("group",0);
-        map.put(picType,url);
+        Map<String, Object> map = new HashMap<>(7);
+        map.put("toUser", groupId);
+        map.put("sendToType", sendToType);
+        map.put("sendMsgType", "PicMsg");
+        map.put("content", Text);
+        map.put("group", 0);
+        map.put(picType, url);
 
         String jsonData = null;
         try {
@@ -92,16 +92,16 @@ public class SendMsgUtil {
         restTemplate.postForEntity(sendTextMsgUrl, httpEntity, SendMsgRespInfo.class).getBody();
     }
 
-    public void CallOPQApiSendMsg(Long groupId, String s, Integer sendToType){
+    public void CallOPQApiSendMsg(Long groupId, String s, Integer sendToType) {
         poolTaskExecutor.execute(() -> {
             try {
                 Text text = new Text(s);
                 if (text.getMaxRow().length() > 15 && text.getRowsNum() > 5) {
                     //文字太长就发图片
-                    if (text.getRowsNum() > 7){
+                    if (text.getRowsNum() > 7) {
                         sendTextImgToGroup(restTemplate, groupId, null, SendMsgUtil.picBase64Buf, TextToImage.createImage(s, new Font("楷体", Font.PLAIN, 50)),
-                                "http://" + OPQUrl + ":8888" + sendTextMsgApi + "?qq=" +  loginQq + "&funcname=SendMsg",sendToType);
-                    }else {
+                                "http://" + OPQUrl + ":8888" + sendTextMsgApi + "?qq=" + loginQq + "&funcname=SendMsg", sendToType);
+                    } else {
                         sendTextImgToGroup(restTemplate, groupId, null, SendMsgUtil.picBase64Buf, TextToImage.createImage(s, new Font("楷体", Font.PLAIN, 100)),
                                 "http://" + OPQUrl + ":8888" + sendTextMsgApi + "?qq=" + loginQq + "&funcname=SendMsg", sendToType);
                     }
@@ -112,8 +112,8 @@ public class SendMsgUtil {
             } catch (Exception e) {
                 e.printStackTrace();
             }
-            });
-        log.info("发送消息{}成功",s);
+        });
+        log.info("发送消息{}成功", s);
     }
 
     /**
@@ -124,15 +124,14 @@ public class SendMsgUtil {
 //                "http://" + OPQUrl + ":8888" + sendTextMsgApi + "?qq=" +  loginQq + "&funcname=SendMsg",sendToType));
 //        log.info("发送消息{}成功",s);
 //    }
-
-    public void CallOPQApiSendImg(Long groupId, String s, String picType, String imgUrl ,Integer sendToType){
+    public void CallOPQApiSendImg(Long groupId, String s, String picType, String imgUrl, Integer sendToType) {
         poolTaskExecutor.execute(() -> sendTextImgToGroup(restTemplate, groupId, s, picType, imgUrl,
-                "http://" + OPQUrl + ":8888" + sendTextMsgApi + "?qq=" +  loginQq + "&funcname=SendMsg",sendToType));
-        log.info("发送消息图片+文字{}成功",s);
+                "http://" + OPQUrl + ":8888" + sendTextMsgApi + "?qq=" + loginQq + "&funcname=SendMsg", sendToType));
+        log.info("发送消息图片+文字{}成功", s);
     }
 
-    public void CallOPQApiSendMyself(String s){
+    public void CallOPQApiSendMyself(String s) {
         poolTaskExecutor.execute(() -> sendTextMsgToGroup(restTemplate, loginQq, s,
-                "http://" + OPQUrl + ":8888" + sendTextMsgApi + "?qq=" +  loginQq + "&funcname=SendMsg",1));
+                "http://" + OPQUrl + ":8888" + sendTextMsgApi + "?qq=" + loginQq + "&funcname=SendMsg", 1));
     }
 }

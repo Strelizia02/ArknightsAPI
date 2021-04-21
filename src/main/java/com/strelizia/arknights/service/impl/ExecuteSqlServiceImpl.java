@@ -36,7 +36,7 @@ public class ExecuteSqlServiceImpl implements ExecuteSqlService {
     public String ExecuteSql(Long qq, String text) {
         List<AdminUserInfo> admins = adminUserMapper.selectAllAdmin();
         String qqMd5 = DigestUtils.md5DigestAsHex(qq.toString().getBytes());
-        boolean b = AdminUtil.getSqlAdmin(qqMd5,admins);
+        boolean b = AdminUtil.getSqlAdmin(qqMd5, admins);
         String s = "您没有sql权限";
         if (b) {
             String sql = text.substring(4).replace('~', ' ');
@@ -49,11 +49,11 @@ public class ExecuteSqlServiceImpl implements ExecuteSqlService {
     public String sendGroupMessage(Long qq, String text) {
         List<AdminUserInfo> admins = adminUserMapper.selectAllAdmin();
         String qqMd5 = DigestUtils.md5DigestAsHex(qq.toString().getBytes());
-        boolean b = AdminUtil.getSqlAdmin(qqMd5,admins);
+        boolean b = AdminUtil.getSqlAdmin(qqMd5, admins);
         String s = "您没有群发消息权限";
         if (b) {
             List<Long> groupIds = userFoundMapper.selectAllGroups();
-            for (Long groupId: groupIds){
+            for (Long groupId : groupIds) {
                 sendMsgUtil.CallOPQApiSendMsg(groupId, text, 2);
             }
             return "";

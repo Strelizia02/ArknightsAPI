@@ -10,13 +10,14 @@ import java.util.Map;
 public class FormatStringUtil {
     /**
      * 设置字符长度  不足者 右侧添加 指定字符
-     * @param str1 元字符
+     *
+     * @param str1   元字符
      * @param length 指定长度
      * @return
      * @throws Exception
      */
     public static String strAppendStr(String str1, int length) throws Exception {
-        if (str1 == null||str1.equals("")){
+        if (str1 == null || str1.equals("")) {
             str1 = " ";
         }
         StringBuilder strb1 = new StringBuilder(str1);
@@ -30,7 +31,8 @@ public class FormatStringUtil {
 
     /**
      * 计算中文字符长度
-     * @param name 字符
+     *
+     * @param name      字符
      * @param endcoding 编码方式
      * @return
      * @throws Exception
@@ -75,24 +77,25 @@ public class FormatStringUtil {
 
     /**
      * 稀有度格式化成星星
+     *
      * @param star
      * @return
      */
-    public static String FormatStar(int star){
+    public static String FormatStar(int star) {
         Map<Integer, String> map = new HashMap<>();
         map.put(6, "★★★★★★");
         map.put(5, "★★★★★");
-        map.put(4,"☆☆☆☆");
-        map.put(3,"☆☆☆");
-        map.put(2,"☆☆");
-        map.put(1,"☆");
+        map.put(4, "☆☆☆☆");
+        map.put(3, "☆☆☆");
+        map.put(2, "☆☆");
+        map.put(1, "☆");
         return map.get(star);
     }
 
-    public static String FormatDouble2String(Double val){
-        if (val -val.intValue()<0.01){
-            return String.format("%.0f",val);
-        }else {
+    public static String FormatDouble2String(Double val) {
+        if (val - val.intValue() < 0.01) {
+            return String.format("%.0f", val);
+        } else {
             return "" + val;
         }
     }

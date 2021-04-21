@@ -16,9 +16,10 @@ import java.util.Date;
 public class ServerSystemUtil {
     /**
      * 获取系统硬件/操作系统信息
+     *
      * @return
      */
-    public String getSystemInfo(){
+    public String getSystemInfo() {
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         SystemInfo si = new SystemInfo();
 

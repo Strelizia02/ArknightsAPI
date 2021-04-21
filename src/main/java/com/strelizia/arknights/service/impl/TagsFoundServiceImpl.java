@@ -64,29 +64,28 @@ public class TagsFoundServiceImpl implements TagsfFoundService {
 
         //调用百度api图片识别
         String[] s = baiduAPIUtil.BaiduOCRGetTags(url);
-        log.info("识图获取到tag为：{}",Arrays.asList(s));
+        log.info("识图获取到tag为：{}", Arrays.asList(s));
 
         return FoundTagResultByArrays(s);
     }
 
-    public Map<List<String>, List<AgentTagsInfo>> FoundTagResultByArrays(String[] s){
+    public Map<List<String>, List<AgentTagsInfo>> FoundTagResultByArrays(String[] s) {
 
         //把数组进行笛卡尔积组合
         List<List<String>> allCompose = TagsUtil.getAllCompose(Arrays.asList(s));
 
         //用于保存结果
-        Map<List<String>,List<AgentTagsInfo>> result = new HashMap<>();
+        Map<List<String>, List<AgentTagsInfo>> result = new HashMap<>();
 
         //遍历所有的组合
-        for(List<String> list:allCompose){
+        for (List<String> list : allCompose) {
             //没有tag的时候跳出循环
-            if (list.size() == 0){
+            if (list.size() == 0) {
                 continue;
             }
-            if(TagsUtil.isHave(list,"高级资深干员"))
-            {
-                result.put(list,agentTagsMapper.selectSixAgentByTag(list));
-            }else {
+            if (TagsUtil.isHave(list, "高级资深干员")) {
+                result.put(list, agentTagsMapper.selectSixAgentByTag(list));
+            } else {
                 result.put(list, agentTagsMapper.selectAgentByTag(list));
             }
         }
@@ -94,44 +93,44 @@ public class TagsFoundServiceImpl implements TagsfFoundService {
     }
 
     //把Map转换成特定格式字符串
-    public String MapToString(Map<List<String>, List<AgentTagsInfo>> map){
+    public String MapToString(Map<List<String>, List<AgentTagsInfo>> map) {
         //保存结果
         StringBuilder s = new StringBuilder();
         //循环遍历Map
-        for (Map.Entry<List<String>, List<AgentTagsInfo>> m:map.entrySet()){
+        for (Map.Entry<List<String>, List<AgentTagsInfo>> m : map.entrySet()) {
             //获取到Key，Value
             List<String> key = m.getKey();
             List<AgentTagsInfo> value = m.getValue();
             //如果组合中没有值，或者组合中不能确定稀有干员，则直接进行下次循环
-            if (value.size() == 0||isThreeOrTwoInMap(value)) continue;
+            if (value.size() == 0 || isThreeOrTwoInMap(value)) continue;
             StringBuilder tags = new StringBuilder();
             StringBuilder agents = new StringBuilder();
             //用key的标签组合作为head
-            for (String tag:key){
+            for (String tag : key) {
                 tags.append(",").append(tag);
             }
             //用干员名字+星星的列表作为body
-            for (AgentTagsInfo agent:value){
+            for (AgentTagsInfo agent : value) {
                 String levelStar;
                 Integer star = agent.getStar();
                 //不要三星两星的结果
-                if (star == 3|| star == 2) break;
+                if (star == 3 || star == 2) break;
                 levelStar = FormatStringUtil.FormatStar(star);
                 agents.append("\n").append(agent.getAgentName()).append(levelStar);
             }
             s.append("\n\n").append(tags.substring(1)).append("\n").append(agents.substring(1));
         }
-        if (s.toString().equals("")){
+        if (s.toString().equals("")) {
             s = new StringBuilder("\t\tQAQ没有找到对应的稀有公招结果");
         }
         return s.substring(2);
     }
 
     //判定里面是否有三星/两星
-    public boolean isThreeOrTwoInMap(List<AgentTagsInfo> map){
-        for (AgentTagsInfo a:map){
+    public boolean isThreeOrTwoInMap(List<AgentTagsInfo> map) {
+        for (AgentTagsInfo a : map) {
             Integer star = a.getStar();
-            if (star ==3|| star ==2){
+            if (star == 3 || star == 2) {
                 return true;
             }
         }

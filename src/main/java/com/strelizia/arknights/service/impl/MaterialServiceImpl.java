@@ -52,7 +52,7 @@ public class MaterialServiceImpl implements MaterialService {
 
         String skillName = "";
         Integer level = 0;
-        if (args.length == 4){
+        if (args.length == 4) {
             //四个参数就是##专精材料-干员—第几技能-专精等级
             Integer index = DescriptionTransformationUtil.ChangeStringToInt(args[2]);
             level = DescriptionTransformationUtil.ChangeStringToInt(args[3]);
@@ -61,20 +61,20 @@ public class MaterialServiceImpl implements MaterialService {
             if (name != null && !name.equals(""))
                 args[1] = name;
 
-            skillName = skillMateryMapper.selectSkillNameByAgentIndex(args[1],index);
+            skillName = skillMateryMapper.selectSkillNameByAgentIndex(args[1], index);
             materialInfos = skillMateryMapper.selectSkillUpByAgentAndIndex(args[1], index, level);
-        }else if (args.length == 3){
+        } else if (args.length == 3) {
             //三个参数就是##专精材料-技能名-专精等级
             skillName = args[1];
             level = DescriptionTransformationUtil.ChangeStringToInt(args[2]);
             materialInfos = skillMateryMapper.selectSkillUpBySkillName(args[1], level);
-        }else {
+        } else {
             materialInfos = null;
         }
 
-        if (materialInfos ==null || materialInfos.size() == 0){
+        if (materialInfos == null || materialInfos.size() == 0) {
             return "找不到查询的内容";
-        }else {
+        } else {
             sendImageWithPicAndStr(groupId, materialInfos, skillName + " 专精" + level + " 材料为：");
         }
 
@@ -89,9 +89,9 @@ public class MaterialServiceImpl implements MaterialService {
             agent = name;
 
         List<MaterialInfo> materialInfos = operatorEvolveMapper.selectOperatorEvolveByName(agent, level);
-        if (materialInfos.size() == 0){
+        if (materialInfos.size() == 0) {
             return "找不到查询的材料";
-        }else {
+        } else {
             sendImageWithPicAndStr(groupId, materialInfos, agent + "干员 精英" + level + " 需要的材料为：");
         }
         return "";
@@ -105,9 +105,9 @@ public class MaterialServiceImpl implements MaterialService {
             name = realName;
 
         List<MaterialInfo> materialInfos = materialMadeMapper.selectMadeMater(name);
-        if (materialInfos.size() == 0){
+        if (materialInfos.size() == 0) {
             return "找不到该材料的合成路线";
-        }else {
+        } else {
             sendImageWithPicAndStr(groupId, materialInfos, name + "的合成路线为：");
         }
         return "";
@@ -132,14 +132,14 @@ public class MaterialServiceImpl implements MaterialService {
                     String zoneName = p.getZoneName();
                     String code = p.getCode();
                     Double rate = p.getRate();
-                    Double cost = p.getApCost()/rate*100;
+                    Double cost = p.getApCost() / rate * 100;
 
-                    s.append("\n关卡名称：").append(zoneName).append("\t").append(code).append("\t掉落概率:").append(rate).append("%").append("\t期望理智：").append(String.format("%.2f",cost));
+                    s.append("\n关卡名称：").append(zoneName).append("\t").append(code).append("\t掉落概率:").append(rate).append("%").append("\t期望理智：").append(String.format("%.2f", cost));
                 }
             }
             s.append("\n如需查看活动关卡，请在材料名后面加-all，中间无空格");
-        }else {
-            name = name.replace("-all","");
+        } else {
+            name = name.replace("-all", "");
 
             String realName = nickNameMapper.selectNameByNickName(name);
             if (realName != null && !realName.equals(""))
@@ -154,8 +154,8 @@ public class MaterialServiceImpl implements MaterialService {
                     String zoneName = p.getZoneName();
                     String code = p.getCode();
                     Double rate = p.getRate();
-                    Double cost = p.getApCost()/rate*100;
-                    s.append("\n关卡名称：").append(zoneName).append("\t").append(code).append("\t掉落概率:").append(rate).append("%").append("\t期望理智：").append(String.format("%.2f",cost));
+                    Double cost = p.getApCost() / rate * 100;
+                    s.append("\n关卡名称：").append(zoneName).append("\t").append(code).append("\t掉落概率:").append(rate).append("%").append("\t期望理智：").append(String.format("%.2f", cost));
                 }
             }
         }
@@ -185,9 +185,9 @@ public class MaterialServiceImpl implements MaterialService {
     public String selectMaterByMap(Long groupId, String MapId) {
         List<MapMatrixInfo> mapMatrixInfos = materialMadeMapper.selectMatrixByMap(MapId);
 
-        if (mapMatrixInfos.size() == 0){
+        if (mapMatrixInfos.size() == 0) {
             return "没有找到该地图掉落的材料";
-        }else {
+        } else {
             int height = 50 * mapMatrixInfos.size() + 60;
             BufferedImage image = new BufferedImage(1500, height,
                     BufferedImage.TYPE_INT_BGR);//创建图片画布
@@ -205,7 +205,7 @@ public class MaterialServiceImpl implements MaterialService {
             }
             g.dispose();
             sendMsgUtil.CallOPQApiSendImg(groupId, null, SendMsgUtil.picBase64Buf,
-                    replaceEnter(new BASE64Encoder().encode(TextToImage.imageToBytes(image))),2);
+                    replaceEnter(new BASE64Encoder().encode(TextToImage.imageToBytes(image))), 2);
         }
         return "";
     }
@@ -215,7 +215,7 @@ public class MaterialServiceImpl implements MaterialService {
         List<MapCostInfo> mapCostInfos = materialMadeMapper.selectMapByZone(zoneName);
         StringBuilder s = new StringBuilder("地图ID以及理智花费为：");
 
-        for (MapCostInfo mapInfo:mapCostInfos){
+        for (MapCostInfo mapInfo : mapCostInfos) {
             s.append("\n").append(mapInfo.getZoneName()).append("\t地图ID：").append(mapInfo.getCode()).append("\t理智消耗：").append(mapInfo.getApCost());
         }
         return s.toString();
@@ -225,7 +225,7 @@ public class MaterialServiceImpl implements MaterialService {
     public String selectZoneList() {
         List<String> zones = materialMadeMapper.selectAllZone();
         StringBuilder s = new StringBuilder("当前所有章节列表：");
-        for (String zone: zones){
+        for (String zone : zones) {
             s.append("\n").append(zone);
         }
         return s.toString();
@@ -233,11 +233,12 @@ public class MaterialServiceImpl implements MaterialService {
 
     /**
      * 材料结果转图片发送
-     * @param groupId 发送群号
+     *
+     * @param groupId       发送群号
      * @param materialInfos 材料列表
-     * @param s 描述文字
+     * @param s             描述文字
      */
-    public void sendImageWithPicAndStr(Long groupId, List<MaterialInfo> materialInfos, String s){
+    public void sendImageWithPicAndStr(Long groupId, List<MaterialInfo> materialInfos, String s) {
         int height = 100 * materialInfos.size() + 120;
         BufferedImage image = new BufferedImage(s.length() * 100, height,
                 BufferedImage.TYPE_INT_BGR);//创建图片画布
@@ -247,7 +248,7 @@ public class MaterialServiceImpl implements MaterialService {
         g.setColor(Color.black);// 再换成黑色，以便于写入文字
         g.setFont(new Font("楷体", Font.PLAIN, 100));// 设置画笔字体
         g.drawString(s, 0, 100);
-        for (int i = 0; i < materialInfos.size(); i++){
+        for (int i = 0; i < materialInfos.size(); i++) {
             MaterialInfo m = materialInfos.get(i);
             String imgBase64 = materialMadeMapper.selectMaterialPicByName(m.getMaterialName());
             g.drawImage(ImageUtil.Base64ToImageBuffer(imgBase64), 0, (i + 1) * 100, 100, 100, null);// 画出材料图标
@@ -255,6 +256,6 @@ public class MaterialServiceImpl implements MaterialService {
         }
         g.dispose();
         sendMsgUtil.CallOPQApiSendImg(groupId, null, SendMsgUtil.picBase64Buf,
-                replaceEnter(new BASE64Encoder().encode(TextToImage.imageToBytes(image))),2);
+                replaceEnter(new BASE64Encoder().encode(TextToImage.imageToBytes(image))), 2);
     }
 }

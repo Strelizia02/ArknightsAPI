@@ -23,8 +23,8 @@ public class BiliListeningJob {
     //每天晚上8点发送当日统计结果
     @Scheduled(cron = "${scheduled.biliJob}")
     @Async
-    public void dailyCountJob(){
+    public void dailyCountJob() {
         biliListeningService.getDynamicList();
-        log.info("拉取最新动态中{}",new Date());
+        log.info("拉取最新动态中{}", new Date());
     }
 }

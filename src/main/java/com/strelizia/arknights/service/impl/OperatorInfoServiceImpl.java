@@ -28,10 +28,9 @@ public class OperatorInfoServiceImpl implements OperatorInfoService {
     public String getOperatorByInfos(String[] infos) {
         List<String> operators = operatorInfoMapper.getAllOperator();
         StringBuilder s = new StringBuilder("符合 ");
-        for (int i = 1; i < infos.length; i++){
+        for (int i = 1; i < infos.length; i++) {
             String info = infos[i];
-            if (info == null)
-            {
+            if (info == null) {
                 break;
             }
 
@@ -44,7 +43,7 @@ public class OperatorInfoServiceImpl implements OperatorInfoService {
             s.append(info).append(" ");
         }
         s.append("条件的干员为：\n");
-        for (String name: operators){
+        for (String name : operators) {
             s.append(name).append("\n");
         }
         return s.toString();
@@ -59,10 +58,10 @@ public class OperatorInfoServiceImpl implements OperatorInfoService {
 
         OperatorBasicInfo operatorInfoByName = operatorInfoMapper.getOperatorInfoByName(name);
         String s = name + "干员的档案为：\n";
-        if (where == null){
+        if (where == null) {
             s += operatorInfoByName.toString();
-        }else {
-            switch (where){
+        } else {
+            switch (where) {
                 case "基础档案":
                     s += "基础档案：\n" +
                             "画师：" + operatorInfoByName.getDrawName() + '\t' +
@@ -108,13 +107,13 @@ public class OperatorInfoServiceImpl implements OperatorInfoService {
     @Override
     public String getCVByName(String str) {
         List<String> allCV;
-                StringBuilder s = new StringBuilder();
-        if (str == null){
+        StringBuilder s = new StringBuilder();
+        if (str == null) {
             allCV = operatorInfoMapper.getAllInfoName();
-        }else {
+        } else {
             allCV = operatorInfoMapper.getAllInfoNameLikeStr(str);
         }
-        for (String name: allCV){
+        for (String name : allCV) {
             s.append(name).append('\n');
         }
         return s.toString();
@@ -124,12 +123,12 @@ public class OperatorInfoServiceImpl implements OperatorInfoService {
     public String getDrawByName(String str) {
         List<String> allDraw;
         StringBuilder s = new StringBuilder();
-        if (str == null){
+        if (str == null) {
             allDraw = operatorInfoMapper.getAllDrawName();
-        }else {
+        } else {
             allDraw = operatorInfoMapper.getAllDrawNameLikeStr(str);
         }
-        for (String name: allDraw){
+        for (String name : allDraw) {
             s.append(name).append('\n');
         }
         return s.toString();
