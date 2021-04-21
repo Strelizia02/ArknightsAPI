@@ -90,7 +90,17 @@ CREATE TABLE `a_image_url` (
   `url` longtext,
   `type` int(10) DEFAULT NULL COMMENT '0:表情包/1:涩图',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=27 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- ----------------------------
+-- Table structure for a_model_count
+-- ----------------------------
+DROP TABLE IF EXISTS `a_model_count`;
+CREATE TABLE `a_model_count` (
+  `model_name` varchar(255) NOT NULL,
+  `count` bigint(20) DEFAULT '0',
+  PRIMARY KEY (`model_name`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Table structure for a_nick_name
