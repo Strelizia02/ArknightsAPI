@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.strelizia.arknights.dao.ModelCountMapper">
+    <resultMap id="BaseResultMap" type="com.strelizia.arknights.model.ModelCountInfo">
+        <result column="model_name" property="modelName" jdbcType="VARCHAR"/>
+        <result column="count" property="count" jdbcType="BIGINT"/>
+    </resultMap>
+
+    <insert id="insertDuplicateCount">
+        INSERT INTO a_model_count (model_name, count)
+        VALUES
+            (#{c,jdbcType=VARCHAR}, 1)
+        ON DUPLICATE KEY UPDATE
+        count = count + 1
+    </insert>
+
+    <select id="selectModelCount" resultMap="BaseResultMap">
+        SELECT model_name, count from a_model_count
+    </select>
+</mapper>

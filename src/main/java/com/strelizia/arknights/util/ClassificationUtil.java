@@ -175,6 +175,10 @@ public class ClassificationUtil {
         map.put("查询天赋", TianFuChaXun);
         map.put("干员天赋", TianFuChaXun);
 
+        map.put("功能统计",GongNengTongJi);
+        map.put("使用统计",GongNengTongJi);
+        map.put("功能使用",GongNengTongJi);
+
         return map.get(s);
     }
 }

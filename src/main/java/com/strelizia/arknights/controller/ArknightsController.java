@@ -1,7 +1,9 @@
 package com.strelizia.arknights.controller;
 
+import com.strelizia.arknights.dao.ModelCountMapper;
 import com.strelizia.arknights.model.ClassificationEnum;
 import com.strelizia.arknights.model.MessageInfo;
+import com.strelizia.arknights.model.ModelCountInfo;
 import com.strelizia.arknights.service.*;
 import com.strelizia.arknights.util.ClassificationUtil;
 import com.strelizia.arknights.util.SendMsgUtil;
@@ -62,6 +64,9 @@ public class ArknightsController {
     @Autowired
     private SkinInfoService skinInfoService;
 
+    @Autowired
+    private ModelCountMapper modelCountMapper;
+
     /**
      * 消息处理总控制器，用于接收消息，并处理分流到不同的service
      */
@@ -120,6 +125,7 @@ public class ArknightsController {
         }
         String result;
         ClassificationEnum c = ClassificationUtil.GetClass(s[0]);
+        modelCountMapper.insertDuplicateCount(c.name());
         switch (c) {
             case CaiDan:
                 result =
@@ -379,6 +385,13 @@ public class ArknightsController {
                 break;
             case TianFuChaXun:
                 result = operatorInfoService.getTalentByName(s[1]);
+                break;
+            case GongNengTongJi:
+                StringBuilder sb = new StringBuilder("全局功能使用次数为：\n");
+                for (ModelCountInfo m : modelCountMapper.selectModelCount()) {
+                    sb.append(m.toString()).append("\n");
+                }
+                result = sb.toString();
                 break;
             default:
                 result = "俺不晓得你在锁啥子";
