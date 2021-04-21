@@ -99,10 +99,14 @@ public class MaterialServiceImpl implements MaterialService {
 
     @Override
     public String HeChengLuXian(Long groupId, String name) {
+
+        String realName = nickNameMapper.selectNameByNickName(name);
+        if (realName != null && !realName.equals(""))
+            name = realName;
+
         List<MaterialInfo> materialInfos = materialMadeMapper.selectMadeMater(name);
-        StringBuilder s = new StringBuilder(name + "的合成路线为：");
         if (materialInfos.size() == 0){
-            s = new StringBuilder("找不到该材料的合成路线");
+            return "找不到该材料的合成路线";
         }else {
             sendImageWithPicAndStr(groupId, materialInfos, name + "的合成路线为：");
         }
