@@ -22,6 +22,7 @@ public class ClassificationUtil {
     public static ClassificationEnum GetClass(String s){
         Map<String,ClassificationEnum> map = new HashMap<>();
         map.put("菜单",CaiDan);
+        map.put("功能",CaiDan);
 
         map.put("菜单详情",XiangXiCaiDan);
         map.put("详细菜单",XiangXiCaiDan);
@@ -36,6 +37,7 @@ public class ClassificationUtil {
 
         map.put("卡池",KaChi);
         map.put("卡池列表",KaChi);
+        map.put("查询卡池",KaChi);
 
         map.put("卡池干员",KaChiQingdan);
         map.put("卡池up",KaChiQingdan);
@@ -43,6 +45,7 @@ public class ClassificationUtil {
         map.put("卡池清单",KaChiQingdan);
 
         map.put("垫刀查询",DianDaoChaXun);
+        map.put("查询垫刀",DianDaoChaXun);
         map.put("垫刀",DianDaoChaXun);
         map.put("我的垫刀",DianDaoChaXun);
 
@@ -58,11 +61,14 @@ public class ClassificationUtil {
 
         map.put("合成路线",HeChengLuXian);
         map.put("材料合成",HeChengLuXian);
+        map.put("合成公式",HeChengLuXian);
+        map.put("合成材料",HeChengLuXian);
 
         map.put("获取途径",CaiLiaoHuoQu);
         map.put("材料关卡",CaiLiaoHuoQu);
         map.put("材料获取",CaiLiaoHuoQu);
         map.put("材料掉落",CaiLiaoHuoQu);
+        map.put("获取材料",CaiLiaoHuoQu);
 
         map.put("公招截图",GongZhaoJieTu);
         map.put("公开招募",GongKaiZhaoMu);
@@ -105,6 +111,7 @@ public class ClassificationUtil {
         map.put("最新视频",ZuiXinTouGao);
 
         map.put("敌人信息",DiRenXinXi);
+        map.put("敌人面板",DianDaoChaXun);
         map.put("敌人查询",DiRenXinXi);
         map.put("查询敌人",DiRenXinXi);
 
@@ -126,9 +133,11 @@ public class ClassificationUtil {
         map.put("搜索干员",GanYuanLieBiao);
         map.put("查找干员",GanYuanLieBiao);
         map.put("干员查询",GanYuanLieBiao);
+        map.put("查询干员",GanYuanLieBiao);
 
         map.put("干员档案",GanYuanDangAn);
         map.put("详细档案",GanYuanDangAn);
+        map.put("查询档案",GanYuanDangAn);
 
         map.put("声优列表",ShengYouLieBiao);
         map.put("声优查询",ShengYouLieBiao);
@@ -144,6 +153,8 @@ public class ClassificationUtil {
         map.put("群发消息",QunFaXiaoXi);
 
         map.put("基建技能",JiJianJiNeng);
+        map.put("查看基建",JiJianJiNeng);
+        map.put("查询基建",JiJianJiNeng);
 
         map.put("技能描述",JiNengXiangQing);
         map.put("技能详情",JiNengXiangQing);
@@ -156,8 +167,11 @@ public class ClassificationUtil {
 
         map.put("皮肤查询",PiFuChaXun);
         map.put("时装查询",PiFuChaXun);
+        map.put("查询皮肤",PiFuChaXun);
+        map.put("查询时装",PiFuChaXun);
 
         map.put("天赋查询",TianFuChaXun);
+        map.put("查询天赋",TianFuChaXun);
         map.put("干员天赋",TianFuChaXun);
 
         return map.get(s);
