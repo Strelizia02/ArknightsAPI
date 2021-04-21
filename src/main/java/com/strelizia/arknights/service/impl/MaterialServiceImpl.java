@@ -116,12 +116,13 @@ public class MaterialServiceImpl implements MaterialService {
     @Override
     public String HuoQuTuJing(String name) {
 
-        String realName = nickNameMapper.selectNameByNickName(name);
-        if (realName != null && !realName.equals(""))
-            name = realName;
-
         StringBuilder s;
         if (!name.endsWith("-all")) {
+
+            String realName = nickNameMapper.selectNameByNickName(name);
+            if (realName != null && !realName.equals(""))
+                name = realName;
+
             List<SourcePlace> sourcePlaces = materialMadeMapper.selectMaterSource(name);
             s = new StringBuilder(name + "的主线关卡掉率排行前十为：");
             if (sourcePlaces.size() == 0) {
@@ -139,6 +140,11 @@ public class MaterialServiceImpl implements MaterialService {
             s.append("\n如需查看活动关卡，请在材料名后面加-all，中间无空格");
         }else {
             name = name.replace("-all","");
+
+            String realName = nickNameMapper.selectNameByNickName(name);
+            if (realName != null && !realName.equals(""))
+                name = realName;
+
             List<SourcePlace> sourcePlaces = materialMadeMapper.selectMaterSourceAllStage(name);
             s = new StringBuilder(name + "的全部关卡（包含活动关卡）掉率排行前十为：");
             if (sourcePlaces.size() == 0) {
@@ -245,7 +251,7 @@ public class MaterialServiceImpl implements MaterialService {
             MaterialInfo m = materialInfos.get(i);
             String imgBase64 = materialMadeMapper.selectMaterialPicByName(m.getMaterialName());
             g.drawImage(ImageUtil.Base64ToImageBuffer(imgBase64), 0, (i + 1) * 100, 100, 100, null);// 画出材料图标
-            g.drawString(m.getMaterialName() + "*" + m.getMaterialNum() + "个", 100, (i + 2) * 100);
+            g.drawString(m.getMaterialName() + " * " + m.getMaterialNum() + "个", 100, (i + 2) * 100);
         }
         g.dispose();
         sendMsgUtil.CallOPQApiSendImg(groupId, null, SendMsgUtil.picBase64Buf,
