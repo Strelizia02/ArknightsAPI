@@ -102,7 +102,7 @@
     </select>
 
     <select id="selectStageCost" parameterType="java.lang.String" resultType="java.lang.Integer">
-        select ap_cost from t_stage where code = #{MapId}
+        select ap_cost from t_stage where code = #{MapId} limit 1
     </select>
 
     <select id="selectAllZone" resultType="java.lang.String">
