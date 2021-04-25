@@ -136,7 +136,7 @@ public class AgentServiceImpl implements AgentService {
         String qqMd5 = DigestUtils.md5DigestAsHex(qq.toString().getBytes());
         boolean b = AdminUtil.getSixAdmin(qqMd5, admins);
         //如果没输入卡池名或者卡池不存在
-        if (pool == null || agentMapper.selectAgentByStar(pool, 6).size() == 0) {
+        if (pool == null || agentMapper.selectPoolIsExit(pool).size() == 0) {
             pool = "常规";
         }
         StringBuilder s = new StringBuilder();
@@ -167,13 +167,24 @@ public class AgentServiceImpl implements AgentService {
             //使用不同的方法Math/Random进行随机运算，尽可能取消同一时间戳导致的相同随机数(虽然两个算法本质一样，这样做基本屁用没有)
             double r = Math.random();
             //是不是限定池
-            Integer integers = agentMapper.selectPoolLimit(pool);
+            int integers = agentMapper.selectPoolLimit(pool)==0?0:1;
             if (star == 6) {
                 if (r <= 0.5 + 0.2 * integers) {
                     //获取当前卡池三星/四星/五星/六星列表
                     agentList = agentMapper.selectAgentByStar(pool, star);
                 } else {
                     agentList = agentMapper.selectAgentByStar("常规", star);
+                    if (integers==1){
+                        //如果是限定池，就再加上前期可歪的限定干员
+                        agentList.addAll(agentMapper.selectLimitAgent());
+                        //五倍权值（因为上面加过一个，所以再加四个就可以）
+                        List<AgentInfo> fiveLimit = agentMapper.selectLimitAgentByPool(pool);
+                        if (fiveLimit.size() > 0) {
+                            for (int i = 0; i < 4; i++) {
+                                agentList.addAll(fiveLimit);
+                            }
+                        }
+                    }
                 }
             } else if (star == 5) {
                 if (r <= 0.5) {

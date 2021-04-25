@@ -13,6 +13,15 @@ public interface AgentMapper {
     //根据稀有度查询干员列表
     List<AgentInfo> selectAgentByStar(String pool, Integer star);
 
+    //获取可以歪到的限定干员
+    List<AgentInfo> selectLimitAgent();
+
+    //五倍权值的干员
+    List<AgentInfo> selectLimitAgentByPool(String pool);
+
+    //查询卡池
+    List<String> selectPoolIsExit(String pool);
+
     //获取所有卡池名称
     List<String> selectPool();
 

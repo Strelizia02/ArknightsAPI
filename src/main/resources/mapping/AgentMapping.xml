@@ -10,7 +10,35 @@
     <select id="selectAgentByStar" resultMap="BaseResultMap">
         select name,star,pool
         from a_agent
-        where star = #{star} and pool = #{pool};
+        where star = #{star} and pool = #{pool} and (`limit` = 1 or `limit` = 0);
+    </select>
+
+    <select id="selectLimitAgentByPool" resultMap="BaseResultMap">
+        select name,star,pool
+        from a_agent
+        where star = 6 and pool = #{pool} and `limit` = 3;
+    </select>
+
+    <select id="selectPoolIsExit" parameterType="java.lang.String" resultType="java.lang.String">
+        SELECT
+            pool
+        FROM
+            a_agent
+        WHERE
+            pool = #{pool}
+    </select>
+
+    <select id="selectLimitAgent" resultMap="BaseResultMap">
+        SELECT
+            NAME,
+            star,
+            pool
+        FROM
+            a_agent
+        WHERE
+            star = 6
+        AND
+            `limit` = 1;
     </select>
 
     <select id="selectPoolLimit" parameterType="java.lang.String" resultType="java.lang.Integer">
