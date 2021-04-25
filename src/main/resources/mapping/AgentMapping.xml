@@ -20,6 +20,8 @@
             a_agent
         WHERE
             pool = #{pool}
+        ORDER BY
+	        `limit` DESC
         LIMIT 1
     </select>
 
