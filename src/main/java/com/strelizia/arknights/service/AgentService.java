@@ -9,6 +9,8 @@ public interface AgentService {
 
     String shiLian(String pool, Long qq, String name, Long groupId);
 
+    String XunFang(String pool, Long qq, String name, Long groupId);
+
     String selectPool();
 
     String selectFoundCount(Long qq, String name);

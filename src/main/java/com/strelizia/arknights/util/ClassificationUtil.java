@@ -32,7 +32,6 @@ public class ClassificationUtil {
         map.put("单抽", ChouKa);
         map.put("寻访", ChouKa);
 
-        map.put("十连寻访", ShiLian);
         map.put("十抽", ShiLian);
         map.put("十连", ShiLian);
 
@@ -178,6 +177,8 @@ public class ClassificationUtil {
         map.put("功能统计",GongNengTongJi);
         map.put("使用统计",GongNengTongJi);
         map.put("功能使用",GongNengTongJi);
+
+        map.put("十连寻访",ShiLianXunFang);
 
         return map.get(s);
     }

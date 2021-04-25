@@ -38,7 +38,11 @@ public class SkinInfoServiceImpl implements SkinInfoService {
         String s = "没有找到对应的皮肤";
         if (info.equals("艾雅法拉") || info.equals("小羊")) {
             if (skinInfos == null || skinInfos.size() <= 0) {
-                return "呜呜呜小羊现在还没有皮肤QAQ，yj你没有❤";
+                return "小羊马上就有泳装了！！！！！";
+            }
+        }else if (info.equals("蓝毒")) {
+            if (skinInfos == null || skinInfos.size() <= 0) {
+                return "蓝毒泳装免费送！！！！！";
             }
         }
 

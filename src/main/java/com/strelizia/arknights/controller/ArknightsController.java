@@ -393,6 +393,9 @@ public class ArknightsController {
                 }
                 result = sb.toString();
                 break;
+            case ShiLianXunFang:
+                result = agentService.XunFang(s[1], qq, name, groupId);
+                break;
             default:
                 result = "俺不晓得你在锁啥子";
         }

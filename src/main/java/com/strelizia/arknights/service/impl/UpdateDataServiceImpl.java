@@ -524,6 +524,7 @@ public class UpdateDataServiceImpl implements UpdateDataService {
                 log.info("修复上次未获取的图片{}个", i);
         }
         updateItemIcon();
+        updateOperatorPng();
     }
 
     /**
@@ -537,6 +538,19 @@ public class UpdateDataServiceImpl implements UpdateDataService {
             if (picBase64 == null || picBase64.startsWith("https://")) {
                 String iconId = new JSONObject(getJsonStringFromUrl("https://andata.somedata.top/data-2020/item/" + id + ".json")).getString("iconId");
                 materialMadeMapper.updateBase64ById(imageUtil.getImageBase64ByUrl("https://andata.somedata.top/dataX/item/pic/" + iconId + ".png"), id);
+            }
+        }
+    }
+
+    /**
+     * 更新干员立绘，增量更新
+     */
+    public void updateOperatorPng(){
+        List<String> allOperatorId = operatorInfoMapper.getAllOperatorId();
+        for (String id : allOperatorId){
+            String base = operatorInfoMapper.selectOperatorPngById(id);
+            if (base == null || base.startsWith("https://")){
+                operatorInfoMapper.insertOperatorPngById(id, imageUtil.getImageBase64ByUrl("https://andata.somedata.top/dataX/char/halfPic/" + id + "_1.png"));
             }
         }
     }

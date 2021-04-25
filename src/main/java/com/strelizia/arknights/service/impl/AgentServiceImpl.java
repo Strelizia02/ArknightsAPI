@@ -2,22 +2,32 @@ package com.strelizia.arknights.service.impl;
 
 import com.strelizia.arknights.dao.AdminUserMapper;
 import com.strelizia.arknights.dao.AgentMapper;
+import com.strelizia.arknights.dao.OperatorInfoMapper;
 import com.strelizia.arknights.dao.UserFoundMapper;
 import com.strelizia.arknights.model.AdminUserInfo;
 import com.strelizia.arknights.model.AgentInfo;
+import com.strelizia.arknights.model.MaterialInfo;
 import com.strelizia.arknights.model.UserFoundInfo;
 import com.strelizia.arknights.service.GroupAdminInfoService;
-import com.strelizia.arknights.util.AdminUtil;
-import com.strelizia.arknights.util.FormatStringUtil;
-import com.strelizia.arknights.util.FoundAgentUtil;
+import com.strelizia.arknights.util.*;
 import com.strelizia.arknights.service.AgentService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.DigestUtils;
+import sun.misc.BASE64Encoder;
 
+import javax.imageio.ImageIO;
+import java.awt.*;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Random;
+
+import static com.strelizia.arknights.util.ImageUtil.replaceEnter;
 
 /**
  * @author wangzy
@@ -35,6 +45,10 @@ public class AgentServiceImpl implements AgentService {
     private AdminUserMapper adminUserMapper;
     @Autowired
     private GroupAdminInfoService groupAdminInfoService;
+    @Autowired
+    private SendMsgUtil sendMsgUtil;
+    @Autowired
+    private OperatorInfoMapper operatorInfoMapper;
 
 
     @Override
@@ -45,6 +59,75 @@ public class AgentServiceImpl implements AgentService {
     @Override
     public String shiLian(String pool, Long qq, String name, Long groupId) {
         return name + "\n抽取" + foundLimit(10, pool, qq, name, groupId);
+    }
+
+    @Override
+    public String XunFang(String pool, Long qq, String name, Long groupId) {
+        String qqMd5 = DigestUtils.md5DigestAsHex(qq.toString().getBytes());
+        UserFoundInfo userFoundInfo = userFoundMapper.selectUserFoundByQQ(qqMd5);
+        if (userFoundInfo == null) {
+            userFoundInfo = new UserFoundInfo();
+            //MD5加密
+            userFoundInfo.setQq(qqMd5);
+            userFoundInfo.setFoundCount(0);
+            userFoundInfo.setTodayCount(0);
+        }
+        //去数据库中查询这个人的垫刀数
+        Integer sum = userFoundInfo.getFoundCount();
+        //今日抽卡数
+        Integer today = userFoundInfo.getTodayCount();
+        List<AdminUserInfo> admins = adminUserMapper.selectAllAdmin();
+        boolean b = AdminUtil.getFoundAdmin(qqMd5, admins);
+        Integer limit = groupAdminInfoService.getGroupFoundAdmin(groupId);
+
+        if (today < limit || b) {
+            //如果没输入卡池名或者卡池不存在
+            if (pool == null || agentMapper.selectPoolIsExit(pool).size() == 0) {
+                pool = "常规";
+            }
+            String s = FoundAgentByNum(10, pool, qq, sum, name, groupId);
+            s = s.replace(" ", "");
+
+            //干员立绘绘制的序号
+            int No = 0;
+
+            //创建图片画布
+            BufferedImage image = new BufferedImage(960, 450,
+                    BufferedImage.TYPE_INT_BGR);
+            Graphics g = image.getGraphics();
+            // 画出抽卡背景
+            g.drawImage(ImageUtil.Base64ToImageBuffer(operatorInfoMapper.selectOperatorPngById("background")), 0, 0, 960, 450, null);
+
+            String[] agents = s.split("\n");
+            for (String agent: agents){
+                String[] split = agent.split("\t");
+                String agentName = split[0];
+
+                // 画出角色背景颜色
+                int star = split[1].length();
+                g.drawImage(ImageUtil.Base64ToImageBuffer(operatorInfoMapper.selectOperatorPngById("star" + star)), 70 + No * 82, 0, 82, 450, null);
+
+                //画出干员立绘
+                g.drawImage(ImageUtil.Base64ToImageBuffer(operatorInfoMapper.selectOperatorPngByName(agentName)), 70 + No * 82, 120, 82, 200, null);
+
+                // 画出角色职业图标
+                Integer classId = operatorInfoMapper.selectOperatorClassByName(agentName);
+                g.drawImage(ImageUtil.Base64ToImageBuffer(operatorInfoMapper.selectOperatorPngById("" + classId)), 81 + No * 82, 320, 60, 60, null);
+
+                No++;
+            }
+            g.dispose();
+            sendMsgUtil.CallOPQApiSendImg(groupId, null, SendMsgUtil.picBase64Buf,
+                    replaceEnter(new BASE64Encoder().encode(TextToImage.imageToBytes(image))), 2);
+//            File outputfile = new File("D://image.png");
+//
+//            try {
+//                ImageIO.write(image, "png", outputfile);
+//            } catch (IOException e) {
+//                e.printStackTrace();
+//            }
+        }
+        return "";
     }
 
     @Override
@@ -118,7 +201,11 @@ public class AgentServiceImpl implements AgentService {
         boolean b = AdminUtil.getFoundAdmin(qqMd5, admins);
         Integer limit = groupAdminInfoService.getGroupFoundAdmin(groupId);
         if (today < limit || b) {
-            s = FoundAgentByNum(count, pool, qq, sum, name, groupId);
+            //如果没输入卡池名或者卡池不存在
+            if (pool == null || agentMapper.selectPoolIsExit(pool).size() == 0) {
+                pool = "常规";
+            }
+            s = pool + "池：\n" + FoundAgentByNum(count, pool, qq, sum, name, groupId);
         }
         return s;
     }
@@ -217,6 +304,6 @@ public class AgentServiceImpl implements AgentService {
                 e.printStackTrace();
             }
         }
-        return pool + "池：\n" + s;
+        return s.toString();
     }
 }

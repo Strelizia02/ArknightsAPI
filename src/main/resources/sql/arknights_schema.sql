@@ -261,6 +261,16 @@ CREATE TABLE `t_operator_evolve_costs` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- ----------------------------
+-- Table structure for t_operator_png
+-- ----------------------------
+DROP TABLE IF EXISTS `t_operator_png`;
+CREATE TABLE `t_operator_png` (
+  `char_id` varchar(255) NOT NULL,
+  `char_base` longtext,
+  PRIMARY KEY (`char_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- ----------------------------
 -- Table structure for t_operator_skill
 -- ----------------------------
 DROP TABLE IF EXISTS `t_operator_skill`;

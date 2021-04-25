@@ -2,6 +2,7 @@ package com.strelizia.arknights.dao;
 
 import com.strelizia.arknights.model.OperatorBasicInfo;
 import com.strelizia.arknights.model.TalentInfo;
+import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 import java.util.Set;
@@ -16,6 +17,9 @@ public interface OperatorInfoMapper {
 
     //获取全部干员列表
     List<String> getAllOperator();
+
+    //获取全部干员列表
+    List<String> getAllOperatorId();
 
     //查找干员档案
     OperatorBasicInfo getOperatorInfoByName(String name);
@@ -43,5 +47,17 @@ public interface OperatorInfoMapper {
 
     //根据干员名查找干员天赋
     List<TalentInfo> getOperatorTalent(String name);
+
+    //根据干员名查找干员立绘
+    String selectOperatorPngByName(String name);
+
+    //根据干员id查找干员立绘
+    String selectOperatorPngById(String id);
+
+    //插入干员立绘
+    Integer insertOperatorPngById(@Param("id") String id, @Param("base") String base);
+
+    //插入干员立绘
+    Integer selectOperatorClassByName(String name);
 
 }

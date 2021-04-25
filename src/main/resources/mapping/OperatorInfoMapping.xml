@@ -62,6 +62,17 @@
             t_operator
     </select>
 
+    <select id="getAllOperatorId" resultType="java.lang.String">
+        SELECT
+            char_id
+        FROM
+            t_operator
+        WHERE
+            char_id IS NOT NULL
+        GROUP BY
+            char_id
+    </select>
+
     <select id="getOperatorNameById" resultType="java.lang.String">
         SELECT
             operator_name
@@ -134,4 +145,46 @@
     <select id="getAllInfoNameLikeStr" parameterType="java.lang.String" resultType="java.lang.String">
         SELECT info_name from (SELECT info_name from t_operator GROUP BY info_name)a1 WHERE info_name LIKE CONCAT('%',#{str},'%')
     </select>
+
+    <select id="selectOperatorPngByName" resultType="java.lang.String">
+        SELECT
+            char_base
+        FROM
+            t_operator_png
+        WHERE
+            char_id = (
+                SELECT
+                    char_id
+                FROM
+                    t_operator
+                WHERE
+                    operator_name = #{name}
+            )
+    </select>
+
+    <select id="selectOperatorPngById" resultType="java.lang.String">
+        SELECT
+            char_base
+        FROM
+            t_operator_png
+        WHERE
+            char_id = #{id}
+    </select>
+
+    <select id="selectOperatorClassByName" parameterType="java.lang.String" resultType="java.lang.Integer">
+        SELECT
+            operator_class
+        FROM
+            t_operator
+        WHERE
+            operator_name = #{name}
+    </select>
+
+    <insert id="insertOperatorPngById">
+        INSERT INTO t_operator_png (char_id, char_base)
+        VALUES
+            (#{id}, #{base})
+        ON DUPLICATE KEY UPDATE
+            char_base = #{base}
+    </insert>
 </mapper>
