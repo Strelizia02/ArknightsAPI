@@ -28,6 +28,7 @@ import java.util.Map;
 import java.util.Random;
 
 import static com.strelizia.arknights.util.ImageUtil.replaceEnter;
+import static java.awt.image.BufferedImage.TYPE_INT_ARGB;
 
 /**
  * @author wangzy
@@ -106,47 +107,55 @@ public class AgentServiceImpl implements AgentService {
                 // 画出角色背景颜色
                 int star = split[1].length();
                 g.drawImage(ImageUtil.Base64ToImageBuffer(operatorInfoMapper.selectOperatorPngById("star" + star)), 70 + No * 82, 0, 82, 450, null);
-
                 //画出干员立绘
                 BufferedImage oldImg = ImageUtil.Base64ToImageBuffer(operatorInfoMapper.selectOperatorPngByName(agentName));
                 if (oldImg != null) {
-                    //老干员立绘是110*220
-                    int x = 15;
+                    int width = 252 * oldImg.getWidth() / oldImg.getHeight();
+                    int x = width / 2 - 41;
                     int y = 0;
-                    int w = 80;
-                    int h = 200;
-                    //新干员立绘是180*360
-                    if (oldImg.getWidth() == 180) {
-                        x = 25;
-                        y = 10;
-                        w = 140;
-                        h = 320;
-                    }
-                    if (oldImg.getHeight() == 329){
-                        h = 290;
-                    }
+                    int w = width;
+                    int h = 252;
+                    BufferedImage newImg = new BufferedImage(w, h, TYPE_INT_ARGB);
+                    Graphics2D graphics = newImg.createGraphics();
+                    graphics.drawImage(oldImg, 0, 0, w, h,null);
+                    graphics.dispose();
                     //裁剪立绘
-                    BufferedImage charBase = oldImg.getSubimage(x, y, w , h);
+                    BufferedImage charBase = newImg.getSubimage(x, y, 82, 252);
 
-                    g.drawImage(charBase, 70 + No * 82, 110 + y, 82, 240, null);
+                    g.drawImage(charBase, 70 + No * 82, 110, 82, 252, null);
                 }
 
                 // 画出角色职业图标
                 Integer classId = operatorInfoMapper.selectOperatorClassByName(agentName);
-                g.drawImage(ImageUtil.Base64ToImageBuffer(operatorInfoMapper.selectOperatorPngById("" + classId)), 81 + No * 82, 320, 60, 60, null);
+                BufferedImage bImage = ImageUtil.Base64ToImageBuffer(operatorInfoMapper.selectOperatorPngById("" + classId));
+
+//                //获取图片的长宽高
+//                int width = bImage.getWidth();
+//                int height = bImage.getHeight();
+//                int minx = bImage.getMinTileX();
+//                int miny = bImage.getMinTileY();
+//                //遍历图片的所有像素点，并对各个像素点进行判断，是否修改
+//                for (int i = minx; i < width; i++) {
+//                    for (int j = miny; j < height; j++) {
+//                        int pixel = bImage.getRGB(i, j);
+//                        bImage.setRGB(i, j, 255 - pixel);
+//                    }
+//                }
+
+                g.drawImage(bImage, 81 + No * 82, 320, 60, 60, null);
 
                 No++;
             }
             g.dispose();
-//            sendMsgUtil.CallOPQApiSendImg(groupId, null, SendMsgUtil.picBase64Buf,
-//                    replaceEnter(new BASE64Encoder().encode(TextToImage.imageToBytes(image))), 2);
-            File outputfile = new File("D://image.png");
-
-            try {
-                ImageIO.write(image, "png", outputfile);
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
+            sendMsgUtil.CallOPQApiSendImg(groupId, null, SendMsgUtil.picBase64Buf,
+                    replaceEnter(new BASE64Encoder().encode(TextToImage.imageToBytes(image))), 2);
+//            File outputfile = new File("D://image.png");
+//
+//            try {
+//                ImageIO.write(image, "png", outputfile);
+//            } catch (IOException e) {
+//                e.printStackTrace();
+//            }
         }
         return "";
     }
