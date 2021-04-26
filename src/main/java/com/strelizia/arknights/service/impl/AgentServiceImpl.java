@@ -14,6 +14,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.DigestUtils;
+import sun.misc.BASE64Encoder;
 
 import javax.imageio.ImageIO;
 import java.awt.*;
@@ -25,6 +26,7 @@ import java.util.List;
 import java.util.Random;
 
 
+import static com.strelizia.arknights.util.ImageUtil.replaceEnter;
 import static java.awt.image.BufferedImage.TYPE_INT_ARGB;
 
 /**
@@ -151,15 +153,15 @@ public class AgentServiceImpl implements AgentService {
             g.drawString("结果仅供参考，详细代码请见：", 470, 420);
             g.drawString("https://github.com/Strelizia02/ArknightsAPI", 470, 440);
             g.dispose();
-//            sendMsgUtil.CallOPQApiSendImg(groupId, null, SendMsgUtil.picBase64Buf,
-//                    replaceEnter(new BASE64Encoder().encode(TextToImage.imageToBytes(image))), 2);
-            File outputfile = new File("D://image.png");
-
-            try {
-                ImageIO.write(image, "png", outputfile);
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
+            sendMsgUtil.CallOPQApiSendImg(groupId, null, SendMsgUtil.picBase64Buf,
+                    replaceEnter(new BASE64Encoder().encode(TextToImage.imageToBytes(image))), 2);
+//            File outputfile = new File("D://image.png");
+//
+//            try {
+//                ImageIO.write(image, "png", outputfile);
+//            } catch (IOException e) {
+//                e.printStackTrace();
+//            }
             userFoundMapper.updateTodaySearch(qqMd5, name, groupId);
             return "";
         }else {
