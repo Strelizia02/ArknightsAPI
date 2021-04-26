@@ -29,6 +29,6 @@ public class ModelCountInfo {
 
     @Override
     public String toString() {
-        return  "功能：" + modelName + "已使用" + count + "次";
+        return "功能：" + modelName + "已使用" + count + "次";
     }
 }

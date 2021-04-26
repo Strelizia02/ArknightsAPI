@@ -1,20 +1,20 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.strelizia.arknights.dao.OperatorEvolveMapper">
-    <resultMap id="BaseResultMap" type="com.strelizia.arknights.model.MaterialInfo" >
-        <result column="material_name" property="materialName" jdbcType="VARCHAR" />
-        <result column="use_number" property="materialNum" jdbcType="INTEGER" />
+    <resultMap id="BaseResultMap" type="com.strelizia.arknights.model.MaterialInfo">
+        <result column="material_name" property="materialName" jdbcType="VARCHAR"/>
+        <result column="use_number" property="materialNum" jdbcType="INTEGER"/>
     </resultMap>
 
-    <resultMap id="DataResultMap" type="com.strelizia.arknights.model.OperatorData" >
-        <result column="atk" property="atk" jdbcType="INTEGER" />
-        <result column="def" property="def" jdbcType="INTEGER" />
-        <result column="magicResistance" property="magicResistance" jdbcType="INTEGER" />
-        <result column="maxHp" property="maxHp" jdbcType="INTEGER" />
-        <result column="blockCnt" property="blockCnt" jdbcType="INTEGER" />
-        <result column="cost" property="cost" jdbcType="INTEGER" />
-        <result column="baseAttackTime" property="baseAttackTime" jdbcType="INTEGER" />
-        <result column="respawnTime" property="respawnTime" jdbcType="INTEGER" />
+    <resultMap id="DataResultMap" type="com.strelizia.arknights.model.OperatorData">
+        <result column="atk" property="atk" jdbcType="INTEGER"/>
+        <result column="def" property="def" jdbcType="INTEGER"/>
+        <result column="magicResistance" property="magicResistance" jdbcType="INTEGER"/>
+        <result column="maxHp" property="maxHp" jdbcType="INTEGER"/>
+        <result column="blockCnt" property="blockCnt" jdbcType="INTEGER"/>
+        <result column="cost" property="cost" jdbcType="INTEGER"/>
+        <result column="baseAttackTime" property="baseAttackTime" jdbcType="INTEGER"/>
+        <result column="respawnTime" property="respawnTime" jdbcType="INTEGER"/>
     </resultMap>
 
     <select id="selectOperatorEvolveByName" resultMap="BaseResultMap">

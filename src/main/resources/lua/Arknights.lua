@@ -12,8 +12,7 @@ function ReceiveFriendMsg(CurrentQQ, data)
         qq = data.FromUin
     }
     response, error_message =
-    http.post(
-        ""..url.."/private/chat",
+    http.post("" .. url .. "/private/chat",
         {
             body = json.encode(body),
             headers =
@@ -21,8 +20,7 @@ function ReceiveFriendMsg(CurrentQQ, data)
                 ["Accept"] = "*/*",
                 ["Content-Type"] = "application/json"
             }
-        }
-    )
+        })
     return 1
 end
 
@@ -36,17 +34,15 @@ function ReceiveGroupMsg(CurrentQQ, data)
         groupId = data.FromGroupId
     }
     response, error_message =
-    http.post(
-    ""..url.."/Arknights/receive",
-    {
-        body = json.encode(body),
-        headers =
+    http.post("" .. url .. "/Arknights/receive",
         {
-            ["Accept"] = "*/*",
-            ["Content-Type"] = "application/json"
-        }
-    }
-    )
+            body = json.encode(body),
+            headers =
+            {
+                ["Accept"] = "*/*",
+                ["Content-Type"] = "application/json"
+            }
+        })
     return 1
 end
 

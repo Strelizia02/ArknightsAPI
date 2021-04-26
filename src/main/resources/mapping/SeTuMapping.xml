@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.strelizia.arknights.dao.SeTuMapper">
-    <resultMap id="BaseResultMap" type="com.strelizia.arknights.model.ImgUrlInfo" >
-        <result column="url" property="url" jdbcType="VARCHAR" />
-        <result column="id" property="id" jdbcType="INTEGER" />
-        <result column="type" property="type" jdbcType="INTEGER" />
+    <resultMap id="BaseResultMap" type="com.strelizia.arknights.model.ImgUrlInfo">
+        <result column="url" property="url" jdbcType="VARCHAR"/>
+        <result column="id" property="id" jdbcType="INTEGER"/>
+        <result column="type" property="type" jdbcType="INTEGER"/>
     </resultMap>
 
     <select id="selectTodaySeTuByQQ" resultType="java.lang.Integer">

@@ -1,35 +1,35 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.strelizia.arknights.dao.OperatorInfoMapper">
-    <resultMap id="BaseResultMap" type="com.strelizia.arknights.model.OperatorBasicInfo" >
-        <result column="operator_id" property="operatorId" jdbcType="INTEGER" />
-        <result column="char_id" property="charId" jdbcType="VARCHAR" />
-        <result column="draw_name" property="drawName" jdbcType="VARCHAR" />
-        <result column="info_name" property="infoName" jdbcType="VARCHAR" />
-        <result column="code_name" property="codeName" jdbcType="VARCHAR" />
-        <result column="sex" property="sex" jdbcType="VARCHAR" />
-        <result column="come_from" property="comeFrom" jdbcType="VARCHAR" />
-        <result column="birthday" property="birthday" jdbcType="VARCHAR" />
-        <result column="race" property="race" jdbcType="VARCHAR" />
-        <result column="height" property="height" jdbcType="INTEGER" />
-        <result column="infection" property="infection" jdbcType="VARCHAR" />
-        <result column="comprehensive_test" property="comprehensiveTest" jdbcType="VARCHAR" />
-        <result column="objective_resume" property="objectiveResume" jdbcType="VARCHAR" />
-        <result column="clinical_diagnosis" property="clinicalDiagnosis" jdbcType="VARCHAR" />
-        <result column="archives1" property="archives1" jdbcType="VARCHAR" />
-        <result column="archives2" property="archives2" jdbcType="VARCHAR" />
-        <result column="archives3" property="archives3" jdbcType="VARCHAR" />
-        <result column="archives4" property="archives4" jdbcType="VARCHAR" />
-        <result column="promotion_info" property="promotionInfo" jdbcType="VARCHAR" />
+    <resultMap id="BaseResultMap" type="com.strelizia.arknights.model.OperatorBasicInfo">
+        <result column="operator_id" property="operatorId" jdbcType="INTEGER"/>
+        <result column="char_id" property="charId" jdbcType="VARCHAR"/>
+        <result column="draw_name" property="drawName" jdbcType="VARCHAR"/>
+        <result column="info_name" property="infoName" jdbcType="VARCHAR"/>
+        <result column="code_name" property="codeName" jdbcType="VARCHAR"/>
+        <result column="sex" property="sex" jdbcType="VARCHAR"/>
+        <result column="come_from" property="comeFrom" jdbcType="VARCHAR"/>
+        <result column="birthday" property="birthday" jdbcType="VARCHAR"/>
+        <result column="race" property="race" jdbcType="VARCHAR"/>
+        <result column="height" property="height" jdbcType="INTEGER"/>
+        <result column="infection" property="infection" jdbcType="VARCHAR"/>
+        <result column="comprehensive_test" property="comprehensiveTest" jdbcType="VARCHAR"/>
+        <result column="objective_resume" property="objectiveResume" jdbcType="VARCHAR"/>
+        <result column="clinical_diagnosis" property="clinicalDiagnosis" jdbcType="VARCHAR"/>
+        <result column="archives1" property="archives1" jdbcType="VARCHAR"/>
+        <result column="archives2" property="archives2" jdbcType="VARCHAR"/>
+        <result column="archives3" property="archives3" jdbcType="VARCHAR"/>
+        <result column="archives4" property="archives4" jdbcType="VARCHAR"/>
+        <result column="promotion_info" property="promotionInfo" jdbcType="VARCHAR"/>
     </resultMap>
 
-    <resultMap id="TalentResultMap" type="com.strelizia.arknights.model.TalentInfo" >
-        <result column="operator_id" property="operatorId" jdbcType="INTEGER" />
-        <result column="talent_name" property="talentName" jdbcType="VARCHAR" />
-        <result column="description" property="description" jdbcType="VARCHAR" />
-        <result column="phase" property="phase" jdbcType="INTEGER" />
-        <result column="level" property="level" jdbcType="INTEGER" />
-        <result column="potential" property="potential" jdbcType="INTEGER" />
+    <resultMap id="TalentResultMap" type="com.strelizia.arknights.model.TalentInfo">
+        <result column="operator_id" property="operatorId" jdbcType="INTEGER"/>
+        <result column="talent_name" property="talentName" jdbcType="VARCHAR"/>
+        <result column="description" property="description" jdbcType="VARCHAR"/>
+        <result column="phase" property="phase" jdbcType="INTEGER"/>
+        <result column="level" property="level" jdbcType="INTEGER"/>
+        <result column="potential" property="potential" jdbcType="INTEGER"/>
     </resultMap>
 
     <select id="getOperatorNameByInfo" parameterType="java.lang.String" resultType="java.lang.String">
@@ -129,7 +129,7 @@
     <select id="getOperatorIdByChar" parameterType="java.lang.String" resultType="java.lang.Integer">
         select operator_id from t_operator where char_id=#{charId} limit 1
     </select>
-    
+
     <select id="getAllDrawName" resultType="java.lang.String">
         SELECT draw_name from t_operator GROUP BY draw_name
     </select>

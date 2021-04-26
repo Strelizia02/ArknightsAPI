@@ -40,7 +40,7 @@ public class SkinInfoServiceImpl implements SkinInfoService {
             if (skinInfos == null || skinInfos.size() <= 0) {
                 return "小羊马上就有泳装了！！！！！";
             }
-        }else if (info.equals("蓝毒")) {
+        } else if (info.equals("蓝毒")) {
             if (skinInfos == null || skinInfos.size() <= 0) {
                 return "蓝毒泳装免费送！！！！！";
             }

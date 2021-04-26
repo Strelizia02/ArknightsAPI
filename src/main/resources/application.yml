@@ -26,9 +26,9 @@ scheduled:
   # 每周日晚5点剿灭提醒
   exterminateJob: 0 0 17 ? * SUN
 userConfig:
-#登录的机器人qq
+  #登录的机器人qq
   loginQq:
-#OPQ框架部署的IP
+  #OPQ框架部署的IP
   OPQUrl: localhost
 baiduConfig:
   APP_ID:

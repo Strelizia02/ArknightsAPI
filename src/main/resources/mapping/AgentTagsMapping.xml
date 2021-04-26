@@ -1,26 +1,26 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.strelizia.arknights.dao.AgentTagsMapper">
-    <resultMap id="BaseResultMap" type="com.strelizia.arknights.model.AgentTagsInfo" >
-        <result column="operator_name" property="agentName" jdbcType="VARCHAR" />
-        <result column="operator_rarity" property="star" jdbcType="INTEGER" />
-        <result column="operator_tags" property="tags" jdbcType="VARCHAR" />
+    <resultMap id="BaseResultMap" type="com.strelizia.arknights.model.AgentTagsInfo">
+        <result column="operator_name" property="agentName" jdbcType="VARCHAR"/>
+        <result column="operator_rarity" property="star" jdbcType="INTEGER"/>
+        <result column="operator_tags" property="tags" jdbcType="VARCHAR"/>
     </resultMap>
 
     <select id="selectAgentByTag" parameterType="java.util.List" resultMap="BaseResultMap">
         SELECT
-            operator_name,
-            operator_rarity,
-            operator_tags
+        operator_name,
+        operator_rarity,
+        operator_tags
         FROM
-            t_operator_tags_relation
+        t_operator_tags_relation
         WHERE
         (operator_rarity != 6)
         <foreach collection="tags" index="index" item="tag">
-        AND FIND_IN_SET(
+            AND FIND_IN_SET(
             #{tag},
             operator_tags
-        )
+            )
         </foreach>
     </select>
 

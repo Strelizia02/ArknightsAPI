@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.strelizia.arknights.dao.SkinInfoMapper">
-    <resultMap id="BaseResultMap" type="com.strelizia.arknights.model.SkinInfo" >
-        <result column="operator_id" property="operatorId" jdbcType="INTEGER" />
-        <result column="operator_name" property="operatorName" jdbcType="VARCHAR" />
-        <result column="skin_name" property="skinName" jdbcType="VARCHAR" />
-        <result column="skin_group_name" property="skinGroupName" jdbcType="VARCHAR" />
-        <result column="drawer_name" property="drawerName" jdbcType="VARCHAR" />
-        <result column="dialog" property="dialog" jdbcType="VARCHAR" />
-        <result column="skin_base64" property="skinBase64" jdbcType="VARCHAR" />
+    <resultMap id="BaseResultMap" type="com.strelizia.arknights.model.SkinInfo">
+        <result column="operator_id" property="operatorId" jdbcType="INTEGER"/>
+        <result column="operator_name" property="operatorName" jdbcType="VARCHAR"/>
+        <result column="skin_name" property="skinName" jdbcType="VARCHAR"/>
+        <result column="skin_group_name" property="skinGroupName" jdbcType="VARCHAR"/>
+        <result column="drawer_name" property="drawerName" jdbcType="VARCHAR"/>
+        <result column="dialog" property="dialog" jdbcType="VARCHAR"/>
+        <result column="skin_base64" property="skinBase64" jdbcType="VARCHAR"/>
 
     </resultMap>
 

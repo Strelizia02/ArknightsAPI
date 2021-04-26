@@ -545,11 +545,11 @@ public class UpdateDataServiceImpl implements UpdateDataService {
     /**
      * 更新干员立绘，增量更新
      */
-    public void updateOperatorPng(){
+    public void updateOperatorPng() {
         List<String> allOperatorId = operatorInfoMapper.getAllOperatorId();
-        for (String id : allOperatorId){
+        for (String id : allOperatorId) {
             String base = operatorInfoMapper.selectOperatorPngById(id);
-            if (base == null || base.startsWith("https://")){
+            if (base == null || base.startsWith("https://")) {
                 operatorInfoMapper.insertOperatorPngById(id, imageUtil.getImageBase64ByUrl("https://andata.somedata.top/dataX/char/halfPic/" + id + "_1.png"));
             }
         }

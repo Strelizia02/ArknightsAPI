@@ -1,29 +1,29 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.strelizia.arknights.dao.MaterialMadeMapper">
-    <resultMap id="BaseResultMap" type="com.strelizia.arknights.model.MaterialInfo" >
-        <result column="material_name" property="materialName" jdbcType="VARCHAR" />
-        <result column="use_number" property="materialNum" jdbcType="INTEGER" />
+    <resultMap id="BaseResultMap" type="com.strelizia.arknights.model.MaterialInfo">
+        <result column="material_name" property="materialName" jdbcType="VARCHAR"/>
+        <result column="use_number" property="materialNum" jdbcType="INTEGER"/>
     </resultMap>
 
-    <resultMap id="SourceResultMap" type="com.strelizia.arknights.model.SourcePlace" >
-        <result column="zone_name" property="zoneName" jdbcType="VARCHAR" />
-        <result column="ap_cost" property="apCost" jdbcType="INTEGER" />
-        <result column="code" property="code" jdbcType="VARCHAR" />
-        <result column="rate" property="rate" jdbcType="DOUBLE" />
+    <resultMap id="SourceResultMap" type="com.strelizia.arknights.model.SourcePlace">
+        <result column="zone_name" property="zoneName" jdbcType="VARCHAR"/>
+        <result column="ap_cost" property="apCost" jdbcType="INTEGER"/>
+        <result column="code" property="code" jdbcType="VARCHAR"/>
+        <result column="rate" property="rate" jdbcType="DOUBLE"/>
     </resultMap>
 
-    <resultMap id="MatrixResultMap" type="com.strelizia.arknights.model.MapMatrixInfo" >
-        <result column="material_name" property="materialName" jdbcType="VARCHAR" />
-        <result column="rate" property="rate" jdbcType="DOUBLE" />
-        <result column="quantity" property="quantity" jdbcType="INTEGER" />
-        <result column="times" property="times" jdbcType="INTEGER" />
+    <resultMap id="MatrixResultMap" type="com.strelizia.arknights.model.MapMatrixInfo">
+        <result column="material_name" property="materialName" jdbcType="VARCHAR"/>
+        <result column="rate" property="rate" jdbcType="DOUBLE"/>
+        <result column="quantity" property="quantity" jdbcType="INTEGER"/>
+        <result column="times" property="times" jdbcType="INTEGER"/>
     </resultMap>
 
-    <resultMap id="MapResultMap" type="com.strelizia.arknights.model.MapCostInfo" >
-        <result column="zone_name" property="zoneName" jdbcType="VARCHAR" />
-        <result column="code" property="code" jdbcType="VARCHAR" />
-        <result column="ap_cost" property="apCost" jdbcType="INTEGER" />
+    <resultMap id="MapResultMap" type="com.strelizia.arknights.model.MapCostInfo">
+        <result column="zone_name" property="zoneName" jdbcType="VARCHAR"/>
+        <result column="code" property="code" jdbcType="VARCHAR"/>
+        <result column="ap_cost" property="apCost" jdbcType="INTEGER"/>
     </resultMap>
 
     <select id="selectMadeMater" parameterType="java.lang.String" resultMap="BaseResultMap">

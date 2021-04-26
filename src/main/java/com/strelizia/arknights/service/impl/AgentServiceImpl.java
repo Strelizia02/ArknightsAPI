@@ -6,7 +6,6 @@ import com.strelizia.arknights.dao.OperatorInfoMapper;
 import com.strelizia.arknights.dao.UserFoundMapper;
 import com.strelizia.arknights.model.AdminUserInfo;
 import com.strelizia.arknights.model.AgentInfo;
-import com.strelizia.arknights.model.MaterialInfo;
 import com.strelizia.arknights.model.UserFoundInfo;
 import com.strelizia.arknights.service.GroupAdminInfoService;
 import com.strelizia.arknights.util.*;
@@ -15,19 +14,17 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.DigestUtils;
-import sun.misc.BASE64Encoder;
 
 import javax.imageio.ImageIO;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
+
 import java.util.Random;
 
-import static com.strelizia.arknights.util.ImageUtil.replaceEnter;
+
 import static java.awt.image.BufferedImage.TYPE_INT_ARGB;
 
 /**
@@ -100,7 +97,7 @@ public class AgentServiceImpl implements AgentService {
             g.drawImage(ImageUtil.Base64ToImageBuffer(operatorInfoMapper.selectOperatorPngById("background")), 0, 0, 960, 450, null);
 
             String[] agents = s.split("\n");
-            for (String agent: agents){
+            for (String agent : agents) {
                 String[] split = agent.split("\t");
                 String agentName = split[0];
 
@@ -117,7 +114,7 @@ public class AgentServiceImpl implements AgentService {
                     int h = 252;
                     BufferedImage newImg = new BufferedImage(w, h, TYPE_INT_ARGB);
                     Graphics2D graphics = newImg.createGraphics();
-                    graphics.drawImage(oldImg, 0, 0, w, h,null);
+                    graphics.drawImage(oldImg, 0, 0, w, h, null);
                     graphics.dispose();
                     //裁剪立绘
                     BufferedImage charBase = newImg.getSubimage(x, y, 82, 252);
@@ -143,19 +140,22 @@ public class AgentServiceImpl implements AgentService {
 //                }
 
                 g.drawImage(bImage, 81 + No * 82, 320, 60, 60, null);
-
                 No++;
             }
+            g.setFont(new Font("楷体", Font.BOLD, 20));
+            g.setColor(Color.WHITE);
+            g.drawString("结果仅供参考，详细代码请见：", 470, 420);
+            g.drawString("https://github.com/Strelizia02/ArknightsAPI", 470, 440);
             g.dispose();
-            sendMsgUtil.CallOPQApiSendImg(groupId, null, SendMsgUtil.picBase64Buf,
-                    replaceEnter(new BASE64Encoder().encode(TextToImage.imageToBytes(image))), 2);
-//            File outputfile = new File("D://image.png");
-//
-//            try {
-//                ImageIO.write(image, "png", outputfile);
-//            } catch (IOException e) {
-//                e.printStackTrace();
-//            }
+//            sendMsgUtil.CallOPQApiSendImg(groupId, null, SendMsgUtil.picBase64Buf,
+//                    replaceEnter(new BASE64Encoder().encode(TextToImage.imageToBytes(image))), 2);
+            File outputfile = new File("D://image.png");
+
+            try {
+                ImageIO.write(image, "png", outputfile);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         }
         return "";
     }
@@ -284,14 +284,14 @@ public class AgentServiceImpl implements AgentService {
             //使用不同的方法Math/Random进行随机运算，尽可能取消同一时间戳导致的相同随机数(虽然两个算法本质一样，这样做基本屁用没有)
             double r = Math.random();
             //是不是限定池
-            int integers = agentMapper.selectPoolLimit(pool)==0?0:1;
+            int integers = agentMapper.selectPoolLimit(pool) == 0 ? 0 : 1;
             if (star == 6) {
                 if (r <= 0.5 + 0.2 * integers) {
                     //获取当前卡池三星/四星/五星/六星列表
                     agentList = agentMapper.selectAgentByStar(pool, star);
                 } else {
                     agentList = agentMapper.selectAgentByStar("常规", star);
-                    if (integers==1){
+                    if (integers == 1) {
                         //如果是限定池，就再加上前期可歪的限定干员
                         agentList.addAll(agentMapper.selectLimitAgent());
                         //五倍权值（因为上面加过一个，所以再加四个就可以）

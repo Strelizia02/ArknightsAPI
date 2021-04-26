@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.strelizia.arknights.dao.BiliMapper">
-    <resultMap id="BaseResultMap" type="com.strelizia.arknights.model.BiliCount" >
-        <result column="uid" property="uid" jdbcType="INTEGER" />
-        <result column="top" property="top" jdbcType="BIGINT" />
-        <result column="first" property="first" jdbcType="BIGINT" />
-        <result column="second" property="second" jdbcType="BIGINT" />
-        <result column="third" property="third" jdbcType="BIGINT" />
-        <result column="fourth" property="fourth" jdbcType="BIGINT" />
-        <result column="fifth" property="fifth" jdbcType="BIGINT" />
+    <resultMap id="BaseResultMap" type="com.strelizia.arknights.model.BiliCount">
+        <result column="uid" property="uid" jdbcType="INTEGER"/>
+        <result column="top" property="top" jdbcType="BIGINT"/>
+        <result column="first" property="first" jdbcType="BIGINT"/>
+        <result column="second" property="second" jdbcType="BIGINT"/>
+        <result column="third" property="third" jdbcType="BIGINT"/>
+        <result column="fourth" property="fourth" jdbcType="BIGINT"/>
+        <result column="fifth" property="fifth" jdbcType="BIGINT"/>
     </resultMap>
 
     <select id="getBiliCountList" resultMap="BaseResultMap">

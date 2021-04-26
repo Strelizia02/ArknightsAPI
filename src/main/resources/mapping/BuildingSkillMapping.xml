@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.strelizia.arknights.dao.BuildingSkillMapper">
-    <resultMap id="BaseResultMap" type="com.strelizia.arknights.model.BuildingSkill" >
-        <result column="operator_id" property="operatorId" jdbcType="INTEGER" />
-        <result column="phase" property="phase" jdbcType="INTEGER" />
-        <result column="level" property="level" jdbcType="INTEGER" />
-        <result column="buff_name" property="buffName" jdbcType="VARCHAR" />
-        <result column="room_type" property="roomType" jdbcType="VARCHAR" />
-        <result column="description" property="description" jdbcType="VARCHAR" />
+    <resultMap id="BaseResultMap" type="com.strelizia.arknights.model.BuildingSkill">
+        <result column="operator_id" property="operatorId" jdbcType="INTEGER"/>
+        <result column="phase" property="phase" jdbcType="INTEGER"/>
+        <result column="level" property="level" jdbcType="INTEGER"/>
+        <result column="buff_name" property="buffName" jdbcType="VARCHAR"/>
+        <result column="room_type" property="roomType" jdbcType="VARCHAR"/>
+        <result column="description" property="description" jdbcType="VARCHAR"/>
     </resultMap>
 
     <select id="getBuildingSkillByInfo" resultMap="BaseResultMap">
