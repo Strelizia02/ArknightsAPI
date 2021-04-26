@@ -57,4 +57,11 @@ public interface UserFoundMapper {
     List<Long> selectAllActiveGroups();
 
     List<Long> selectAllGroups();
+
+    //抽卡数
+    Integer selectTodaySearchByQQ(String qq);
+
+
+    Integer updateTodaySearch(@Param("qq") String qq, @Param("name") String name, @Param("groupId") Long groupId);
+
 }

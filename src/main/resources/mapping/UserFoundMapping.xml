@@ -81,6 +81,20 @@
         SELECT group_id FROM a_group_admin
     </select>
 
+    <select id="selectTodaySearchByQQ" resultType="java.lang.Integer">
+        SELECT search from a_user_found WHERE qq = #{qq} LIMIT 1
+    </select>
+
+    <insert id="updateTodaySearch">
+        INSERT INTO a_user_found (qq, name, group_id, search)
+        VALUES
+            (#{qq,jdbcType=VARCHAR}, #{name}, #{groupId,jdbcType=INTEGER}, 1)
+        ON DUPLICATE KEY UPDATE
+        group_id = #{groupId},
+        name = #{name},
+        search = search + 1
+    </insert>
+
     <!--  额外再发十抽  -->
     <update id="giveMoreFoundToFeiQiu" parameterType="java.lang.Integer">
         UPDATE a_user_found

@@ -63,6 +63,7 @@ public class AgentServiceImpl implements AgentService {
     public String XunFang(String pool, Long qq, String name, Long groupId) {
         String qqMd5 = DigestUtils.md5DigestAsHex(qq.toString().getBytes());
         UserFoundInfo userFoundInfo = userFoundMapper.selectUserFoundByQQ(qqMd5);
+        Integer limit = groupAdminInfoService.getGroupFoundAdmin(groupId);
         if (userFoundInfo == null) {
             userFoundInfo = new UserFoundInfo();
             //MD5加密
@@ -70,15 +71,18 @@ public class AgentServiceImpl implements AgentService {
             userFoundInfo.setFoundCount(0);
             userFoundInfo.setTodayCount(0);
         }
+        Integer search = userFoundMapper.selectTodaySearchByQQ(qqMd5);
+        if (search == null) {
+            search = 0;
+        }
         //去数据库中查询这个人的垫刀数
         Integer sum = userFoundInfo.getFoundCount();
         //今日抽卡数
         Integer today = userFoundInfo.getTodayCount();
         List<AdminUserInfo> admins = adminUserMapper.selectAllAdmin();
         boolean b = AdminUtil.getFoundAdmin(qqMd5, admins);
-        Integer limit = groupAdminInfoService.getGroupFoundAdmin(groupId);
 
-        if (today < limit || b) {
+        if ((search < 2 && today < limit) || b) {
             //如果没输入卡池名或者卡池不存在
             if (pool == null || agentMapper.selectPoolIsExit(pool).size() == 0) {
                 pool = "常规";
@@ -156,8 +160,11 @@ public class AgentServiceImpl implements AgentService {
             } catch (IOException e) {
                 e.printStackTrace();
             }
+            userFoundMapper.updateTodaySearch(qqMd5, name, groupId);
+            return "";
+        }else {
+            return "您今日模拟寻访次数已用完";
         }
-        return "";
     }
 
     @Override

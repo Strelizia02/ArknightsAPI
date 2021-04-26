@@ -128,6 +128,7 @@ CREATE TABLE `a_user_found` (
   `group_id` bigint(255) DEFAULT NULL,
   `today_five` int(255) DEFAULT '0',
   `pixiv` int(255) DEFAULT '0',
+  `search` int(255) DEFAULT '0' COMMENT '十连寻访次数',
   PRIMARY KEY (`qq`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
