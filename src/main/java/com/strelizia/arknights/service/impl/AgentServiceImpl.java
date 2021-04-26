@@ -108,7 +108,28 @@ public class AgentServiceImpl implements AgentService {
                 g.drawImage(ImageUtil.Base64ToImageBuffer(operatorInfoMapper.selectOperatorPngById("star" + star)), 70 + No * 82, 0, 82, 450, null);
 
                 //画出干员立绘
-                g.drawImage(ImageUtil.Base64ToImageBuffer(operatorInfoMapper.selectOperatorPngByName(agentName)), 70 + No * 82, 120, 82, 200, null);
+                BufferedImage oldImg = ImageUtil.Base64ToImageBuffer(operatorInfoMapper.selectOperatorPngByName(agentName));
+                if (oldImg != null) {
+                    //老干员立绘是110*220
+                    int x = 15;
+                    int y = 0;
+                    int w = 80;
+                    int h = 200;
+                    //新干员立绘是180*360
+                    if (oldImg.getWidth() == 180) {
+                        x = 25;
+                        y = 10;
+                        w = 140;
+                        h = 320;
+                    }
+                    if (oldImg.getHeight() == 329){
+                        h = 290;
+                    }
+                    //裁剪立绘
+                    BufferedImage charBase = oldImg.getSubimage(x, y, w , h);
+
+                    g.drawImage(charBase, 70 + No * 82, 110 + y, 82, 240, null);
+                }
 
                 // 画出角色职业图标
                 Integer classId = operatorInfoMapper.selectOperatorClassByName(agentName);
@@ -117,15 +138,15 @@ public class AgentServiceImpl implements AgentService {
                 No++;
             }
             g.dispose();
-            sendMsgUtil.CallOPQApiSendImg(groupId, null, SendMsgUtil.picBase64Buf,
-                    replaceEnter(new BASE64Encoder().encode(TextToImage.imageToBytes(image))), 2);
-//            File outputfile = new File("D://image.png");
-//
-//            try {
-//                ImageIO.write(image, "png", outputfile);
-//            } catch (IOException e) {
-//                e.printStackTrace();
-//            }
+//            sendMsgUtil.CallOPQApiSendImg(groupId, null, SendMsgUtil.picBase64Buf,
+//                    replaceEnter(new BASE64Encoder().encode(TextToImage.imageToBytes(image))), 2);
+            File outputfile = new File("D://image.png");
+
+            try {
+                ImageIO.write(image, "png", outputfile);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         }
         return "";
     }
