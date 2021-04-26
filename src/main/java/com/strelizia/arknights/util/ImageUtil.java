@@ -96,6 +96,9 @@ public class ImageUtil {
         try {
             url = new URL(imgUrl);
             httpUrl = (HttpURLConnection) url.openConnection();
+            httpUrl.setRequestProperty("User-Agent", "PostmanRuntime/7.26.8");
+            httpUrl.setRequestProperty("Authorization", "2");
+            httpUrl.setRequestProperty("Host", "andata.somedata.top");
             httpUrl.connect();
             httpUrl.getInputStream();
             is = httpUrl.getInputStream();
@@ -106,23 +109,8 @@ public class ImageUtil {
                 outStream.write(buffer, 0, len);
             }
             return encode(outStream.toByteArray());
-        } catch (Exception e) {
-            try {//重试一次
-                url = new URL(imgUrl);
-                httpUrl = (HttpURLConnection) url.openConnection();
-                httpUrl.connect();
-                httpUrl.getInputStream();
-                is = httpUrl.getInputStream();
-                outStream = new ByteArrayOutputStream();
-                byte[] buffer = new byte[1024];
-                int len;
-                while ((len = is.read(buffer)) != -1) {
-                    outStream.write(buffer, 0, len);
-                }
-                return encode(outStream.toByteArray());
-            } catch (Exception e1) {
-                e1.printStackTrace();
-            }
+        } catch (Exception e1) {
+            e1.printStackTrace();
         } finally {
             if (is != null) {
                 try {
