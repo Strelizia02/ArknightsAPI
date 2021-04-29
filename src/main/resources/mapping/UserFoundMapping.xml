@@ -140,6 +140,6 @@
     </update>
 
     <update id="cleanTodayCount">
-        UPDATE a_user_found SET today_count = 0, today_six = 0, pixiv = 0
+        UPDATE a_user_found SET today_count = 0, today_six = 0, pixiv = 0, search = 0
     </update>
 </mapper>
