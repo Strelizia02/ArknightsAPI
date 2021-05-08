@@ -50,5 +50,8 @@ public enum ClassificationEnum {
     PiFuChaXun,
     TianFuChaXun,
     GongNengTongJi,
-    ShiLianXunFang
+    ShiLianXunFang,
+    QuanBuGengXin,
+    TuBiaoGengXin,
+    CaiLiaoGengXin
 }

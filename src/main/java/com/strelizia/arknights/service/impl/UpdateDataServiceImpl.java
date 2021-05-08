@@ -485,7 +485,7 @@ public class UpdateDataServiceImpl implements UpdateDataService {
      * 增量更新皮肤信息（根据Id，要是yj背刺删了一个皮肤就会有问题
      */
     public void updateSkin() {
-        log.info("拉取皮肤数据");
+        log.info("拉取图标数据");
         String skinListUrl = "https://andata.somedata.top/data-2020/char/extraSkins.json";
         String jsonStringFromUrl = getJsonStringFromUrl(skinListUrl);
         JSONArray skinJson = new JSONArray(jsonStringFromUrl);
@@ -546,6 +546,7 @@ public class UpdateDataServiceImpl implements UpdateDataService {
      * 更新干员立绘，增量更新
      */
     public void updateOperatorPng() {
+        log.info("开始更新干员立绘");
         List<String> allOperatorId = operatorInfoMapper.getAllOperatorId();
         for (String id : allOperatorId) {
             String base = operatorInfoMapper.selectOperatorPngById(id);

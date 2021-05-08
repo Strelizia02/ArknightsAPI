@@ -180,6 +180,15 @@ public class ClassificationUtil {
 
         map.put("十连寻访", ShiLianXunFang);
 
+        map.put("材料更新",CaiLiaoGengXin);
+        map.put("更新材料",CaiLiaoGengXin);
+
+        map.put("图标更新",TuBiaoGengXin);
+        map.put("更新图标",TuBiaoGengXin);
+
+        map.put("全部更新",QuanBuGengXin);
+        map.put("更新",QuanBuGengXin);
+
         return map.get(s);
     }
 }

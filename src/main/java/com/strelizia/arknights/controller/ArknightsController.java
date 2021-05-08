@@ -1,10 +1,13 @@
 package com.strelizia.arknights.controller;
 
+import com.strelizia.arknights.dao.AdminUserMapper;
 import com.strelizia.arknights.dao.ModelCountMapper;
+import com.strelizia.arknights.model.AdminUserInfo;
 import com.strelizia.arknights.model.ClassificationEnum;
 import com.strelizia.arknights.model.MessageInfo;
 import com.strelizia.arknights.model.ModelCountInfo;
 import com.strelizia.arknights.service.*;
+import com.strelizia.arknights.util.AdminUtil;
 import com.strelizia.arknights.util.ClassificationUtil;
 import com.strelizia.arknights.util.SendMsgUtil;
 import com.strelizia.arknights.util.ServerSystemUtil;
@@ -12,7 +15,10 @@ import lombok.extern.slf4j.Slf4j;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.util.DigestUtils;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 /**
  * @author wangzy
@@ -66,6 +72,12 @@ public class ArknightsController {
 
     @Autowired
     private ModelCountMapper modelCountMapper;
+
+    @Autowired
+    private AdminUserMapper adminUserMapper;
+
+    @Autowired
+    private UpdateDataService updateDataService;
 
     /**
      * 消息处理总控制器，用于接收消息，并处理分流到不同的service
@@ -162,6 +174,9 @@ public class ArknightsController {
                                 "29.关闭涩图：{##关闭涩图}\n" +
                                 "30.时装查询：{##皮肤查询 [条件]}\n" +
                                 "31.天赋查询：{##干员天赋 干员名}\n" +
+                                "32.数据更新：{##更新}\n" +
+                                "33.图标更新：{##图标更新}\n" +
+                                "34.材料更新：{##材料更新}\n" +
                                 "过大的涩图将导致回复缓慢，请不要上传不能过审的图片";
                 break;
             case XiangXiCaiDan:
@@ -267,6 +282,12 @@ public class ArknightsController {
                                 "31.天赋查询：\n" +
                                 "\t使用方法：{##干员天赋 干员名}\n" +
                                 "\t例：##干员天赋 塞雷娅\n" +
+                                "32.数据更新：\n" +
+                                "\t使用方法：{##更新}\n" +
+                                "33.图标更新：\n" +
+                                "\t使用方法：{##图标更新}\n" +
+                                "34.材料更新：\n" +
+                                "\t使用方法：{##材料更新}\n" +
                                 "注：本项目需严格按照格式输入，自然语言处理功能将在后期优化";
                 break;
             case ShiLian:
@@ -398,6 +419,40 @@ public class ArknightsController {
             case ShiLianXunFang:
                 result = agentService.XunFang(s[1], qq, name, groupId);
                 break;
+            case QuanBuGengXin: {
+                List<AdminUserInfo> admins = adminUserMapper.selectAllAdmin();
+                String qqMd5 = DigestUtils.md5DigestAsHex(qq.toString().getBytes());
+                if (!AdminUtil.getSqlAdmin(qqMd5, admins)) {
+                    result = "您无更新权限";
+                } else {
+                    result = "";
+                    updateDataService.updateAllData(false);
+                    updateDataService.updateSkin();
+                }
+                break;
+            }
+            case TuBiaoGengXin: {
+                List<AdminUserInfo> admins = adminUserMapper.selectAllAdmin();
+                String qqMd5 = DigestUtils.md5DigestAsHex(qq.toString().getBytes());
+                if (!AdminUtil.getSqlAdmin(qqMd5, admins)) {
+                    result = "您无更新权限";
+                } else {
+                    result = "";
+                    updateDataService.updateSkin();
+                }
+                break;
+            }
+            case CaiLiaoGengXin:{
+                List<AdminUserInfo> admins = adminUserMapper.selectAllAdmin();
+                String qqMd5 = DigestUtils.md5DigestAsHex(qq.toString().getBytes());
+                if (!AdminUtil.getSqlAdmin(qqMd5, admins)) {
+                    result = "您无更新权限";
+                } else {
+                    result = "";
+                    updateDataService.updateItemAndFormula();
+                }
+                break;
+            }
             default:
                 result = "俺不晓得你在锁啥子";
         }
