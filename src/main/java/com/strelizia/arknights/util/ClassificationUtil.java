@@ -111,7 +111,7 @@ public class ClassificationUtil {
         map.put("最新视频", ZuiXinTouGao);
 
         map.put("敌人信息", DiRenXinXi);
-        map.put("敌人面板", DianDaoChaXun);
+        map.put("敌人面板", DiRenXinXi);
         map.put("敌人查询", DiRenXinXi);
         map.put("查询敌人", DiRenXinXi);
 
