@@ -72,6 +72,8 @@ main：
 
 [本项目部署文档](https://www.cnblogs.com/strelizia/p/14120201.html)
 
+[视频教程](https://www.bilibili.com/video/BV1hw411f7a4)
+
 # TODO：
 
 - [x] 增加敌人信息
