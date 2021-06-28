@@ -1,7 +1,7 @@
 INSERT INTO `a_bili_dynamic` VALUES ('161775300', '明日方舟', '479983232648033496', '479988953545543522', '479988846173457805', '479983232648033496', '479682803987943284', '479341272481851719');
 INSERT INTO `a_data_version` VALUES ('1');
 INSERT INTO `a_group_admin` VALUES ('691029037', '300', '10');
-INSERT INTO `a_admin_user` VALUES ('c5ecb54cdb92b19fe7c6c8dca260e69d', '鹤望兰号', '1', '1', '0', '1');
+INSERT INTO `a_admin_user` VALUES ('c5ecb54cdb92b19fe7c6c8dca260e69d', '鹤望兰号', '1', '1', '0', '1'， '1');
 
 INSERT INTO `a_agent` VALUES ('12F', '2', '公招', '0');
 INSERT INTO `a_agent` VALUES ('Castle-3', '1', '公招', '0');

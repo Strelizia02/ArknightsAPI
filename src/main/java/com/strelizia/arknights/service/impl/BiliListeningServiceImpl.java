@@ -5,6 +5,7 @@ import com.strelizia.arknights.dao.UserFoundMapper;
 import com.strelizia.arknights.model.BiliCount;
 import com.strelizia.arknights.model.DynamicDetail;
 import com.strelizia.arknights.service.BiliListeningService;
+import com.strelizia.arknights.util.ImageUtil;
 import com.strelizia.arknights.util.SendMsgUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.json.JSONArray;
@@ -38,6 +39,9 @@ public class BiliListeningServiceImpl implements BiliListeningService {
 
     @Autowired
     private BiliMapper biliMapper;
+
+    @Autowired
+    private ImageUtil imageUtil;
 
     @Override
     public boolean getDynamicList() {
@@ -86,12 +90,15 @@ public class BiliListeningServiceImpl implements BiliListeningService {
                 log.info("{}有新动态", name);
                 b = true;
                 List<Long> groups = userFoundMapper.selectAllGroups();
-                for (Long groupId : groups) {
-                    String pic = newDetail.getPicUrl();
-                    if (pic == null) {
+                String pic = newDetail.getPicUrl();
+                if (pic == null) {
+                    for (Long groupId : groups) {
                         sendMsgUtil.CallOPQApiSendMsg(groupId, result, 2);
-                    } else {
-                        sendMsgUtil.CallOPQApiSendImg(groupId, result, SendMsgUtil.picUrl, pic, 2);
+                    }
+                }else {
+                    String picBase64 = imageUtil.getImageBase64ByUrl(pic);
+                    for (Long groupId : groups) {
+                        sendMsgUtil.CallOPQApiSendImg(groupId, result, SendMsgUtil.picBase64Buf, picBase64, 2);
                     }
                 }
             }
