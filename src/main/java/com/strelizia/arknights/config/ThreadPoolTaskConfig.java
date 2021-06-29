@@ -24,7 +24,7 @@ public class ThreadPoolTaskConfig {
         executor.setCorePoolSize(2);
         executor.setMaxPoolSize(8);
         executor.setKeepAliveSeconds(300);
-        executor.setQueueCapacity(200);
+        executor.setQueueCapacity(Integer.MAX_VALUE);
         executor.setThreadNamePrefix("arknights");
         executor.setRejectedExecutionHandler(new ThreadPoolExecutor.CallerRunsPolicy());
         return executor;
