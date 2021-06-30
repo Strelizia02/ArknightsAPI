@@ -12,7 +12,7 @@ import java.util.List;
 public interface SkinInfoMapper {
     List<SkinInfo> selectSkinByInfo(String Info);
 
-    Integer selectMaxId();
+    List<String> selectAllNames();
 
     Integer insertBySkinInfo(SkinInfo skinInfo);
 

@@ -31,6 +31,8 @@ public class UpdateDataServiceImpl implements UpdateDataService {
     //地图ID信息
 //    private final String mapIdurl = "https://andata.somedata.top/data-2020/map/exData/";
 
+    private SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+
     @Autowired
     private UserFoundMapper userFoundMapper;
 
@@ -84,7 +86,6 @@ public class UpdateDataServiceImpl implements UpdateDataService {
             return;
         }
         updateMapper.updateVersion(charKey);
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 
 //        List<Long> groups = userFoundMapper.selectAllGroups();
 //
@@ -146,6 +147,8 @@ public class UpdateDataServiceImpl implements UpdateDataService {
                 updateOperatorInfoById(operatorId, operatorNum);
             }
         }
+        sendMsgUtil.CallOPQApiSendMyself("干员数据更新完成\n--"
+                + sdf.format(new Date()));
         log.info("更新完成，共更新了{}个干员信息", length);
     }
 
@@ -399,6 +402,8 @@ public class UpdateDataServiceImpl implements UpdateDataService {
                 //忽略家具材料
             }
         }
+        sendMsgUtil.CallOPQApiSendMyself("企鹅物流数据更新完成\n--"
+                + sdf.format(new Date()));
     }
 
     /**
@@ -431,7 +436,8 @@ public class UpdateDataServiceImpl implements UpdateDataService {
                     }
                 }
             }
-
+            sendMsgUtil.CallOPQApiSendMyself("材料合成数据更新完成\n--"
+                    + sdf.format(new Date()));
             log.info("新增材料{}个", newItem);
             //企鹅物流数据缺失双芯片数据，单独插入
 //        Integer[] DoubleId = {3213,3223,3233,3243,3253,3263,3273,3283};
@@ -490,27 +496,27 @@ public class UpdateDataServiceImpl implements UpdateDataService {
         String jsonStringFromUrl = getJsonStringFromUrl(skinListUrl);
         JSONArray skinJson = new JSONArray(jsonStringFromUrl);
         //皮肤只需要增量更新
-        Integer maxId = skinInfoMapper.selectMaxId();
-        int max = maxId == null ? 0 : maxId;
-        if (max < skinJson.length()) {
-            for (int i = max; i < skinJson.length(); i++) {
+        List<String> skinNames = skinInfoMapper.selectAllNames();
+
+            for (int i = 0; i < skinJson.length(); i++) {
                 JSONObject skinObj = skinJson.getJSONObject(i);
-                SkinInfo skinInfo = new SkinInfo();
-                skinInfo.setSkinName(skinObj.getJSONObject("displaySkin").getString("skinName"));
-                skinInfo.setDialog(skinObj.getJSONObject("displaySkin").getString("dialog"));
-                skinInfo.setDrawerName(skinObj.getJSONObject("displaySkin").getString("drawerName"));
-                skinInfo.setOperatorId(operatorInfoMapper.getOperatorIdByChar(skinObj.getString("charId")));
-                skinInfo.setSkinGroupName(skinObj.getJSONObject("displaySkin").getString("skinGroupName"));
+                String name = skinObj.getJSONObject("displaySkin").getString("skinName");
+                if (skinNames.contains(name)) {
+                    SkinInfo skinInfo = new SkinInfo();
+                    skinInfo.setSkinName(name);
+                    skinInfo.setDialog(skinObj.getJSONObject("displaySkin").getString("dialog"));
+                    skinInfo.setDrawerName(skinObj.getJSONObject("displaySkin").getString("drawerName"));
+                    skinInfo.setOperatorId(operatorInfoMapper.getOperatorIdByChar(skinObj.getString("charId")));
+                    skinInfo.setSkinGroupName(skinObj.getJSONObject("displaySkin").getString("skinGroupName"));
+                    String avatarId = skinObj.getString("avatarId");
+                    String[] split = avatarId.split("#");
+                    String skinImgUrl = "https://andata.somedata.top/dataX/char/halfPic/";
+                    skinInfo.setSkinBase64(imageUtil.getImageBase64ByUrl(skinImgUrl + split[0] + "%23" + split[1] + ".png"));
 
-                String avatarId = skinObj.getString("avatarId");
-                String[] split = avatarId.split("#");
-                String skinImgUrl = "https://andata.somedata.top/dataX/char/halfPic/";
-                skinInfo.setSkinBase64(imageUtil.getImageBase64ByUrl(skinImgUrl + split[0] + "%23" + split[1] + ".png"));
-
-                skinInfoMapper.insertBySkinInfo(skinInfo);
+                    skinInfoMapper.insertBySkinInfo(skinInfo);
+                }
             }
-            log.info("原有时装{}个，当前时装{}个", max, skinJson.length());
-        }
+            log.info("原有时装{}个，当前时装{}个", skinNames.size(), skinJson.length());
         //查找仍然是url的结果(上次更新url转base64失败的)
         List<Integer> ids = skinInfoMapper.selectBase64IsUrl();
         if (ids != null && ids.size() > 0) {
@@ -525,6 +531,8 @@ public class UpdateDataServiceImpl implements UpdateDataService {
         }
         updateItemIcon();
         updateOperatorPng();
+        sendMsgUtil.CallOPQApiSendMyself("时装数据更新完成\n--"
+                + sdf.format(new Date()));
     }
 
     /**
@@ -540,6 +548,8 @@ public class UpdateDataServiceImpl implements UpdateDataService {
                 materialMadeMapper.updateBase64ById(imageUtil.getImageBase64ByUrl("https://andata.somedata.top/dataX/item/pic/" + iconId + ".png"), id);
             }
         }
+        sendMsgUtil.CallOPQApiSendMyself("材料图标更新完成\n--"
+                + sdf.format(new Date()));
     }
 
     /**
@@ -554,6 +564,8 @@ public class UpdateDataServiceImpl implements UpdateDataService {
                 operatorInfoMapper.insertOperatorPngById(id, imageUtil.getImageBase64ByUrl("https://andata.somedata.top/dataX/char/halfPic/" + id + "_1.png"));
             }
         }
+        sendMsgUtil.CallOPQApiSendMyself("干员立绘更新完成\n--"
+                + sdf.format(new Date()));
     }
 
     /**

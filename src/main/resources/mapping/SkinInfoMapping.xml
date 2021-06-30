@@ -30,8 +30,8 @@
         OR a.drawer_name = #{info}
     </select>
 
-    <select id="selectMaxId" resultType="java.lang.Integer">
-        select count(id) from t_operator_skin
+    <select id="selectAllNames" resultType="java.lang.String">
+        select skin_name from t_operator_skin
     </select>
 
     <select id="selectSkinById" parameterType="java.lang.Integer" resultType="java.lang.String">
