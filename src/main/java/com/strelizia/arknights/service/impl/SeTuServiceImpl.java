@@ -160,11 +160,6 @@ public class SeTuServiceImpl implements SeTuService {
             imageUtil.getImgToLocal(dir, id, url, "jpg");
             i++;
         }
-        int skinIds = skinInfoMapper.selectMaxId();
-        for (int j = 1; j <= skinIds; j++) {
-            String base64 = skinInfoMapper.selectSkinById(j);
-            imageUtil.getImgToLocal(dir + "/skin/", j, base64, "png");
-        }
         return i;
     }
 

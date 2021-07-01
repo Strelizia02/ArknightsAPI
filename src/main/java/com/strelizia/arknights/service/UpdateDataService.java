@@ -1,5 +1,7 @@
 package com.strelizia.arknights.service;
 
+import org.json.JSONObject;
+
 /**
  * @author wangzy
  * @Date 2020/12/19 15:45
@@ -11,8 +13,6 @@ public interface UpdateDataService {
      *      —— 否，不进行版本检查，强制更新
      */
     void updateAllData(boolean checkUpdate);
-
-    Integer updateOperatorByJson(String json);
 
     void updateSkin();
 

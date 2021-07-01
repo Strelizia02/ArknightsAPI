@@ -120,36 +120,54 @@ public class UpdateDataServiceImpl implements UpdateDataService {
     public void updateAllOperator(String JsonId) {
         //发送请求，封装所有的干员基础信息列表
         //干员列表
-        String operatorListUrl = "https://andata.somedata.top/data-2020/char/list/";
+        String operatorListUrl = "https://cdn.jsdelivr.net/gh/Kengxxiao/ArknightsGameData@master/zh_CN/gamedata/excel/character_table.json";
         //清理干员数据(因部分召唤物无char_id，不方便进行增量更新)
         updateMapper.clearOperatorData();
         //获取干员列表
-        String allOperator = getJsonStringFromUrl(operatorListUrl + JsonId + ".json");
+        String allOperator = getJsonStringFromUrl(operatorListUrl);
+        //获取公招的详细描述
+        String gachaTableUrl = getJsonStringFromUrl("https://cdn.jsdelivr.net/gh/Kengxxiao/ArknightsGameData@master/zh_CN/gamedata/excel/gacha_table.json");
+        String recruit = new JSONObject(gachaTableUrl).getString("recruitDetail");
+        //获取全部的技能数据
+        String skillIdUrl = "https://cdn.jsdelivr.net/gh/Kengxxiao/ArknightsGameData@master/zh_CN/gamedata/excel/skill_table.json";
+        JSONObject skillObj = new JSONObject(getJsonStringFromUrl(skillIdUrl));
+        //获取全部基建技能数据
+        String buildingUrl = "https://cdn.jsdelivr.net/gh/Kengxxiao/ArknightsGameData@master/zh_CN/gamedata/excel/building_data.json";
+        JSONObject buildingObj = new JSONObject(getJsonStringFromUrl(buildingUrl));
 
-        JSONArray json = new JSONArray(allOperator);
-        int length = json.length();
-        for (int i = 0; i < length; i++) {
-            JSONObject operator = json.getJSONObject(i);
-            updateOperatorTag(operator);
-            String operatorId = operator.getString("No");
-            //发送请求遍历干员详细信息
-            //干员ID信息
-            String operatorIdUrl = "https://andata.somedata.top/data-2020/char/data/";
+        String infoTable = "https://cdn.jsdelivr.net/gh/Kengxxiao/ArknightsGameData@master/zh_CN/gamedata/excel/handbook_info_table.json";
+        JSONObject infoTableObj = new JSONObject(getJsonStringFromUrl(infoTable)).getJSONObject("handbookDict");
 
-            String operatorJson = getJsonStringFromUrl(operatorIdUrl + operatorId + ".json");
-            Integer operatorNum = updateOperatorByJson(operatorJson);
-            //近卫兔兔单独处理
-            if (operatorId.equals("char_1001_amiya2")) {
-                operatorId = "char_002_amiya";
+        JSONObject json = new JSONObject(allOperator);
+        Iterator<String> keys = json.keys();
+        while (keys.hasNext()){
+            String key = keys.next();
+            JSONObject operator = json.getJSONObject(key);
+
+            String name = operator.getString("name");
+            // 判断干员名是否存在公招描述中
+            if (recruit.contains(name)) {
+                updateOperatorTag(operator, recruit);
             }
-            if (!operator.getString("class").equals("TOKEN")) {
-                //只获取干员信息
-                updateOperatorInfoById(operatorId, operatorNum);
+
+            Integer operatorNum = updateOperatorByJson(key, operator, skillObj, buildingObj);
+
+            if (infoTableObj.has(key)) {
+                JSONObject jsonObject = infoTableObj.getJSONObject(key);
+                updateOperatorInfoById(key, operatorNum, jsonObject);
             }
         }
+
+        //近卫兔兔单独处理
+        String amiyaSword = "https://cdn.jsdelivr.net/gh/Kengxxiao/ArknightsGameData@master/zh_CN/gamedata/excel/char_patch_table.json";
+        JSONObject amiya2Json = new JSONObject(getJsonStringFromUrl(amiyaSword)).getJSONObject("patchChars").getJSONObject("char_1001_amiya2");
+        Integer operatorNum = updateOperatorByJson("char_1001_amiya2", amiya2Json, skillObj, buildingObj);
+        JSONObject amiyaInfo = infoTableObj.getJSONObject("char_002_amiya");
+        updateOperatorInfoById("char_1001_amiya2", operatorNum, amiyaInfo);
+
         sendMsgUtil.CallOPQApiSendMyself("干员数据更新完成\n--"
                 + sdf.format(new Date()));
-        log.info("更新完成，共更新了{}个干员信息", length);
+        log.info("更新完成");
     }
 
     /**
@@ -158,14 +176,7 @@ public class UpdateDataServiceImpl implements UpdateDataService {
      * @param operatorId  干员char_id
      * @param operatorNum 数据库中的干员Id
      */
-    private void updateOperatorInfoById(String operatorId, Integer operatorNum) {
-        //干员基础信息
-        String infoUrl = "https://andata.somedata.top/data-2020/char/info/";
-
-        String infoJson = getJsonStringFromUrl(infoUrl + operatorId + ".json");
-        if (infoJson != null) {
-            JSONObject infoJsonObj = new JSONObject(infoJson);
-
+    private void updateOperatorInfoById(String operatorId, Integer operatorNum, JSONObject infoJsonObj) {
             OperatorBasicInfo operatorBasicInfo = new OperatorBasicInfo();
             operatorBasicInfo.setOperatorId(operatorNum);
             operatorBasicInfo.setCharId(operatorId);
@@ -243,31 +254,34 @@ public class UpdateDataServiceImpl implements UpdateDataService {
                         operatorBasicInfo.setPromotionInfo(storyText);
                         break;
                 }
-            }
             updateMapper.updateOperatorInfo(operatorBasicInfo);
         }
     }
 
     /**
      * 获取干员的标签tag
-     *
      * @param operator 干员Json数据
      */
-    private void updateOperatorTag(JSONObject operator) {
-        if (operator.getBoolean("gkzm")) {
+    private void updateOperatorTag(JSONObject operator, String recruit) {
             String name = operator.getString("name");
-            JSONArray tags = operator.getJSONArray("tags");
-            int rarity = tags.getInt(0) + 1;
-            StringBuilder position = new StringBuilder(tags.getString(1).equals("MELEE") ? "近战位" : "远程位");
+            JSONArray tags = operator.getJSONArray("tagList");
+            int rarity = operator.getInt("rarity") + 1;
+            StringBuilder position = new StringBuilder(operator.getString("position").equals("MELEE") ? "近战位" : "远程位");
+
             for (int i = 2; i < tags.length(); i++) {
                 position.append(",").append(tags.getString(i));
             }
+
             if (rarity == 5) {
-                position.append("," + "资深干员");
+                position.append(",资深干员");
             } else if (rarity == 6) {
-                position.append("," + "高级资深干员");
+                position.append(",高级资深干员");
+            } else if (rarity == 1)
+            {
+                position.append(",支援机械");
             }
-            String profession = operator.getString("class");
+
+            String profession = operator.getString("profession");
 
             Map<String, String> operatorClass = new HashMap<>(8);
             operatorClass.put("PIONEER", "先锋干员");
@@ -282,7 +296,7 @@ public class UpdateDataServiceImpl implements UpdateDataService {
             position.append(",").append(operatorClass.get(profession));
 
             updateMapper.updateTags(name, rarity, position.toString());
-        }
+
     }
 
     /**
@@ -448,7 +462,6 @@ public class UpdateDataServiceImpl implements UpdateDataService {
 //                updateItemFormula(DoubleId[i]);
 //            }
 //        }
-            updateItemIcon();
         }
     }
 
@@ -501,7 +514,7 @@ public class UpdateDataServiceImpl implements UpdateDataService {
             for (int i = 0; i < skinJson.length(); i++) {
                 JSONObject skinObj = skinJson.getJSONObject(i);
                 String name = skinObj.getJSONObject("displaySkin").getString("skinName");
-                if (skinNames.contains(name)) {
+                if (!skinNames.contains(name)) {
                     SkinInfo skinInfo = new SkinInfo();
                     skinInfo.setSkinName(name);
                     skinInfo.setDialog(skinObj.getJSONObject("displaySkin").getString("dialog"));
@@ -587,18 +600,16 @@ public class UpdateDataServiceImpl implements UpdateDataService {
         } catch (Exception ignored) {
 
         }
-
         return s;
     }
 
     /**
      * 更新单个干员详细信息。包括技能天赋
      *
-     * @param json 单个干员详细json
+     * @param jsonObj 单个干员详细json
      * @return 返回更新数量
      */
-    @Override
-    public Integer updateOperatorByJson(String json) {
+    public Integer updateOperatorByJson(String charId, JSONObject jsonObj, JSONObject skillObj, JSONObject buildingObj) {
         Map<String, Integer> operatorClass = new HashMap<>(8);
         operatorClass.put("PIONEER", 1);
         operatorClass.put("WARRIOR", 2);
@@ -609,14 +620,12 @@ public class UpdateDataServiceImpl implements UpdateDataService {
         operatorClass.put("MEDIC", 7);
         operatorClass.put("SPECIAL", 8);
 
-        JSONObject jsonObj = new JSONObject(json);
         String name = jsonObj.getString("name");
         //近卫兔兔改个名
         if (jsonObj.getJSONArray("phases").getJSONObject(0).getString("characterPrefabKey").equals("char_1001_amiya2")) {
             name = "近卫阿米娅";
         }
         int rarity = jsonObj.getInt("rarity") + 1;
-        jsonObj.getString("position");
         boolean isNotObtainable = jsonObj.getBoolean("isNotObtainable");
 
         //封装干员信息
@@ -666,7 +675,6 @@ public class UpdateDataServiceImpl implements UpdateDataService {
                         operatorEvolveInfo.setUseMaterialId(evolve.getInt("id"));
                         operatorEvolveInfo.setUseNumber(evolve.getInt("count"));
                         updateMapper.insertOperatorEvolve(operatorEvolveInfo);
-
                     }
                 }
             }
@@ -699,28 +707,15 @@ public class UpdateDataServiceImpl implements UpdateDataService {
                 operatorSkillInfo.setOperatorId(operatorId);
                 operatorSkillInfo.setSkillIndex(i + 1);
                 if (skills.getJSONObject(i).get("skillId") instanceof String) {
-                    HttpHeaders httpHeaders = new HttpHeaders();
-                    httpHeaders.set("User-Agent", "PostmanRuntime/7.26.8");
-                    httpHeaders.set("Authorization", "2");
-                    httpHeaders.set("Host", "andata.somedata.top");
-                    HttpEntity<String> httpEntity = new HttpEntity<>(httpHeaders);
-                    //发送请求，封装结果数据
-                    //技能ID信息
-                    String skillIdUrl = "https://andata.somedata.top/data-2020/skills/";
-
-                    JSONObject skillObj = new JSONObject(restTemplate
-                            .exchange(skillIdUrl + skills.getJSONObject(i).getString("skillId") + ".json", HttpMethod.GET, httpEntity, String.class).getBody());
-
                     String skillName = skillObj
-                            .getJSONArray("levels")
-                            .getJSONObject(0)
-                            .getString("name");
+                            .getJSONObject(skills.getJSONObject(i).getString("skillId"))
+                            .getJSONArray("levels").getJSONObject(0).getString("name");
 
                     operatorSkillInfo.setSkillName(skillName);
                     updateMapper.insertOperatorSkill(operatorSkillInfo);
                     Integer skillId = updateMapper.selectSkillIdByName(skillName);
 
-                    JSONArray levels = skillObj.getJSONArray("levels");
+                    JSONArray levels = skillObj.getJSONObject(skills.getJSONObject(i).getString("skillId")).getJSONArray("levels");
                     for (int level = 0; level < levels.length(); level++) {
                         JSONObject skillDescJson = levels.getJSONObject(level);
                         SkillDesc skillDesc = new SkillDesc();
@@ -802,23 +797,30 @@ public class UpdateDataServiceImpl implements UpdateDataService {
             }
 
             //封装干员基建技能
-            if (jsonObj.get("buildingData") instanceof JSONArray) {
-                JSONArray buildingData = jsonObj.getJSONArray("buildingData");
-                for (int i = 0; i < buildingData.length(); i++) {
-                    JSONArray build1 = buildingData.getJSONArray(i);
-                    for (int j = 0; j < build1.length(); j++) {
-                        BuildingSkill buildingSkill = new BuildingSkill();
-                        JSONObject buildObj = build1.getJSONObject(j);
-                        buildingSkill.setOperatorId(operatorId);
-                        buildingSkill.setPhase(buildObj.getJSONObject("cond").getInt("phase"));
-                        buildingSkill.setLevel(buildObj.getJSONObject("cond").getInt("level"));
-                        buildingSkill.setBuffName(buildObj.getJSONObject("data").getString("buffName"));
-                        buildingSkill.setRoomType(buildObj.getJSONObject("data").getString("roomType"));
-                        //正则表达式去除标签
-                        Pattern pattern = Pattern.compile("<(.*?)>");
-                        Matcher matcher = pattern.matcher(buildObj.getJSONObject("data").getString("description"));
-                        buildingSkill.setDescription(matcher.replaceAll(""));
-                        buildingSkillMapper.insertBuildingSkill(buildingSkill);
+            if (buildingObj.getJSONObject("chars").has(charId)) {
+                JSONObject chars = buildingObj.getJSONObject("chars").getJSONObject(charId);
+                JSONObject buffs = buildingObj.getJSONObject("buffs");
+                if (chars.get("buffChar") instanceof JSONArray) {
+                    JSONArray buildingData = chars.getJSONArray("buffChar");
+                    for (int i = 0; i < buildingData.length(); i++) {
+                        if (buildingData.getJSONObject(i).get("buffData") instanceof JSONArray) {
+                            JSONArray build1 = buildingData.getJSONObject(i).getJSONArray("buffData");
+                            for (int j = 0; j < build1.length(); j++) {
+                                BuildingSkill buildingSkill = new BuildingSkill();
+                                JSONObject buildObj = build1.getJSONObject(j);
+                                String buffId = buildObj.getString("buffId");
+                                buildingSkill.setOperatorId(operatorId);
+                                buildingSkill.setPhase(buildObj.getJSONObject("cond").getInt("phase"));
+                                buildingSkill.setLevel(buildObj.getJSONObject("cond").getInt("level"));
+                                buildingSkill.setBuffName(buffs.getJSONObject(buffId).getString("buffName"));
+                                buildingSkill.setRoomType(buffs.getJSONObject(buffId).getString("roomType"));
+                                //正则表达式去除标签
+                                Pattern pattern = Pattern.compile("<(.*?)>");
+                                Matcher matcher = pattern.matcher(buffs.getJSONObject(buffId).getString("description"));
+                                buildingSkill.setDescription(matcher.replaceAll(""));
+                                buildingSkillMapper.insertBuildingSkill(buildingSkill);
+                            }
+                        }
                     }
                 }
             }
