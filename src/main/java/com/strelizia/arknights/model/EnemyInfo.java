@@ -8,7 +8,7 @@ public class EnemyInfo {
     private String enemyId;
     private String name;
     private Integer atk;
-    private Integer baseAttackTime;
+    private Double baseAttackTime;
     private Integer def;
     private Integer hpRecoveryPerSec;
     private Integer magicResistance;
@@ -24,7 +24,7 @@ public class EnemyInfo {
     public EnemyInfo() {
     }
 
-    public EnemyInfo(String enemyId, String name, Integer atk, Integer baseAttackTime, Integer def, Integer hpRecoveryPerSec, Integer magicResistance, Integer massLevel, Integer maxHp, Double moveSpeed, Double rangeRadius, Integer silenceImmune, Integer sleepImmune, Integer stunImmune, Integer level) {
+    public EnemyInfo(String enemyId, String name, Integer atk, Double baseAttackTime, Integer def, Integer hpRecoveryPerSec, Integer magicResistance, Integer massLevel, Integer maxHp, Double moveSpeed, Double rangeRadius, Integer silenceImmune, Integer sleepImmune, Integer stunImmune, Integer level) {
         this.enemyId = enemyId;
         this.name = name;
         this.atk = atk;
@@ -74,11 +74,11 @@ public class EnemyInfo {
         this.atk = atk;
     }
 
-    public Integer getBaseAttackTime() {
+    public Double getBaseAttackTime() {
         return baseAttackTime;
     }
 
-    public void setBaseAttackTime(Integer baseAttackTime) {
+    public void setBaseAttackTime(Double baseAttackTime) {
         this.baseAttackTime = baseAttackTime;
     }
 

@@ -19,7 +19,7 @@ public class OperatorData {
     //阻挡
     private Integer blockCnt;
     //攻击间隔
-    private Integer baseAttackTime;
+    private Double baseAttackTime;
     //再部署
     private Integer respawnTime;
 
@@ -79,11 +79,11 @@ public class OperatorData {
         this.blockCnt = blockCnt;
     }
 
-    public Integer getBaseAttackTime() {
+    public Double getBaseAttackTime() {
         return baseAttackTime;
     }
 
-    public void setBaseAttackTime(Integer baseAttackTime) {
+    public void setBaseAttackTime(Double baseAttackTime) {
         this.baseAttackTime = baseAttackTime;
     }
 

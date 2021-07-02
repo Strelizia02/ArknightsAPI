@@ -80,7 +80,6 @@ public class UpdateDataServiceImpl implements UpdateDataService {
         JSONObject keyJsonObj = new JSONObject(jsonStr);
         String dataVersion = updateMapper.getVersion();
         String charKey = keyJsonObj.getJSONObject("result").getJSONObject("agent").getJSONObject("char").getString("key");
-        String enemyKey = keyJsonObj.getJSONObject("result").getJSONObject("level").getJSONObject("enemy").getString("key");
         //版本不同才进行更新
         if (charKey.equals(dataVersion) && checkUpdate) {
             return;
@@ -99,8 +98,8 @@ public class UpdateDataServiceImpl implements UpdateDataService {
                 "若十分钟后仍未收到更新完成信息，请联系开发者重新进行更新请求\n--"
                 + sdf.format(new Date()));
 
-        updateAllOperator(charKey);
-        updateAllEnemy(enemyKey);
+        updateAllOperator();
+        updateAllEnemy();
         updateMapAndItem();
 
         sendMsgUtil.CallOPQApiSendMyself("游戏数据更新完成\n--" + sdf.format(new Date()));
@@ -114,35 +113,31 @@ public class UpdateDataServiceImpl implements UpdateDataService {
 
     /**
      * 全量更新干员相关信息
-     *
-     * @param JsonId Json版本Id
      */
-    public void updateAllOperator(String JsonId) {
-        //发送请求，封装所有的干员基础信息列表
-        //干员列表
-        String operatorListUrl = "https://cdn.jsdelivr.net/gh/Kengxxiao/ArknightsGameData@master/zh_CN/gamedata/excel/character_table.json";
+    public void updateAllOperator() {
         //清理干员数据(因部分召唤物无char_id，不方便进行增量更新)
         updateMapper.clearOperatorData();
-        //获取干员列表
-        String allOperator = getJsonStringFromUrl(operatorListUrl);
-        //获取公招的详细描述
-        String gachaTableUrl = getJsonStringFromUrl("https://cdn.jsdelivr.net/gh/Kengxxiao/ArknightsGameData@master/zh_CN/gamedata/excel/gacha_table.json");
-        String recruit = new JSONObject(gachaTableUrl).getString("recruitDetail");
-        //获取全部的技能数据
+        //获取全部干员基础数据
+        String operatorListUrl = "https://cdn.jsdelivr.net/gh/Kengxxiao/ArknightsGameData@master/zh_CN/gamedata/excel/character_table.json";
+        JSONObject operatorObj = new JSONObject(getJsonStringFromUrl(operatorListUrl));;
+        //获取游戏公招描述数据
+        String gachaTableUrl = "https://cdn.jsdelivr.net/gh/Kengxxiao/ArknightsGameData@master/zh_CN/gamedata/excel/gacha_table.json";
+        String recruit = new JSONObject(getJsonStringFromUrl(gachaTableUrl)).getString("recruitDetail");
+        //获取全部干员技能数据
         String skillIdUrl = "https://cdn.jsdelivr.net/gh/Kengxxiao/ArknightsGameData@master/zh_CN/gamedata/excel/skill_table.json";
         JSONObject skillObj = new JSONObject(getJsonStringFromUrl(skillIdUrl));
         //获取全部基建技能数据
         String buildingUrl = "https://cdn.jsdelivr.net/gh/Kengxxiao/ArknightsGameData@master/zh_CN/gamedata/excel/building_data.json";
         JSONObject buildingObj = new JSONObject(getJsonStringFromUrl(buildingUrl));
-
+        //获取全部干员档案数据
         String infoTable = "https://cdn.jsdelivr.net/gh/Kengxxiao/ArknightsGameData@master/zh_CN/gamedata/excel/handbook_info_table.json";
         JSONObject infoTableObj = new JSONObject(getJsonStringFromUrl(infoTable)).getJSONObject("handbookDict");
 
-        JSONObject json = new JSONObject(allOperator);
-        Iterator<String> keys = json.keys();
+
+        Iterator<String> keys = operatorObj.keys();
         while (keys.hasNext()){
             String key = keys.next();
-            JSONObject operator = json.getJSONObject(key);
+            JSONObject operator = operatorObj.getJSONObject(key);
 
             String name = operator.getString("name");
             // 判断干员名是否存在公招描述中
@@ -301,35 +296,28 @@ public class UpdateDataServiceImpl implements UpdateDataService {
 
     /**
      * 增量更新敌人面板信息
-     *
-     * @param enemyKey 敌人数据key
      */
-    public void updateAllEnemy(String enemyKey) {
+    public void updateAllEnemy() {
         log.info("开始更新敌人信息");
+        //获取全部敌人数据
+        String enemyListUrl = "https://cdn.jsdelivr.net/gh/Kengxxiao/ArknightsGameData@master/zh_CN/gamedata/levels/enemydata/enemy_database.json";
+        String allEnemy = getJsonStringFromUrl(enemyListUrl);
+        JSONArray enemyObj = new JSONObject(allEnemy).getJSONArray("enemies");
 
-        //发送请求，封装所有的敌人面板信息列表
-        //敌人列表
-        String enemyListUrl = "https://andata.somedata.top/data-2020/lists/enemy/";
-
-        String allEnemy = getJsonStringFromUrl(enemyListUrl + enemyKey + ".json");
-        JSONObject enemyObj = new JSONObject(allEnemy);
-        Set<String> enemyJson = enemyObj.keySet();
         int length = 0;
         List<String> allEnemyId = enemyMapper.selectAllEnemyId();
-        for (String enemyId : enemyJson) {
+        for (int i = 0; i < enemyObj.length(); i++) {
+            String enemyId = enemyObj.getJSONObject(i).getString("Key");
             if (!allEnemyId.contains(enemyId)) {
-                //敌人ID信息
-                String enemyIdUrl = "https://andata.somedata.top/data-2020/enemy/";
-
-                String enemyStr = getJsonStringFromUrl(enemyIdUrl + enemyId + ".json");
-                JSONArray enemyJsonObj = new JSONArray(enemyStr);
-                String name = enemyObj.getJSONObject(enemyId).getString("name");
+                JSONObject oneEnemy = enemyObj.getJSONObject(i);
+                JSONArray enemyJsonObj = oneEnemy.getJSONArray("Value");
+                String name = enemyJsonObj.getJSONObject(0).getJSONObject("enemyData").getJSONObject("name").getString("m_value");
                 for (int j = 0; j < enemyJsonObj.length(); j++) {
                     //一个敌人可能有多个阶段，比如我老婆霜星
                     JSONObject enemyData = enemyJsonObj.getJSONObject(j).getJSONObject("enemyData");
                     JSONObject attributes = enemyData.getJSONObject("attributes");
                     Integer atk = attributes.getJSONObject("atk").getInt("m_value");
-                    Integer baseAttackTime = attributes.getJSONObject("baseAttackTime").getInt("m_value");
+                    Double baseAttackTime = attributes.getJSONObject("baseAttackTime").getDouble("m_value");
                     Integer def = attributes.getJSONObject("def").getInt("m_value");
                     Integer hpRecoveryPerSec = attributes.getJSONObject("hpRecoveryPerSec").getInt("m_value");
                     Integer magicResistance = attributes.getJSONObject("magicResistance").getInt("m_value");
@@ -657,7 +645,7 @@ public class UpdateDataServiceImpl implements UpdateDataService {
             operatorData.setMaxHp(panelMax.getInt("maxHp"));
             operatorData.setBlockCnt(panelMax.getInt("blockCnt"));
             operatorData.setCost(panelMax.getInt("cost"));
-            operatorData.setBaseAttackTime(panelMax.getInt("baseAttackTime"));
+            operatorData.setBaseAttackTime(panelMax.getDouble("baseAttackTime"));
             operatorData.setRespawnTime(panelMax.getInt("respawnTime"));
             updateMapper.updateOperatorData(operatorData);
 
