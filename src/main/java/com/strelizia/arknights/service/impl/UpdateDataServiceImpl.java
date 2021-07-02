@@ -126,12 +126,12 @@ public class UpdateDataServiceImpl implements UpdateDataService {
         Pattern pattern = Pattern.compile("<(.*?)>");
         Matcher matcher = pattern.matcher(recruit);
         String replaceAll = matcher.replaceAll("").replace(" ","");
-        String[] split = replaceAll.split("\\\\n");
+        String[] split = replaceAll.split("\n");
         //解析出全部的公招干员
         List<String> gachaCharList = new ArrayList<>();
         for (int i = 0; i < split.length; i++) {
-            if (split[i].endsWith("★\\")) {
-                String[] chars = split[i+1].split("/");
+            if (split[i].startsWith("★")) {
+                String[] chars = split[i].replace("★","").replace("\\n","").split("/");
                 gachaCharList.addAll(Arrays.asList(chars));
             }
         }
