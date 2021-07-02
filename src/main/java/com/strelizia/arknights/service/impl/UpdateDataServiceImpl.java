@@ -123,6 +123,18 @@ public class UpdateDataServiceImpl implements UpdateDataService {
         //获取游戏公招描述数据
         String gachaTableUrl = "https://cdn.jsdelivr.net/gh/Kengxxiao/ArknightsGameData@master/zh_CN/gamedata/excel/gacha_table.json";
         String recruit = new JSONObject(getJsonStringFromUrl(gachaTableUrl)).getString("recruitDetail");
+        Pattern pattern = Pattern.compile("<(.*?)>");
+        Matcher matcher = pattern.matcher(recruit);
+        String replaceAll = matcher.replaceAll("").replace(" ","");
+        String[] split = replaceAll.split("\\\\n");
+        //解析出全部的公招干员
+        List<String> gachaCharList = new ArrayList<>();
+        for (int i = 0; i < split.length; i++) {
+            if (split[i].endsWith("★\\")) {
+                String[] chars = split[i+1].split("/");
+                gachaCharList.addAll(Arrays.asList(chars));
+            }
+        }
         //获取全部干员技能数据
         String skillIdUrl = "https://cdn.jsdelivr.net/gh/Kengxxiao/ArknightsGameData@master/zh_CN/gamedata/excel/skill_table.json";
         JSONObject skillObj = new JSONObject(getJsonStringFromUrl(skillIdUrl));
@@ -133,7 +145,6 @@ public class UpdateDataServiceImpl implements UpdateDataService {
         String infoTable = "https://cdn.jsdelivr.net/gh/Kengxxiao/ArknightsGameData@master/zh_CN/gamedata/excel/handbook_info_table.json";
         JSONObject infoTableObj = new JSONObject(getJsonStringFromUrl(infoTable)).getJSONObject("handbookDict");
 
-
         Iterator<String> keys = operatorObj.keys();
         while (keys.hasNext()){
             String key = keys.next();
@@ -141,7 +152,7 @@ public class UpdateDataServiceImpl implements UpdateDataService {
 
             String name = operator.getString("name");
             // 判断干员名是否存在公招描述中
-            if (recruit.contains(name)) {
+            if (gachaCharList.contains(name)) {
                 updateOperatorTag(operator, recruit);
             }
 
