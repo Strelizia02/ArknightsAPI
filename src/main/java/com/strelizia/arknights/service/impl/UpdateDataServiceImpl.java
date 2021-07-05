@@ -153,7 +153,7 @@ public class UpdateDataServiceImpl implements UpdateDataService {
             String name = operator.getString("name");
             // 判断干员名是否存在公招描述中
             if (gachaCharList.contains(name)) {
-                updateOperatorTag(operator, recruit);
+                updateOperatorTag(operator);
             }
 
             Integer operatorNum = updateOperatorByJson(key, operator, skillObj, buildingObj);
@@ -268,13 +268,13 @@ public class UpdateDataServiceImpl implements UpdateDataService {
      * 获取干员的标签tag
      * @param operator 干员Json数据
      */
-    private void updateOperatorTag(JSONObject operator, String recruit) {
+    private void updateOperatorTag(JSONObject operator) {
             String name = operator.getString("name");
             JSONArray tags = operator.getJSONArray("tagList");
             int rarity = operator.getInt("rarity") + 1;
             StringBuilder position = new StringBuilder(operator.getString("position").equals("MELEE") ? "近战位" : "远程位");
 
-            for (int i = 2; i < tags.length(); i++) {
+            for (int i = 0; i < tags.length(); i++) {
                 position.append(",").append(tags.getString(i));
             }
 
