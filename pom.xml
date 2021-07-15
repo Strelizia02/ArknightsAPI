@@ -151,6 +151,11 @@
             <artifactId>oshi-core</artifactId>
             <version>3.9.1</version>
         </dependency>
+        <dependency>
+            <groupId>com.madgag</groupId>
+            <artifactId>animated-gif-lib</artifactId>
+            <version>1.4</version>
+        </dependency>
     </dependencies>
 
     <build>
