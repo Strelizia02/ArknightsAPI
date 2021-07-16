@@ -2,11 +2,17 @@ package com.strelizia.arknights.util;
 
 import com.madgag.gif.fmsware.AnimatedGifEncoder;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.core.io.ClassPathResource;
 import org.springframework.stereotype.Component;
+import sun.misc.BASE64Encoder;
+
 import javax.imageio.ImageIO;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.*;
+import java.util.Objects;
+
+import static com.strelizia.arknights.util.ImageUtil.replaceEnter;
 
 
 @Component
@@ -104,9 +110,9 @@ public class PetPetUtil {
                     {27, 28, 86, 91}
                 };
             int[] spec = frame_spec[i];
-            String pic = System.getProperty("user.dir")+ "/src/main/resources/pic/";
-            File input = new File(pic + "frame" + i + ".png");
-            BufferedImage frame = ImageIO.read(input);
+            ClassPathResource classPathResource = new ClassPathResource("/pic/frame" + i + ".png");
+            InputStream inputStreamImg = classPathResource.getInputStream();
+            BufferedImage frame = ImageIO.read(inputStreamImg);
             Image userImg = resizePng(flipImage(user), (int)((spec[2] - spec[0]) * 1.2), (int)((spec[3] - spec[1]) * 1.2));
 //            File output = new File("F:/frame" + i + ".png");
 //            ImageIO.write(ImageToBufferedImage(iframe), "png", output);
@@ -125,9 +131,9 @@ public class PetPetUtil {
      * @param user 头像BufferImage
      * @return 返回Gif的BufferImage
      */
-    public BufferedImage getGif(BufferedImage user) {
+    public BufferedImage getGif(String path, BufferedImage user) {
         AnimatedGifEncoder e = new AnimatedGifEncoder();
-        e.start("F:/a.gif");
+        e.start(path);
         e.setDelay(100); // 1 frame per sec
         e.setTransparent(new Color(Color.TRANSLUCENT));
         e.setBackground(new Color(Color.TRANSLUCENT));
@@ -137,18 +143,32 @@ public class PetPetUtil {
             e.addFrame(onePic);
         }
         e.finish();
-        return null;
+        try {
+            File outFile = new File(path);
+            return ImageIO.read(outFile);
+        } catch (IOException ioException) {
+            ioException.printStackTrace();
+            return null;
+        }
     }
 
     public static void main(String[] args) {
+        PetPetUtil pet = new PetPetUtil();
+        ImageUtil imageUtil = new ImageUtil();
+        BufferedImage userImage = ImageUtil.Base64ToImageBuffer(
+                imageUtil.getImageBase64ByUrl("http://q.qlogo.cn/headimg_dl?dst_uin=412459523&spec=100"));
+        File file = new File("F:/a.png");
+        byte[] data;
         try {
-            PetPetUtil pet = new PetPetUtil();
-            String pic = System.getProperty("user.dir")+ "/src/main/resources/pic/";
-            File user = new File(pic + "aaa.jpg");
-            BufferedImage userImg = ImageIO.read(user);
-            File output = new File("F:/user.png");
-            ImageIO.write(userImg, "png", output);
-            BufferedImage gif = pet.getGif(userImg);
+            ImageIO.write(userImage, "png", file);
+            String path = "frame.gif";
+            pet.getGif(path, userImage);
+            InputStream in = new FileInputStream(path);
+            data = new byte[in.available()];
+            in.read(data);
+            in.close();
+            String base = new BASE64Encoder().encode(Objects.requireNonNull(data));
+            imageUtil.getImgToLocal("F:/", 1, base, "gif");
         } catch (IOException e) {
             e.printStackTrace();
         }

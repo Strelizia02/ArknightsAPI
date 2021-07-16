@@ -189,6 +189,9 @@ public class ClassificationUtil {
         map.put("全部更新",QuanBuGengXin);
         map.put("更新",QuanBuGengXin);
 
+        map.put("摸摸",MoTou);
+        map.put("摸头",MoTou);
+
         return map.get(s);
     }
 }

@@ -53,5 +53,6 @@ public enum ClassificationEnum {
     ShiLianXunFang,
     QuanBuGengXin,
     TuBiaoGengXin,
-    CaiLiaoGengXin
+    CaiLiaoGengXin,
+    MoTou
 }

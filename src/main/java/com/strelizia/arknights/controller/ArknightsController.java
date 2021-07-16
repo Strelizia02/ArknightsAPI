@@ -57,7 +57,6 @@ public class ArknightsController {
     @Autowired
     private ExecuteSqlService executeSqlService;
 
-
     @Autowired
     private OperatorInfoService operatorInfoService;
 
@@ -78,6 +77,9 @@ public class ArknightsController {
 
     @Autowired
     private UpdateDataService updateDataService;
+
+    @Autowired
+    private PetPetService petPetService;
 
     /**
      * 消息处理总控制器，用于接收消息，并处理分流到不同的service
@@ -453,6 +455,10 @@ public class ArknightsController {
                 }
                 break;
             }
+            case MoTou:
+                petPetService.PetPet(groupId, qq);
+                result = "";
+                break;
             default:
                 result = "俺不晓得你在锁啥子";
         }
