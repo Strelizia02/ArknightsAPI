@@ -1,5 +1,6 @@
 package com.strelizia.arknights.service.impl;
 
+import com.strelizia.arknights.model.Text;
 import com.strelizia.arknights.service.PetPetService;
 import com.strelizia.arknights.util.ImageUtil;
 import com.strelizia.arknights.util.PetPetUtil;
@@ -29,7 +30,7 @@ public class PetPetServiceImpl implements PetPetService {
     private SendMsgUtil sendMsgUtil;
 
     @Override
-    public void PetPet(Long groupId, Long qq) {
+    public void PetPet(Long groupId, Long qq, String text) {
         BufferedImage userImage = ImageUtil.Base64ToImageBuffer(
                 imageUtil.getImageBase64ByUrl("http://q.qlogo.cn/headimg_dl?dst_uin=" + qq + "&spec=100"));
         String path = "frame.gif";
@@ -41,7 +42,7 @@ public class PetPetServiceImpl implements PetPetService {
             in.read(data);
             in.close();
             String base = new BASE64Encoder().encode(Objects.requireNonNull(data));
-            sendMsgUtil.CallOPQApiSendImg(groupId, null, SendMsgUtil.picBase64Buf, base, 2);
+            sendMsgUtil.CallOPQApiSendImg(groupId, text, SendMsgUtil.picBase64Buf, base, 2);
         } catch (IOException ignored) {
         }
             }

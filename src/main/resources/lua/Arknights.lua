@@ -47,14 +47,16 @@ function ReceiveGroupMsg(CurrentQQ, data)
 end
 
 function ReceiveEvents(CurrentQQ, data, extData)
-    -- 确认入群事件和拍一拍的消息结构
     local body =
     {
-        text = data.Content,
-        qq = data.FromUin
+        type = data.MsgType,
+        qq = data.ToUin,
+        groupId = data.FromUin,
+        content = data.Content,
+        eventData = extData
     }
     response, error_message =
-    http.post("" .. url .. "/private/chat",
+    http.post("" .. url .. "/events/group",
         {
             body = json.encode(body),
             headers =

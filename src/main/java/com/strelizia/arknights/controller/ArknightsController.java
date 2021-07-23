@@ -459,7 +459,7 @@ public class ArknightsController {
                 break;
             }
             case MoTou:
-                petPetService.PetPet(groupId, qq);
+                petPetService.PetPet(groupId, qq, null);
                 result = "";
                 break;
             default:
