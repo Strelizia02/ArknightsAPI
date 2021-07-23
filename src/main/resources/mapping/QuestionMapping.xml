@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.strelizia.arknights.dao.QuestionMapper">
+    <resultMap id="BaseResultMap" type="com.strelizia.arknights.model.QuestionInfo">
+        <result column="id" property="id" jdbcType="INTEGER"/>
+        <result column="description" property="description" jdbcType="VARCHAR"/>
+        <result column="answer" property="answer" jdbcType="VARCHAR"/>
+        <result column="attr" property="attr" jdbcType="INTEGER"/>
+        <result column="type" property="type" jdbcType="INTEGER"/>
+    </resultMap>
+
+    <select id="getQuestionById" resultMap="BaseResultMap" parameterType="java.lang.Integer">
+        SELECT
+            id, description, answer, attr
+        from
+            a_question
+        where
+            id = #{id}
+    </select>
+
+    <select id="getAnswerById" resultType="java.lang.String" parameterType="java.lang.Integer">
+        SELECT
+            answer
+        from
+            a_question
+        where
+            id = #{id}
+    </select>
+    
+    <update id="updateQuestion">
+        update a_question
+        set
+            description = #{description}
+        where
+            id = #{id}
+    </update>
+</mapper>

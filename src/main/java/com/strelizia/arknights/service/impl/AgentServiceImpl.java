@@ -294,17 +294,18 @@ public class AgentServiceImpl implements AgentService {
             List<AgentInfo> agentList;
             //使用不同的方法Math/Random进行随机运算，尽可能取消同一时间戳导致的相同随机数(虽然两个算法本质一样，这样做基本屁用没有)
             double r = Math.random();
-            //是不是限定池
-            int integers = agentMapper.selectPoolLimit(pool) == 0 ? 0 : 1;
+            //是不是限定池 0->普通 1->周年限定 2->联动限定 3->5倍权值 4->新年限定
+            int limit = agentMapper.selectPoolLimit(pool);
+            int integers = limit == 0 ? 0 : 1;
             if (star == 6) {
                 if (r <= 0.5 + 0.2 * integers) {
                     //获取当前卡池三星/四星/五星/六星列表
                     agentList = agentMapper.selectAgentByStar(pool, star);
                 } else {
                     agentList = agentMapper.selectAgentByStar("常规", star);
-                    if (integers == 1) {
+                    if (limit == 1 || limit == 4) {
                         //如果是限定池，就再加上前期可歪的限定干员
-                        agentList.addAll(agentMapper.selectLimitAgent());
+                        agentList.addAll(agentMapper.selectLimitAgent(limit));
                         //五倍权值（因为上面加过一个，所以再加四个就可以）
                         List<AgentInfo> fiveLimit = agentMapper.selectLimitAgentByPool(pool);
                         if (fiveLimit.size() > 0) {

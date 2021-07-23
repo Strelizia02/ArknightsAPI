@@ -14,7 +14,7 @@ public interface AgentMapper {
     List<AgentInfo> selectAgentByStar(String pool, Integer star);
 
     //获取可以歪到的限定干员
-    List<AgentInfo> selectLimitAgent();
+    List<AgentInfo> selectLimitAgent(Integer limit);
 
     //五倍权值的干员
     List<AgentInfo> selectLimitAgentByPool(String pool);

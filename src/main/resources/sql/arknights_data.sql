@@ -263,7 +263,7 @@ INSERT INTO `a_agent` VALUES ('铸铁', '5', '活动', '0');
 INSERT INTO `a_agent` VALUES ('锡兰', '5', '活动', '0');
 INSERT INTO `a_agent` VALUES ('闪击', '5', '进攻、防守、战术交汇', '2');
 INSERT INTO `a_agent` VALUES ('闪灵', '6', '常规', '0');
-INSERT INTO `a_agent` VALUES ('阿', '1', '地生五金', '0');
+INSERT INTO `a_agent` VALUES ('阿', '6', '地生五金', '0');
 INSERT INTO `a_agent` VALUES ('阿', '6', '常规', '0');
 INSERT INTO `a_agent` VALUES ('阿消', '4', '常规', '0');
 INSERT INTO `a_agent` VALUES ('阿米娅', '5', '初始', '0');
