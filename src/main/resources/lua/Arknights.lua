@@ -49,12 +49,13 @@ end
 function ReceiveEvents(CurrentQQ, data, extData)
     local body =
     {
-        type = data.MsgType,
+        msgType = data.MsgType,
         qq = data.ToUin,
         groupId = data.FromUin,
         content = data.Content,
         eventData = extData
     }
+    log.info("%s", data.Content)
     response, error_message =
     http.post("" .. url .. "/events/group",
         {

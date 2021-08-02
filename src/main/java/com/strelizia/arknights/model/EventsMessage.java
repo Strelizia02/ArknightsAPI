@@ -1,7 +1,7 @@
 package com.strelizia.arknights.model;
 
 public class EventsMessage {
-    private String type;
+    private String msgType;
     private Long groupId;
     private Long qq;
     private String eventData;
@@ -15,12 +15,12 @@ public class EventsMessage {
         this.content = content;
     }
 
-    public String getType() {
-        return type;
+    public String getMsgType() {
+        return msgType;
     }
 
-    public void setType(String type) {
-        this.type = type;
+    public void setMsgType(String msgType) {
+        this.msgType = msgType;
     }
 
     public Long getGroupId() {

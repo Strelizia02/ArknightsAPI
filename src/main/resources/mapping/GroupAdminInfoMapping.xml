@@ -2,6 +2,7 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.strelizia.arknights.dao.GroupAdminInfoMapper">
     <resultMap id="BaseResultMap" type="com.strelizia.arknights.model.GroupAdminInfo">
+        <result column="group_id" property="groupId" jdbcType="BIGINT"/>
         <result column="found" property="found" jdbcType="INTEGER"/>
         <result column="picture" property="picture" jdbcType="INTEGER"/>
     </resultMap>
@@ -16,6 +17,13 @@
             group_id = #{groupId}
     </select>
 
+    <select id="getAllGroupAdmin" resultMap="BaseResultMap">
+        SELECT
+            group_id,`found`,picture
+        FROM
+            a_group_admin
+    </select>
+
     <insert id="insertGroupId">
         insert into a_group_admin (group_id) VALUES (#{groupId})
     </insert>
@@ -24,6 +32,15 @@
         update a_group_admin
         set
             picture = #{picture}
+        where
+            group_id = #{groupId}
+    </update>
+
+    <update id="updateGroupAdmin" parameterType="com.strelizia.arknights.model.GroupAdminInfo">
+        update a_group_admin
+        set
+            picture = #{picture},
+            `found` = #{found}
         where
             group_id = #{groupId}
     </update>

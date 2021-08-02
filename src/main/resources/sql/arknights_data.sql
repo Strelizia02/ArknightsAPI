@@ -293,7 +293,6 @@ INSERT INTO `a_agent` VALUES ('黑角', '2', '公招', '0');
 INSERT INTO `a_nick_name` VALUES ('42', '史尔特尔');
 INSERT INTO `a_nick_name` VALUES ('42姐', '史尔特尔');
 INSERT INTO `a_nick_name` VALUES ('ash', '灰烬');
-INSERT INTO `a_nick_name` VALUES ('d32钢', '星极');
 INSERT INTO `a_nick_name` VALUES ('ff0', '华法琳');
 INSERT INTO `a_nick_name` VALUES ('五速无头怪', '灰烬');
 INSERT INTO `a_nick_name` VALUES ('充电宝', '雷蛇');

@@ -14,4 +14,12 @@
     <select id="selectAllAdmin" resultMap="BaseResultMap">
         SELECT qq, name, found, img, six, `sql`, upload from a_admin_user
     </select>
+
+    <delete id="truncateUserAdmin">
+        truncate a_admin_user
+    </delete>
+    
+    <update id="updateUserAdmin" parameterType="com.strelizia.arknights.model.AdminUserInfo">
+        insert into a_admin_user values(#{qq}, #{name}, #{found}, #{img}, #{six}, #{sql}, #{upload})
+    </update>
 </mapper>

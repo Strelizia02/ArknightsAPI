@@ -9,6 +9,22 @@ public class AgentInfo {
     private String name;
     private Integer star;
     private String pool;
+    /**
+     * 0->非限定
+     * 1->周年限定
+     * 2->联动限定
+     * 3->五倍权值
+     * 4->新年限定
+     */
+    private Integer limit;
+
+    public Integer getLimit() {
+        return limit;
+    }
+
+    public void setLimit(Integer limit) {
+        this.limit = limit;
+    }
 
     public String getName() {
         return name;

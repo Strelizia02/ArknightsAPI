@@ -12,4 +12,10 @@ public interface AdminUserMapper {
 
     //查询所有的管理员用户，以及对应的权限信息
     List<AdminUserInfo> selectAllAdmin();
+
+    //修改管理员的权限信息
+    Integer updateUserAdmin(AdminUserInfo adminInfo);
+
+    //清空所有管理员
+    Integer truncateUserAdmin();
 }

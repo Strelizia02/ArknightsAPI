@@ -93,14 +93,14 @@ public class EventsController {
         Long qq = message.getQq();
         Long groupId = message.getGroupId();
         log.info("接受到事件消息:{}", message.getContent());
-        String type = message.getType();
+        String type = message.getMsgType();
         JSONObject eventData = new JSONObject(message.getEventData());
         String result;
         switch (type){
             case "ON_EVENT_GROUP_JOIN":
                 //入群事件
                 result = "";
-                petPetService.PetPet(groupId, qq, "欢迎" + eventData.getString("UserName") + "入群");
+                petPetService.PetPet(groupId, qq, "欢迎" + eventData.getString("UserName") + "入群，可以通过【洁哥菜单】了解洁哥的使用方式");
                 break;
             default:
                 result = "";

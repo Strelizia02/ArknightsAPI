@@ -30,4 +30,8 @@ public interface AgentMapper {
 
     //查询这个池子是不是限定池
     Integer selectPoolLimit(String pool);
+
+    Integer insertAgentPool(AgentInfo agentInfo);
+
+    Integer deleteAgentPool(AgentInfo agentInfo);
 }
