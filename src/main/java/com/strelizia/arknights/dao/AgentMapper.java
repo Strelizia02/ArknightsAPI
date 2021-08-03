@@ -1,6 +1,7 @@
 package com.strelizia.arknights.dao;
 
 import com.strelizia.arknights.model.AgentInfo;
+import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 
@@ -33,5 +34,5 @@ public interface AgentMapper {
 
     Integer insertAgentPool(AgentInfo agentInfo);
 
-    Integer deleteAgentPool(AgentInfo agentInfo);
+    Integer deleteAgentPool(@Param("pool") String pool);
 }

@@ -13,4 +13,13 @@
     <select id="selectAllNickName" resultMap="BaseResultMap">
         select nick_name,name from a_nick_name
     </select>
+
+    <delete id="deleteNickName">
+        truncate a_nick_name
+    </delete>
+
+    <insert id="insertNickName" parameterType="com.strelizia.arknights.model.NickName">
+        insert into a_nick_name
+            values(#{nick_name}, #{name})
+    </insert>
 </mapper>

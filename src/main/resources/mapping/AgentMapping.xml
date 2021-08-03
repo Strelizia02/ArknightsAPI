@@ -88,7 +88,13 @@
             (#{name}, #{star}, #{pool}, #{limit});
     </insert>
 
-    <delete id="deleteAgentPool" parameterType="com.strelizia.arknights.model.AgentInfo">
-        delete from a_agent where name = #{name} and pool = #{pool}
+    <delete id="deleteAgentPool">
+        delete from a_agent
+        where
+            pool = #{pool}
+            and pool != '凭证兑换'
+            AND pool != '活动'
+            AND pool != '公招'
+            AND pool != '初始'
     </delete>
 </mapper>

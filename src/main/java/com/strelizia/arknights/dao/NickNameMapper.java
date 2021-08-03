@@ -15,4 +15,8 @@ public interface NickNameMapper {
     String selectNameByNickName(String name);
 
     List<NickName> selectAllNickName();
+
+    Integer deleteNickName();
+
+    Integer insertNickName(NickName nickName);
 }

@@ -3,15 +3,12 @@ package com.strelizia.arknights.controller;
 import com.strelizia.arknights.dao.AdminUserMapper;
 import com.strelizia.arknights.dao.AgentMapper;
 import com.strelizia.arknights.dao.GroupAdminInfoMapper;
-import com.strelizia.arknights.dao.ModelCountMapper;
+import com.strelizia.arknights.dao.NickNameMapper;
 import com.strelizia.arknights.model.AdminUserInfo;
 import com.strelizia.arknights.model.AgentInfo;
-import com.strelizia.arknights.model.EventsMessage;
 import com.strelizia.arknights.model.GroupAdminInfo;
-import com.strelizia.arknights.service.*;
-import com.strelizia.arknights.util.SendMsgUtil;
+import com.strelizia.arknights.model.NickName;
 import com.strelizia.arknights.vo.JsonResult;
-import io.swagger.models.auth.In;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -38,6 +35,9 @@ public class WebController {
     @Autowired
     private AgentMapper agentMapper;
 
+    @Autowired
+    private NickNameMapper nickNameMapper;
+
 
     /**
      * 用户权限管理接口
@@ -60,8 +60,8 @@ public class WebController {
      * 用户权限搜索接口
      * @return
      */
-    @GetMapping("searchUserAdmin")
-    public JsonResult<List<AdminUserInfo>> searchUserAdmin() {
+    @GetMapping("getUserAdmin")
+    public JsonResult<List<AdminUserInfo>> getUserAdmin() {
         List<AdminUserInfo> adminUserInfos = adminUserMapper.selectAllAdmin();
         return JsonResult.success(adminUserInfos);
     }
@@ -83,8 +83,8 @@ public class WebController {
      * 群权限搜索接口
      * @return
      */
-    @GetMapping("searchGroupAdmin")
-    public JsonResult<List<GroupAdminInfo>> searchGroupAdmin() {
+    @GetMapping("getGroupAdmin")
+    public JsonResult<List<GroupAdminInfo>> getGroupAdmin() {
         List<GroupAdminInfo> allGroupAdmin = groupAdminInfoMapper.getAllGroupAdmin();
         return JsonResult.success(allGroupAdmin);
     }
@@ -94,8 +94,8 @@ public class WebController {
      * 卡池搜索接口
      * @return
      */
-    @GetMapping("searchPool")
-    public JsonResult<List<AgentInfo>> searchPool() {
+    @GetMapping("getPool")
+    public JsonResult<List<AgentInfo>> getPool() {
         List<String> poolNames = agentMapper.selectPool();
         List<AgentInfo> pools = new ArrayList<>(poolNames.size());
         for(String poolName : poolNames){
@@ -114,26 +114,22 @@ public class WebController {
      * @param pool
      * @return
      */
-    @GetMapping("searchAgent")
-    public JsonResult<List<AgentInfo>> searchAgent(@RequestParam String pool) {
+    @GetMapping("getAgent")
+    public JsonResult<List<AgentInfo>> getAgent(@RequestParam String pool) {
         List<AgentInfo> agentInfos = agentMapper.selectPoolAgent(pool);
         return JsonResult.success(agentInfos);
     }
 
-//    /**
-//     * 新增卡池up干员
-//     * @param message
-//     * @return
-//     */
-//    @PostMapping("insertAgentPool")
-//    public JsonResult<Boolean> insertAgentPool(
-//            @RequestBody List<AgentInfo> message
-//    ) {
-//        for (AgentInfo agent : message){
-//            agentMapper.insertAgentPool(agent);
-//        }
-//        return null;
-//    }
+    /**
+     * 删除卡池up干员
+     * @param pool
+     * @return
+     */
+    @DeleteMapping("deleteAgentPool")
+    public JsonResult<Boolean> deleteAgentPool(@RequestParam String pool) {
+        agentMapper.deleteAgentPool(pool);
+        return null;
+    }
 
     /**
      * 设置卡池up干员
@@ -145,10 +141,36 @@ public class WebController {
             @RequestBody List<AgentInfo> message
     ) {
         for (AgentInfo agent : message){
-            agentMapper.deleteAgentPool(agent);
             agentMapper.insertAgentPool(agent);
         }
         return null;
+    }
+
+    /**
+     * 修改干员外号
+     * @param message
+     * @return
+     */
+    @PostMapping("setNickName")
+    public Integer setNickName(
+            @RequestBody List<NickName> message
+    ) {
+        int count = 0;
+        nickNameMapper.deleteNickName();
+        for (NickName nickName : message){
+            count += nickNameMapper.insertNickName(nickName);
+        }
+        return count;
+    }
+
+    /**
+     * 查询干员外号
+     * @return
+     */
+    @GetMapping("getNickName")
+    public JsonResult<List<NickName>> getNickName() {
+        List<NickName> nickNames = nickNameMapper.selectAllNickName();
+        return JsonResult.success(nickNames);
     }
 
 }
