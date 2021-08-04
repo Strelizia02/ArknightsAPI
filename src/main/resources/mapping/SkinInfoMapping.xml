@@ -22,7 +22,7 @@
             a.skin_base64
         FROM
             t_operator_skin a
-        LEFT JOIN t_operator b ON a.operator_id = b.operator_id
+        LEFT JOIN t_operator b ON a.operator_id = b.char_id
         WHERE
             b.operator_name = #{info}
         OR a.skin_name = #{info}

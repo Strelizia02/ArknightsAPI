@@ -5,7 +5,7 @@ package com.strelizia.arknights.model;
  * @Date 2021/4/7 17:14
  **/
 public class SkinInfo {
-    private Integer operatorId;
+    private String operatorId;
     private String operatorName;
     private String skinGroupName;
     private String skinName;
@@ -13,11 +13,11 @@ public class SkinInfo {
     private String dialog;
     private String drawerName;
 
-    public Integer getOperatorId() {
+    public String getOperatorId() {
         return operatorId;
     }
 
-    public void setOperatorId(Integer operatorId) {
+    public void setOperatorId(String operatorId) {
         this.operatorId = operatorId;
     }
 

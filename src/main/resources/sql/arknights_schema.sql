@@ -319,8 +319,8 @@ CREATE TABLE `t_operator_skill_mastery_costs`  (
 DROP TABLE IF EXISTS `t_operator_skin`;
 CREATE TABLE `t_operator_skin`  (
   `id` int(0) NOT NULL AUTO_INCREMENT,
-  `operator_id` int(0) NULL DEFAULT NULL COMMENT '干员id',
-  `skin_group_name` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
+  `operator_id` varchar(255) NULL DEFAULT NULL COMMENT '干员id',
+  `skin_group_name` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL  COMMENT '皮肤系列',
   `skin_name` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '皮肤代号',
   `skin_base64` longtext CHARACTER SET utf8 COLLATE utf8_general_ci NULL COMMENT '图片base64编码',
   `dialog` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '描述',

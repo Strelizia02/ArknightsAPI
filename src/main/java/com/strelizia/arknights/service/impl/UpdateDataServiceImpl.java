@@ -500,7 +500,7 @@ public class UpdateDataServiceImpl implements UpdateDataService {
     }
 
     /**
-     * 增量更新皮肤信息（根据Id，要是yj背刺删了一个皮肤就会有问题
+     * TODO 增量更新皮肤信息（根据Id，要是yj背刺删了一个皮肤就会有问题
      */
     public void updateSkin() {
         log.info("拉取图标数据");
@@ -518,7 +518,7 @@ public class UpdateDataServiceImpl implements UpdateDataService {
                     skinInfo.setSkinName(name);
                     skinInfo.setDialog(skinObj.getJSONObject("displaySkin").getString("dialog"));
                     skinInfo.setDrawerName(skinObj.getJSONObject("displaySkin").getString("drawerName"));
-                    skinInfo.setOperatorId(operatorInfoMapper.getOperatorIdByChar(skinObj.getString("charId")));
+                    skinInfo.setOperatorId(skinObj.getString("charId"));
                     skinInfo.setSkinGroupName(skinObj.getJSONObject("displaySkin").getString("skinGroupName"));
                     String avatarId = skinObj.getString("avatarId");
                     String[] split = avatarId.split("#");
