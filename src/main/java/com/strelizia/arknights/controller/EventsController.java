@@ -94,13 +94,25 @@ public class EventsController {
         Long groupId = message.getGroupId();
         log.info("接受到事件消息:{}", message.getContent());
         String type = message.getMsgType();
-        JSONObject eventData = new JSONObject(message.getEventData());
         String result;
+        JSONObject eventData;
         switch (type){
             case "ON_EVENT_GROUP_JOIN":
                 //入群事件
                 result = "";
-                petPetService.PetPet(groupId, qq, "欢迎" + eventData.getString("UserName") + "入群，可以通过【洁哥菜单】了解洁哥的使用方式");
+                eventData = new JSONObject(message.getEventData());
+                petPetService.PetPet(groupId, eventData.getLong("UserID"),
+                        "欢迎" + eventData.getString("UserName") + "入群，可以通过【洁哥菜单】了解洁哥的使用方式\n" +
+                                "源码地址：https://github.com/Strelizia02/ArknightsAPI/\n" +
+                                "教学视频：https://www.bilibili.com/video/BV1hw411f7a4/");
+                break;
+            case "ON_EVENT_GROUP_REVOKE":
+                //撤回消息事件
+                result = "";
+                eventData = new JSONObject(message.getEventData());
+                petPetService.PetPet(groupId, eventData.getLong("UserID"),
+                        "谁撤回了消息？让我康康！");
+                sendMsgUtil.CallOPQApiSendMsg(groupId, "", 2);
                 break;
             default:
                 result = "";

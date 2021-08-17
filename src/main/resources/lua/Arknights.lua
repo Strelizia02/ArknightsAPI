@@ -47,15 +47,31 @@ function ReceiveGroupMsg(CurrentQQ, data)
 end
 
 function ReceiveEvents(CurrentQQ, data, extData)
+	if data.MsgType == "ON_EVENT_GROUP_JOIN" then
+		myData = {
+			InviteUin = extData.InviteUin,
+			UserID = extData.UserID,
+			UserName = extData.UserName
+		}
+	end
+	if data.MsgType == "ON_EVENT_GROUP_REVOKE" then
+		myData = {
+			AdminUserID = extData.AdminUserID,
+			GroupID = extData.GroupID,
+			MsgRandom = extData.MsgRandom,
+			MsgSeq = extData.MsgSeq,
+			UserID = extData.UserID
+		}
+	end
+
     local body =
     {
         msgType = data.MsgType,
         qq = data.ToUin,
         groupId = data.FromUin,
         content = data.Content,
-        eventData = extData
+		eventData = json.encode(myData)
     }
-    log.info("%s", data.Content)
     response, error_message =
     http.post("" .. url .. "/events/group",
         {

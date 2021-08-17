@@ -7,10 +7,7 @@ import com.strelizia.arknights.model.ClassificationEnum;
 import com.strelizia.arknights.model.MessageInfo;
 import com.strelizia.arknights.model.ModelCountInfo;
 import com.strelizia.arknights.service.*;
-import com.strelizia.arknights.util.AdminUtil;
-import com.strelizia.arknights.util.ClassificationUtil;
-import com.strelizia.arknights.util.SendMsgUtil;
-import com.strelizia.arknights.util.ServerSystemUtil;
+import com.strelizia.arknights.util.*;
 import lombok.extern.slf4j.Slf4j;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -80,6 +77,9 @@ public class ArknightsController {
 
     @Autowired
     private PetPetService petPetService;
+
+    @Autowired
+    private BeastUtil beastUtil;
 
     /**
      * 消息处理总控制器，用于接收消息，并处理分流到不同的service
@@ -180,6 +180,9 @@ public class ArknightsController {
                                 "33.图标更新：{##图标更新}\n" +
                                 "34.材料更新：{##材料更新}\n" +
                                 "35.摸头动图：{##摸头}\n" +
+                                "36.源码查询：{##源码}\n" +
+                                "37.兽音解密：{##兽音解密}\n" +
+                                "38.兽音加密：{##兽音加密}\n" +
                                 "过大的涩图将导致回复缓慢，请不要上传不能过审的图片";
                 break;
             case XiangXiCaiDan:
@@ -293,6 +296,14 @@ public class ArknightsController {
                                 "\t使用方法：{##材料更新}\n" +
                                 "35.摸头动图：\n" +
                                 "\t使用方法：{##摸头}\n" +
+                                "36.源码查询：\n" +
+                                "\t使用方法：{##源码}\n" +
+                                "37.兽音解密：\n" +
+                                "\t使用方法：{##兽音解密 [密文]}\n" +
+                                "\t或：{##兽音翻译 [密文]}\n" +
+                                "38.兽音加密：\n" +
+                                "\t使用方法：{##兽音加密 [文本]}\n" +
+                                "\t或：{##嗷呜 [文本]}\n" +
                                 "注：本项目需严格按照格式输入，自然语言处理功能将在后期优化";
                 break;
             case ShiLian:
@@ -461,6 +472,15 @@ public class ArknightsController {
             case MoTou:
                 petPetService.PetPet(groupId, qq, null);
                 result = "";
+                break;
+            case YuanMa:
+                result = "源码地址：https://github.com/Strelizia02/ArknightsAPI/\n教学视频：https://www.bilibili.com/video/BV1hw411f7a4/";
+                break;
+            case ShouYuFanYi:
+                result = beastUtil.FromBeast(s[1]);
+                break;
+            case ShouYuJiaMi:
+                result = beastUtil.ToBeast(s[1]);
                 break;
             default:
                 result = "俺不晓得你在锁啥子";

@@ -192,6 +192,21 @@ public class ClassificationUtil {
         map.put("摸摸",MoTou);
         map.put("摸头",MoTou);
 
+        map.put("源码",YuanMa);
+        map.put("代码",YuanMa);
+        map.put("视频",YuanMa);
+        map.put("教程",YuanMa);
+        map.put("教学",YuanMa);
+
+        map.put("兽语翻译", ShouYuFanYi);
+        map.put("兽音翻译", ShouYuFanYi);
+        map.put("兽音解密", ShouYuFanYi);
+        map.put("兽语解密", ShouYuFanYi);
+
+        map.put("兽语加密", ShouYuJiaMi);
+        map.put("兽音加密", ShouYuJiaMi);
+        map.put("嗷呜", ShouYuJiaMi);
+
         return map.get(s);
     }
 }

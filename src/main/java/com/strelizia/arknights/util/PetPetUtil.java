@@ -135,6 +135,7 @@ public class PetPetUtil {
         AnimatedGifEncoder e = new AnimatedGifEncoder();
         e.start(path);
         e.setDelay(100); // 1 frame per sec
+        e.setRepeat(0);
         e.setTransparent(new Color(Color.TRANSLUCENT));
         e.setBackground(new Color(Color.TRANSLUCENT));
 

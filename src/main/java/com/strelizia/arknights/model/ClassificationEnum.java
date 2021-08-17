@@ -54,5 +54,8 @@ public enum ClassificationEnum {
     QuanBuGengXin,
     TuBiaoGengXin,
     CaiLiaoGengXin,
-    MoTou
+    MoTou,
+    YuanMa,
+    ShouYuJiaMi,
+    ShouYuFanYi
 }
