@@ -47,22 +47,25 @@ function ReceiveGroupMsg(CurrentQQ, data)
 end
 
 function ReceiveEvents(CurrentQQ, data, extData)
-	if data.MsgType == "ON_EVENT_GROUP_JOIN" then
-		myData = {
-			InviteUin = extData.InviteUin,
-			UserID = extData.UserID,
-			UserName = extData.UserName
-		}
-	end
-	if data.MsgType == "ON_EVENT_GROUP_REVOKE" then
-		myData = {
-			AdminUserID = extData.AdminUserID,
-			GroupID = extData.GroupID,
-			MsgRandom = extData.MsgRandom,
-			MsgSeq = extData.MsgSeq,
-			UserID = extData.UserID
-		}
-	end
+    if data.MsgType == "ON_EVENT_GROUP_JOIN" then
+        myData = {
+            InviteUin = extData.InviteUin,
+            UserID = extData.UserID,
+            UserName = extData.UserName
+        }
+    end
+    if data.MsgType == "ON_EVENT_GROUP_REVOKE" then
+        myData = {
+            AdminUserID = extData.AdminUserID,
+            GroupID = extData.GroupID,
+            MsgRandom = extData.MsgRandom,
+            MsgSeq = extData.MsgSeq,
+            UserID = extData.UserID
+        }
+    end
+
+    log.notice("%s", data.Content)
+    log.notice("%s", json.encode(myData))
 
     local body =
     {

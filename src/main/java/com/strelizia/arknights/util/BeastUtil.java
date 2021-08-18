@@ -79,6 +79,6 @@ public class BeastUtil {
 
     public static void main(String[] args) {
         BeastUtil beastUtil = new BeastUtil();
-        System.out.println(beastUtil.FromBeast("aaa"));
+        System.out.println(beastUtil.FromBeast("~呜嗷嗷嗷嗷呜啊嗷啊~呜嗷呜呜~呜啊~啊嗷啊呜嗷呜~~~嗷~呜呜呜~~嗷嗷嗷呜啊呜呜啊呜嗷呜呜啊呜嗷呜啊嗷啊呜~嗷啊啊~嗷~呜嗷嗷~啊嗷嗷嗷呜啊嗷啊啊呜嗷呜呜~呜啊呜啊嗷啊呜嗷嗷~嗷~嗷~呜呜嗷~呜嗷嗷嗷呜啊嗷呜呜呜嗷呜呜~嗷嗷~啊嗷啊呜嗷呜嗷嗷~嗷~呜呜嗷呜嗷嗷嗷嗷呜啊嗷啊呜呜嗷呜呜~嗷啊嗷啊嗷啊呜嗷嗷啊呜~嗷~呜呜呜嗷~嗷嗷嗷呜啊嗷呜嗷呜嗷呜呜~呜啊啊啊嗷啊呜嗷呜呜嗷~嗷~呜嗷嗷~呜嗷嗷嗷呜啊嗷~呜呜嗷呜呜~呜呜~啊嗷啊呜~嗷啊啊~嗷~呜呜呜嗷啊嗷嗷嗷呜啊呜嗷~呜嗷呜呜啊嗷呜啊啊"));
     }
 }

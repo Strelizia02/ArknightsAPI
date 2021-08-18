@@ -104,7 +104,8 @@ public class EventsController {
                 petPetService.PetPet(groupId, eventData.getLong("UserID"),
                         "欢迎" + eventData.getString("UserName") + "入群，可以通过【洁哥菜单】了解洁哥的使用方式\n" +
                                 "源码地址：https://github.com/Strelizia02/ArknightsAPI/\n" +
-                                "教学视频：https://www.bilibili.com/video/BV1hw411f7a4/");
+                                "教学视频：https://www.bilibili.com/video/BV1hw411f7a4/\n" +
+                                "喜欢安洁莉娜的博士麻烦在github点一个star，或者给视频点赞，感谢！");
                 break;
             case "ON_EVENT_GROUP_REVOKE":
                 //撤回消息事件

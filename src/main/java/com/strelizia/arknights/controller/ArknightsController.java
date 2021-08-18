@@ -103,7 +103,7 @@ public class ArknightsController {
                 //提取图片消息中的文字部分，取关键字
                 String keyword = jsonObj.getString("Content").split(" ")[0];
                 //在json结构前添加关键字信息， 使用波浪线分隔，可以将图片内容和文字内容统一进行处理。
-                text = keyword + "~" + text;
+                text = keyword + "\001" + text;
             } else if (text.startsWith("{\"FileID")) {
                 JSONObject jsonObj = new JSONObject(text);
                 String fileID = jsonObj.getString("FileID");
@@ -111,7 +111,7 @@ public class ArknightsController {
                 sendMsgUtil.CallOPQApiSendMsg(groupId, fileID.substring(1), 2);
             } else {
                 //split("~")，以防图片信息中多余的空格导致的json结构破坏
-                text = text.replace(" ", "~");
+                text = text.replace(" ", "\001");
             }
             //触发关键字是##，目前机器人还没名字，本来就是功能性的。
             if (text.startsWith("##") || text.startsWith("洁哥") || text.startsWith("杰哥")) {
@@ -127,7 +127,7 @@ public class ArknightsController {
 
     //消息分流方法，使用switch进行模式匹配，具体消息类型有枚举类。
     public String queryKeyword(Long qq, Long groupId, String name, String text) {
-        String[] a = text.split("~");
+        String[] a = text.split("\001");
         /*
          * 用一个固定长度10的数组承接a的内容，防止数组溢出
          * 当需要数组内某个值的时候，选择s[i]，10位以内不会存在数组溢出
@@ -474,10 +474,18 @@ public class ArknightsController {
                 result = "";
                 break;
             case YuanMa:
-                result = "源码地址：https://github.com/Strelizia02/ArknightsAPI/\n教学视频：https://www.bilibili.com/video/BV1hw411f7a4/";
+                result = "源码地址：https://github.com/Strelizia02/ArknightsAPI/\n" +
+                        "教学视频：https://www.bilibili.com/video/BV1hw411f7a4/\n" +
+                        "喜欢安洁莉娜的博士麻烦在github点一个star，或者给视频点赞，感谢！";
                 break;
             case ShouYuFanYi:
-                result = beastUtil.FromBeast(s[1]);
+                String str = s[1];
+                if (str.startsWith("{\"Content")){
+                    JSONObject json = new JSONObject(str);
+                    str = json.getString("Content").split(" ")[1];
+                }
+
+                result = beastUtil.FromBeast(str);
                 break;
             case ShouYuJiaMi:
                 result = beastUtil.ToBeast(s[1]);
