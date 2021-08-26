@@ -51,8 +51,6 @@
             pool = #{pool}
         AND
             `limit` != 3
-        AND
-            star = 6
         ORDER BY
 	        `limit` DESC
         LIMIT 1
