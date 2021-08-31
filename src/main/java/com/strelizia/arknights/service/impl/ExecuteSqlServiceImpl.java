@@ -39,7 +39,7 @@ public class ExecuteSqlServiceImpl implements ExecuteSqlService {
         boolean b = AdminUtil.getSqlAdmin(qqMd5, admins);
         String s = "您没有sql权限";
         if (b) {
-            String sql = text.substring(4).replace('~', ' ');
+            String sql = text.substring(4).replace('\001', ' ');
             s = executeSqlMapper.executeSql(sql).toString();
         }
         return s;
