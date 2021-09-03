@@ -137,11 +137,11 @@
         WHERE z.zone_name = #{zoneName}
     </select>
 
-    <select id="selectAllMaterId" resultType="java.lang.Integer">
+    <select id="selectAllMaterId" resultType="java.lang.String">
         select material_id from t_material
     </select>
 
-    <select id="selectMaterialPicById" parameterType="java.lang.Integer" resultType="java.lang.String">
+    <select id="selectMaterialPicById" parameterType="java.lang.String" resultType="java.lang.String">
         select material_pic from t_material where material_id = #{id}
     </select>
 

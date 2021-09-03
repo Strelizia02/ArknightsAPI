@@ -207,6 +207,9 @@ public class ClassificationUtil {
         map.put("兽音加密", ShouYuJiaMi);
         map.put("嗷呜", ShouYuJiaMi);
 
+        map.put("模组查询", MoZuChaXun);
+        map.put("查询模组", MoZuChaXun);
+
         return map.get(s);
     }
 }

@@ -21,7 +21,7 @@ import static com.strelizia.arknights.util.ImageUtil.replaceEnter;
  **/
 public class TextToImage {
 
-    private static int[] getWidthAndHeight(Text text, Font font) {
+    public static int[] getWidthAndHeight(Text text, Font font) {
         Rectangle2D r = font.getStringBounds(text.getMaxRow(), new FontRenderContext(
                 AffineTransform.getScaleInstance(1, 1), false, false));
         int unitHeight = (int) Math.floor(r.getHeight());//

@@ -79,6 +79,9 @@ public class ArknightsController {
     private PetPetService petPetService;
 
     @Autowired
+    private EquipService equipService;
+
+    @Autowired
     private BeastUtil beastUtil;
 
     /**
@@ -183,6 +186,7 @@ public class ArknightsController {
                                 "36.源码查询：{##源码}\n" +
                                 "37.兽音解密：{##兽音解密}\n" +
                                 "38.兽音加密：{##兽音加密}\n" +
+                                "39.模组查询：{##模组查询 [干员名]}" +
                                 "过大的涩图将导致回复缓慢，请不要上传不能过审的图片";
                 break;
             case XiangXiCaiDan:
@@ -476,6 +480,7 @@ public class ArknightsController {
             case YuanMa:
                 result = "源码地址：https://github.com/Strelizia02/ArknightsAPI/\n" +
                         "教学视频：https://www.bilibili.com/video/BV1hw411f7a4/\n" +
+                        "洁哥官网：http://www.angelina-bot.top/（开发中）\n" +
                         "喜欢安洁莉娜的博士麻烦在github点一个star，或者给视频点赞，感谢！";
                 break;
             case ShouYuFanYi:
@@ -489,6 +494,9 @@ public class ArknightsController {
                 break;
             case ShouYuJiaMi:
                 result = beastUtil.ToBeast(s[1]);
+                break;
+            case MoZuChaXun:
+                result = equipService.getOperatorEquip(groupId, s[1]);
                 break;
             default:
                 result = "俺不晓得你在锁啥子";

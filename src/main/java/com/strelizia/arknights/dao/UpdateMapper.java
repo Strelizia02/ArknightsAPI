@@ -31,7 +31,7 @@ public interface UpdateMapper {
     Integer insertSkillMater(SkillMaterInfo skillMaterInfo);
 
     //插入一个材料合成公式
-    Integer insertMaterialMade(@Param("materialId") Integer material_id, @Param("useMaterialId") Integer useMaterialId, @Param("useNumber") Integer useNumber);
+    Integer insertMaterialMade(@Param("materialId") String material_id, @Param("useMaterialId") Integer useMaterialId, @Param("useNumber") Integer useNumber);
 
     //清空数据库重新插入
     Integer clearOperatorData();
@@ -49,7 +49,7 @@ public interface UpdateMapper {
     Integer updateZoneData(ZoneJson zoneJson);
 
     //更新材料数据
-    Integer updateItemData(@Param("id") Integer id, @Param("name") String name, @Param("icon") String icon);
+    Integer updateItemData(@Param("id") String id, @Param("name") String name, @Param("icon") String icon);
 
     //更新掉落数据
     Integer updateMatrixData(@Param("stageId") String stageId, @Param("itemId") Integer itemId

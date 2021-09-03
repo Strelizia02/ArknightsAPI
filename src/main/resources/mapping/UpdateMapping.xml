@@ -254,6 +254,10 @@
     </update>
 
     <delete id="clearOperatorData">
+        TRUNCATE TABLE t_equip;
+        TRUNCATE TABLE t_equip_buff;
+        TRUNCATE TABLE t_equip_cost;
+        TRUNCATE TABLE t_equip_mission;
         TRUNCATE TABLE t_operator;
         TRUNCATE TABLE t_operator_building_skill;
         TRUNCATE TABLE t_operator_evolve_costs;

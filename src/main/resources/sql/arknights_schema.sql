@@ -78,6 +78,8 @@ CREATE TABLE `a_group_admin`  (
   `group_id` int(0) NOT NULL,
   `found` int(0) NULL DEFAULT 20,
   `picture` int(0) NULL DEFAULT 5,
+  `question_status` int(0) NULL DEFAULT 0,
+  `question_id` int(0) NULL DEFAULT 0,
   PRIMARY KEY (`group_id`) USING BTREE
 ) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
 
@@ -111,6 +113,19 @@ CREATE TABLE `a_nick_name`  (
   `name` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
   PRIMARY KEY (`nick_name`) USING BTREE
 ) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
+
+-- ----------------------------
+-- Table structure for a_question
+-- ----------------------------
+DROP TABLE IF EXISTS `a_question`;
+CREATE TABLE `a_question`  (
+  `id` int(0) NOT NULL AUTO_INCREMENT,
+  `description` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL,
+  `answer` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL,
+  `attr` int(0) NULL DEFAULT NULL,
+  `type` int(0) NULL DEFAULT NULL COMMENT '1->语音问题，2->立绘问题，3->文字问题',
+  PRIMARY KEY (`id`) USING BTREE
+) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Table structure for a_user_found
@@ -155,11 +170,62 @@ CREATE TABLE `t_enemy`  (
 ) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
+-- Table structure for t_equip
+-- ----------------------------
+DROP TABLE IF EXISTS `t_equip`;
+CREATE TABLE `t_equip`  (
+  `id` int(0) NOT NULL AUTO_INCREMENT,
+  `equip_id` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
+  `equip_name` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
+  `char_id` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL,
+  `phase` int(0) NULL DEFAULT NULL,
+  `level` int(0) NULL DEFAULT NULL,
+  `desc` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL,
+  PRIMARY KEY (`id`) USING BTREE
+) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = Dynamic;
+
+-- ----------------------------
+-- Table structure for t_equip_buff
+-- ----------------------------
+DROP TABLE IF EXISTS `t_equip_buff`;
+CREATE TABLE `t_equip_buff`  (
+  `buff_id` int(0) NOT NULL AUTO_INCREMENT,
+  `equip_id` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL,
+  `buff_name` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL,
+  `value` double(255, 2) NULL DEFAULT NULL,
+  PRIMARY KEY (`buff_id`) USING BTREE
+) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = Dynamic;
+
+-- ----------------------------
+-- Table structure for t_equip_cost
+-- ----------------------------
+DROP TABLE IF EXISTS `t_equip_cost`;
+CREATE TABLE `t_equip_cost`  (
+  `id` int(0) NOT NULL AUTO_INCREMENT,
+  `equip_id` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL,
+  `material_id` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL,
+  `use_number` int(0) NULL DEFAULT NULL,
+  PRIMARY KEY (`id`) USING BTREE
+) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = Dynamic;
+
+-- ----------------------------
+-- Table structure for t_equip_mission
+-- ----------------------------
+DROP TABLE IF EXISTS `t_equip_mission`;
+CREATE TABLE `t_equip_mission`  (
+  `id` int(0) NOT NULL AUTO_INCREMENT,
+  `equip_id` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL,
+  `mission_id` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL,
+  `mission_desc` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL,
+  PRIMARY KEY (`id`) USING BTREE
+) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = Dynamic;
+
+-- ----------------------------
 -- Table structure for t_material
 -- ----------------------------
 DROP TABLE IF EXISTS `t_material`;
 CREATE TABLE `t_material`  (
-  `material_id` int(0) NOT NULL,
+  `material_id` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
   `material_name` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
   `material_icon` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
   `material_pic` longtext CHARACTER SET utf8 COLLATE utf8_general_ci NULL,
@@ -172,8 +238,8 @@ CREATE TABLE `t_material`  (
 DROP TABLE IF EXISTS `t_material_made`;
 CREATE TABLE `t_material_made`  (
   `made_id` int(0) NOT NULL AUTO_INCREMENT,
-  `material_id` int(0) NULL DEFAULT NULL,
-  `use_material_id` int(0) NULL DEFAULT NULL,
+  `material_id` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
+  `use_material_id` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
   `use_number` int(0) NULL DEFAULT NULL,
   PRIMARY KEY (`made_id`) USING BTREE
 ) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
@@ -185,7 +251,7 @@ DROP TABLE IF EXISTS `t_matrix`;
 CREATE TABLE `t_matrix`  (
   `matrix_id` int(0) NOT NULL AUTO_INCREMENT,
   `stage_id` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
-  `item_id` int(0) NULL DEFAULT NULL,
+  `item_id` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
   `quantity` int(0) NULL DEFAULT NULL,
   `times` int(0) NULL DEFAULT NULL,
   `rate` double(255, 2) NULL DEFAULT NULL,
@@ -230,7 +296,7 @@ CREATE TABLE `t_operator`  (
   `archives4` text CHARACTER SET utf8 COLLATE utf8_general_ci NULL,
   `promotion_info` text CHARACTER SET utf8 COLLATE utf8_general_ci NULL COMMENT '晋升资料',
   PRIMARY KEY (`operator_id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 3 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Table structure for t_operator_building_skill
@@ -255,10 +321,10 @@ CREATE TABLE `t_operator_evolve_costs`  (
   `cost_id` int(0) NOT NULL AUTO_INCREMENT,
   `operator_id` int(0) NULL DEFAULT NULL,
   `evolve_level` tinyint(0) NULL DEFAULT NULL,
-  `use_material_id` int(0) NULL DEFAULT NULL,
+  `use_material_id` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
   `use_number` tinyint(0) NULL DEFAULT NULL,
   PRIMARY KEY (`cost_id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 7 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Table structure for t_operator_png
@@ -280,7 +346,7 @@ CREATE TABLE `t_operator_skill`  (
   `skill_index` tinyint(0) NULL DEFAULT NULL,
   `skill_name` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
   PRIMARY KEY (`skill_id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 2 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Table structure for t_operator_skill_desc
@@ -308,7 +374,7 @@ CREATE TABLE `t_operator_skill_mastery_costs`  (
   `cost_id` int(0) NOT NULL AUTO_INCREMENT,
   `skill_id` int(0) NULL DEFAULT NULL,
   `mastery_level` tinyint(0) NULL DEFAULT NULL,
-  `use_material_id` int(0) NULL DEFAULT NULL,
+  `use_material_id` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
   `use_number` int(0) NULL DEFAULT NULL,
   PRIMARY KEY (`cost_id`) USING BTREE
 ) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
@@ -319,8 +385,8 @@ CREATE TABLE `t_operator_skill_mastery_costs`  (
 DROP TABLE IF EXISTS `t_operator_skin`;
 CREATE TABLE `t_operator_skin`  (
   `id` int(0) NOT NULL AUTO_INCREMENT,
-  `operator_id` varchar(255) NULL DEFAULT NULL COMMENT '干员id',
-  `skin_group_name` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL  COMMENT '皮肤系列',
+  `operator_id` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '干员id',
+  `skin_group_name` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '皮肤系列',
   `skin_name` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '皮肤代号',
   `skin_base64` longtext CHARACTER SET utf8 COLLATE utf8_general_ci NULL COMMENT '图片base64编码',
   `dialog` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '描述',
@@ -338,7 +404,7 @@ CREATE TABLE `t_operator_tags_relation`  (
   `operator_rarity` tinyint(0) NOT NULL,
   `operator_tags` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 2 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Table structure for t_operator_talent
@@ -353,7 +419,7 @@ CREATE TABLE `t_operator_talent`  (
   `level` int(0) NULL DEFAULT NULL COMMENT '解锁等级',
   `potential` int(0) NULL DEFAULT NULL COMMENT '解锁潜能',
   PRIMARY KEY (`talent_id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 5 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
+) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Table structure for t_stage

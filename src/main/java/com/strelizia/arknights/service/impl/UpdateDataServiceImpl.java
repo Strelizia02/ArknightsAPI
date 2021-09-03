@@ -63,6 +63,8 @@ public class UpdateDataServiceImpl implements UpdateDataService {
     @Autowired
     private EnemyMapper enemyMapper;
 
+    @Autowired
+    private EquipMapper equipMapper;
     @Value("${userConfig.loginQq}")
     private Long loginQq;
 
@@ -163,6 +165,8 @@ public class UpdateDataServiceImpl implements UpdateDataService {
                 updateOperatorInfoById(key, operatorNum, jsonObject);
             }
         }
+        //更新模组信息
+        updateOperatorByJson();
 
         //近卫兔兔单独处理
         String amiyaSword = "https://cdn.jsdelivr.net/gh/Kengxxiao/ArknightsGameData@master/zh_CN/gamedata/excel/char_patch_table.json";
@@ -425,28 +429,24 @@ public class UpdateDataServiceImpl implements UpdateDataService {
     public void updateItemAndFormula() {
         //材料列表
         String itemListUrl = "https://cdn.jsdelivr.net/gh/Kengxxiao/ArknightsGameData@master/zh_CN/gamedata/excel/item_table.json";
-        List<Integer> ids = materialMadeMapper.selectAllMaterId();
+        List<String> ids = materialMadeMapper.selectAllMaterId();
         String jsonStringFromUrl = getJsonStringFromUrl(itemListUrl);
         if (jsonStringFromUrl != null) {
             JSONObject items = new JSONObject(jsonStringFromUrl).getJSONObject("items");
-            Pattern pattern = Pattern.compile("[0-9]*");
             Iterator<String> keys = items.keys();
             int newItem = 0;
             while (keys.hasNext()) {
                 String key = keys.next();
-                //只更新数字id（字母id是一些抽奖券干员信物之类的）
-                if (pattern.matcher(key).matches()) {
-                    JSONObject itemObj = items.getJSONObject(key);
-                    Integer id = Integer.parseInt(itemObj.getString("itemId"));
-                    //增量更新
-                    if (!ids.contains(id)) {
-                        String name = itemObj.getString("name");
-                        String icon = itemObj.getString("iconId");
-                        updateMapper.updateItemData(id, name, icon);
-                        //更新合成信息
-                        updateItemFormula(id);
-                        newItem++;
-                    }
+                JSONObject itemObj = items.getJSONObject(key);
+                String id = itemObj.getString("itemId");
+                //增量更新
+                if (!ids.contains(id)) {
+                    String name = itemObj.getString("name");
+                    String icon = itemObj.getString("iconId");
+                    updateMapper.updateItemData(id, name, icon);
+                    //更新合成信息
+                    updateItemFormula(id);
+                    newItem++;
                 }
             }
             sendMsgUtil.CallOPQApiSendMyself("材料合成数据更新完成\n--"
@@ -469,11 +469,11 @@ public class UpdateDataServiceImpl implements UpdateDataService {
      *
      * @param itemId 材料Id
      */
-    public void updateItemFormula(Integer itemId) {
+    public void updateItemFormula(String itemId) {
         //根据材料id，更新材料合成公式
 
-        String itemUrl = "https://andata.somedata.top/data-2020/item/" + itemId + ".json";
-        JSONArray buildingProductList = new JSONObject(getJsonStringFromUrl(itemUrl)).getJSONArray("buildingProductList");
+        String itemUrl = "https://cdn.jsdelivr.net/gh/Kengxxiao/ArknightsGameData@master/zh_CN/gamedata/excel/item_table.json";
+        JSONArray buildingProductList = new JSONObject(getJsonStringFromUrl(itemUrl)).getJSONObject("items").getJSONObject(itemId).getJSONArray("buildingProductList");
         if (buildingProductList != null && buildingProductList.length() > 0) {
             String roomType = buildingProductList.getJSONObject(0).getString("roomType");
             String formulaId = buildingProductList.getJSONObject(0).getString("formulaId");
@@ -500,7 +500,7 @@ public class UpdateDataServiceImpl implements UpdateDataService {
     }
 
     /**
-     * TODO 增量更新皮肤信息（根据Id，要是yj背刺删了一个皮肤就会有问题
+     * 增量更新皮肤信息
      */
     public void updateSkin() {
         log.info("拉取图标数据");
@@ -552,8 +552,8 @@ public class UpdateDataServiceImpl implements UpdateDataService {
      */
     public void updateItemIcon() {
         log.info("开始拉取最新材料图标");
-        List<Integer> maters = materialMadeMapper.selectAllMaterId();
-        for (Integer id : maters) {
+        List<String> maters = materialMadeMapper.selectAllMaterId();
+        for (String id : maters) {
             String picBase64 = materialMadeMapper.selectMaterialPicById(id);
             if (picBase64 == null || picBase64.startsWith("https://")) {
                 String iconId = new JSONObject(getJsonStringFromUrl("https://andata.somedata.top/data-2020/item/" + id + ".json")).getString("iconId");
@@ -828,4 +828,85 @@ public class UpdateDataServiceImpl implements UpdateDataService {
         return operatorId;
     }
 
+    public void updateOperatorByJson(){
+        String equipUrl = "https://cdn.jsdelivr.net/gh/Kengxxiao/ArknightsGameData@master/zh_CN/gamedata/excel/battle_equip_table.json";
+        String equipUnlockUrl = "https://cdn.jsdelivr.net/gh/Kengxxiao/ArknightsGameData@master/zh_CN/gamedata/excel/uniequip_table.json";
+        JSONObject equip = new JSONObject(getJsonStringFromUrl(equipUrl));
+        JSONObject equipUnlock = new JSONObject(getJsonStringFromUrl(equipUnlockUrl));
+
+        Iterator<String> keys = equip.keys();
+        while (keys.hasNext()) {
+            String key = keys.next();
+            EquipInfo equipInfo = new EquipInfo();
+
+            JSONObject equipDict = equipUnlock.getJSONObject("equipDict").getJSONObject(key);
+            equipInfo.setEquipId(equipDict.getString("uniEquipId"));
+            equipInfo.setEquipName(equipDict.getString("uniEquipName"));
+            equipInfo.setCharId(equipDict.getString("charId"));
+
+            JSONArray phases = equip.getJSONObject(key).getJSONArray("phases");
+            JSONObject candidates = phases.getJSONObject(0).getJSONArray("parts").getJSONObject(0).
+                    getJSONObject("overrideTraitDataBundle").getJSONArray("candidates").getJSONObject(0);
+            String additionalDescription = "";
+            //获取key-value列表
+            Map<String, Double> parameters = new HashMap<>();
+            JSONArray mapList = candidates.getJSONArray("blackboard");
+            for (int keyId = 0; keyId < mapList.length(); keyId++) {
+                parameters.put(mapList.getJSONObject(keyId).getString("key").toLowerCase(),
+                        mapList.getJSONObject(keyId).getDouble("value"));
+            }
+            if (candidates.get("additionalDescription") instanceof String){
+                additionalDescription = candidates.getString("additionalDescription");
+            }
+            else {
+                additionalDescription = candidates.getString("overrideDescripton");
+            }
+            Pattern pattern = Pattern.compile("<(.*?)>");
+            Matcher matcher = pattern.matcher(additionalDescription);
+            Pattern p = Pattern.compile("(\\{-?([a-zA-Z/.\\]\\[0-9_@]+):?([0-9.]*)(%?)\\})");
+            Matcher m = p.matcher(matcher.replaceAll(""));
+            StringBuffer stringBuffer = new StringBuffer();
+
+            while (m.find()) {
+                String buffKey = m.group(2).toLowerCase();
+                String percent = m.group(4);
+
+                Double val = parameters.get(buffKey);
+                String value;
+                if (!percent.equals("")) {
+                    val = val * 100;
+                }
+                value = FormatStringUtil.FormatDouble2String(val) + percent;
+                m.appendReplacement(stringBuffer, value);
+            }
+            equipInfo.setDesc(stringBuffer.toString());
+            equipInfo.setLevel(candidates.getJSONObject("unlockCondition").getInt("level"));
+            equipInfo.setPhase(candidates.getJSONObject("unlockCondition").getInt("phase"));
+            equipMapper.insertEquipInfo(equipInfo);
+
+            for (int i = 0; i < phases.length(); i++)
+            {
+                JSONArray buffs = phases.getJSONObject(i).getJSONArray("attributeBlackboard");
+                for(int j = 0; j < buffs.length(); j++){
+                    String buffKey = buffs.getJSONObject(j).getString("key");
+                    Double value = buffs.getJSONObject(j).getDouble("value");
+                    equipMapper.insertEquipBuff(key, buffKey, value);
+                }
+            }
+
+            JSONArray itemCost = equipDict.getJSONArray("itemCost");
+            for (int i = 0; i < itemCost.length(); i++){
+                String materialId = itemCost.getJSONObject(i).getString("id");
+                Integer useNumber = itemCost.getJSONObject(i).getInt("count");
+                equipMapper.insertEquipcost(key, materialId, useNumber);
+            }
+
+            JSONArray missionList = equipDict.getJSONArray("missionList");
+            for (int i = 0; i < missionList.length(); i++) {
+                String missionId = missionList.getString(i);
+                String desc = equipUnlock.getJSONObject("missionList").getJSONObject(missionId).getString("desc");
+                equipMapper.insertEquipMission(key, missionId, desc);
+            }
+        }
+    }
 }

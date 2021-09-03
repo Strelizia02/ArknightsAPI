@@ -48,11 +48,11 @@ public interface MaterialMadeMapper {
     //查询材料图标base64
     String selectMaterialPicByName(String name);
 
-    String selectMaterialPicById(Integer id);
+    String selectMaterialPicById(String id);
 
     //查询全部材料id
-    List<Integer> selectAllMaterId();
+    List<String> selectAllMaterId();
 
     //更新材料图标
-    Integer updateBase64ById(@Param("base64") String base64, @Param("id") Integer id);
+    Integer updateBase64ById(@Param("base64") String base64, @Param("id") String id);
 }
