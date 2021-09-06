@@ -12,18 +12,18 @@ import java.util.Set;
 public interface OperatorInfoService {
 
     //根据多条件查找符合干员
-    String getOperatorByInfos(String[] infos);
+    String getOperatorByInfos(Long qq, String[] infos);
 
     //根据干员名查询对应档案
-    String getOperatorInfo(String name, String where);
+    String getOperatorInfo(Long qq, String name, String where);
 
     //根据关键字查找声优
-    String getCVByName(String str);
+    String getCVByName(Long qq, String str);
 
     //根据关键字查找画师
-    String getDrawByName(String str);
+    String getDrawByName(Long qq, String str);
 
     //根据干员名查找天赋
-    String getTalentByName(String name);
+    String getTalentByName(Long qq, String name);
 
 }

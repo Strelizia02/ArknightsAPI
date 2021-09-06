@@ -28,7 +28,7 @@ public class SkinInfoServiceImpl implements SkinInfoService {
 
 
     @Override
-    public String getOperatorSkinByInfo(Long groupId, String info) {
+    public String getOperatorSkinByInfo(Long qq, Long groupId, String info) {
 
         String realName = nickNameMapper.selectNameByNickName(info);
         if (realName != null && !realName.equals(""))
@@ -42,11 +42,10 @@ public class SkinInfoServiceImpl implements SkinInfoService {
             }
         }
 
-
         if (skinInfos != null && skinInfos.size() > 0) {
             if (skinInfos.size() <= 5) {
                 for (SkinInfo skinInfo : skinInfos) {
-                    String result = skinInfo.getOperatorName() + " " + skinInfo.getSkinName() +
+                    String result = "[ATUSER(" + qq + ")]" + skinInfo.getOperatorName() + " " + skinInfo.getSkinName() +
                             "\n画师：" + skinInfo.getDrawerName() + " " + skinInfo.getSkinGroupName() + "系列\n" +
                             skinInfo.getDialog();
                     sendMsgUtil.CallOPQApiSendImg(groupId, result, SendMsgUtil.picBase64Buf, skinInfo.getSkinBase64(), 2);
@@ -58,13 +57,11 @@ public class SkinInfoServiceImpl implements SkinInfoService {
                 }
                 return "";
             } else {
-                String result = "当前搜索结果过多，如需查看皮肤立绘请缩小搜索范围";
+                StringBuilder result = new StringBuilder("[ATUSER(" + qq + ")]" + "当前搜索结果过多，如需查看皮肤立绘请缩小搜索范围");
                 for (SkinInfo skinInfo : skinInfos) {
-                    result += "\n干员名：" + skinInfo.getOperatorName() + " 皮肤名：" + skinInfo.getSkinName() +
-                            "\n画师：" + skinInfo.getDrawerName() + " " + skinInfo.getSkinGroupName() + "系列\n" +
-                            skinInfo.getDialog() + "\n";
+                    result.append("\n干员名：").append(skinInfo.getOperatorName()).append(" 皮肤名：").append(skinInfo.getSkinName()).append("\n画师：").append(skinInfo.getDrawerName()).append(" ").append(skinInfo.getSkinGroupName()).append("系列\n").append(skinInfo.getDialog()).append("\n");
                 }
-                return result;
+                return result.toString();
             }
 
         }

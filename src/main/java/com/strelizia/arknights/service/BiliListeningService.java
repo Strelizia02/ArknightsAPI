@@ -14,10 +14,10 @@ public interface BiliListeningService {
     DynamicDetail getDynamicDetail(Long DynamicId);
 
     //获取最新视频
-    String getVideo(String name);
+    String getVideo(Long qq, String name);
 
     //查询某条动态
-    String getDynamic(Long groupId, String name, int index);
+    String getDynamic(Long qq, Long groupId, String name, int index);
 
     //关注列表
     String getBiliList();

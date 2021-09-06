@@ -19,6 +19,8 @@ import javax.annotation.Resource;
 import java.awt.*;
 import java.util.*;
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  * @author wangzy
@@ -95,18 +97,27 @@ public class SendMsgUtil {
     public void CallOPQApiSendMsg(Long groupId, String s, Integer sendToType) {
         poolTaskExecutor.execute(() -> {
             try {
-                Text text = new Text(s);
+                String atUser = null;
+                Pattern pattern = Pattern.compile("\\[ATUSER\\([0-9]*\\)]");
+                String str = s;
+                Matcher matcher = pattern.matcher(str);
+                if (matcher.find())
+                {
+                    atUser = matcher.group();
+                    str = matcher.replaceAll("");
+                }
+                Text text = new Text(str);
                 if (text.getMaxRow().length() > 15 && text.getRowsNum() > 5) {
                     //文字太长就发图片
                     if (text.getRowsNum() > 7) {
-                        sendTextImgToGroup(restTemplate, groupId, null, SendMsgUtil.picBase64Buf, TextToImage.createImage(s, new Font("楷体", Font.PLAIN, 50)),
+                        sendTextImgToGroup(restTemplate, groupId, atUser, SendMsgUtil.picBase64Buf, TextToImage.createImage(str, new Font("楷体", Font.PLAIN, 50)),
                                 "http://" + OPQUrl + ":8888" + sendTextMsgApi + "?qq=" + loginQq + "&funcname=SendMsgV2", sendToType);
                     } else {
-                        sendTextImgToGroup(restTemplate, groupId, null, SendMsgUtil.picBase64Buf, TextToImage.createImage(s, new Font("楷体", Font.PLAIN, 100)),
+                        sendTextImgToGroup(restTemplate, groupId, atUser, SendMsgUtil.picBase64Buf, TextToImage.createImage(str, new Font("楷体", Font.PLAIN, 100)),
                                 "http://" + OPQUrl + ":8888" + sendTextMsgApi + "?qq=" + loginQq + "&funcname=SendMsgV2", sendToType);
                     }
                 } else {
-                    sendTextMsgToGroup(restTemplate, groupId, s,
+                    sendTextMsgToGroup(restTemplate, groupId, str,
                             "http://" + OPQUrl + ":8888" + sendTextMsgApi + "?qq=" + loginQq + "&funcname=SendMsgV2", sendToType);
                 }
             } catch (Exception e) {

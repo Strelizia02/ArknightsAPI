@@ -53,12 +53,12 @@ public class AgentServiceImpl implements AgentService {
 
     @Override
     public String chouKa(String pool, Long qq, String name, Long groupId) {
-        return name + "\n抽取" + foundLimit(1, pool, qq, name, groupId);
+        return "[ATUSER(" + qq + ")]" + name + "\n抽取" + foundLimit(1, pool, qq, name, groupId);
     }
 
     @Override
     public String shiLian(String pool, Long qq, String name, Long groupId) {
-        return name + "\n抽取" + foundLimit(10, pool, qq, name, groupId);
+        return "[ATUSER(" + qq + ")]" + name + "\n抽取" + foundLimit(10, pool, qq, name, groupId);
     }
 
     @Override
@@ -153,7 +153,7 @@ public class AgentServiceImpl implements AgentService {
             g.drawString("结果仅供参考，详细代码请见：", 470, 420);
             g.drawString("https://github.com/Strelizia02/ArknightsAPI", 470, 440);
             g.dispose();
-            sendMsgUtil.CallOPQApiSendImg(groupId, null, SendMsgUtil.picBase64Buf,
+            sendMsgUtil.CallOPQApiSendImg(groupId, "[ATUSER(" + qq + ")]", SendMsgUtil.picBase64Buf,
                     replaceEnter(new BASE64Encoder().encode(TextToImage.imageToBytes(image))), 2);
 //            File outputfile = new File("D://image.png");
 //
@@ -205,7 +205,7 @@ public class AgentServiceImpl implements AgentService {
             //六星概率默认2%
             sixStar = 2;
         }
-        return name + "的当前垫刀数为：" + foundCount + "\n当前六星概率为："
+        return "[ATUSER(" + qq + ")]" + name + "的当前垫刀数为：" + foundCount + "\n当前六星概率为："
                 + sixStar + "%" + "\n今日已抽卡：" + todayCount
                 + "次\n累计共抽取了：" + allCount + "次\n累计获得了" + allSix + "个六星和" + todayFive + "个五星干员";
     }
@@ -256,7 +256,7 @@ public class AgentServiceImpl implements AgentService {
             }
             s = pool + "池：\n" + FoundAgentByNum(count, pool, qq, sum, name, groupId);
         }
-        return s;
+        return "[ATUSER(" + qq + ")]" + s;
     }
 
     /**

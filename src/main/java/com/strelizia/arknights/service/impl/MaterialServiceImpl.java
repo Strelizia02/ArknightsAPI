@@ -47,7 +47,7 @@ public class MaterialServiceImpl implements MaterialService {
     private NickNameMapper nickNameMapper;
 
     @Override
-    public String ZhuanJingCaiLiao(Long groupId, String[] args) {
+    public String ZhuanJingCaiLiao(Long qq, Long groupId, String[] args) {
         List<MaterialInfo> materialInfos;
 
         String skillName = "";
@@ -75,14 +75,14 @@ public class MaterialServiceImpl implements MaterialService {
         if (materialInfos == null || materialInfos.size() == 0) {
             return "找不到查询的内容";
         } else {
-            sendImageWithPicAndStr(groupId, materialInfos, skillName + " 专精" + level + " 材料为：");
+            sendImageWithPicAndStr(qq, groupId, materialInfos, skillName + " 专精" + level + " 材料为：");
         }
 
         return "";
     }
 
     @Override
-    public String JingYingHuaCaiLiao(Long groupId, String agent, Integer level) {
+    public String JingYingHuaCaiLiao(Long qq, Long groupId, String agent, Integer level) {
 
         String name = nickNameMapper.selectNameByNickName(agent);
         if (name != null && !name.equals(""))
@@ -92,13 +92,13 @@ public class MaterialServiceImpl implements MaterialService {
         if (materialInfos.size() == 0) {
             return "找不到查询的材料";
         } else {
-            sendImageWithPicAndStr(groupId, materialInfos, agent + "干员 精英" + level + " 需要的材料为：");
+            sendImageWithPicAndStr(qq, groupId, materialInfos, agent + "干员 精英" + level + " 需要的材料为：");
         }
         return "";
     }
 
     @Override
-    public String HeChengLuXian(Long groupId, String name) {
+    public String HeChengLuXian(Long qq, Long groupId, String name) {
 
         String realName = nickNameMapper.selectNameByNickName(name);
         if (realName != null && !realName.equals(""))
@@ -108,13 +108,13 @@ public class MaterialServiceImpl implements MaterialService {
         if (materialInfos.size() == 0) {
             return "找不到该材料的合成路线";
         } else {
-            sendImageWithPicAndStr(groupId, materialInfos, name + "的合成路线为：");
+            sendImageWithPicAndStr(qq, groupId, materialInfos, name + "的合成路线为：");
         }
         return "";
     }
 
     @Override
-    public String HuoQuTuJing(String name) {
+    public String HuoQuTuJing(Long qq, String name) {
 
         StringBuilder s;
         if (!name.endsWith("-all")) {
@@ -159,7 +159,7 @@ public class MaterialServiceImpl implements MaterialService {
                 }
             }
         }
-        return s.toString();
+        return "[ATUSER(" + qq + ")]" + s.toString();
     }
 
     @Override
@@ -182,7 +182,7 @@ public class MaterialServiceImpl implements MaterialService {
     }
 
     @Override
-    public String selectMaterByMap(Long groupId, String MapId) {
+    public String selectMaterByMap(Long qq, Long groupId, String MapId) {
         List<MapMatrixInfo> mapMatrixInfos = materialMadeMapper.selectMatrixByMap(MapId);
 
         if (mapMatrixInfos.size() == 0) {
@@ -204,31 +204,31 @@ public class MaterialServiceImpl implements MaterialService {
                 g.drawString(matrix.getMaterialName() + "\t掉率：" + matrix.getRate() + "%\t测试次数：" + matrix.getTimes() + "\t掉落个数：" + matrix.getQuantity(), 50, (i + 2) * 50);
             }
             g.dispose();
-            sendMsgUtil.CallOPQApiSendImg(groupId, null, SendMsgUtil.picBase64Buf,
+            sendMsgUtil.CallOPQApiSendImg(groupId, "[ATUSER(" + qq + ")]", SendMsgUtil.picBase64Buf,
                     replaceEnter(new BASE64Encoder().encode(TextToImage.imageToBytes(image))), 2);
         }
         return "";
     }
 
     @Override
-    public String selectMapList(String zoneName) {
+    public String selectMapList(Long qq, String zoneName) {
         List<MapCostInfo> mapCostInfos = materialMadeMapper.selectMapByZone(zoneName);
         StringBuilder s = new StringBuilder("地图ID以及理智花费为：");
 
         for (MapCostInfo mapInfo : mapCostInfos) {
             s.append("\n").append(mapInfo.getZoneName()).append("\t地图ID：").append(mapInfo.getCode()).append("\t理智消耗：").append(mapInfo.getApCost());
         }
-        return s.toString();
+        return "[ATUSER(" + qq + ")]" + s.toString();
     }
 
     @Override
-    public String selectZoneList() {
+    public String selectZoneList(Long qq) {
         List<String> zones = materialMadeMapper.selectAllZone();
         StringBuilder s = new StringBuilder("当前所有章节列表：");
         for (String zone : zones) {
             s.append("\n").append(zone);
         }
-        return s.toString();
+        return "[ATUSER(" + qq + ")]" + s.toString();
     }
 
     /**
@@ -238,7 +238,7 @@ public class MaterialServiceImpl implements MaterialService {
      * @param materialInfos 材料列表
      * @param s             描述文字
      */
-    public void sendImageWithPicAndStr(Long groupId, List<MaterialInfo> materialInfos, String s) {
+    public void sendImageWithPicAndStr(Long qq, Long groupId, List<MaterialInfo> materialInfos, String s) {
         int height = 100 * materialInfos.size() + 120;
         BufferedImage image = new BufferedImage(s.length() * 100, height,
                 BufferedImage.TYPE_INT_BGR);//创建图片画布
@@ -255,7 +255,7 @@ public class MaterialServiceImpl implements MaterialService {
             g.drawString(m.getMaterialName() + " * " + m.getMaterialNum() + "个", 100, (i + 2) * 100);
         }
         g.dispose();
-        sendMsgUtil.CallOPQApiSendImg(groupId, null, SendMsgUtil.picBase64Buf,
+        sendMsgUtil.CallOPQApiSendImg(groupId, "[ATUSER(" + qq + ")]", SendMsgUtil.picBase64Buf,
                 replaceEnter(new BASE64Encoder().encode(TextToImage.imageToBytes(image))), 2);
     }
 }

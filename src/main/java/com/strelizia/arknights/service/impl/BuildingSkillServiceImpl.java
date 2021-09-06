@@ -30,7 +30,7 @@ public class BuildingSkillServiceImpl implements BuildingSkillService {
 
 
     @Override
-    public String getBuildSkillNameServiceByInfos(String[] infos) {
+    public String getBuildSkillNameServiceByInfos(Long qq, String[] infos) {
         Map<String, String> roomTypeMap = new HashMap<>();
         roomTypeMap.put("控制中枢", "CONTROL");
         roomTypeMap.put("宿舍", "DORMITORY");
@@ -59,7 +59,7 @@ public class BuildingSkillServiceImpl implements BuildingSkillService {
             List<BuildingSkill> buildingSkillByInfo = buildingSkillMapper.getBuildingSkillByInfo(info);
             allBuildingSkill.retainAll(buildingSkillByInfo);
         }
-        StringBuilder s = new StringBuilder("查询到的基建技能为：\n");
+        StringBuilder s = new StringBuilder("[ATUSER(" + qq + ")]查询到的基建技能为：\n");
         if (allBuildingSkill.size() == 0) {
             return "";
         } else if (allBuildingSkill.size() >= 4) {

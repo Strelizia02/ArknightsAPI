@@ -25,7 +25,7 @@ public class OperatorInfoServiceImpl implements OperatorInfoService {
 
 
     @Override
-    public String getOperatorByInfos(String[] infos) {
+    public String getOperatorByInfos(Long qq, String[] infos) {
         List<String> operators = operatorInfoMapper.getAllOperator();
         StringBuilder s = new StringBuilder("符合 ");
         for (int i = 1; i < infos.length; i++) {
@@ -46,11 +46,11 @@ public class OperatorInfoServiceImpl implements OperatorInfoService {
         for (String name : operators) {
             s.append(name).append("\n");
         }
-        return s.toString();
+        return "[ATUSER(" + qq + ")]" + s.toString();
     }
 
     @Override
-    public String getOperatorInfo(String name, String where) {
+    public String getOperatorInfo(Long qq, String name, String where) {
 
         String realName = nickNameMapper.selectNameByNickName(name);
         if (realName != null && !realName.equals(""))
@@ -101,11 +101,11 @@ public class OperatorInfoServiceImpl implements OperatorInfoService {
                     break;
             }
         }
-        return s;
+        return "[ATUSER(" + qq + ")]" + s;
     }
 
     @Override
-    public String getCVByName(String str) {
+    public String getCVByName(Long qq, String str) {
         List<String> allCV;
         StringBuilder s = new StringBuilder();
         if (str == null) {
@@ -116,11 +116,11 @@ public class OperatorInfoServiceImpl implements OperatorInfoService {
         for (String name : allCV) {
             s.append(name).append('\n');
         }
-        return s.toString();
+        return "[ATUSER(" + qq + ")]" + s.toString();
     }
 
     @Override
-    public String getDrawByName(String str) {
+    public String getDrawByName(Long qq, String str) {
         List<String> allDraw;
         StringBuilder s = new StringBuilder();
         if (str == null) {
@@ -131,11 +131,11 @@ public class OperatorInfoServiceImpl implements OperatorInfoService {
         for (String name : allDraw) {
             s.append(name).append('\n');
         }
-        return s.toString();
+        return "[ATUSER(" + qq + ")]" + s.toString();
     }
 
     @Override
-    public String getTalentByName(String name) {
+    public String getTalentByName(Long qq, String name) {
 
         String realName = nickNameMapper.selectNameByNickName(name);
         if (realName != null && !realName.equals(""))
@@ -149,9 +149,9 @@ public class OperatorInfoServiceImpl implements OperatorInfoService {
                         .append(t.getLevel()).append("潜能").append(t.getPotential())
                         .append("\n\t").append(t.getDescription());
             }
-            return s.toString();
+            return "[ATUSER(" + qq + ")]" + s.toString();
         }
-        return "未找到该干员的天赋";
+        return "[ATUSER(" + qq + ")]未找到该干员的天赋";
     }
 
 

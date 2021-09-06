@@ -5,5 +5,5 @@ package com.strelizia.arknights.service;
  * @Date 2021/3/31 17:01
  **/
 public interface BuildingSkillService {
-    String getBuildSkillNameServiceByInfos(String[] infos);
+    String getBuildSkillNameServiceByInfos(Long qq, String[] infos);
 }

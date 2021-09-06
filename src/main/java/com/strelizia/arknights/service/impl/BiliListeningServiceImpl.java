@@ -164,7 +164,7 @@ public class BiliListeningServiceImpl implements BiliListeningService {
     }
 
     @Override
-    public String getVideo(String name) {
+    public String getVideo(Long qq, String name) {
         BiliCount bili = biliMapper.getOneDynamicByName(name);
         String videoUrl = "&pn=1&ps=1&jsonp=jsonp";
         String videoHead = "https://api.bilibili.com/x/space/arc/search?mid=";
@@ -172,14 +172,14 @@ public class BiliListeningServiceImpl implements BiliListeningService {
                 .exchange(videoHead + bili.getUid() + videoUrl, HttpMethod.GET, new HttpEntity<>(new HttpHeaders()), String.class).getBody();
         JSONObject newBvJson = new JSONObject(newBvstr);
         String newBv = newBvJson.getJSONObject("data").getJSONObject("list").getJSONArray("vlist").getJSONObject(0).getString("bvid");
-        return "https://www.bilibili.com/video/" + newBv;
+        return "[ATUSER(" + qq + ")]https://www.bilibili.com/video/" + newBv;
     }
 
     @Override
-    public String getDynamic(Long groupId, String name, int index) {
+    public String getDynamic(Long qq, Long groupId, String name, int index) {
         BiliCount dynamics = biliMapper.getOneDynamicByName(name);
         if (dynamics == null) {
-            return "机器人尚未监听该用户，请联系管理员监听";
+            return "[ATUSER(" + qq + ")]机器人尚未监听该用户，请联系管理员监听";
         }
         DynamicDetail d;
         switch (index) {
@@ -204,7 +204,7 @@ public class BiliListeningServiceImpl implements BiliListeningService {
         String result = name + "的" + d.getType() + "动态\n" +
                 d.getTitle() + "\n" +
                 d.getText();
-        sendMsgUtil.CallOPQApiSendImg(groupId, result, SendMsgUtil.picUrl, d.getPicUrl(), 2);
+        sendMsgUtil.CallOPQApiSendImg(groupId, "[ATUSER(" + qq + ")]" + result, SendMsgUtil.picUrl, d.getPicUrl(), 2);
         return "";
     }
 

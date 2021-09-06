@@ -6,7 +6,7 @@ package com.strelizia.arknights.service;
  **/
 public interface EnemyService {
 
-    String getEnemyInfoByName(String name);
+    String getEnemyInfoByName(Long qq, String name);
 
-    String getEnemyListByName(String name);
+    String getEnemyListByName(Long qq, String name);
 }

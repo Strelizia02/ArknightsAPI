@@ -21,14 +21,14 @@ public class EnemyServiceImpl implements EnemyService {
     private EnemyMapper enemyMapper;
 
     @Override
-    public String getEnemyInfoByName(String name) {
+    public String getEnemyInfoByName(Long qq, String name) {
         List<EnemyInfo> enemyInfo = enemyMapper.selectEnemyByName(name);
         int size = enemyInfo.size();
         StringBuilder s = new StringBuilder();
         if (size == 0) {
-            s = new StringBuilder("\t未找到该敌人的信息");
+            s = new StringBuilder("[ATUSER(" + qq + ")]未找到该敌人的信息");
         } else if (size == 1) {
-            s = new StringBuilder(enemyInfo.get(0).toString());
+            s = new StringBuilder("[ATUSER(" + qq + ")]" + enemyInfo.get(0).toString());
         } else {
             for (EnemyInfo info : enemyInfo) {
                 s.append("\n").append(info.toString());
@@ -38,13 +38,13 @@ public class EnemyServiceImpl implements EnemyService {
     }
 
     @Override
-    public String getEnemyListByName(String name) {
+    public String getEnemyListByName(Long qq, String name) {
         if (name == null) {
             name = "";
         }
         List<String> nameList = enemyMapper.selectEnemyListByName(name);
         Set<String> names = new TreeSet<>(nameList);
-        StringBuilder s = new StringBuilder("搜索到的敌人名称为：");
+        StringBuilder s = new StringBuilder("[ATUSER(" + qq + ")]搜索到的敌人名称为：");
         for (String enemyName : names) {
             s.append("\n").append(enemyName);
         }

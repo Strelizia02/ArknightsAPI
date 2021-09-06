@@ -326,25 +326,25 @@ public class ArknightsController {
                 result = agentService.selectFoundCount(qq, name);
                 break;
             case ZhuanJingCaiLiao:
-                result = materialService.ZhuanJingCaiLiao(groupId, a);
+                result = materialService.ZhuanJingCaiLiao(qq, groupId, a);
                 break;
             case JingYiCaiLiao:
-                result = materialService.JingYingHuaCaiLiao(groupId, s[1], 1);
+                result = materialService.JingYingHuaCaiLiao(qq, groupId, s[1], 1);
                 break;
             case JingErCaiLiao:
-                result = materialService.JingYingHuaCaiLiao(groupId, s[1], 2);
+                result = materialService.JingYingHuaCaiLiao(qq, groupId, s[1], 2);
                 break;
             case HeChengLuXian:
-                result = materialService.HeChengLuXian(groupId, s[1]);
+                result = materialService.HeChengLuXian(qq, groupId, s[1]);
                 break;
             case CaiLiaoHuoQu:
-                result = materialService.HuoQuTuJing(s[1]);
+                result = materialService.HuoQuTuJing(qq, s[1]);
                 break;
             case GongZhaoJieTu:
-                result = name + ":\n" + tagsfFoundService.FoundAgentByJson(s[1]);
+                result = "[ATUSER(" + qq + ")]" + name + ":\n" + tagsfFoundService.FoundAgentByJson(s[1]);
                 break;
             case GongKaiZhaoMu:
-                result = name + "\n" + tagsfFoundService.FoundAgentByArray(s[1].split("[,，]"));
+                result = "[ATUSER(" + qq + ")]" + name + "\n" + tagsfFoundService.FoundAgentByArray(s[1].split("[,，]"));
                 break;
             case SeTu:
                 result = seTuService.sendImageByType(qq, groupId, 1, name, s[1]);
@@ -359,33 +359,33 @@ public class ArknightsController {
                 result = materialService.selectAgentData(s[1]);
                 break;
             case DiTuDiaoLuo:
-                result = materialService.selectMaterByMap(groupId, s[1]);
+                result = materialService.selectMaterByMap(qq, groupId, s[1]);
                 break;
             case ZhangJieLieBiao:
-                result = materialService.selectZoneList();
+                result = materialService.selectZoneList(qq);
                 break;
             case DiTuLieBiao:
-                result = materialService.selectMapList(s[1]);
+                result = materialService.selectMapList(qq, s[1]);
                 break;
             case DongTaiChaXun:
-                biliListeningService.getDynamic(groupId, s[1], Integer.parseInt(s[2]));
+                biliListeningService.getDynamic(qq, groupId, s[1], Integer.parseInt(s[2]));
                 result = "";
                 break;
             case GuanZhuLieBiao:
                 result = biliListeningService.getBiliList();
                 break;
             case ZuiXinTouGao:
-                result = biliListeningService.getVideo(s[1]);
+                result = biliListeningService.getVideo(qq, s[1]);
                 break;
             case ZuiXinDongTai:
-                biliListeningService.getDynamic(groupId, s[1], 1);
+                biliListeningService.getDynamic(qq, groupId, s[1], 1);
                 result = "";
                 break;
             case DiRenXinXi:
-                result = enemyService.getEnemyInfoByName(s[1]);
+                result = enemyService.getEnemyInfoByName(qq, s[1]);
                 break;
             case DiRenQuanMing:
-                result = enemyService.getEnemyListByName(s[1]);
+                result = enemyService.getEnemyListByName(qq, s[1]);
                 break;
             case SQL:
                 result = executeSqlService.ExecuteSql(qq, text);
@@ -394,25 +394,25 @@ public class ArknightsController {
                 result = "";
                 break;
             case GanYuanLieBiao:
-                result = operatorInfoService.getOperatorByInfos(s);
+                result = operatorInfoService.getOperatorByInfos(qq, s);
                 break;
             case GanYuanDangAn:
-                result = operatorInfoService.getOperatorInfo(s[1], s[2]);
+                result = operatorInfoService.getOperatorInfo(qq, s[1], s[2]);
                 break;
             case HuaShiLieBiao:
-                result = operatorInfoService.getDrawByName(s[1]);
+                result = operatorInfoService.getDrawByName(qq, s[1]);
                 break;
             case ShengYouLieBiao:
-                result = operatorInfoService.getCVByName(s[1]);
+                result = operatorInfoService.getCVByName(qq, s[1]);
                 break;
             case QunFaXiaoXi:
                 result = executeSqlService.sendGroupMessage(qq, s[1]);
                 break;
             case JiJianJiNeng:
-                result = buildingSkillService.getBuildSkillNameServiceByInfos(s);
+                result = buildingSkillService.getBuildSkillNameServiceByInfos(qq, s);
                 break;
             case JiNengXiangQing:
-                result = skillDescService.getSkillDescByInfo(s);
+                result = skillDescService.getSkillDescByInfo(qq, s);
                 break;
             case ShanChuSeTu:
                 result = seTuService.deleteSeTuById(qq, groupId, Integer.parseInt(s[1]));
@@ -424,13 +424,13 @@ public class ArknightsController {
                 result = seTuService.changePictureStat(qq, groupId, 0);
                 break;
             case PiFuChaXun:
-                result = skinInfoService.getOperatorSkinByInfo(groupId, s[1]);
+                result = skinInfoService.getOperatorSkinByInfo(qq, groupId, s[1]);
                 break;
             case TianFuChaXun:
-                result = operatorInfoService.getTalentByName(s[1]);
+                result = operatorInfoService.getTalentByName(qq, s[1]);
                 break;
             case GongNengTongJi:
-                StringBuilder sb = new StringBuilder("全局功能使用次数为：\n");
+                StringBuilder sb = new StringBuilder("[ATUSER(" + qq + ")]全局功能使用次数为：\n");
                 for (ModelCountInfo m : modelCountMapper.selectModelCount()) {
                     sb.append(m.toString()).append("\n");
                 }
@@ -490,13 +490,13 @@ public class ArknightsController {
                     str = json.getString("Content").split(" ")[1];
                 }
 
-                result = beastUtil.FromBeast(str);
+                result = "[ATUSER(" + qq + ")]" + beastUtil.FromBeast(str);
                 break;
             case ShouYuJiaMi:
-                result = beastUtil.ToBeast(s[1]);
+                result = "[ATUSER(" + qq + ")]" + beastUtil.ToBeast(s[1]);
                 break;
             case MoZuChaXun:
-                result = equipService.getOperatorEquip(groupId, s[1]);
+                result = equipService.getOperatorEquip(qq, groupId, s[1]);
                 break;
             default:
                 result = "俺不晓得你在锁啥子";

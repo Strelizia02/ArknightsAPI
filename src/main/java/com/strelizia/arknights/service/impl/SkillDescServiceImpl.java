@@ -27,7 +27,7 @@ public class SkillDescServiceImpl implements SkillDescService {
     private NickNameMapper nickNameMapper;
 
     @Override
-    public String getSkillDescByInfo(String[] infos) {
+    public String getSkillDescByInfo(Long qq, String[] infos) {
         Map<Integer, String> spType = new HashMap<>();
         Map<Integer, String> skillType = new HashMap<>();
         Map<String, String> levelStr = new HashMap<>();
@@ -93,9 +93,9 @@ public class SkillDescServiceImpl implements SkillDescService {
         }
 
         if (skillDesc.size() == 0) {
-            return "未找到相应技能描述";
+            return "[ATUSER(" + qq + ")]未找到相应技能描述";
         }
-        StringBuilder s = new StringBuilder(skillDesc.get(0).get(0).getOperatorName() + "：\n");
+        StringBuilder s = new StringBuilder("[ATUSER(" + qq + ")]" + skillDesc.get(0).get(0).getOperatorName() + "：\n");
         for (List<SkillDesc> list : skillDesc) {
             for (SkillDesc sd : list) {
                 s.append(sd.getSkillName()).append("level").append(sd.getSkillLevel()).append(":\n").append(sd.getSpInit()).append("/").append(sd.getSpCost()).append(" 持续").append(sd.getDuration()).append("秒 ").append(spType.get(sd.getSpType())).append("/").append(skillType.get(sd.getSkillType())).append(sd.getMaxCharge() == 1 ? "" : "最大充能" + sd.getMaxCharge()).append("\n").append(sd.getDescription()).append("\n\n");

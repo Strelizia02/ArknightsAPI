@@ -42,7 +42,7 @@ public class EquipServiceImpl implements EquipService {
     private NickNameMapper nickNameMapper;
 
     @Override
-    public String getOperatorEquip(Long groupId, String name) {
+    public String getOperatorEquip(Long qq, Long groupId, String name) {
         String realName = nickNameMapper.selectNameByNickName(name);
         if (realName != null && !realName.equals(""))
             name = realName;
@@ -53,7 +53,7 @@ public class EquipServiceImpl implements EquipService {
             List<EquipBuff> equipBuffs = equipMapper.selectEquipBuffById(equipId);
             List<MaterialInfo> materialInfos = equipMapper.selectEquipCostById(equipId);
             List<String> strings = equipMapper.selectEquipMissionById(equipId);
-            StringBuilder s = new StringBuilder();
+            StringBuilder s = new StringBuilder("[ATUSER(" + qq + ")]");
             s.append("干员").append(name).append("的模组信息为：\n")
                 .append("  模组名称： ").append(equipInfo.getEquipName()).append("\n")
                 .append("  模组特性： ").append(equipInfo.getDesc()).append("\n")
