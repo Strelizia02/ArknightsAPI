@@ -188,9 +188,15 @@ public class AgentServiceImpl implements AgentService {
         UserFoundInfo userFoundInfo = userFoundMapper.selectUserFoundByQQ(qqMd5);
         Integer todayCount = 0;
         Integer foundCount = 0;
+        Integer allCount = 0;
+        Integer allSix = 0;
+        Integer todayFive = 0;
         if (userFoundInfo != null) {
             foundCount = userFoundInfo.getFoundCount();
             todayCount = userFoundInfo.getTodayCount();
+            allCount = userFoundInfo.getAllCount();
+            allSix = userFoundInfo.getAllSix();
+            todayFive = userFoundInfo.getTodayFive();
         }
         int sixStar;
         if (foundCount > 50) {
@@ -199,7 +205,9 @@ public class AgentServiceImpl implements AgentService {
             //六星概率默认2%
             sixStar = 2;
         }
-        return name + "的当前垫刀数为：" + foundCount + "\n当前六星概率为：" + sixStar + "%" + "\n今日已抽卡次数：" + todayCount;
+        return name + "的当前垫刀数为：" + foundCount + "\n当前六星概率为："
+                + sixStar + "%" + "\n今日已抽卡：" + todayCount
+                + "次\n累计共抽取了：" + allCount + "次\n累计获得了" + allSix + "个六星和" + todayFive + "个五星干员";
     }
 
     @Override

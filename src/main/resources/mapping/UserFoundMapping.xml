@@ -5,6 +5,9 @@
         <result column="qq" property="qq" jdbcType="BIGINT"/>
         <result column="found_count" property="foundCount" jdbcType="INTEGER"/>
         <result column="today_count" property="todayCount" jdbcType="INTEGER"/>
+        <result column="all_count" property="allCount" jdbcType="INTEGER"/>
+        <result column="all_six" property="allSix" jdbcType="INTEGER"/>
+        <result column="today_five" property="todayFive" jdbcType="INTEGER"/>
     </resultMap>
 
     <resultMap id="UserResultMap" type="com.strelizia.arknights.model.UserGetInfo">
@@ -14,7 +17,7 @@
 
     <!--  根据qq查询抽卡信息  -->
     <select id="selectUserFoundByQQ" resultMap="BaseResultMap">
-        select qq,found_count,today_count
+        select qq,found_count,today_count,all_count,all_six,today_five
         from a_user_found WHERE qq = #{qq}
     </select>
 

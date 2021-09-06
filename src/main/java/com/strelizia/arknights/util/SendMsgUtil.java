@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
+import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
 import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
@@ -17,6 +18,7 @@ import org.springframework.web.client.RestTemplate;
 import javax.annotation.Resource;
 import java.awt.*;
 import java.util.*;
+import java.util.List;
 
 /**
  * @author wangzy
@@ -32,9 +34,9 @@ public class SendMsgUtil {
     @Value("${userConfig.OPQUrl}")
     private String OPQUrl;
 
-    public static final String picUrl = "picUrl";
+    public static final String picUrl = "PicUrl";
 
-    public static final String picBase64Buf = "picBase64Buf";
+    public static final String picBase64Buf = "PicBase64Buf";
 
     @Resource(name = "taskModuleExecutor")
     @Autowired
@@ -47,11 +49,10 @@ public class SendMsgUtil {
 
     private void sendTextMsgToGroup(RestTemplate restTemplate, Long groupId, String Text, String sendTextMsgUrl, Integer sendToType) {
         Map<String, Object> map = new HashMap<>(7);
-        map.put("toUser", groupId);
-        map.put("sendToType", sendToType);
-        map.put("sendMsgType", "TextMsg");
-        map.put("content", Text);
-        map.put("group", 0);
+        map.put("ToUserUid", groupId);
+        map.put("SendToType", sendToType);
+        map.put("SendMsgType", "TextMsg");
+        map.put("Content", Text);
 
         String jsonData = null;
         try {
@@ -65,16 +66,15 @@ public class SendMsgUtil {
         httpHeaders.setContentType(type);
         HttpEntity<String> httpEntity = new HttpEntity<>(jsonData, httpHeaders);
         //发送请求，封装结果数据
-        restTemplate.postForEntity(sendTextMsgUrl, httpEntity, SendMsgRespInfo.class).getBody();
+        restTemplate.postForEntity(sendTextMsgUrl, httpEntity, SendMsgRespInfo.class);
     }
 
     private void sendTextImgToGroup(RestTemplate restTemplate, Long groupId, String Text, String picType, String url, String sendTextMsgUrl, Integer sendToType) {
         Map<String, Object> map = new HashMap<>(7);
-        map.put("toUser", groupId);
-        map.put("sendToType", sendToType);
-        map.put("sendMsgType", "PicMsg");
-        map.put("content", Text);
-        map.put("group", 0);
+        map.put("ToUserUid", groupId);
+        map.put("SendToType", sendToType);
+        map.put("SendMsgType", "PicMsg");
+        map.put("Content", Text);
         map.put(picType, url);
 
         String jsonData = null;
@@ -89,7 +89,7 @@ public class SendMsgUtil {
         httpHeaders.setContentType(type);
         HttpEntity<String> httpEntity = new HttpEntity<>(jsonData, httpHeaders);
         //发送请求，封装结果数据
-        restTemplate.postForEntity(sendTextMsgUrl, httpEntity, SendMsgRespInfo.class).getBody();
+        restTemplate.postForEntity(sendTextMsgUrl, httpEntity, SendMsgRespInfo.class);
     }
 
     public void CallOPQApiSendMsg(Long groupId, String s, Integer sendToType) {
@@ -100,14 +100,14 @@ public class SendMsgUtil {
                     //文字太长就发图片
                     if (text.getRowsNum() > 7) {
                         sendTextImgToGroup(restTemplate, groupId, null, SendMsgUtil.picBase64Buf, TextToImage.createImage(s, new Font("楷体", Font.PLAIN, 50)),
-                                "http://" + OPQUrl + ":8888" + sendTextMsgApi + "?qq=" + loginQq + "&funcname=SendMsg", sendToType);
+                                "http://" + OPQUrl + ":8888" + sendTextMsgApi + "?qq=" + loginQq + "&funcname=SendMsgV2", sendToType);
                     } else {
                         sendTextImgToGroup(restTemplate, groupId, null, SendMsgUtil.picBase64Buf, TextToImage.createImage(s, new Font("楷体", Font.PLAIN, 100)),
-                                "http://" + OPQUrl + ":8888" + sendTextMsgApi + "?qq=" + loginQq + "&funcname=SendMsg", sendToType);
+                                "http://" + OPQUrl + ":8888" + sendTextMsgApi + "?qq=" + loginQq + "&funcname=SendMsgV2", sendToType);
                     }
                 } else {
                     sendTextMsgToGroup(restTemplate, groupId, s,
-                            "http://" + OPQUrl + ":8888" + sendTextMsgApi + "?qq=" + loginQq + "&funcname=SendMsg", sendToType);
+                            "http://" + OPQUrl + ":8888" + sendTextMsgApi + "?qq=" + loginQq + "&funcname=SendMsgV2", sendToType);
                 }
             } catch (Exception e) {
                 e.printStackTrace();
@@ -126,12 +126,13 @@ public class SendMsgUtil {
 //    }
     public void CallOPQApiSendImg(Long groupId, String s, String picType, String imgUrl, Integer sendToType) {
         poolTaskExecutor.execute(() -> sendTextImgToGroup(restTemplate, groupId, s, picType, imgUrl,
-                "http://" + OPQUrl + ":8888" + sendTextMsgApi + "?qq=" + loginQq + "&funcname=SendMsg", sendToType));
+                "http://" + OPQUrl + ":8888" + sendTextMsgApi + "?qq=" + loginQq + "&funcname=SendMsgV2", sendToType));
         log.info("发送消息图片+文字{}成功", s);
     }
 
     public void CallOPQApiSendMyself(String s) {
         poolTaskExecutor.execute(() -> sendTextMsgToGroup(restTemplate, loginQq, s,
-                "http://" + OPQUrl + ":8888" + sendTextMsgApi + "?qq=" + loginQq + "&funcname=SendMsg", 1));
+                "http://" + OPQUrl + ":8888" + sendTextMsgApi + "?qq=" + loginQq + "&funcname=SendMsgV2", 1));
     }
 }
+

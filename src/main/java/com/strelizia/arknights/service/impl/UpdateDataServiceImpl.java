@@ -556,8 +556,10 @@ public class UpdateDataServiceImpl implements UpdateDataService {
         for (String id : maters) {
             String picBase64 = materialMadeMapper.selectMaterialPicById(id);
             if (picBase64 == null || picBase64.startsWith("https://")) {
-                String iconId = new JSONObject(getJsonStringFromUrl("https://andata.somedata.top/data-2020/item/" + id + ".json")).getString("iconId");
-                materialMadeMapper.updateBase64ById(imageUtil.getImageBase64ByUrl("https://andata.somedata.top/dataX/item/pic/" + iconId + ".png"), id);
+                if(getJsonStringFromUrl("https://andata.somedata.top/data-2020/item/" + id + ".json") != null) {
+                    String iconId = new JSONObject(getJsonStringFromUrl("https://andata.somedata.top/data-2020/item/" + id + ".json")).getString("iconId");
+                    materialMadeMapper.updateBase64ById(imageUtil.getImageBase64ByUrl("https://andata.somedata.top/dataX/item/pic/" + iconId + ".png"), id);
+                }
             }
         }
         sendMsgUtil.CallOPQApiSendMyself("材料图标更新完成\n--"
