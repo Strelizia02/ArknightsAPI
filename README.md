@@ -26,7 +26,7 @@
 
 # 责任声明：
 
-**我国有一套完善的法律制度，请不要使用本项目传播不能过审的信息，请不要使用本项目进行盈利行为，应当遵守中华人民共和国法律法规。**
+**我国有一套完善的法律制度，请不要使用本项目传播不能过审的信息，应当遵守中华人民共和国法律法规。**
 
 部署后将机器人拉入群聊，发送[##菜单]即可获取功能详情，当前触发关键字是##，后期会酌情更改。
 
@@ -97,3 +97,7 @@ main：
 bug报修请私信博客园，内容包括但不限于：bug触发条件、截图、报错信息。
 
 [博客地址](https://www.cnblogs.com/strelizia/)，有其他问题也可直接联系。不定期收私信，可能回复有延迟。
+
+# 打赏通道：
+
+![1629880378050](F:\MyProject\ArknightsAPI\README.assets\1629880378050.jpg)![mm_facetoface_collect_qrcode_1630919564923](F:\MyProject\ArknightsAPI\README.assets\mm_facetoface_collect_qrcode_1630919564923.png)
