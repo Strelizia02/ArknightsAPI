@@ -84,6 +84,10 @@
         SELECT group_id FROM a_group_admin
     </select>
 
+    <select id="selectCakeGroups" resultType="java.lang.Long">
+        SELECT group_id FROM a_group_admin where cake=1
+    </select>
+
     <select id="selectTodaySearchByQQ" resultType="java.lang.Integer">
         SELECT search from a_user_found WHERE qq = #{qq} LIMIT 1
     </select>

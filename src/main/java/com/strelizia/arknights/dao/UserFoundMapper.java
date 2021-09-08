@@ -58,6 +58,8 @@ public interface UserFoundMapper {
 
     List<Long> selectAllGroups();
 
+    List<Long> selectCakeGroups();
+
     //抽卡数
     Integer selectTodaySearchByQQ(String qq);
 
