@@ -20,7 +20,6 @@ public class BiliListeningJob {
     @Autowired
     private BiliListeningService biliListeningService;
 
-    //每天晚上8点发送当日统计结果
     @Scheduled(cron = "${scheduled.biliJob}")
     @Async
     public void dailyCountJob() {

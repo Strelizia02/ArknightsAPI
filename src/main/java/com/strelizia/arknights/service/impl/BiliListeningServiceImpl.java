@@ -96,9 +96,9 @@ public class BiliListeningServiceImpl implements BiliListeningService {
                         sendMsgUtil.CallOPQApiSendMsg(groupId, result, 2);
                     }
                 }else {
-                    String picBase64 = imageUtil.getImageBase64ByUrl(pic);
+//                    String picBase64 = imageUtil.getImageBase64ByUrl(pic);
                     for (Long groupId : groups) {
-                        sendMsgUtil.CallOPQApiSendImg(groupId, result, SendMsgUtil.picBase64Buf, picBase64, 2);
+                        sendMsgUtil.CallOPQApiSendImg(groupId, result, SendMsgUtil.picUrl, pic, 2);
                     }
                 }
             }
