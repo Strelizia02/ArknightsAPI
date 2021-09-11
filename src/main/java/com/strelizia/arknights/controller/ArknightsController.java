@@ -375,7 +375,7 @@ public class ArknightsController {
                 result = "";
                 break;
             case GuanZhuLieBiao:
-                result = biliListeningService.getBiliList();
+                result = biliListeningService.getBiliList(groupId);
                 break;
             case ZuiXinTouGao:
                 result = biliListeningService.getVideo(qq, s[1]);

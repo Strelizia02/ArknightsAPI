@@ -13,6 +13,8 @@ public interface BiliMapper {
     //获取所有信息
     List<BiliCount> getBiliCountList();
 
+    List<BiliCount> getBiliCountListByGroupId(@Param("groupId") Long groupId);
+
     Integer updateNewDynamic(BiliCount bili);
 
     BiliCount getOneDynamicByName(String name);

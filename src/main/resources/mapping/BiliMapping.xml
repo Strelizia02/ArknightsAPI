@@ -25,6 +25,21 @@
             a_bili_dynamic
     </select>
 
+    <select id="getBiliCountListByGroupId" resultMap="BaseResultMap">
+        SELECT
+            uid,
+            name,
+            top,
+            first,
+            second,
+            third,
+            fourth,
+            fifth
+        FROM
+            a_bili_dynamic
+        where uid in (select uid from a_group_bili_rel where group_id = #{groupId})
+    </select>
+
     <select id="getOneDynamicByName" parameterType="java.lang.String" resultMap="BaseResultMap">
         SELECT
             uid,

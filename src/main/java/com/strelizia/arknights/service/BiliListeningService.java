@@ -20,7 +20,7 @@ public interface BiliListeningService {
     String getDynamic(Long qq, Long groupId, String name, int index);
 
     //关注列表
-    String getBiliList();
+    String getBiliList(Long groupId);
 
     String setGroupBiliRel(Long qq, Long groupId, String uid);
 

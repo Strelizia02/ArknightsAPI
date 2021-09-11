@@ -221,13 +221,17 @@ public class BiliListeningServiceImpl implements BiliListeningService {
     }
 
     @Override
-    public String getBiliList() {
-        List<BiliCount> bilis = biliMapper.getBiliCountList();
-        StringBuilder s = new StringBuilder();
-        for (BiliCount bili : bilis) {
-            s.append("\n用户：").append(bili.getName()).append("\tUid:").append(bili.getUid());
+    public String getBiliList(Long groupId) {
+        List<BiliCount> bilis = biliMapper.getBiliCountListByGroupId(groupId);
+        if (bilis.size() > 0) {
+            StringBuilder s = new StringBuilder("");
+            for (BiliCount bili : bilis) {
+                s.append("\n用户：").append(bili.getName()).append("\tUid:").append(bili.getUid());
+            }
+            return s.substring(1);
+        }else {
+            return "本群暂时还没有关注up哦~";
         }
-        return s.substring(1);
     }
 
     @Override
