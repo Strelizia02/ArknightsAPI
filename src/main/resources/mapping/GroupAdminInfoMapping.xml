@@ -24,9 +24,17 @@
             a_group_admin
     </select>
 
+    <select id="existGroupId" resultType="java.lang.Integer">
+        select count(*) as count from a_group_admin where group_id = #{groupId}
+    </select>
+
     <insert id="insertGroupId">
         insert into a_group_admin (group_id) VALUES (#{groupId})
     </insert>
+
+    <update id="setGroupCake">
+        update a_group_admin set cake = 1 where group_id = #{groupId}
+    </update>
 
     <update id="updatePictureAdmin">
         update a_group_admin

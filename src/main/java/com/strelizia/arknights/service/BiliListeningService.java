@@ -21,4 +21,6 @@ public interface BiliListeningService {
 
     //关注列表
     String getBiliList();
+
+    String setGroupBiliRel(Long qq, Long groupId, String uid);
 }

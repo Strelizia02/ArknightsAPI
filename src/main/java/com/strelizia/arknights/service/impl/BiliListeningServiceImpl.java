@@ -1,10 +1,15 @@
 package com.strelizia.arknights.service.impl;
 
+import com.strelizia.arknights.dao.AdminUserMapper;
 import com.strelizia.arknights.dao.BiliMapper;
+import com.strelizia.arknights.dao.GroupAdminInfoMapper;
 import com.strelizia.arknights.dao.UserFoundMapper;
+import com.strelizia.arknights.model.AdminUserInfo;
 import com.strelizia.arknights.model.BiliCount;
 import com.strelizia.arknights.model.DynamicDetail;
+import com.strelizia.arknights.model.GroupAdminInfo;
 import com.strelizia.arknights.service.BiliListeningService;
+import com.strelizia.arknights.util.AdminUtil;
 import com.strelizia.arknights.util.ImageUtil;
 import com.strelizia.arknights.util.SendMsgUtil;
 import lombok.extern.slf4j.Slf4j;
@@ -15,6 +20,7 @@ import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
 import org.springframework.stereotype.Service;
+import org.springframework.util.DigestUtils;
 import org.springframework.web.client.RestTemplate;
 
 import java.util.ArrayList;
@@ -35,6 +41,9 @@ public class BiliListeningServiceImpl implements BiliListeningService {
     private UserFoundMapper userFoundMapper;
 
     @Autowired
+    private GroupAdminInfoMapper groupAdminInfoMapper;
+
+    @Autowired
     private SendMsgUtil sendMsgUtil;
 
     @Autowired
@@ -42,6 +51,9 @@ public class BiliListeningServiceImpl implements BiliListeningService {
 
     @Autowired
     private ImageUtil imageUtil;
+
+    @Autowired
+    private AdminUserMapper adminUserMapper;
 
     @Override
     public boolean getDynamicList() {
@@ -216,5 +228,34 @@ public class BiliListeningServiceImpl implements BiliListeningService {
             s.append("\n用户：").append(bili.getName()).append("\tUid:").append(bili.getUid());
         }
         return s.substring(1);
+    }
+
+    @Override
+    public String setGroupBiliRel(Long qq, Long groupId, String biliId) {
+        List<AdminUserInfo> admins = adminUserMapper.selectAllAdmin();
+        String qqMd5 = DigestUtils.md5DigestAsHex(qq.toString().getBytes());
+        boolean b = AdminUtil.getupLoadAdmin(qqMd5, admins);
+        if (b) {
+            Integer integer = groupAdminInfoMapper.existGroupId(groupId);
+            if (integer == 0) {
+                groupAdminInfoMapper.insertGroupId(groupId);
+                groupAdminInfoMapper.setGroupCake(groupId);
+            }
+            Long uid = Long.parseLong(biliId);
+            Integer integer1 = biliMapper.existBiliUid(uid);
+            if (integer1 == 0) {
+                biliMapper.insertBiliUid(uid);
+            }
+
+            Integer relation = biliMapper.selectGroupBiliRel(groupId, uid);
+            if (relation == 0) {
+                biliMapper.insertGroupBiliRel(groupId, uid);
+                return "关注成功";
+            } else {
+                return "本群已经关注了这个uid";
+            }
+        }else {
+            return "您无权进行关注，请联系开发者";
+        }
     }
 }

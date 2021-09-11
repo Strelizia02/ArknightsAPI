@@ -501,6 +501,9 @@ public class ArknightsController {
             case MoZuChaXun:
                 result = equipService.getOperatorEquip(qq, groupId, s[1]);
                 break;
+            case GuanZhu:
+                result = biliListeningService.setGroupBiliRel(qq, groupId, s[1]);
+                break;
             default:
                 result = "俺不晓得你在锁啥子";
         }

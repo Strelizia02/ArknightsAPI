@@ -214,6 +214,8 @@ public class ClassificationUtil {
         map.put("模组查询", MoZuChaXun);
         map.put("查询模组", MoZuChaXun);
 
+        map.put("关注", GuanZhu);
+
         return map.get(s);
     }
 }

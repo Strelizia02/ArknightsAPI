@@ -40,6 +40,14 @@
         WHERE name = #{name}
     </select>
 
+    <select id="existBiliUid" resultType="java.lang.Integer">
+        select count(*) from a_bili_dynamic where uid = #{uid}
+    </select>
+
+    <select id="selectGroupBiliRel" resultType="java.lang.Integer">
+        select count(*) from a_group_bili_rel where uid = #{uid} and group_id = #{groupId}
+    </select>
+
     <update id="updateNewDynamic">
         UPDATE a_bili_dynamic
         SET
@@ -52,4 +60,12 @@
             fifth = #{fifth}
         WHERE uid = #{uid}
     </update>
+
+    <insert id="insertGroupBiliRel">
+        insert into a_group_bili_rel (group_id, uid) values(#{groupId}, #{uid})
+    </insert>
+
+    <insert id="insertBiliUid">
+        insert into a_bili_dynamic (uid) values (#{uid})
+    </insert>
 </mapper>

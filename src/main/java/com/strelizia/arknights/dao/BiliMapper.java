@@ -1,6 +1,7 @@
 package com.strelizia.arknights.dao;
 
 import com.strelizia.arknights.model.BiliCount;
+import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 
@@ -15,4 +16,12 @@ public interface BiliMapper {
     Integer updateNewDynamic(BiliCount bili);
 
     BiliCount getOneDynamicByName(String name);
+
+    Integer insertGroupBiliRel(@Param("groupId") Long groupId, @Param("uid") Long uid);
+
+    Integer selectGroupBiliRel(@Param("groupId") Long groupId, @Param("uid") Long uid);
+
+    Integer existBiliUid(@Param("uid") Long uid);
+
+    Integer insertBiliUid(@Param("uid") Long uid);
 }
