@@ -50,7 +50,7 @@ CREATE TABLE `a_agent`  (
 -- ----------------------------
 DROP TABLE IF EXISTS `a_bili_dynamic`;
 CREATE TABLE `a_bili_dynamic`  (
-  `uid` int(0) NOT NULL,
+  `uid` bigint(0) NOT NULL,
   `name` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
   `top` bigint(0) NULL DEFAULT 0,
   `first` bigint(0) NULL DEFAULT 0,
@@ -60,6 +60,16 @@ CREATE TABLE `a_bili_dynamic`  (
   `fifth` bigint(0) NULL DEFAULT 0,
   PRIMARY KEY (`uid`) USING BTREE
 ) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
+
+-- ----------------------------
+-- Table structure for a_group_bili_rel
+-- ----------------------------
+DROP TABLE IF EXISTS `a_group_bili_rel`;
+CREATE TABLE `a_group_bili_rel`  (
+  `group_id` bigint(0) NOT NULL,
+  `uid` bigint(0) NULL DEFAULT NULL,
+  PRIMARY KEY (`group_id`) USING BTREE
+) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
 -- Table structure for a_data_version
