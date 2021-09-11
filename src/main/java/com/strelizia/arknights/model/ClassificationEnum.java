@@ -59,5 +59,6 @@ public enum ClassificationEnum {
     ShouYuJiaMi,
     ShouYuFanYi,
     MoZuChaXun,
-    GuanZhu
+    GuanZhu,
+    QuXiaoGuanZhu
 }

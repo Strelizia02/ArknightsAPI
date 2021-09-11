@@ -258,4 +258,10 @@ public class BiliListeningServiceImpl implements BiliListeningService {
             return "您无权进行关注，请联系开发者";
         }
     }
+
+    @Override
+    public String removeGroupBiliRel(Long qq, Long groupId, String uid) {
+
+        return null;
+    }
 }

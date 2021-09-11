@@ -68,4 +68,8 @@
     <insert id="insertBiliUid">
         insert into a_bili_dynamic (uid) values (#{uid})
     </insert>
+
+    <delete id="deleteGroupBiliRel">
+        delete from a_group_bili_rel where uid = #{uid} and group_id = #{groupId}
+    </delete>
 </mapper>

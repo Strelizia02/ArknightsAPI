@@ -216,6 +216,8 @@ public class ClassificationUtil {
 
         map.put("关注", GuanZhu);
 
+        map.put("取消关注", QuXiaoGuanZhu);
+
         return map.get(s);
     }
 }

@@ -504,6 +504,9 @@ public class ArknightsController {
             case GuanZhu:
                 result = biliListeningService.setGroupBiliRel(qq, groupId, s[1]);
                 break;
+            case QuXiaoGuanZhu:
+                result = biliListeningService.removeGroupBiliRel(qq, groupId, s[1]);
+                break;
             default:
                 result = "俺不晓得你在锁啥子";
         }

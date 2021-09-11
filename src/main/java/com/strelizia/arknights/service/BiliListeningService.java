@@ -23,4 +23,6 @@ public interface BiliListeningService {
     String getBiliList();
 
     String setGroupBiliRel(Long qq, Long groupId, String uid);
+
+    String removeGroupBiliRel(Long qq, Long groupId, String uid);
 }

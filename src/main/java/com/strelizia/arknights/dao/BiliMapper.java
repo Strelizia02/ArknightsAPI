@@ -19,6 +19,8 @@ public interface BiliMapper {
 
     Integer insertGroupBiliRel(@Param("groupId") Long groupId, @Param("uid") Long uid);
 
+    Integer deleteGroupBiliRel(@Param("groupId") Long groupId, @Param("uid") Long uid);
+
     Integer selectGroupBiliRel(@Param("groupId") Long groupId, @Param("uid") Long uid);
 
     Integer existBiliUid(@Param("uid") Long uid);
