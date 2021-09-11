@@ -260,8 +260,16 @@ public class BiliListeningServiceImpl implements BiliListeningService {
     }
 
     @Override
-    public String removeGroupBiliRel(Long qq, Long groupId, String uid) {
-
-        return null;
+    public String removeGroupBiliRel(Long qq, Long groupId, String biliId) {
+        List<AdminUserInfo> admins = adminUserMapper.selectAllAdmin();
+        String qqMd5 = DigestUtils.md5DigestAsHex(qq.toString().getBytes());
+        boolean b = AdminUtil.getupLoadAdmin(qqMd5, admins);
+        if (b) {
+            Long uid = Long.parseLong(biliId);
+            biliMapper.deleteGroupBiliRel(groupId, uid);
+            return "取消关注成功";
+        }else {
+            return "您无权进行关注更改";
+        }
     }
 }
