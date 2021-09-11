@@ -32,6 +32,12 @@
         <result column="potential" property="potential" jdbcType="INTEGER"/>
     </resultMap>
 
+    <resultMap id="NameResultMap" type="com.strelizia.arknights.model.OperatorName">
+        <result column="operator_name" property="operatorName" jdbcType="VARCHAR"/>
+        <result column="char_id" property="charId" jdbcType="VARCHAR"/>
+    </resultMap>
+
+
     <select id="getOperatorNameByInfo" parameterType="java.lang.String" resultType="java.lang.String">
         SELECT
             operator_name
@@ -65,6 +71,17 @@
     <select id="getAllOperatorId" resultType="java.lang.String">
         SELECT
             char_id
+        FROM
+            t_operator
+        WHERE
+            char_id IS NOT NULL
+        GROUP BY
+            char_id
+    </select>
+
+    <select id="getAllOperatorIdAndName" resultMap="NameResultMap">
+        SELECT
+            char_id, operator_name
         FROM
             t_operator
         WHERE

@@ -85,7 +85,7 @@
     </select>
 
     <select id="selectCakeGroups" resultType="java.lang.Long">
-        SELECT group_id FROM a_group_admin where cake=1
+        SELECT group_id FROM a_group_admin where cake=1 AND group_id in (SELECT group_id from a_group_bili_rel where uid = #{uid})
     </select>
 
     <select id="selectTodaySearchByQQ" resultType="java.lang.Integer">

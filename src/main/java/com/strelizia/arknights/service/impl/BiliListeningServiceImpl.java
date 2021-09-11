@@ -89,7 +89,7 @@ public class BiliListeningServiceImpl implements BiliListeningService {
                         newDetail.getText() + "\n" + biliSpace;
                 log.info("{}有新动态", name);
                 b = true;
-                List<Long> groups = userFoundMapper.selectCakeGroups();
+                List<Long> groups = userFoundMapper.selectCakeGroups(bili.getUid());
                 String pic = newDetail.getPicUrl();
                 if (pic == null) {
                     for (Long groupId : groups) {

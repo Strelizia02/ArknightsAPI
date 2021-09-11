@@ -1,6 +1,7 @@
 package com.strelizia.arknights.dao;
 
 import com.strelizia.arknights.model.OperatorBasicInfo;
+import com.strelizia.arknights.model.OperatorName;
 import com.strelizia.arknights.model.TalentInfo;
 import org.apache.ibatis.annotations.Param;
 
@@ -20,6 +21,9 @@ public interface OperatorInfoMapper {
 
     //获取全部干员列表
     List<String> getAllOperatorId();
+
+    //获取全部干员姓名
+    List<OperatorName> getAllOperatorIdAndName();
 
     //查找干员档案
     OperatorBasicInfo getOperatorInfoByName(String name);

@@ -6,19 +6,26 @@ import com.strelizia.arknights.service.UpdateDataService;
 import com.strelizia.arknights.util.FormatStringUtil;
 import com.strelizia.arknights.util.ImageUtil;
 import com.strelizia.arknights.util.SendMsgUtil;
+import com.strelizia.arknights.util.XPathUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.json.JSONArray;
 import org.json.JSONObject;
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
+import org.jsoup.nodes.Element;
+import org.jsoup.select.Elements;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.*;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
+import java.net.MalformedURLException;
 import java.text.SimpleDateFormat;
 import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import io.github.mzdluo123.silk4j.*;
 
 /**
  * @author wangzy
@@ -65,6 +72,7 @@ public class UpdateDataServiceImpl implements UpdateDataService {
 
     @Autowired
     private EquipMapper equipMapper;
+
     @Value("${userConfig.loginQq}")
     private Long loginQq;
 
@@ -579,6 +587,33 @@ public class UpdateDataServiceImpl implements UpdateDataService {
             }
         }
         sendMsgUtil.CallOPQApiSendMyself("干员立绘更新完成\n--"
+                + sdf.format(new Date()));
+    }
+
+    /**
+     * 更新干员语音，增量更新
+     */
+    public void updateOperatorVoice() {
+        log.info("开始更新干员语音");
+        List<OperatorName> allOperatorId = operatorInfoMapper.getAllOperatorIdAndName();
+        for (OperatorName name : allOperatorId) {
+            String html = XPathUtil.getHtmlByUrl("http://prts.wiki/w/" + name.getOperatorName());
+            Document document = Jsoup.parse(html);
+            Elements as = document.select("a[download]");
+            for (Element a: as){
+                String url = a.attr("href");
+                String[] split = url.split("/");
+                String fileName = split[split.length - 1];
+                String path = "voice/" + name.getCharId() + "/" + fileName;
+                try {
+                    XPathUtil.downloadNet(url, path);
+//                    SilkCoder.encode();
+                } catch (MalformedURLException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+        sendMsgUtil.CallOPQApiSendMyself("开始更新干员语音\n--"
                 + sdf.format(new Date()));
     }
 

@@ -5,7 +5,7 @@ package com.strelizia.arknights.model;
  * @Date 2021/1/12 17:19
  **/
 public class BiliCount {
-    private Integer uid;
+    private Long uid;
     private String name;
     private Long top;
     private Long first;
@@ -14,11 +14,11 @@ public class BiliCount {
     private Long fourth;
     private Long fifth;
 
-    public Integer getUid() {
+    public Long getUid() {
         return uid;
     }
 
-    public void setUid(Integer uid) {
+    public void setUid(Long uid) {
         this.uid = uid;
     }
 

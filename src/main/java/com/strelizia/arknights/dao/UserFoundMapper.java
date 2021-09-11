@@ -58,7 +58,7 @@ public interface UserFoundMapper {
 
     List<Long> selectAllGroups();
 
-    List<Long> selectCakeGroups();
+    List<Long> selectCakeGroups(@Param("uid") Long uid);
 
     //抽卡数
     Integer selectTodaySearchByQQ(String qq);

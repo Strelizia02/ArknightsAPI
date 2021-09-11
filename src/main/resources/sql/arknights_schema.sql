@@ -77,9 +77,10 @@ DROP TABLE IF EXISTS `a_group_admin`;
 CREATE TABLE `a_group_admin`  (
   `group_id` int(0) NOT NULL,
   `found` int(0) NULL DEFAULT 20,
-  `picture` int(0) NULL DEFAULT 5,
+  `picture` int(0) NULL DEFAULT 0,
   `question_status` int(0) NULL DEFAULT 0,
   `question_id` int(0) NULL DEFAULT 0,
+  `cake` int(0) NULL DEFAULT 0,
   PRIMARY KEY (`group_id`) USING BTREE
 ) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
 
