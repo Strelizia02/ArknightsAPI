@@ -67,8 +67,7 @@ CREATE TABLE `a_bili_dynamic`  (
 DROP TABLE IF EXISTS `a_group_bili_rel`;
 CREATE TABLE `a_group_bili_rel`  (
   `group_id` bigint(0) NOT NULL,
-  `uid` bigint(0) NULL DEFAULT NULL,
-  PRIMARY KEY (`group_id`) USING BTREE
+  `uid` bigint(0) NULL DEFAULT NULL
 ) ENGINE = InnoDB CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
