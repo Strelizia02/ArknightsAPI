@@ -32,10 +32,6 @@
         insert into a_group_admin (group_id) VALUES (#{groupId})
     </insert>
 
-    <update id="setGroupCake">
-        update a_group_admin set cake = 1 where group_id = #{groupId}
-    </update>
-
     <update id="updatePictureAdmin">
         update a_group_admin
         set

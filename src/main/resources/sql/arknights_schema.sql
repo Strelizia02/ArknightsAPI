@@ -89,7 +89,6 @@ CREATE TABLE `a_group_admin`  (
   `picture` int(0) NULL DEFAULT 0,
   `question_status` int(0) NULL DEFAULT 0,
   `question_id` int(0) NULL DEFAULT 0,
-  `cake` int(0) NULL DEFAULT 0,
   PRIMARY KEY (`group_id`) USING BTREE
 ) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
 

@@ -243,7 +243,6 @@ public class BiliListeningServiceImpl implements BiliListeningService {
             Integer integer = groupAdminInfoMapper.existGroupId(groupId);
             if (integer == 0) {
                 groupAdminInfoMapper.insertGroupId(groupId);
-                groupAdminInfoMapper.setGroupCake(groupId);
             }
             Long uid = Long.parseLong(biliId);
             Integer integer1 = biliMapper.existBiliUid(uid);

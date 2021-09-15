@@ -151,7 +151,7 @@ public class AgentServiceImpl implements AgentService {
             g.setFont(new Font("楷体", Font.BOLD, 20));
             g.setColor(Color.WHITE);
             g.drawString("结果仅供参考，详细代码请见：", 470, 420);
-            g.drawString("https://github.com/Strelizia02/ArknightsAPI", 470, 440);
+            g.drawString("http://www.angelina-bot.top/", 470, 440);
             g.dispose();
             sendMsgUtil.CallOPQApiSendImg(groupId, "[ATUSER(" + qq + ")]", SendMsgUtil.picBase64Buf,
                     replaceEnter(new BASE64Encoder().encode(TextToImage.imageToBytes(image))), 2);

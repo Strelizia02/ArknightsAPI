@@ -10,7 +10,6 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
-import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
 import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
@@ -113,7 +112,7 @@ public class SendMsgUtil {
                         sendTextImgToGroup(restTemplate, groupId, atUser, SendMsgUtil.picBase64Buf, TextToImage.createImage(str, new Font("楷体", Font.PLAIN, 50)),
                                 "http://" + OPQUrl + ":8888" + sendTextMsgApi + "?qq=" + loginQq + "&funcname=SendMsgV2", sendToType);
                     } else {
-                        sendTextImgToGroup(restTemplate, groupId, atUser, SendMsgUtil.picBase64Buf, TextToImage.createImage(str, new Font("楷体", Font.PLAIN, 100)),
+                        sendTextImgToGroup(restTemplate, groupId, atUser, SendMsgUtil.picBase64Buf, TextToImage.createImage(str, new Font("楷体", Font.PLAIN, 50)),
                                 "http://" + OPQUrl + ":8888" + sendTextMsgApi + "?qq=" + loginQq + "&funcname=SendMsgV2", sendToType);
                     }
                 } else {

@@ -24,6 +24,4 @@ public interface GroupAdminInfoMapper {
 
     Integer existGroupId(@Param("groupId")Long groupId);
 
-    Integer setGroupCake(@Param("groupId")Long groupId);
-
 }
