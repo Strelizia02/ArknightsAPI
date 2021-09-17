@@ -57,7 +57,7 @@ public class EquipServiceImpl implements EquipService {
             s.append("干员").append(name).append("的模组信息为：\n")
                 .append("  模组名称： ").append(equipInfo.getEquipName()).append("\n")
                 .append("  模组特性： ").append(equipInfo.getDesc()).append("\n")
-                .append("  解锁等级： 专精").append(equipInfo.getPhase()).append(" ").append(equipInfo.getLevel()).append("级\n");
+                .append("  解锁等级： 精英化").append(equipInfo.getPhase()).append(" ").append(equipInfo.getLevel()).append("级\n");
             int i = 1;
             s.append("  解锁条件：\n");
             for (String mission : strings){

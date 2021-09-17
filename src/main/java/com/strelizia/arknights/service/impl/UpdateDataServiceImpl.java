@@ -909,13 +909,16 @@ public class UpdateDataServiceImpl implements UpdateDataService {
             String addStr = additionalDescription.toString();
             String overStr = overrideDescripton.toString();
 
-            if (addStr.equals(""))
-            {
-                addStr = "无";
+            if (addStr.equals("")) {
+                addStr = "\n\t新增天赋：无";
+            }else {
+                addStr = "\n\t新增天赋：" + addStr;
             }
             if (overStr.equals(""))
             {
-                overStr = "无";
+                overStr = "\n\t天赋变化：无";
+            }else {
+                overStr = "\n\t天赋变化：" + overStr;
             }
             String talentDesc = addStr + overStr;
             equipInfo.setDesc(talentDesc);
