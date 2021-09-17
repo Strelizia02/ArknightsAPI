@@ -23,8 +23,9 @@ public class UpdateController {
 
     @GetMapping("update")
     public Integer update() {
-        updateDataService.updateAllData(false);
-        updateDataService.updateSkin();
+//        updateDataService.updateAllData(false);
+//        updateDataService.updateSkin();
+        updateDataService.updateOperatorEquipByJson();
         return 0;
     }
 

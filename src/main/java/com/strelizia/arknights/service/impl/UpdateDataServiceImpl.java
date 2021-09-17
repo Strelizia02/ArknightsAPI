@@ -174,7 +174,7 @@ public class UpdateDataServiceImpl implements UpdateDataService {
             }
         }
         //更新模组信息
-        updateOperatorByJson();
+        updateOperatorEquipByJson();
 
         //近卫兔兔单独处理
         String amiyaSword = "https://cdn.jsdelivr.net/gh/Kengxxiao/ArknightsGameData@master/zh_CN/gamedata/excel/char_patch_table.json";
@@ -865,7 +865,7 @@ public class UpdateDataServiceImpl implements UpdateDataService {
         return operatorId;
     }
 
-    public void updateOperatorByJson(){
+    public void updateOperatorEquipByJson(){
         String equipUrl = "https://cdn.jsdelivr.net/gh/Kengxxiao/ArknightsGameData@master/zh_CN/gamedata/excel/battle_equip_table.json";
         String equipUnlockUrl = "https://cdn.jsdelivr.net/gh/Kengxxiao/ArknightsGameData@master/zh_CN/gamedata/excel/uniequip_table.json";
         JSONObject equip = new JSONObject(getJsonStringFromUrl(equipUrl));
@@ -882,43 +882,45 @@ public class UpdateDataServiceImpl implements UpdateDataService {
             equipInfo.setCharId(equipDict.getString("charId"));
 
             JSONArray phases = equip.getJSONObject(key).getJSONArray("phases");
-            JSONObject candidates = phases.getJSONObject(0).getJSONArray("parts").getJSONObject(0).
-                    getJSONObject("overrideTraitDataBundle").getJSONArray("candidates").getJSONObject(0);
-            String additionalDescription = "";
-            //获取key-value列表
-            Map<String, Double> parameters = new HashMap<>();
-            JSONArray mapList = candidates.getJSONArray("blackboard");
-            for (int keyId = 0; keyId < mapList.length(); keyId++) {
-                parameters.put(mapList.getJSONObject(keyId).getString("key").toLowerCase(),
-                        mapList.getJSONObject(keyId).getDouble("value"));
-            }
-            if (candidates.get("additionalDescription") instanceof String){
-                additionalDescription = candidates.getString("additionalDescription");
-            }
-            else {
-                additionalDescription = candidates.getString("overrideDescripton");
-            }
-            Pattern pattern = Pattern.compile("<(.*?)>");
-            Matcher matcher = pattern.matcher(additionalDescription);
-            Pattern p = Pattern.compile("(\\{-?([a-zA-Z/.\\]\\[0-9_@]+):?([0-9.]*)(%?)\\})");
-            Matcher m = p.matcher(matcher.replaceAll(""));
-            StringBuffer stringBuffer = new StringBuffer();
+            JSONArray candidates = phases.getJSONObject(0).getJSONArray("parts").getJSONObject(0).
+                    getJSONObject("overrideTraitDataBundle").getJSONArray("candidates");
 
-            while (m.find()) {
-                String buffKey = m.group(2).toLowerCase();
-                String percent = m.group(4);
-
-                Double val = parameters.get(buffKey);
-                String value;
-                if (!percent.equals("")) {
-                    val = val * 100;
+            //天赋变化
+            StringBuilder additionalDescription = new StringBuilder("");
+            StringBuilder overrideDescripton = new StringBuilder("");
+            for(int i = 0; i < candidates.length(); i++) {
+                JSONObject candidate = candidates.getJSONObject(i);
+                //获取key-value列表
+                Map<String, Double> parameters = new HashMap<>();
+                JSONArray mapList = candidate.getJSONArray("blackboard");
+                for (int keyId = 0; keyId < mapList.length(); keyId++) {
+                    parameters.put(mapList.getJSONObject(keyId).getString("key").toLowerCase(),
+                            mapList.getJSONObject(keyId).getDouble("value"));
                 }
-                value = FormatStringUtil.FormatDouble2String(val) + percent;
-                m.appendReplacement(stringBuffer, value);
+                if (candidate.get("additionalDescription") instanceof String) {
+                    String additional = candidate.getString("additionalDescription");
+                    additionalDescription.append(getValueByKeysFormatString(additional, parameters));
+                }
+                if (candidate.get("overrideDescripton") instanceof String) {
+                    String override = candidate.getString("overrideDescripton");
+                    overrideDescripton.append(getValueByKeysFormatString(override, parameters));
+                }
             }
-            equipInfo.setDesc(stringBuffer.toString());
-            equipInfo.setLevel(candidates.getJSONObject("unlockCondition").getInt("level"));
-            equipInfo.setPhase(candidates.getJSONObject("unlockCondition").getInt("phase"));
+            String addStr = additionalDescription.toString();
+            String overStr = overrideDescripton.toString();
+
+            if (addStr.equals(""))
+            {
+                addStr = "无";
+            }
+            if (overStr.equals(""))
+            {
+                overStr = "无";
+            }
+            String talentDesc = addStr + overStr;
+            equipInfo.setDesc(talentDesc);
+            equipInfo.setLevel(candidates.getJSONObject(0).getJSONObject("unlockCondition").getInt("level"));
+            equipInfo.setPhase(candidates.getJSONObject(0).getJSONObject("unlockCondition").getInt("phase"));
             equipMapper.insertEquipInfo(equipInfo);
 
             for (int i = 0; i < phases.length(); i++)
@@ -945,5 +947,28 @@ public class UpdateDataServiceImpl implements UpdateDataService {
                 equipMapper.insertEquipMission(key, missionId, desc);
             }
         }
+    }
+
+    public String getValueByKeysFormatString(String s, Map<String, Double> parameters){
+        Pattern pattern = Pattern.compile("<(.*?)>");
+        Matcher matcher = pattern.matcher(s);
+        Pattern p = Pattern.compile("(\\{-?([a-zA-Z/.\\]\\[0-9_@]+):?([0-9.]*)(%?)\\})");
+        Matcher m = p.matcher(matcher.replaceAll(""));
+        StringBuffer stringBuffer = new StringBuffer();
+
+        while (m.find()) {
+            String buffKey = m.group(2).toLowerCase();
+            String percent = m.group(4);
+
+            Double val = parameters.get(buffKey);
+            String value;
+            if (!percent.equals("")) {
+                val = val * 100;
+            }
+            value = FormatStringUtil.FormatDouble2String(val) + percent;
+            m.appendReplacement(stringBuffer, value);
+        }
+        String str = m.appendTail(stringBuffer).toString().replace("--", "-");
+        return str;
     }
 }

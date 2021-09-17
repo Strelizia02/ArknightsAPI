@@ -53,7 +53,7 @@ public class EquipServiceImpl implements EquipService {
             List<EquipBuff> equipBuffs = equipMapper.selectEquipBuffById(equipId);
             List<MaterialInfo> materialInfos = equipMapper.selectEquipCostById(equipId);
             List<String> strings = equipMapper.selectEquipMissionById(equipId);
-            StringBuilder s = new StringBuilder("[ATUSER(" + qq + ")]");
+            StringBuilder s = new StringBuilder("");
             s.append("干员").append(name).append("的模组信息为：\n")
                 .append("  模组名称： ").append(equipInfo.getEquipName()).append("\n")
                 .append("  模组特性： ").append(equipInfo.getDesc()).append("\n")
@@ -75,7 +75,7 @@ public class EquipServiceImpl implements EquipService {
             }
             s.append("  解锁材料： \n");
             try {
-                sendImageWithPic(groupId, materialInfos, s.toString());
+                sendImageWithPic(groupId, materialInfos, s.toString(), qq);
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -106,7 +106,7 @@ public class EquipServiceImpl implements EquipService {
         }
     }
 
-    public void sendImageWithPic(Long groupId, List<MaterialInfo> materialInfos, String s) throws Exception {
+    public void sendImageWithPic(Long groupId, List<MaterialInfo> materialInfos, String s, Long qq) throws Exception {
         Text t = new Text(s);
         Font font = new Font("楷体", Font.PLAIN, 100);
 
@@ -151,7 +151,7 @@ public class EquipServiceImpl implements EquipService {
 //        } catch (IOException e) {
 //            e.printStackTrace();
 //        }
-        sendMsgUtil.CallOPQApiSendImg(groupId, null, SendMsgUtil.picBase64Buf,
+        sendMsgUtil.CallOPQApiSendImg(groupId, "[ATUSER(" + qq + ")]", SendMsgUtil.picBase64Buf,
                 replaceEnter(new BASE64Encoder().encode(TextToImage.imageToBytes(image))), 2);
     }
 }

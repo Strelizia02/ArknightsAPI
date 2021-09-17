@@ -16,7 +16,7 @@ public interface UpdateDataService {
 
     void updateSkin();
 
-    void updateOperatorByJson();
+    void updateOperatorEquipByJson();
 
     void updateItemAndFormula();
 }
