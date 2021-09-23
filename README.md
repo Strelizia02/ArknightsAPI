@@ -70,6 +70,8 @@ main：
 
 # 项目部署：
 
+[项目主页](http://www.angelina-bot.top/)
+
 [机器人框架部署文档](https://github.com/OPQBOT/OPQ/wiki/%E5%AE%89%E8%A3%85%E6%8C%87%E5%8D%97)
 
 [本项目部署文档](https://www.cnblogs.com/strelizia/p/14120201.html)
@@ -92,7 +94,7 @@ main：
 
 # 售后服务：
 
-bug报修请私信博客园，内容包括但不限于：bug触发条件、截图、报错信息。
+bug报修请私信博客园，或者在测试QQ群【洁哥妙妙屋(691029037)】中私聊群主，内容包括但不限于：bug触发条件、截图、报错信息。
 
 [博客地址](https://www.cnblogs.com/strelizia/)，有其他问题也可直接联系。不定期收私信，可能回复有延迟。
 
