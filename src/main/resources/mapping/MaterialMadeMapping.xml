@@ -141,6 +141,10 @@
         select material_id from t_material
     </select>
 
+    <select id="selectAllMaterIconId" resultType="java.lang.String">
+        select material_icon from t_material where material_id = #{id}
+    </select>
+
     <select id="selectMaterialPicById" parameterType="java.lang.String" resultType="java.lang.String">
         select material_pic from t_material where material_id = #{id}
     </select>

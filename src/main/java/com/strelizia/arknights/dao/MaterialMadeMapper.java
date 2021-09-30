@@ -53,6 +53,9 @@ public interface MaterialMadeMapper {
     //查询全部材料id
     List<String> selectAllMaterId();
 
+    //查询材料图标id
+    String selectAllMaterIconId(@Param("id") String id);
+
     //更新材料图标
     Integer updateBase64ById(@Param("base64") String base64, @Param("id") String id);
 }
