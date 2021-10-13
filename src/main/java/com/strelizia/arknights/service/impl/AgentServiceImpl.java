@@ -164,7 +164,7 @@ public class AgentServiceImpl implements AgentService {
 //            }
             userFoundMapper.updateTodaySearch(qqMd5, name, groupId);
             return "";
-        }else if (today >= limit && search < 2){
+        }else if (today < limit){
             return "您今日的图片寻访次数已用完，请使用[##十连]进行文字抽卡";
         }else {
             return "今日抽卡机会无了";
