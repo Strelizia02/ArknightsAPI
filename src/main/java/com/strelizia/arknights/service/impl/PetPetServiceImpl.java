@@ -39,10 +39,10 @@ public class PetPetServiceImpl implements PetPetService {
         try {
             InputStream in = new FileInputStream(path);
             data = new byte[in.available()];
-            in.read(data);
-            in.close();
+            int read = in.read(data);
             String base = new BASE64Encoder().encode(Objects.requireNonNull(data));
             sendMsgUtil.CallOPQApiSendImg(groupId, text, SendMsgUtil.picBase64Buf, base, 2);
+            in.close();
         } catch (IOException ignored) {
         }
             }

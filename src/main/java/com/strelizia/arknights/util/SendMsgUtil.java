@@ -70,6 +70,28 @@ public class SendMsgUtil {
         restTemplate.postForEntity(sendTextMsgUrl, httpEntity, SendMsgRespInfo.class);
     }
 
+    private void sendXmlMsgToGroup(RestTemplate restTemplate, Long groupId, String Text, String sendTextMsgUrl, Integer sendToType) {
+        Map<String, Object> map = new HashMap<>(7);
+        map.put("ToUserUid", groupId);
+        map.put("SendToType", sendToType);
+        map.put("SendMsgType", "XmlMsg");
+        map.put("Content", Text);
+
+        String jsonData = null;
+        try {
+            jsonData = new ObjectMapper().writeValueAsString(map);
+        } catch (JsonProcessingException e) {
+            log.error("封装请求Body失败{}", e.getMessage());
+        }
+        //获取请求头
+        HttpHeaders httpHeaders = new HttpHeaders();
+        MediaType type = MediaType.parseMediaType("application/json; charset=UTF-8;OAuth e1bac1205283429d818c5ab6ae4c2b10");
+        httpHeaders.setContentType(type);
+        HttpEntity<String> httpEntity = new HttpEntity<>(jsonData, httpHeaders);
+        //发送请求，封装结果数据
+        restTemplate.postForEntity(sendTextMsgUrl, httpEntity, SendMsgRespInfo.class);
+    }
+
     private void sendTextImgToGroup(RestTemplate restTemplate, Long groupId, String Text, String picType, String url, String sendTextMsgUrl, Integer sendToType) {
         Map<String, Object> map = new HashMap<>(7);
         map.put("ToUserUid", groupId);
@@ -94,11 +116,20 @@ public class SendMsgUtil {
     }
 
     public void CallOPQApiSendMsg(Long groupId, String s, Integer sendToType) {
+        // TODO 临时去掉艾特功能
+        Pattern pattern1 = Pattern.compile("\\[ATUSER\\([0-9]*\\)]");
+        String str1 = s;
+        Matcher matcher1 = pattern1.matcher(str1);
+        if (matcher1.find())
+        {
+            str1 = matcher1.replaceAll("");
+        }
+        String finalStr = str1;
         poolTaskExecutor.execute(() -> {
             try {
                 String atUser = null;
                 Pattern pattern = Pattern.compile("\\[ATUSER\\([0-9]*\\)]");
-                String str = s;
+                String str = finalStr;
                 Matcher matcher = pattern.matcher(str);
                 if (matcher.find())
                 {
@@ -116,7 +147,7 @@ public class SendMsgUtil {
                                 "http://" + OPQUrl + ":8888" + sendTextMsgApi + "?qq=" + loginQq + "&funcname=SendMsgV2", sendToType);
                     }
                 } else {
-                    sendTextMsgToGroup(restTemplate, groupId, str,
+                    sendTextMsgToGroup(restTemplate, groupId, finalStr,
                             "http://" + OPQUrl + ":8888" + sendTextMsgApi + "?qq=" + loginQq + "&funcname=SendMsgV2", sendToType);
                 }
             } catch (Exception e) {
@@ -135,13 +166,38 @@ public class SendMsgUtil {
 //        log.info("发送消息{}成功",s);
 //    }
     public void CallOPQApiSendImg(Long groupId, String s, String picType, String imgUrl, Integer sendToType) {
-        poolTaskExecutor.execute(() -> sendTextImgToGroup(restTemplate, groupId, s, picType, imgUrl,
+        // TODO 临时去掉艾特功能
+        Pattern pattern = Pattern.compile("\\[ATUSER\\([0-9]*\\)]");
+        String str = s;
+        if(s != null) {
+            Matcher matcher = pattern.matcher(str);
+            if (matcher.find()) {
+                str = matcher.replaceAll("");
+            }
+        }
+        String finalStr = str;
+        poolTaskExecutor.execute(() -> sendTextImgToGroup(restTemplate, groupId, finalStr, picType, imgUrl,
+                "http://" + OPQUrl + ":8888" + sendTextMsgApi + "?qq=" + loginQq + "&funcname=SendMsgV2", sendToType));
+        log.info("发送消息图片+文字{}成功", s);
+    }
+
+    public void CallOPQApiSendXml(Long groupId, String s, Integer sendToType) {
+        poolTaskExecutor.execute(() -> sendXmlMsgToGroup(restTemplate, groupId, s,
                 "http://" + OPQUrl + ":8888" + sendTextMsgApi + "?qq=" + loginQq + "&funcname=SendMsgV2", sendToType));
         log.info("发送消息图片+文字{}成功", s);
     }
 
     public void CallOPQApiSendMyself(String s) {
-        poolTaskExecutor.execute(() -> sendTextMsgToGroup(restTemplate, loginQq, s,
+        // TODO 临时去掉艾特功能
+        Pattern pattern = Pattern.compile("\\[ATUSER\\([0-9]*\\)]");
+        String str = s;
+        Matcher matcher = pattern.matcher(str);
+        if (matcher.find())
+        {
+            str = matcher.replaceAll("");
+        }
+        String finalStr = str;
+        poolTaskExecutor.execute(() -> sendTextMsgToGroup(restTemplate, loginQq, finalStr,
                 "http://" + OPQUrl + ":8888" + sendTextMsgApi + "?qq=" + loginQq + "&funcname=SendMsgV2", 1));
     }
 }

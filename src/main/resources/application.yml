@@ -27,7 +27,7 @@ scheduled:
   exterminateJob: 0 0 17 ? * SUN
 userConfig:
   #登录的机器人qq
-  loginQq: 2398095263
+  loginQq:
   #OPQ框架部署的IP
   OPQUrl: localhost
 baiduConfig:

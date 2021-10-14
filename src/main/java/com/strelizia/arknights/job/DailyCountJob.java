@@ -20,11 +20,11 @@ public class DailyCountJob {
     private DailyCountService dailyCountService;
 
     //每天晚上8点发送当日统计结果
-    @Scheduled(cron = "${scheduled.countJob}")
-    @Async
+//    @Scheduled(cron = "${scheduled.countJob}")
+//    @Async
     public void dailyCountJob() {
-        dailyCountService.SendDailyCount();
-        log.info("{}每日日报发送成功", new Date());
+//        dailyCountService.SendDailyCount();
+//        log.info("{}每日日报发送成功", new Date());
     }
 
 }

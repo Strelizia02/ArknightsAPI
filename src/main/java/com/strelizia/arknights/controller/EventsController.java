@@ -113,7 +113,7 @@ public class EventsController {
                 eventData = new JSONObject(message.getEventData());
                 petPetService.PetPet(groupId, eventData.getLong("UserID"),
                         "谁撤回了消息？让我康康！");
-                sendMsgUtil.CallOPQApiSendMsg(groupId, "", 2);
+//                sendMsgUtil.CallOPQApiSendMsg(groupId, "", 2);
                 break;
             default:
                 result = "";
