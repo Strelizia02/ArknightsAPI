@@ -167,18 +167,35 @@ public class EnemyInfo {
         String silence = silenceImmune == 0 ? "有" : "无";
         String sleep = sleepImmune == 0 ? "有" : "无";
         String stun = stunImmune == 0 ? "有" : "无";
-        return "敌人" + name + "第" + level + "阶段的基础信息为:\n" +
-                "攻击力：" + atk +
-                "\t 攻击间隔：" + baseAttackTime +
-                "秒\n防御：" + def +
-                "\t魔抗：" + magicResistance +
-                "\n生命：" + maxHp +
-                "\t每秒回血：" + hpRecoveryPerSec +
-                "\n重量：" + massLevel +
-                "\t移动速度：" + moveSpeed +
-                "\n攻击范围：" + rangeRadius +
-                "格\n沉默免疫" + silence +
-                "\n睡眠免疫" + sleep +
-                "\n眩晕免疫" + stun;
+        if (name.contains("霜星")){
+            return "干员" + name + "第" + level + "阶段的基础信息为:\n" +
+                    "攻击力：" + atk +
+                    "\t 攻击间隔：" + baseAttackTime +
+                    "秒\n防御：" + def +
+                    "\t魔抗：" + magicResistance +
+                    "\n生命：" + maxHp +
+                    "\t每秒回血：" + hpRecoveryPerSec +
+                    "\n重量：" + massLevel +
+                    "\t移动速度：" + moveSpeed +
+                    "\n攻击范围：" + rangeRadius +
+                    "格\n沉默免疫" + silence +
+                    "\n睡眠免疫" + sleep +
+                    "\n眩晕免疫" + stun;
+        }
+        else {
+            return "敌人" + name + "第" + level + "阶段的基础信息为:\n" +
+                    "攻击力：" + atk +
+                    "\t 攻击间隔：" + baseAttackTime +
+                    "秒\n防御：" + def +
+                    "\t魔抗：" + magicResistance +
+                    "\n生命：" + maxHp +
+                    "\t每秒回血：" + hpRecoveryPerSec +
+                    "\n重量：" + massLevel +
+                    "\t移动速度：" + moveSpeed +
+                    "\n攻击范围：" + rangeRadius +
+                    "格\n沉默免疫" + silence +
+                    "\n睡眠免疫" + sleep +
+                    "\n眩晕免疫" + stun;
+        }
     }
 }

@@ -1,9 +1,6 @@
 package com.strelizia.arknights.service.impl;
 
-import com.strelizia.arknights.dao.MaterialMadeMapper;
-import com.strelizia.arknights.dao.NickNameMapper;
-import com.strelizia.arknights.dao.OperatorEvolveMapper;
-import com.strelizia.arknights.dao.SkillMateryMapper;
+import com.strelizia.arknights.dao.*;
 import com.strelizia.arknights.model.*;
 import com.strelizia.arknights.service.MaterialService;
 import com.strelizia.arknights.util.DescriptionTransformationUtil;
@@ -45,6 +42,9 @@ public class MaterialServiceImpl implements MaterialService {
 
     @Autowired
     private NickNameMapper nickNameMapper;
+
+    @Autowired
+    private EnemyMapper enemyMapper;
 
     @Override
     public String ZhuanJingCaiLiao(Long qq, Long groupId, String[] args) {
@@ -169,16 +169,25 @@ public class MaterialServiceImpl implements MaterialService {
         if (realName != null && !realName.equals(""))
             name = realName;
 
-        OperatorData operatorData = operatorEvolveMapper.selectOperatorData(name);
-        String s = "未找到该干员数据";
-        if (operatorData.getAtk() != null) {
-            s = name + "满精英化满级，无信赖无潜能面板为：" +
-                    "\n生命上限：" + operatorData.getMaxHp() + "\t攻击：" + operatorData.getAtk() +
-                    "\n防御：" + operatorData.getDef() + "\t法术抵抗：" + operatorData.getMagicResistance() +
-                    "\n部署费用：" + operatorData.getCost() + "\t阻挡数：" + operatorData.getBlockCnt() +
-                    "\n攻击间隔：" + operatorData.getBaseAttackTime() + "s\t再部署：" + operatorData.getRespawnTime() + "s";
+        if (name.contains("霜星")){
+            List<EnemyInfo> enemyInfo = enemyMapper.selectEnemyByName(name);
+            StringBuilder s = new StringBuilder();
+            for (EnemyInfo info : enemyInfo) {
+                s.append("\n").append(info.toString());
+            }
+            return s.toString();
+        }else {
+            OperatorData operatorData = operatorEvolveMapper.selectOperatorData(name);
+            String s = "未找到该干员数据";
+            if (operatorData.getAtk() != null) {
+                s = name + "满精英化满级，无信赖无潜能面板为：" +
+                        "\n生命上限：" + operatorData.getMaxHp() + "\t攻击：" + operatorData.getAtk() +
+                        "\n防御：" + operatorData.getDef() + "\t法术抵抗：" + operatorData.getMagicResistance() +
+                        "\n部署费用：" + operatorData.getCost() + "\t阻挡数：" + operatorData.getBlockCnt() +
+                        "\n攻击间隔：" + operatorData.getBaseAttackTime() + "s\t再部署：" + operatorData.getRespawnTime() + "s";
+            }
+            return s;
         }
-        return s;
     }
 
     @Override
