@@ -40,6 +40,12 @@ public class UpdateController {
         return 0;
     }
 
+    @GetMapping("updateVoice")
+    public Integer updateVoice() {
+        updateDataService.updateOperatorVoice();
+        return 0;
+    }
+
 
     //获取所有涩图到本地
     @PostMapping("getImg")

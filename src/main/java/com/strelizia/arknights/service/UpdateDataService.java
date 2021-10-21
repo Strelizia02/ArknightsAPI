@@ -19,4 +19,6 @@ public interface UpdateDataService {
     void updateOperatorEquipByJson();
 
     void updateItemAndFormula();
+
+    void updateOperatorVoice();
 }

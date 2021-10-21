@@ -595,14 +595,14 @@ public class UpdateDataServiceImpl implements UpdateDataService {
         log.info("开始更新干员语音");
         List<OperatorName> allOperatorId = operatorInfoMapper.getAllOperatorIdAndName();
         for (OperatorName name : allOperatorId) {
-            String html = XPathUtil.getHtmlByUrl("http://prts.wiki/w/" + name.getOperatorName());
+            String html = XPathUtil.getHtmlByUrl("http://prts.wiki/w/" + name.getOperatorName() + "/语音记录");
             Document document = Jsoup.parse(html);
             Elements as = document.select("a[download]");
             for (Element a: as){
                 String url = a.attr("href");
                 String[] split = url.split("/");
-                String fileName = split[split.length - 1];
-                String path = "voice/" + name.getCharId() + "/" + fileName;
+                String fileName = XPathUtil.decodeUnicode(split[split.length - 1].substring(0,split[split.length - 1].length() - 4));
+                String path = "voice/" + name.getCharId() + "/" + fileName + ".wav";
                 try {
                     XPathUtil.downloadNet(url, path);
 //                    SilkCoder.encode();
@@ -611,7 +611,8 @@ public class UpdateDataServiceImpl implements UpdateDataService {
                 }
             }
         }
-        sendMsgUtil.CallOPQApiSendMyself("开始更新干员语音\n--"
+        log.info("干员语音完成");
+        sendMsgUtil.CallOPQApiSendMyself("干员语音完成\n--"
                 + sdf.format(new Date()));
     }
 

@@ -16,6 +16,7 @@ import org.springframework.util.DigestUtils;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Random;
 
 /**
  * @author wangzy
@@ -116,16 +117,65 @@ public class ArknightsController {
                 //split("~")，以防图片信息中多余的空格导致的json结构破坏
                 text = text.replace(" ", "\001");
             }
-            //触发关键字是##，目前机器人还没名字，本来就是功能性的。
             if (text.startsWith("##") || text.startsWith("洁哥") || text.startsWith("杰哥")) {
                 String messages = text.substring(2);
                 return queryKeyword(qq, groupId, name, messages);
             } else if (text.startsWith("安洁莉娜")) {
                 String messages = text.substring(4);
                 return queryKeyword(qq, groupId, name, messages);
+            }else if (text.contains("安洁莉娜") || text.contains("洁哥") || text.contains("杰哥")){
+                return talkWith(text, groupId, name, qq);
             }
         }
         return null;
+    }
+
+    //闲聊
+    private String talkWith(String text, Long groupId, String name, Long qq) {
+        String result = "";
+        if (text.contains("爱你")){
+            String[] replace = {
+                    name + "看到那颗孤零零的星星了吗？据说总有一天，它会等来自己的伴星，拥抱，起舞......但，那要等上多久？我又要等上多久，星星......才会明白呢？",
+                    name + "别害羞，再靠近点！对对，sorridi~！看，是我和博士的大头贴哦~哼哼，就当做是纪念品吧。当然，这上面确实也有我的......一点点寄托呢。",
+                    name + "有没有感觉身体变轻呢？"
+            };
+            result = replace[new Random().nextInt(replace.length)];
+        }else if (text.contains("早上好") || text.contains("早安")) {
+            String[] replace = {
+                    "早安" + name + "！嗯是的，我要去送些文件什么的。虽然凯尔希医生说过我的能力在战场上很有用，但比起战斗，我更喜欢送信呢！",
+                    "早安，" + name
+            };
+            result = replace[new Random().nextInt(replace.length)];
+        }else if (text.contains("晚上好") || text.contains("晚安")){
+            result = "晚安，" + name;
+        }else if (text.contains("亲亲")){
+            String[] replace = {
+                    name + "呜哇~不要这样啦",
+                    "这么说，" + name + "很勇哦？"
+            };
+            result = replace[new Random().nextInt(replace.length)];
+        }else if (text.contains("抱抱")){
+            String[] replace = {
+                    name + "呜哇~不要这样啦",
+                    name + "身材蛮不错喔，蛮结实的啊。"
+            };
+            result = replace[new Random().nextInt(replace.length)];
+        }else if (text.contains("干嘛")){
+            String[] replace = {
+                    name + "都几岁了，还那么害羞，我看你是完全不懂喔",
+                    name + "身材蛮不错喔，蛮结实的啊。"
+            };
+            result = replace[new Random().nextInt(replace.length)];
+        }else if (text.contains("不要")){
+            String[] replace = {
+                    name + "让我康康！"
+            };
+            result = replace[new Random().nextInt(replace.length)];
+        }
+        if (!result.equals("")) {
+            sendMsgUtil.CallOPQApiSendMsg(groupId, result, 2);
+        }
+        return result;
     }
 
     //消息分流方法，使用switch进行模式匹配，具体消息类型有枚举类。
@@ -409,7 +459,7 @@ public class ArknightsController {
                 result = operatorInfoService.getCVByName(qq, s[1]);
                 break;
             case QunFaXiaoXi:
-                result = executeSqlService.sendGroupMessage(qq, s[1]);
+                result = executeSqlService.sendGroupMessage(qq, text);
                 break;
             case JiJianJiNeng:
                 result = buildingSkillService.getBuildSkillNameServiceByInfos(qq, s);
