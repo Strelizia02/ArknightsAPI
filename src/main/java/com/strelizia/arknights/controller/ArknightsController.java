@@ -168,7 +168,7 @@ public class ArknightsController {
                     name + "身材蛮不错喔，蛮结实的啊。"
             };
             result = replace[new Random().nextInt(replace.length)];
-        }else if (text.contains("表白")){
+        }else if (text.contains("表白")||text.contains("告白")){
             String[] replace = {
                     "真，真的吗？",
                     "我的头发很漂亮？嗯哼哼，我可是有秘诀的！",
