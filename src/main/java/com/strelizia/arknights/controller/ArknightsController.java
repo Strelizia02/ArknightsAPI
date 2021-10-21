@@ -133,7 +133,7 @@ public class ArknightsController {
     //闲聊
     private String talkWith(String text, Long groupId, String name, Long qq) {
         String result = "";
-        if (text.contains("爱你")){
+        if (text.contains("爱")){
             String[] replace = {
                     name + "看到那颗孤零零的星星了吗？据说总有一天，它会等来自己的伴星，拥抱，起舞......但，那要等上多久？我又要等上多久，星星......才会明白呢？",
                     name + "别害羞，再靠近点！对对，sorridi~！看，是我和博士的大头贴哦~哼哼，就当做是纪念品吧。当然，这上面确实也有我的......一点点寄托呢。",
@@ -150,20 +150,29 @@ public class ArknightsController {
             result = "晚安，" + name;
         }else if (text.contains("亲亲")){
             String[] replace = {
-                    name + "呜哇~不要这样啦",
-                    "这么说，" + name + "很勇哦？"
+                    "呜哇~不要这样啦",
+                    "呜哇~",
+                    "好，好吧，不要让别人看见哦~"
             };
             result = replace[new Random().nextInt(replace.length)];
         }else if (text.contains("抱抱")){
             String[] replace = {
-                    name + "呜哇~不要这样啦",
-                    name + "身材蛮不错喔，蛮结实的啊。"
+                    "呜哇~不要这样啦",
+                    "想不想试试漂浮在空中的感觉？",
+                    "轻轻地......嘿~"
             };
             result = replace[new Random().nextInt(replace.length)];
         }else if (text.contains("干嘛")){
             String[] replace = {
                     name + "都几岁了，还那么害羞，我看你是完全不懂喔",
                     name + "身材蛮不错喔，蛮结实的啊。"
+            };
+            result = replace[new Random().nextInt(replace.length)];
+        }else if (text.contains("表白")){
+            String[] replace = {
+                    "真，真的吗？",
+                    "我的头发很漂亮？嗯哼哼，我可是有秘诀的！",
+                    "嗯哼哼~♪唔，唇彩果然还是选珊瑚红色比较好吧？"
             };
             result = replace[new Random().nextInt(replace.length)];
         }else if (text.contains("不要")){
@@ -558,7 +567,7 @@ public class ArknightsController {
                 result = biliListeningService.removeGroupBiliRel(qq, groupId, s[1]);
                 break;
             default:
-                result = "俺不晓得你在锁啥子";
+                result = talkWith(text, groupId, name, qq);
         }
         //返回空字符串则不发送信息
         if (!result.equals("")) {

@@ -218,6 +218,11 @@ public class ClassificationUtil {
 
         map.put("取消关注", QuXiaoGuanZhu);
 
-        return map.get(s);
+        if(map.containsKey(s)) {
+            return map.get(s);
+        }
+        else{
+            return XianLiao;
+        }
     }
 }
