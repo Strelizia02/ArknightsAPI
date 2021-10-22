@@ -158,6 +158,7 @@ public class ArknightsController {
         }else if (text.contains("抱抱")){
             String[] replace = {
                     "呜哇~不要这样啦",
+                    "好，好吧，不要让别人看见哦~",
                     "想不想试试漂浮在空中的感觉？",
                     "轻轻地......嘿~"
             };
@@ -178,6 +179,13 @@ public class ArknightsController {
         }else if (text.contains("不要")){
             String[] replace = {
                     name + "让我康康！"
+            };
+            result = replace[new Random().nextInt(replace.length)];
+        }else if (text.contains("贴贴")){
+            String[] replace = {
+                    "博，博士，这样我会害羞的~",
+                    "呜哇~不要这样啦",
+                    "嗯哼哼~"
             };
             result = replace[new Random().nextInt(replace.length)];
         }
