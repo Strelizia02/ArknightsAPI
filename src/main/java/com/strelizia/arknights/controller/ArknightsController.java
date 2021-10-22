@@ -184,7 +184,7 @@ public class ArknightsController {
         if (!result.equals("")) {
             sendMsgUtil.CallOPQApiSendMsg(groupId, result, 2);
         }
-        return result;
+        return "";
     }
 
     //消息分流方法，使用switch进行模式匹配，具体消息类型有枚举类。
