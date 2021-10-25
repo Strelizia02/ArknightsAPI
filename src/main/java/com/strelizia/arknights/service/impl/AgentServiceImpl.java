@@ -218,7 +218,11 @@ public class AgentServiceImpl implements AgentService {
         List<AgentInfo> agents = agentMapper.selectPoolAgent(pool);
         StringBuilder s = new StringBuilder("卡池[" + pool + "]中概率up干员为：");
         for (AgentInfo agent : agents) {
-            s.append("\n").append(agent.getName()).append(FormatStringUtil.FormatStar(agent.getStar()));
+            String limit = "";
+            if (agent.getLimit() == 3){
+                limit = "5倍权值";
+            }
+            s.append("\n").append(agent.getName()).append(FormatStringUtil.FormatStar(agent.getStar())).append("\t" + limit);
         }
         return s.toString();
     }
