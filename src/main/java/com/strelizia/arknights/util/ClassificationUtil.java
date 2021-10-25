@@ -38,6 +38,7 @@ public class ClassificationUtil {
         map.put("卡池", KaChi);
         map.put("卡池列表", KaChi);
         map.put("查询卡池", KaChi);
+        map.put("卡池查询", KaChi);
 
         map.put("卡池干员", KaChiQingdan);
         map.put("卡池up", KaChiQingdan);
@@ -52,6 +53,7 @@ public class ClassificationUtil {
         map.put("专精材料", ZhuanJingCaiLiao);
         map.put("专精", ZhuanJingCaiLiao);
         map.put("技能专精", ZhuanJingCaiLiao);
+        map.put("专精查询", ZhuanJingCaiLiao);
 
         map.put("精一材料", JingYiCaiLiao);
         map.put("精英一材料", JingYiCaiLiao);
@@ -69,6 +71,7 @@ public class ClassificationUtil {
         map.put("材料获取", CaiLiaoHuoQu);
         map.put("材料掉落", CaiLiaoHuoQu);
         map.put("获取材料", CaiLiaoHuoQu);
+        map.put("材料查询", CaiLiaoHuoQu);
 
         map.put("公招截图", GongZhaoJieTu);
         map.put("公开招募", GongKaiZhaoMu);
@@ -86,11 +89,13 @@ public class ClassificationUtil {
         map.put("干员面板", GanYuanMianBan);
         map.put("面板信息", GanYuanMianBan);
         map.put("面板", GanYuanMianBan);
+        map.put("面板查询", GanYuanMianBan);
 
         map.put("地图掉落", DiTuDiaoLuo);
         map.put("地图材料", DiTuDiaoLuo);
         map.put("关卡掉落", DiTuDiaoLuo);
         map.put("关卡材料", DiTuDiaoLuo);
+        map.put("关卡查询", DiTuDiaoLuo);
 
         map.put("地图列表", DiTuLieBiao);
         map.put("全部地图", DiTuLieBiao);
@@ -138,6 +143,7 @@ public class ClassificationUtil {
         map.put("干员档案", GanYuanDangAn);
         map.put("详细档案", GanYuanDangAn);
         map.put("查询档案", GanYuanDangAn);
+        map.put("档案查询", GanYuanDangAn);
 
         map.put("声优列表", ShengYouLieBiao);
         map.put("声优查询", ShengYouLieBiao);
