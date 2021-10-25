@@ -62,6 +62,11 @@ public class BirthdayJob {
             List<Long> groups = userFoundMapper.selectAllGroups();
             for (Long groupId : groups) {
                 sendMsgUtil.CallOPQApiSendMsg(groupId, s.toString(), 2);
+                try {
+                    Thread.sleep(3000);
+                }catch (InterruptedException ignored){
+
+                }
             }
             log.info("{}每日干员生日推送发送成功", new Date());
         }

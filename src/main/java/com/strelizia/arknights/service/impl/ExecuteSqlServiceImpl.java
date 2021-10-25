@@ -55,6 +55,11 @@ public class ExecuteSqlServiceImpl implements ExecuteSqlService {
             List<Long> groupIds = userFoundMapper.selectAllGroups();
             for (Long groupId : groupIds) {
                 sendMsgUtil.CallOPQApiSendMsg(groupId, text.substring(4), 2);
+                try {
+                    Thread.sleep(3000);
+                }catch (InterruptedException ignored){
+
+                }
             }
             return "";
         }
