@@ -512,14 +512,16 @@ public class UpdateDataServiceImpl implements UpdateDataService {
      */
     public void updateSkin() {
         log.info("拉取图标数据");
-        String skinListUrl = "https://andata.somedata.top/data-2020/char/extraSkins.json";
+        String skinListUrl = "https://cdn.jsdelivr.net/gh/Kengxxiao/ArknightsGameData@master/zh_CN/gamedata/excel/skin_table.json";
         String jsonStringFromUrl = getJsonStringFromUrl(skinListUrl);
-        JSONArray skinJson = new JSONArray(jsonStringFromUrl);
+        JSONObject skinJson = new JSONObject(jsonStringFromUrl).getJSONObject("charSkins");
         //皮肤只需要增量更新
         List<String> skinNames = skinInfoMapper.selectAllNames();
 
-            for (int i = 0; i < skinJson.length(); i++) {
-                JSONObject skinObj = skinJson.getJSONObject(i);
+        Iterator<String> keys = skinJson.keys();
+        while (keys.hasNext()) {
+            JSONObject skinObj = skinJson.getJSONObject(keys.next());
+            if(skinObj.getJSONObject("displaySkin").get("skinName") instanceof String) {
                 String name = skinObj.getJSONObject("displaySkin").getString("skinName");
                 if (!skinNames.contains(name)) {
                     SkinInfo skinInfo = new SkinInfo();
@@ -530,13 +532,15 @@ public class UpdateDataServiceImpl implements UpdateDataService {
                     skinInfo.setSkinGroupName(skinObj.getJSONObject("displaySkin").getString("skinGroupName"));
                     String avatarId = skinObj.getString("avatarId");
                     String[] split = avatarId.split("#");
-                    String skinImgUrl = "https://andata.somedata.top/dataX/char/halfPic/";
-                    skinInfo.setSkinBase64(imageUtil.getImageBase64ByUrl(skinImgUrl + split[0] + "%23" + split[1] + ".png"));
-
-                    skinInfoMapper.insertBySkinInfo(skinInfo);
+                    String skinImgUrl = "http://amiya.net.cn:18080/resource/images/game/skins/";
+                    skinInfo.setSkinBase64(imageUtil.getImageBase64ByUrl(skinImgUrl + split[0] + "_" + split[1] + ".png"));
+                    if(!skinInfo.getSkinBase64().startsWith("http")){
+                        skinInfoMapper.insertBySkinInfo(skinInfo);
+                    }
                 }
             }
-            log.info("原有时装{}个，当前时装{}个", skinNames.size(), skinJson.length());
+        }
+        log.info("原有时装{}个，当前时装{}个", skinNames.size(), skinJson.length());
         //查找仍然是url的结果(上次更新url转base64失败的)
         List<Integer> ids = skinInfoMapper.selectBase64IsUrl();
         if (ids != null && ids.size() > 0) {
