@@ -1,13 +1,7 @@
 package com.strelizia.arknights.controller;
 
-import com.strelizia.arknights.dao.AdminUserMapper;
-import com.strelizia.arknights.dao.AgentMapper;
-import com.strelizia.arknights.dao.GroupAdminInfoMapper;
-import com.strelizia.arknights.dao.NickNameMapper;
-import com.strelizia.arknights.model.AdminUserInfo;
-import com.strelizia.arknights.model.AgentInfo;
-import com.strelizia.arknights.model.GroupAdminInfo;
-import com.strelizia.arknights.model.NickName;
+import com.strelizia.arknights.dao.*;
+import com.strelizia.arknights.model.*;
 import com.strelizia.arknights.vo.JsonResult;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -37,6 +31,9 @@ public class WebController {
 
     @Autowired
     private NickNameMapper nickNameMapper;
+
+    @Autowired
+    private ModelCountMapper modelCountMapper;
 
 
     /**
@@ -173,4 +170,14 @@ public class WebController {
         return JsonResult.success(nickNames);
     }
 
+
+    /**
+     * 查询功能调用次数
+     * @return
+     */
+    @GetMapping("getNumberOfCalls")
+    public JsonResult<List<ModelCountInfo>> getNumberOfCalls(){
+        List<ModelCountInfo> modelCountInfos = modelCountMapper.selectModelCount();
+        return JsonResult.success(modelCountInfos);
+    }
 }
