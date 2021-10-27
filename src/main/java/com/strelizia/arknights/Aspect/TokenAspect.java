@@ -38,17 +38,17 @@ public class TokenAspect {
         String token = request.getHeader(TOKEN_KEY);
         String mes;
         if (null == token){
-            mes = "no Authorization, please pass Authorization";
+            mes = "未检测到token，请携带token后再次请求";
         } else {
             Boolean isTrue = this.checkToken(token);
             if (isTrue) {
                 loginMapper.refreshToken(token);
                 return joinPoint.proceed();
             } else {
-                mes = "token is not alive";
+                mes = "token已失效或不存在，请重新登录";
             }
         }
-        response.setHeader("Content-Type", "application/json");
+        response.setHeader("Content-Type", "application/json;charset=utf-8");
         response.getWriter().write(new ObjectMapper().writeValueAsString(JsonResult.failureWithCode("301", mes)));
         return null;
     }
