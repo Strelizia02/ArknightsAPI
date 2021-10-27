@@ -451,3 +451,26 @@ CREATE TABLE `t_zone`  (
   `zone_name` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
   PRIMARY KEY (`zone_id`) USING BTREE
 ) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
+
+
+-- ----------------------------
+-- Table structure for a_login_user
+-- ----------------------------
+DROP TABLE IF EXISTS `a_login_user`;
+CREATE TABLE `a_login_user`  (
+  `username` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
+  `password` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
+  `token` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
+  `update_time` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ,
+  PRIMARY KEY (`username`) USING BTREE
+) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
+
+-- ----------------------------
+-- Table structure for a_activity
+-- ----------------------------
+DROP TABLE IF EXISTS `a_activity`;
+CREATE TABLE `a_activity`  (
+  `type` int(255) NOT NULL COMMENT '0->接收 1->发送文字 2->发送其他',
+  `time` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ,
+  PRIMARY KEY (`time`) USING BTREE
+) ENGINE = InnoDB ROW_FORMAT = Dynamic;

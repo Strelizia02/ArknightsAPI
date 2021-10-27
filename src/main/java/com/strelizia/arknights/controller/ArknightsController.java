@@ -1,5 +1,6 @@
 package com.strelizia.arknights.controller;
 
+import com.strelizia.arknights.dao.ActivityMapper;
 import com.strelizia.arknights.dao.AdminUserMapper;
 import com.strelizia.arknights.dao.ModelCountMapper;
 import com.strelizia.arknights.model.AdminUserInfo;
@@ -85,6 +86,9 @@ public class ArknightsController {
     @Autowired
     private BeastUtil beastUtil;
 
+    @Autowired
+    private ActivityMapper activityMapper;
+
     /**
      * 消息处理总控制器，用于接收消息，并处理分流到不同的service
      */
@@ -97,6 +101,7 @@ public class ArknightsController {
         //不处理自身发送的消息
         if (!qq.equals(loginQq)) {
             log.info("接受到消息:{}", message.getText());
+            activityMapper.insertGetMsg();
             //获取群号、昵称、消息
             Long groupId = message.getGroupId();
             String name = message.getName();

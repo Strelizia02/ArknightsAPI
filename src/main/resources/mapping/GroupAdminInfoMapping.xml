@@ -17,11 +17,12 @@
             group_id = #{groupId}
     </select>
 
-    <select id="getAllGroupAdmin" resultMap="BaseResultMap">
+    <select id="getAllGroupAdmin" parameterType="java.lang.Integer" resultMap="BaseResultMap">
         SELECT
             group_id,`found`,picture
         FROM
             a_group_admin
+        limit 10 offset #{current}
     </select>
 
     <select id="existGroupId" resultType="java.lang.Integer">

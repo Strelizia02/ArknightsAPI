@@ -25,6 +25,23 @@
             a_bili_dynamic
     </select>
 
+    <select id="getBiliCountListByPage" resultMap="BaseResultMap">
+        SELECT
+            uid,
+            name,
+            top,
+            first,
+            second,
+            third,
+            fourth,
+            fifth
+        FROM
+            a_bili_dynamic
+        WHERE name like CONCAT('%',#{name},'%')
+        LIMIT 10 offset #{current}
+    </select>
+
+
     <select id="getBiliCountListByGroupId" resultMap="BaseResultMap">
         SELECT
             uid,
@@ -87,4 +104,33 @@
     <delete id="deleteGroupBiliRel">
         delete from a_group_bili_rel where uid = #{uid} and group_id = #{groupId}
     </delete>
+
+    <delete id="deleteUid">
+        delete from a_bili_dynamic where uid = #{uid}
+    </delete>
+
+    <select id="selectGroupByUid">
+        select group_id from a_group_bili_rel where uid = #{uid}
+    </select>
+
+    <select id="selectGroupByNotListenUid">
+        select group_id from a_group_admin where group_id not in(
+        select group_id from a_group_bili_rel where uid = #{uid}) and group_id like CONCAT('%',#{group_id},'%')
+    </select>
+
+    <select id="getNotListenListByGroupId">
+        SELECT
+        uid,
+        name,
+        top,
+        first,
+        second,
+        third,
+        fourth,
+        fifth
+        FROM
+        a_bili_dynamic
+        where uid not in (select uid from a_group_bili_rel where group_id = #{groupId})
+        and name like CONCAT('%',#{name},'%')
+    </select>
 </mapper>

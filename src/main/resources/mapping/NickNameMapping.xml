@@ -10,12 +10,12 @@
         select name from a_nick_name where nick_name = #{name} limit 1
     </select>
 
-    <select id="selectAllNickName" resultMap="BaseResultMap">
-        select nick_name,name from a_nick_name
+    <select id="selectAllNickName" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+        select nick_name,name from a_nick_name limit 10 offset #{current}
     </select>
 
     <delete id="deleteNickName">
-        truncate a_nick_name
+        DELETE from a_nick_name where nick_name = #{nickName}
     </delete>
 
     <insert id="insertNickName" parameterType="com.strelizia.arknights.model.NickName">

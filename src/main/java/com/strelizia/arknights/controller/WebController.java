@@ -1,14 +1,15 @@
 package com.strelizia.arknights.controller;
 
+import com.strelizia.arknights.annotation.Token;
 import com.strelizia.arknights.dao.*;
 import com.strelizia.arknights.model.*;
 import com.strelizia.arknights.vo.JsonResult;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.util.DigestUtils;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 /**
  * @author wangzy
@@ -35,31 +36,61 @@ public class WebController {
     @Autowired
     private ModelCountMapper modelCountMapper;
 
+    @Autowired
+    private LoginMapper loginMapper;
+
+    @Autowired
+    private BiliMapper biliMapper;
+
+    @Autowired
+    private ActivityMapper activityMapper;
+
 
     /**
-     * 用户权限管理接口
-     * @param messages 全部用户配置
+     * 用户权限单行修改
+     * @param messages 用户权限
      * @return 修改人数
      */
+    @Token
     @PostMapping("setUserAdmin")
-    public Integer setUserAdmin(
-            @RequestBody List<AdminUserInfo> messages
+    public JsonResult<Integer> setUserAdmin(
+            @RequestBody AdminUserInfo messages
     ) {
-        adminUserMapper.truncateUserAdmin();
-        int count = 0;
-        for (AdminUserInfo userAdmin : messages){
-            count += adminUserMapper.updateUserAdmin(userAdmin);
-        }
-        return count;
+
+        return JsonResult.success(adminUserMapper.updateUserAdmin(messages));
+    }
+
+    /**
+     * 用户权限单行添加
+     * @param messages 用户权限
+     * @return 修改人数
+     */
+    @Token
+    @PostMapping("addUserAdmin")
+    public JsonResult<Integer> addUserAdmin(
+            @RequestBody AdminUserInfo messages
+    ) {
+        return JsonResult.success(adminUserMapper.insertUserAdmin(messages));
+    }
+
+    /**
+     * 用户权限单行删除
+     * @return
+     */
+    @Token
+    @DeleteMapping("deleteUserAdmin")
+    public JsonResult<Integer> deleteUserAdmin(@RequestParam String qq) {
+        return JsonResult.success(adminUserMapper.daleteUserAdmin(qq));
     }
 
     /**
      * 用户权限搜索接口
      * @return
      */
+    @Token
     @GetMapping("getUserAdmin")
-    public JsonResult<List<AdminUserInfo>> getUserAdmin() {
-        List<AdminUserInfo> adminUserInfos = adminUserMapper.selectAllAdmin();
+    public JsonResult<List<AdminUserInfo>> getUserAdmin(@RequestParam Integer current) {
+        List<AdminUserInfo> adminUserInfos = adminUserMapper.selectAllAdminByPage(10 * (current - 1));
         return JsonResult.success(adminUserInfos);
     }
 
@@ -68,21 +99,22 @@ public class WebController {
      * @param message
      * @return
      */
+    @Token
     @PostMapping("setGroupAdmin")
-    public Boolean setGroupAdmin(
+    public JsonResult<Integer> setGroupAdmin(
             @RequestBody GroupAdminInfo message
     ) {
-        Integer integer = groupAdminInfoMapper.updateGroupAdmin(message);
-        return integer == 1;
+        return JsonResult.success(groupAdminInfoMapper.updateGroupAdmin(message));
     }
 
     /**
      * 群权限搜索接口
      * @return
      */
+    @Token
     @GetMapping("getGroupAdmin")
-    public JsonResult<List<GroupAdminInfo>> getGroupAdmin() {
-        List<GroupAdminInfo> allGroupAdmin = groupAdminInfoMapper.getAllGroupAdmin();
+    public JsonResult<List<GroupAdminInfo>> getGroupAdmin(@RequestParam Integer current) {
+        List<GroupAdminInfo> allGroupAdmin = groupAdminInfoMapper.getAllGroupAdmin(10 * (current - 1));
         return JsonResult.success(allGroupAdmin);
     }
 
@@ -91,9 +123,10 @@ public class WebController {
      * 卡池搜索接口
      * @return
      */
+    @Token
     @GetMapping("getPool")
-    public JsonResult<List<AgentInfo>> getPool() {
-        List<String> poolNames = agentMapper.selectPool();
+    public JsonResult<List<AgentInfo>> getPool(@RequestParam Integer current, @RequestParam String pool) {
+        List<String> poolNames = agentMapper.selectPoolByPage(pool, 10 * (current - 1));
         List<AgentInfo> pools = new ArrayList<>(poolNames.size());
         for(String poolName : poolNames){
             Integer limit = agentMapper.selectPoolLimit(poolName);
@@ -111,6 +144,7 @@ public class WebController {
      * @param pool
      * @return
      */
+    @Token
     @GetMapping("getAgent")
     public JsonResult<List<AgentInfo>> getAgent(@RequestParam String pool) {
         List<AgentInfo> agentInfos = agentMapper.selectPoolAgent(pool);
@@ -122,10 +156,10 @@ public class WebController {
      * @param pool
      * @return
      */
+    @Token
     @DeleteMapping("deleteAgentPool")
-    public JsonResult<Boolean> deleteAgentPool(@RequestParam String pool) {
+    public void deleteAgentPool(@RequestParam String pool) {
         agentMapper.deleteAgentPool(pool);
-        return null;
     }
 
     /**
@@ -133,40 +167,49 @@ public class WebController {
      * @param message
      * @return
      */
+    @Token
     @PostMapping("setAgentPool")
     public JsonResult<Boolean> setAgentPool(
             @RequestBody List<AgentInfo> message
     ) {
+        deleteAgentPool(message.get(0).getPool());
         for (AgentInfo agent : message){
             agentMapper.insertAgentPool(agent);
         }
-        return null;
+        return JsonResult.success(true);
     }
 
     /**
-     * 修改干员外号
+     * 新增干员外号
      * @param message
      * @return
      */
-    @PostMapping("setNickName")
-    public Integer setNickName(
-            @RequestBody List<NickName> message
+    @Token
+    @PostMapping("addNickName")
+    public JsonResult<Integer> addNickName(
+            @RequestBody NickName message
     ) {
-        int count = 0;
-        nickNameMapper.deleteNickName();
-        for (NickName nickName : message){
-            count += nickNameMapper.insertNickName(nickName);
-        }
-        return count;
+        return JsonResult.success(nickNameMapper.insertNickName(message));
+    }
+
+    /**
+     * 删除干员外号
+     * @return
+     */
+    @Token
+    @DeleteMapping("deleteNickName")
+    public JsonResult<Integer> deleteNickName(@RequestParam String nickName) {
+        return JsonResult.success(nickNameMapper.deleteNickName(nickName));
     }
 
     /**
      * 查询干员外号
      * @return
      */
+    @Token
     @GetMapping("getNickName")
-    public JsonResult<List<NickName>> getNickName() {
-        List<NickName> nickNames = nickNameMapper.selectAllNickName();
+    public JsonResult<List<NickName>> getNickName(@RequestParam Integer current) {
+        List<NickName> nickNames = nickNameMapper.selectAllNickName(10 * (current - 1));
         return JsonResult.success(nickNames);
     }
 
@@ -180,4 +223,144 @@ public class WebController {
         List<ModelCountInfo> modelCountInfos = modelCountMapper.selectModelCount();
         return JsonResult.success(modelCountInfos);
     }
+
+    /**
+     * 登录接口
+     * @param message
+     * @return
+     */
+    @PostMapping("login")
+    public JsonResult<String> login(
+            @RequestBody LoginUser message
+    ) {
+        LoginUser inPwd = loginMapper.getloginUser(message.getUserName());
+        if(inPwd.getPassWord().equals(message.getPassWord())){
+            String token = DigestUtils.md5DigestAsHex(((System.currentTimeMillis() + new Random().nextInt(999999999)) + "").getBytes());
+            loginMapper.setToken(inPwd.getUserName(), token);
+            return JsonResult.success(token);
+        }else {
+            return JsonResult.failureWithCode("用户名或密码无效");
+        }
+    }
+
+    /**
+     * UID监听搜索接口
+     * @return
+     */
+    @Token
+    @GetMapping("getUid")
+    public JsonResult<List<BiliCount>> getUid(@RequestParam Integer current, @RequestParam String name) {
+        List<BiliCount> biliCountListByPage = biliMapper.getBiliCountListByPage(name, 10 * (current - 1));
+        return JsonResult.success(biliCountListByPage);
+    }
+
+    /**
+     * 查询某Uid有哪些群关注
+     * @return
+     */
+    @Token
+    @GetMapping("getGroupsByUid")
+    public JsonResult<List<Long>> getGroupsByUid(@RequestParam Long uid) {
+        List<Long> groups = biliMapper.selectGroupByUid(uid);
+        return JsonResult.success(groups);
+    }
+
+    /**
+     * 查询某Uid没有被哪些群关注
+     * @return
+     */
+    @Token
+    @GetMapping("getGroupByNotListenUid")
+    public JsonResult<List<Long>> getGroupByNotListenUid(@RequestParam Long uid, @RequestParam String groupId) {
+        List<Long> groups = biliMapper.selectGroupByNotListenUid(uid, groupId);
+        return JsonResult.success(groups);
+    }
+
+    /**
+     * 监听某uid
+     * @return
+     */
+    @Token
+    @GetMapping("listenUid")
+    public JsonResult<Integer> listenUid(@RequestParam Long uid) {
+        return JsonResult.success(biliMapper.insertBiliUid(uid));
+    }
+
+    /**
+     * 取消监听某uid
+     * @return
+     */
+    @Token
+    @DeleteMapping("deleteUid")
+    public JsonResult<Integer> deleteUid(@RequestParam Long uid) {
+        return JsonResult.success(biliMapper.deleteUid(uid));
+    }
+
+    /**
+     * 某群关注某uid
+     * @return
+     */
+    @Token
+    @GetMapping("addGroupUid")
+    public JsonResult<Integer> addGroupUid(@RequestParam Long groupId, @RequestParam Long uid) {
+        return JsonResult.success(biliMapper.insertGroupBiliRel(groupId, uid));
+    }
+
+
+    /**
+     * 某群取消关注某uid
+     * @return
+     */
+    @Token
+    @DeleteMapping("deleteGroupUid")
+    public JsonResult<Integer> deleteGroupUid(@RequestParam Long groupId, @RequestParam Long uid) {
+        return JsonResult.success(biliMapper.deleteGroupBiliRel(groupId, uid));
+    }
+
+    /**
+     * 获取某群未关注的列表
+     * @return
+     */
+    @Token
+    @GetMapping("getUidNotListen")
+    public JsonResult<List<BiliCount>> getUidNotListen(@RequestParam Long groupId, @RequestParam String name) {
+        return JsonResult.success(biliMapper.getNotListenListByGroupId(groupId, name));
+    }
+
+    /**
+     * 获取某群关注的列表
+     * @return
+     */
+    @Token
+    @GetMapping("getUidByGroup")
+    public JsonResult<List<BiliCount>> getUidByGroup(@RequestParam Long groupId) {
+        return JsonResult.success(biliMapper.getBiliCountListByGroupId(groupId));
+    }
+
+    /**
+     * 获取每日活跃度
+     * @return
+     */
+    @GetMapping("getActivity")
+    public JsonResult<Map<String, List<ActivityInfo>>> getActivity() {
+        List<ActivityInfo> SendMsg = new ArrayList<>();
+        List<ActivityInfo> SendPic =  new ArrayList<>();
+        List<ActivityInfo> Getmsg =  new ArrayList<>();
+        List<ActivityInfo> activityInfos = activityMapper.selectActivity();
+        for (ActivityInfo actInfo :activityInfos){
+            if (actInfo.getType() == 0) {
+                Getmsg.add(actInfo);
+            } else if (actInfo.getType() == 1) {
+                SendMsg.add(actInfo);
+            } else if (actInfo.getType() == 2) {
+                SendPic.add(actInfo);
+            }
+        }
+        Map<String, List<ActivityInfo>> result = new HashMap<>(3);
+        result.put("接收消息", Getmsg);
+        result.put("发送文字", SendMsg);
+        result.put("发送图片", SendPic);
+        return JsonResult.success(result);
+    }
+
 }

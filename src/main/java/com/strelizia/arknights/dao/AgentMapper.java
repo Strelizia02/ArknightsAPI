@@ -26,6 +26,8 @@ public interface AgentMapper {
     //获取所有卡池名称
     List<String> selectPool();
 
+    List<String> selectPoolByPage(@Param("pool") String pool, @Param("current")Integer current);
+
     //根据卡池名获取卡池内up干员数量
     List<AgentInfo> selectPoolAgent(String pool);
 

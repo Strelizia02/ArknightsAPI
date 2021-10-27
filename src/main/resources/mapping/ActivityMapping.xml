@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.strelizia.arknights.dao.ActivityMapper">
+    <resultMap id="BaseResultMap" type="com.strelizia.arknights.model.ActivityInfo">
+        <result column="type" property="type" jdbcType="INTEGER"/>
+        <result column="hour" property="hour" jdbcType="INTEGER"/>
+        <result column="count" property="count" jdbcType="BIGINT"/>
+    </resultMap>
+
+
+    <select id="selectActivity" resultMap="BaseResultMap">
+        SELECT type, HOUR(time) as hour from a_activity group by type, HOUR(time)
+    </select>
+    
+    <insert id="insertSendMsg">
+        insert into a_activity (type) values (1)
+    </insert>
+
+    <insert id="insertSendPic">
+        insert into a_activity (type) values (2)
+    </insert>
+
+    <insert id="insertGetMsg">
+        insert into a_activity(type) values (0)
+    </insert>
+</mapper>

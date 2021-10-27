@@ -2,6 +2,7 @@ package com.strelizia.arknights.util;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.strelizia.arknights.dao.ActivityMapper;
 import com.strelizia.arknights.model.SendMsgRespInfo;
 import com.strelizia.arknights.model.Text;
 import lombok.extern.slf4j.Slf4j;
@@ -45,6 +46,9 @@ public class SendMsgUtil {
 
     @Autowired
     protected RestTemplate restTemplate;
+
+    @Autowired
+    private ActivityMapper activityMapper;
 
     private final String sendTextMsgApi = "/v1/LuaApiCaller";
 
@@ -116,6 +120,7 @@ public class SendMsgUtil {
     }
 
     public void CallOPQApiSendMsg(Long groupId, String s, Integer sendToType) {
+        activityMapper.insertSendMsg();
         // TODO 临时去掉艾特功能
         Pattern pattern1 = Pattern.compile("\\[ATUSER\\([0-9]*\\)]");
         String str1 = s;
@@ -166,6 +171,7 @@ public class SendMsgUtil {
 //        log.info("发送消息{}成功",s);
 //    }
     public void CallOPQApiSendImg(Long groupId, String s, String picType, String imgUrl, Integer sendToType) {
+        activityMapper.insertSendPic();
         // TODO 临时去掉艾特功能
         Pattern pattern = Pattern.compile("\\[ATUSER\\([0-9]*\\)]");
         String str = s;
@@ -182,6 +188,7 @@ public class SendMsgUtil {
     }
 
     public void CallOPQApiSendXml(Long groupId, String s, Integer sendToType) {
+        activityMapper.insertSendPic();
         poolTaskExecutor.execute(() -> sendXmlMsgToGroup(restTemplate, groupId, s,
                 "http://" + OPQUrl + ":8888" + sendTextMsgApi + "?qq=" + loginQq + "&funcname=SendMsgV2", sendToType));
         log.info("发送消息图片+文字{}成功", s);

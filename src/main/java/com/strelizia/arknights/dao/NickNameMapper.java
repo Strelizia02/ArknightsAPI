@@ -14,9 +14,9 @@ import java.util.List;
 public interface NickNameMapper {
     String selectNameByNickName(String name);
 
-    List<NickName> selectAllNickName();
+    List<NickName> selectAllNickName(Integer current);
 
-    Integer deleteNickName();
+    Integer deleteNickName(String nickName);
 
     Integer insertNickName(NickName nickName);
 }

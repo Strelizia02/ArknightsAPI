@@ -46,6 +46,7 @@ public class JsonResult<T> extends BaseVO implements Serializable {
         return resp;
     }
 
+
     public static <T> JsonResult<T> failureWithCode(String code) {
         JsonResult<T> resp = new JsonResult<T>();
         resp.setSuccess(false);

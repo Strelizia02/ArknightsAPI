@@ -14,7 +14,7 @@ public interface GroupAdminInfoMapper {
 
     GroupAdminInfo getGroupAdminNum(Long groupId);
 
-    List<GroupAdminInfo> getAllGroupAdmin();
+    List<GroupAdminInfo> getAllGroupAdmin(Integer current);
 
     Integer insertGroupId(Long groupId);
 

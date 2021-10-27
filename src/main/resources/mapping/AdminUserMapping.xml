@@ -15,11 +15,27 @@
         SELECT qq, name, found, img, six, `sql`, upload from a_admin_user
     </select>
 
+    <select id="selectAllAdminByPage" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+        SELECT qq, name, found, img, six, `sql`, upload from a_admin_user limit 10 offset #{current}
+    </select>
+
     <delete id="truncateUserAdmin">
         truncate a_admin_user
     </delete>
+
+    <delete id="daleteUserAdmin" parameterType="java.lang.String">
+        delete from a_admin_user where qq = #{qq}
+    </delete>
     
     <update id="updateUserAdmin" parameterType="com.strelizia.arknights.model.AdminUserInfo">
-        insert into a_admin_user values(#{qq}, #{name}, #{found}, #{img}, #{six}, #{sql}, #{upload})
+        UPDATE a_admin_user SET
+            found = #{found}, img = #{img}, six = #{six}, `sql` = #{sql}, upload = #{upload},
+            name = (select name from a_user_found where qq = #{qq})
+        WHERE qq = #{qq}
     </update>
+
+    <insert id="insertUserAdmin" parameterType="com.strelizia.arknights.model.AdminUserInfo">
+        INSERT into a_admin_user (qq, found, img, six, `sql`, upload, name)
+         VALUES(#{qq}, #{found}, #{img}, #{six}, #{sql}, #{upload}, (select name from a_user_found where qq = #{qq}))
+    </insert>
 </mapper>

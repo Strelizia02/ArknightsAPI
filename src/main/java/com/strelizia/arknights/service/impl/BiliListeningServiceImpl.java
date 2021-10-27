@@ -60,64 +60,68 @@ public class BiliListeningServiceImpl implements BiliListeningService {
         List<BiliCount> biliCountList = biliMapper.getBiliCountList();
         boolean b = false;
         for (BiliCount bili : biliCountList) {
-            String biliSpace = "https://space.bilibili.com/" + bili.getUid() + "/dynamic";
-            String dynamicList = "https://api.vc.bilibili.com/dynamic_svr/v1/dynamic_svr/space_history?host_uid=";
-            String dynamicListUrl = "&offset_dynamic_id=0&need_top=";
-            String topDynamic = restTemplate
-                    .exchange(dynamicList + bili.getUid() + dynamicListUrl + 1, HttpMethod.GET, new HttpEntity<>(new HttpHeaders()), String.class).getBody();//1 -> 抓取置顶动态
-            //解析动态列表json
-            Long top = new JSONObject(topDynamic).getJSONObject("data").getJSONArray("cards").getJSONObject(0).getJSONObject("desc").getLong("dynamic_id");
-            bili.setTop(top);
-            //循环遍历每个被监听的账号
-            String result;
-            String url = dynamicList + bili.getUid() + dynamicListUrl + 0;//0 -> 不抓取置顶动态
-            HttpEntity<String> httpEntity = new HttpEntity<>(new HttpHeaders());
-            String s = restTemplate
-                    .exchange(url, HttpMethod.GET, httpEntity, String.class).getBody();
-            JSONObject dynamicJson = new JSONObject(s);
-            //解析动态列表json
-            JSONArray dynamics = dynamicJson.getJSONObject("data").getJSONArray("cards");
-            //获取当前的最新5动态
-            List<Long> newList = new ArrayList<>(5);
-            for (int i = 0; i < 5; i++) {
-                newList.add(dynamics.getJSONObject(i).getJSONObject("desc").getLong("dynamic_id"));
-            }
-            //对比第一条动态
-            Long newId = newList.get(0);
-            Long first = bili.getFirst();
-            if (!first.equals(newId)) {
-                bili.setFirst(newId);
-                bili.setSecond(newList.get(1));
-                bili.setThird(newList.get(2));
-                bili.setFourth(newList.get(3));
-                bili.setFifth(newList.get(4));
-                //获取最新动态详情
-                DynamicDetail newDetail = getDynamicDetail(newId);
-                String name = newDetail.getName();
-                bili.setName(name);
-                biliMapper.updateNewDynamic(bili);
-                result = name + "更新了一条" + newDetail.getType() + "动态\n" +
-                        newDetail.getTitle() + "\n" +
-                        newDetail.getText() + "\n" + biliSpace;
-                log.info("{}有新动态", name);
-                b = true;
-                List<Long> groups = userFoundMapper.selectCakeGroups(bili.getUid());
-                String pic = newDetail.getPicUrl();
-                if (pic == null) {
-                    for (Long groupId : groups) {
-                        sendMsgUtil.CallOPQApiSendMsg(groupId, result, 2);
-                    }
-                }else {
+            try {
+                String biliSpace = "https://space.bilibili.com/" + bili.getUid() + "/dynamic";
+                String dynamicList = "https://api.vc.bilibili.com/dynamic_svr/v1/dynamic_svr/space_history?host_uid=";
+                String dynamicListUrl = "&offset_dynamic_id=0&need_top=";
+                String topDynamic = restTemplate
+                        .exchange(dynamicList + bili.getUid() + dynamicListUrl + 1, HttpMethod.GET, new HttpEntity<>(new HttpHeaders()), String.class).getBody();//1 -> 抓取置顶动态
+                //解析动态列表json
+                Long top = new JSONObject(topDynamic).getJSONObject("data").getJSONArray("cards").getJSONObject(0).getJSONObject("desc").getLong("dynamic_id");
+                bili.setTop(top);
+                //循环遍历每个被监听的账号
+                String result;
+                String url = dynamicList + bili.getUid() + dynamicListUrl + 0;//0 -> 不抓取置顶动态
+                HttpEntity<String> httpEntity = new HttpEntity<>(new HttpHeaders());
+                String s = restTemplate
+                        .exchange(url, HttpMethod.GET, httpEntity, String.class).getBody();
+                JSONObject dynamicJson = new JSONObject(s);
+                //解析动态列表json
+                JSONArray dynamics = dynamicJson.getJSONObject("data").getJSONArray("cards");
+                //获取当前的最新5动态
+                List<Long> newList = new ArrayList<>(5);
+                for (int i = 0; i < 5; i++) {
+                    newList.add(dynamics.getJSONObject(i).getJSONObject("desc").getLong("dynamic_id"));
+                }
+                //对比第一条动态
+                Long newId = newList.get(0);
+                Long first = bili.getFirst();
+                if (!first.equals(newId)) {
+                    bili.setFirst(newId);
+                    bili.setSecond(newList.get(1));
+                    bili.setThird(newList.get(2));
+                    bili.setFourth(newList.get(3));
+                    bili.setFifth(newList.get(4));
+                    //获取最新动态详情
+                    DynamicDetail newDetail = getDynamicDetail(newId);
+                    String name = newDetail.getName();
+                    bili.setName(name);
+                    biliMapper.updateNewDynamic(bili);
+                    result = name + "更新了一条" + newDetail.getType() + "动态\n" +
+                            newDetail.getTitle() + "\n" +
+                            newDetail.getText() + "\n" + biliSpace;
+                    log.info("{}有新动态", name);
+                    b = true;
+                    List<Long> groups = userFoundMapper.selectCakeGroups(bili.getUid());
+                    String pic = newDetail.getPicUrl();
+                    if (pic == null) {
+                        for (Long groupId : groups) {
+                            sendMsgUtil.CallOPQApiSendMsg(groupId, result, 2);
+                        }
+                    } else {
 //                    String picBase64 = imageUtil.getImageBase64ByUrl(pic);
-                    for (Long groupId : groups) {
-                        sendMsgUtil.CallOPQApiSendImg(groupId, result, SendMsgUtil.picUrl, pic, 2);
-                        try {
-                            Thread.sleep(3000);
-                        }catch (InterruptedException ignored){
+                        for (Long groupId : groups) {
+                            sendMsgUtil.CallOPQApiSendImg(groupId, result, SendMsgUtil.picUrl, pic, 2);
+                            try {
+                                Thread.sleep(3000);
+                            } catch (InterruptedException ignored) {
 
+                            }
                         }
                     }
                 }
+            }catch(Exception e){
+
             }
         }
         return b;
