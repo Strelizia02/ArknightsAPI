@@ -471,6 +471,6 @@ CREATE TABLE `a_login_user`  (
 DROP TABLE IF EXISTS `a_activity`;
 CREATE TABLE `a_activity`  (
   `type` int(255) NOT NULL COMMENT '0->接收 1->发送文字 2->发送其他',
-  `time` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ,
+  `time` TIMESTAMP(6) NOT NULL DEFAULT CURRENT_TIMESTAMP ,
   PRIMARY KEY (`time`) USING BTREE
 ) ENGINE = InnoDB ROW_FORMAT = Dynamic;
