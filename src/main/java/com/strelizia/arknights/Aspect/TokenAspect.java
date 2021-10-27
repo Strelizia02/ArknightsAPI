@@ -1,10 +1,13 @@
 package com.strelizia.arknights.Aspect;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.strelizia.arknights.dao.LoginMapper;
+import com.strelizia.arknights.vo.JsonResult;
 import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.*;
 import org.aspectj.lang.reflect.MethodSignature;
+import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.web.context.request.RequestContextHolder;
@@ -56,7 +59,8 @@ public class TokenAspect {
                 mes = "token is not alive";
             }
         }
-        response.getWriter().write(mes);
+        response.setHeader("Content-Type", "application/json");
+        response.getWriter().write(new ObjectMapper().writeValueAsString(JsonResult.failureWithCode("301", mes)));
     }
 
     /**

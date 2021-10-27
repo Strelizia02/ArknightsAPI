@@ -239,7 +239,7 @@ public class WebController {
             loginMapper.setToken(inPwd.getUserName(), token);
             return JsonResult.success(token);
         }else {
-            return JsonResult.failureWithCode("用户名或密码无效");
+            return JsonResult.failureWithCode("300", "用户名或密码无效");
         }
     }
 
