@@ -234,7 +234,7 @@ public class WebController {
             @RequestBody LoginUser message
     ) {
         LoginUser inPwd = loginMapper.getloginUser(message.getUserName());
-        if(inPwd != null && inPwd.getPassWord().equals(message.getPassWord())){
+        if(inPwd != null && inPwd.getPassWord().equals(DigestUtils.md5DigestAsHex(message.getPassWord().getBytes()))){
             String token = DigestUtils.md5DigestAsHex(((System.currentTimeMillis() + new Random().nextInt(999999999)) + "").getBytes());
             loginMapper.setToken(inPwd.getUserName(), token);
             return JsonResult.success(token);
