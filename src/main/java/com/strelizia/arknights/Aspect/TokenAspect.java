@@ -22,8 +22,8 @@ public class TokenAspect {
     @Autowired
     private LoginMapper loginMapper;
 
-    @Autowired
-    private HttpServletResponse response;
+//    @Autowired
+//    private HttpServletResponse response;
 
     @Autowired
     private HttpServletRequest request;
@@ -48,9 +48,9 @@ public class TokenAspect {
                 mes = "token已失效或不存在，请重新登录";
             }
         }
-        response.setHeader("Content-Type", "application/json;charset=utf-8");
-        response.getWriter().write(new ObjectMapper().writeValueAsString(JsonResult.failureWithCode("301", mes)));
-        return null;
+//        response.setHeader("Content-Type", "application/json;charset=utf-8");
+//        response.getWriter().write(new ObjectMapper().writeValueAsString());
+        return JsonResult.failureWithCode("301", mes);
     }
 
     private Boolean checkToken(String token) {
