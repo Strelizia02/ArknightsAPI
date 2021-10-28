@@ -89,8 +89,8 @@ public class WebController {
     @Token
     @GetMapping("getUserAdmin")
     public JsonResult<List<AdminUserInfo>> getUserAdmin(@RequestParam Integer current) {
-        List<AdminUserInfo> adminUserInfos = adminUserMapper.selectAllAdminByPage(10 * (current - 1));
         Integer count = adminUserMapper.selectAllAdminCount();
+        List<AdminUserInfo> adminUserInfos = adminUserMapper.selectAllAdminByPage(10 * (current - 1));
         return JsonResult.success(adminUserInfos, count);
     }
 

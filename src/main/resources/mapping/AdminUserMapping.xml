@@ -20,6 +20,7 @@
     </select>
 
     <select id="selectAllAdminCount" resultType="java.lang.Integer">
+        update a_admin_user a set `name` = (SELECT `name` from a_user_found b where a.qq=b.qq);
         SELECT count(*) as count from a_admin_user
     </select>
 
