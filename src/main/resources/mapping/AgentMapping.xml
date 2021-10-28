@@ -81,6 +81,15 @@
         limit 10 offset #{current}
     </select>
 
+    <select id="selectPoolCount" resultType="java.lang.Integer">
+        SELECT
+            count(*) as count
+        WHERE
+            pool like concat('%',#{pool},'%')
+        GROUP BY
+            pool
+    </select>
+
     <select id="selectPoolAgent" parameterType="java.lang.String" resultMap="BaseResultMap">
         SELECT
             name,star,pool,`limit`

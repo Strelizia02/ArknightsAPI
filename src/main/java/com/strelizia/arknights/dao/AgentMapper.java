@@ -28,6 +28,8 @@ public interface AgentMapper {
 
     List<String> selectPoolByPage(@Param("pool") String pool, @Param("current")Integer current);
 
+    Integer selectPoolCount(@Param("pool") String pool);
+
     //根据卡池名获取卡池内up干员数量
     List<AgentInfo> selectPoolAgent(String pool);
 

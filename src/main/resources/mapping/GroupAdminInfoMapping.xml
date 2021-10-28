@@ -25,6 +25,13 @@
         limit 10 offset #{current}
     </select>
 
+    <select id="getAllGroupAdminCount" resultType="java.lang.Integer">
+        SELECT
+            count(*) as count
+        FROM
+            a_group_admin
+    </select>
+
     <select id="existGroupId" resultType="java.lang.Integer">
         select count(*) as count from a_group_admin where group_id = #{groupId}
     </select>

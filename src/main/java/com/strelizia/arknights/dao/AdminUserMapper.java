@@ -16,6 +16,8 @@ public interface AdminUserMapper {
     //查询所有的管理员用户，以及对应的权限信息
     List<AdminUserInfo> selectAllAdminByPage(Integer current);
 
+    Integer selectAllAdminCount();
+
     //修改管理员的权限信息
     Integer updateUserAdmin(AdminUserInfo adminInfo);
 

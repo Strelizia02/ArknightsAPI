@@ -14,6 +14,10 @@
         select nick_name,name from a_nick_name limit 10 offset #{current}
     </select>
 
+    <select id="selectAllNickNameCount" resultType="java.lang.Integer">
+        select count(*) as count from a_nick_name
+    </select>
+
     <delete id="deleteNickName">
         DELETE from a_nick_name where nick_name = #{nickName}
     </delete>

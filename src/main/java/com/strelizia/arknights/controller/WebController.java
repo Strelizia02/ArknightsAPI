@@ -56,7 +56,6 @@ public class WebController {
     public JsonResult<Integer> setUserAdmin(
             @RequestBody AdminUserInfo messages
     ) {
-
         return JsonResult.success(adminUserMapper.updateUserAdmin(messages));
     }
 
@@ -91,7 +90,8 @@ public class WebController {
     @GetMapping("getUserAdmin")
     public JsonResult<List<AdminUserInfo>> getUserAdmin(@RequestParam Integer current) {
         List<AdminUserInfo> adminUserInfos = adminUserMapper.selectAllAdminByPage(10 * (current - 1));
-        return JsonResult.success(adminUserInfos);
+        Integer count = adminUserMapper.selectAllAdminCount();
+        return JsonResult.success(adminUserInfos, count);
     }
 
     /**
@@ -115,7 +115,8 @@ public class WebController {
     @GetMapping("getGroupAdmin")
     public JsonResult<List<GroupAdminInfo>> getGroupAdmin(@RequestParam Integer current) {
         List<GroupAdminInfo> allGroupAdmin = groupAdminInfoMapper.getAllGroupAdmin(10 * (current - 1));
-        return JsonResult.success(allGroupAdmin);
+        Integer count = groupAdminInfoMapper.getAllGroupAdminCount();
+        return JsonResult.success(allGroupAdmin, count);
     }
 
 
@@ -135,7 +136,8 @@ public class WebController {
             poolInfo.setName(poolName);
             pools.add(poolInfo);
         }
-        return JsonResult.success(pools);
+        Integer count = agentMapper.selectPoolCount(pool);
+        return JsonResult.success(pools, count);
     }
 
 
@@ -151,6 +153,7 @@ public class WebController {
         return JsonResult.success(agentInfos);
     }
 
+
     /**
      * 删除卡池up干员
      * @param pool
@@ -161,6 +164,7 @@ public class WebController {
     public void deleteAgentPool(@RequestParam String pool) {
         agentMapper.deleteAgentPool(pool);
     }
+
 
     /**
      * 设置卡池up干员
@@ -179,6 +183,7 @@ public class WebController {
         return JsonResult.success(true);
     }
 
+
     /**
      * 新增干员外号
      * @param message
@@ -192,6 +197,7 @@ public class WebController {
         return JsonResult.success(nickNameMapper.insertNickName(message));
     }
 
+
     /**
      * 删除干员外号
      * @return
@@ -202,6 +208,7 @@ public class WebController {
         return JsonResult.success(nickNameMapper.deleteNickName(nickName));
     }
 
+
     /**
      * 查询干员外号
      * @return
@@ -210,7 +217,8 @@ public class WebController {
     @GetMapping("getNickName")
     public JsonResult<List<NickName>> getNickName(@RequestParam Integer current) {
         List<NickName> nickNames = nickNameMapper.selectAllNickName(10 * (current - 1));
-        return JsonResult.success(nickNames);
+        Integer count = nickNameMapper.selectAllNickNameCount();
+        return JsonResult.success(nickNames, count);
     }
 
 
@@ -251,7 +259,8 @@ public class WebController {
     @GetMapping("getUid")
     public JsonResult<List<BiliCount>> getUid(@RequestParam Integer current, @RequestParam String name) {
         List<BiliCount> biliCountListByPage = biliMapper.getBiliCountListByPage(name, 10 * (current - 1));
-        return JsonResult.success(biliCountListByPage);
+        Integer count = biliMapper.getBiliCountListCount(name);
+        return JsonResult.success(biliCountListByPage, count);
     }
 
     /**

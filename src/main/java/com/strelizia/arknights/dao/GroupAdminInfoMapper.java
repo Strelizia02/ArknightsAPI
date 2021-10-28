@@ -16,6 +16,8 @@ public interface GroupAdminInfoMapper {
 
     List<GroupAdminInfo> getAllGroupAdmin(Integer current);
 
+    Integer getAllGroupAdminCount();
+
     Integer insertGroupId(Long groupId);
 
     Integer updatePictureAdmin(@Param("groupId") Long groupId, @Param("picture") Integer picture);

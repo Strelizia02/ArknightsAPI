@@ -19,6 +19,10 @@
         SELECT qq, name, found, img, six, `sql`, upload from a_admin_user limit 10 offset #{current}
     </select>
 
+    <select id="selectAllAdminCount" resultType="java.lang.Integer">
+        SELECT count(*) as count from a_admin_user
+    </select>
+
     <delete id="truncateUserAdmin">
         truncate a_admin_user
     </delete>

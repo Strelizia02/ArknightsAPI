@@ -16,6 +16,8 @@ public interface NickNameMapper {
 
     List<NickName> selectAllNickName(Integer current);
 
+    Integer selectAllNickNameCount();
+
     Integer deleteNickName(String nickName);
 
     Integer insertNickName(NickName nickName);

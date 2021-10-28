@@ -41,6 +41,13 @@
         LIMIT 10 offset #{current}
     </select>
 
+    <select id="getBiliCountListCount" resultType="java.lang.Integer">
+        SELECT
+            count(*) as count
+        FROM
+            a_bili_dynamic
+        WHERE name like CONCAT('%',#{name},'%')
+    </select>
 
     <select id="getBiliCountListByGroupId" resultMap="BaseResultMap">
         SELECT

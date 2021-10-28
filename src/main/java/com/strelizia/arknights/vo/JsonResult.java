@@ -17,6 +17,8 @@ public class JsonResult<T> extends BaseVO implements Serializable {
 
     private T data;
 
+    private Integer count;
+
     private Long time = System.currentTimeMillis();
 
     public JsonResult(T data) {
@@ -31,6 +33,15 @@ public class JsonResult<T> extends BaseVO implements Serializable {
         resp.setSuccess(true);
         resp.setData(data);
         resp.setCode("200");
+        return resp;
+    }
+
+    public static <T> JsonResult<T> success(T data, Integer count) {
+        JsonResult<T> resp = new JsonResult<T>();
+        resp.setSuccess(true);
+        resp.setData(data);
+        resp.setCode("200");
+        resp.setCount(count);
         return resp;
     }
 
@@ -100,5 +111,13 @@ public class JsonResult<T> extends BaseVO implements Serializable {
 
     public void setTime(Long time) {
         this.time = time;
+    }
+
+    public Integer getCount() {
+        return count;
+    }
+
+    public void setCount(Integer count) {
+        this.count = count;
     }
 }

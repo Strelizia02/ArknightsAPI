@@ -16,6 +16,8 @@ public interface BiliMapper {
     //分页获取关注uid
     List<BiliCount> getBiliCountListByPage(@Param("name")String name, @Param("cuurent")Integer cuurent);
 
+    Integer getBiliCountListCount(@Param("name")String name);
+
     //获取某群的关注列表
     List<BiliCount> getBiliCountListByGroupId(@Param("groupId") Long groupId);
 
