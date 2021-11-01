@@ -76,6 +76,9 @@ public class UpdateDataServiceImpl implements UpdateDataService {
     @Value("${userConfig.loginQq}")
     private Long loginQq;
 
+//    private String url = "https://cdn.jsdelivr.net/gh/Kengxxiao/ArknightsGameData@master/zh_CN/gamedata/";
+    private String url = "https://raw.githubusercontent.com/Kengxxiao/ArknightsGameData/master/zh_CN/gamedata/";
+
     @Override
     /**
      * checkUpdate是否检查版本更新
@@ -84,12 +87,12 @@ public class UpdateDataServiceImpl implements UpdateDataService {
      */
     public void updateAllData(boolean checkUpdate) {
         //获取kokodayo的Json数据Key
-        String koKoDaYoKeyUrl = "https://api.kokodayo.fun/api/base/info";
+        String koKoDaYoKeyUrl = url + "excel/data_version.txt";
 
-        String jsonStr = getJsonStringFromUrl(koKoDaYoKeyUrl);
-        JSONObject keyJsonObj = new JSONObject(jsonStr);
+        String charKey = getJsonStringFromUrl(koKoDaYoKeyUrl);
+//        JSONObject keyJsonObj = new JSONObject(jsonStr);
         String dataVersion = updateMapper.getVersion();
-        String charKey = keyJsonObj.getJSONObject("result").getJSONObject("agent").getJSONObject("char").getString("key");
+//        String charKey = keyJsonObj.getJSONObject("result").getJSONObject("agent").getJSONObject("char").getString("key");
         //版本不同才进行更新
         if (charKey.equals(dataVersion) && checkUpdate) {
             return;
@@ -128,10 +131,10 @@ public class UpdateDataServiceImpl implements UpdateDataService {
         //清理干员数据(因部分召唤物无char_id，不方便进行增量更新)
         updateMapper.clearOperatorData();
         //获取全部干员基础数据
-        String operatorListUrl = "https://cdn.jsdelivr.net/gh/Kengxxiao/ArknightsGameData@master/zh_CN/gamedata/excel/character_table.json";
+        String operatorListUrl = url + "excel/character_table.json";
         JSONObject operatorObj = new JSONObject(getJsonStringFromUrl(operatorListUrl));;
         //获取游戏公招描述数据
-        String gachaTableUrl = "https://cdn.jsdelivr.net/gh/Kengxxiao/ArknightsGameData@master/zh_CN/gamedata/excel/gacha_table.json";
+        String gachaTableUrl = url + "excel/gacha_table.json";
         String recruit = new JSONObject(getJsonStringFromUrl(gachaTableUrl)).getString("recruitDetail");
         Pattern pattern = Pattern.compile("<(.*?)>");
         Matcher matcher = pattern.matcher(recruit);
@@ -146,13 +149,13 @@ public class UpdateDataServiceImpl implements UpdateDataService {
             }
         }
         //获取全部干员技能数据
-        String skillIdUrl = "https://cdn.jsdelivr.net/gh/Kengxxiao/ArknightsGameData@master/zh_CN/gamedata/excel/skill_table.json";
+        String skillIdUrl = url + "excel/skill_table.json";
         JSONObject skillObj = new JSONObject(getJsonStringFromUrl(skillIdUrl));
         //获取全部基建技能数据
-        String buildingUrl = "https://cdn.jsdelivr.net/gh/Kengxxiao/ArknightsGameData@master/zh_CN/gamedata/excel/building_data.json";
+        String buildingUrl = url + "excel/building_data.json";
         JSONObject buildingObj = new JSONObject(getJsonStringFromUrl(buildingUrl));
         //获取全部干员档案数据
-        String infoTable = "https://cdn.jsdelivr.net/gh/Kengxxiao/ArknightsGameData@master/zh_CN/gamedata/excel/handbook_info_table.json";
+        String infoTable = url + "excel/handbook_info_table.json";
         JSONObject infoTableObj = new JSONObject(getJsonStringFromUrl(infoTable)).getJSONObject("handbookDict");
 
         Iterator<String> keys = operatorObj.keys();
@@ -177,7 +180,7 @@ public class UpdateDataServiceImpl implements UpdateDataService {
         updateOperatorEquipByJson();
 
         //近卫兔兔单独处理
-        String amiyaSword = "https://cdn.jsdelivr.net/gh/Kengxxiao/ArknightsGameData@master/zh_CN/gamedata/excel/char_patch_table.json";
+        String amiyaSword = url + "excel/char_patch_table.json";
         JSONObject amiya2Json = new JSONObject(getJsonStringFromUrl(amiyaSword)).getJSONObject("patchChars").getJSONObject("char_1001_amiya2");
         Integer operatorNum = updateOperatorByJson("char_1001_amiya2", amiya2Json, skillObj, buildingObj);
         JSONObject amiyaInfo = infoTableObj.getJSONObject("char_002_amiya");
@@ -323,7 +326,7 @@ public class UpdateDataServiceImpl implements UpdateDataService {
     public void updateAllEnemy() {
         log.info("开始更新敌人信息");
         //获取全部敌人数据
-        String enemyListUrl = "https://cdn.jsdelivr.net/gh/Kengxxiao/ArknightsGameData@master/zh_CN/gamedata/levels/enemydata/enemy_database.json";
+        String enemyListUrl = url + "levels/enemydata/enemy_database.json";
         String allEnemy = getJsonStringFromUrl(enemyListUrl);
         JSONArray enemyObj = new JSONObject(allEnemy).getJSONArray("enemies");
 
@@ -436,7 +439,7 @@ public class UpdateDataServiceImpl implements UpdateDataService {
      */
     public void updateItemAndFormula() {
         //材料列表
-        String itemListUrl = "https://cdn.jsdelivr.net/gh/Kengxxiao/ArknightsGameData@master/zh_CN/gamedata/excel/item_table.json";
+        String itemListUrl = url + "excel/item_table.json";
         List<String> ids = materialMadeMapper.selectAllMaterId();
         String jsonStringFromUrl = getJsonStringFromUrl(itemListUrl);
         if (jsonStringFromUrl != null) {
@@ -480,13 +483,13 @@ public class UpdateDataServiceImpl implements UpdateDataService {
     public void updateItemFormula(String itemId) {
         //根据材料id，更新材料合成公式
 
-        String itemUrl = "https://cdn.jsdelivr.net/gh/Kengxxiao/ArknightsGameData@master/zh_CN/gamedata/excel/item_table.json";
+        String itemUrl = url + "excel/item_table.json";
         JSONArray buildingProductList = new JSONObject(getJsonStringFromUrl(itemUrl)).getJSONObject("items").getJSONObject(itemId).getJSONArray("buildingProductList");
         if (buildingProductList != null && buildingProductList.length() > 0) {
             String roomType = buildingProductList.getJSONObject(0).getString("roomType");
             String formulaId = buildingProductList.getJSONObject(0).getString("formulaId");
 
-            String materialMadeUrl = "https://cdn.jsdelivr.net/gh/Kengxxiao/ArknightsGameData@master/zh_CN/gamedata/excel/building_data.json";
+            String materialMadeUrl = url + "excel/building_data.json";
 
             JSONArray formulaObj;
             if (roomType.equals("WORKSHOP")) {
@@ -512,7 +515,7 @@ public class UpdateDataServiceImpl implements UpdateDataService {
      */
     public void updateSkin() {
         log.info("拉取图标数据");
-        String skinListUrl = "https://cdn.jsdelivr.net/gh/Kengxxiao/ArknightsGameData@master/zh_CN/gamedata/excel/skin_table.json";
+        String skinListUrl = url + "excel/skin_table.json";
         String jsonStringFromUrl = getJsonStringFromUrl(skinListUrl);
         JSONObject skinJson = new JSONObject(jsonStringFromUrl).getJSONObject("charSkins");
         //皮肤只需要增量更新
@@ -869,8 +872,8 @@ public class UpdateDataServiceImpl implements UpdateDataService {
     }
 
     public void updateOperatorEquipByJson(){
-        String equipUrl = "https://cdn.jsdelivr.net/gh/Kengxxiao/ArknightsGameData@master/zh_CN/gamedata/excel/battle_equip_table.json";
-        String equipUnlockUrl = "https://cdn.jsdelivr.net/gh/Kengxxiao/ArknightsGameData@master/zh_CN/gamedata/excel/uniequip_table.json";
+        String equipUrl = url + "excel/battle_equip_table.json";
+        String equipUnlockUrl = url + "excel/uniequip_table.json";
         JSONObject equip = new JSONObject(getJsonStringFromUrl(equipUrl));
         JSONObject equipUnlock = new JSONObject(getJsonStringFromUrl(equipUnlockUrl));
 
