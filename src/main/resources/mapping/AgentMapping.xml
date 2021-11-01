@@ -84,6 +84,8 @@
     <select id="selectPoolCount" resultType="java.lang.Integer">
         SELECT
             count(*) as count
+        FROM
+            a_agent
         WHERE
             pool like concat('%',#{pool},'%')
         GROUP BY
