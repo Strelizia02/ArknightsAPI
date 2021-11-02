@@ -3,7 +3,7 @@
 <mapper namespace="com.strelizia.arknights.dao.ActivityMapper">
     <resultMap id="BaseResultMap" type="com.strelizia.arknights.model.ActivityInfo">
         <result column="type" property="type" jdbcType="INTEGER"/>
-        <result column="hour" property="hour" jdbcType="INTEGER"/>
+        <result column="hour" property="hour" jdbcType="VARCHAR"/>
         <result column="count" property="count" jdbcType="BIGINT"/>
     </resultMap>
 

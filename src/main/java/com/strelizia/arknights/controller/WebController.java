@@ -126,7 +126,7 @@ public class WebController {
      */
     @Token
     @GetMapping("getPool")
-    public JsonResult<List<AgentInfo>> getPool(@RequestParam Integer current, @RequestParam String pool) {
+    public JsonResult<List<AgentInfo>> getPool(@RequestParam Integer current, @RequestParam(required = false, defaultValue = "%") String pool) {
         if(pool == null || pool.equals("")){
             pool = "%";
         }
@@ -260,7 +260,7 @@ public class WebController {
      */
     @Token
     @GetMapping("getUid")
-    public JsonResult<List<BiliCount>> getUid(@RequestParam Integer current, @RequestParam String name) {
+    public JsonResult<List<BiliCount>> getUid(@RequestParam Integer current, @RequestParam(required = false, defaultValue = "%") String name) {
         List<BiliCount> biliCountListByPage = biliMapper.getBiliCountListByPage(name, 10 * (current - 1));
         Integer count = biliMapper.getBiliCountListCount(name);
         return JsonResult.success(biliCountListByPage, count);
@@ -335,7 +335,7 @@ public class WebController {
      */
     @Token
     @GetMapping("getUidNotListen")
-    public JsonResult<List<BiliCount>> getUidNotListen(@RequestParam Long groupId, @RequestParam String name) {
+    public JsonResult<List<BiliCount>> getUidNotListen(@RequestParam Long groupId, @RequestParam(required = false, defaultValue = "%") String name) {
         return JsonResult.success(biliMapper.getNotListenListByGroupId(groupId, name));
     }
 

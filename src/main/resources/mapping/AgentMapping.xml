@@ -88,8 +88,6 @@
             a_agent
         WHERE
             pool like concat('%',#{pool},'%')
-        GROUP BY
-            pool
     </select>
 
     <select id="selectPoolAgent" parameterType="java.lang.String" resultMap="BaseResultMap">

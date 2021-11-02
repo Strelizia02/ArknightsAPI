@@ -3,7 +3,7 @@ package com.strelizia.arknights.model;
 public class ActivityInfo {
 
     private Integer type;
-    private Integer hour;
+    private String hour;
     private Long count;
 
     public Integer getType() {
@@ -14,11 +14,11 @@ public class ActivityInfo {
         this.type = type;
     }
 
-    public Integer getHour() {
+    public String getHour() {
         return hour;
     }
 
-    public void setHour(Integer hour) {
+    public void setHour(String hour) {
         this.hour = hour;
     }
 
