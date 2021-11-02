@@ -24,6 +24,8 @@
 
 前端主页：[Angelina's Home](http://www.angelina-bot.top/)
 
+前端项目链接:[Angelina-bot](https://github.com/aStrangerPassingBy/Angelina-bot)
+
 # 责任声明：
 
 **我国有一套完善的法律制度，请不要使用本项目传播不能过审的信息，应当遵守中华人民共和国法律法规。**
