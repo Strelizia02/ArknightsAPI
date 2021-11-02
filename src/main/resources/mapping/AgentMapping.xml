@@ -83,7 +83,7 @@
 
     <select id="selectPoolCount" resultType="java.lang.Integer">
         SELECT
-            count(*) as count
+            count(DISTINCT(pool)) as count
         FROM
             a_agent
         WHERE
