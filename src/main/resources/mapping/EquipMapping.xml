@@ -66,6 +66,7 @@
                     t_operator
                 WHERE
                     operator_name = #{name}
+                LIMIT 1
             )
     </select>
 

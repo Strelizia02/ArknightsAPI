@@ -1,5 +1,6 @@
 package com.strelizia.arknights.job;
 
+import com.strelizia.arknights.dao.ActivityMapper;
 import com.strelizia.arknights.dao.UserFoundMapper;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,10 +22,14 @@ public class CleanDayCountJob {
     @Autowired
     private UserFoundMapper userFoundMapper;
 
+    @Autowired
+    private ActivityMapper activityMapper;
+
     //每天凌晨四点重置抽卡次数
     @Scheduled(cron = "${scheduled.cleanJob}")
     @Async
     public void cleanDayCountJob() {
+        activityMapper.clearActivity();
         userFoundMapper.cleanTodayCount();
         log.info("{}每日涩图抽卡数结算成功", new Date());
     }

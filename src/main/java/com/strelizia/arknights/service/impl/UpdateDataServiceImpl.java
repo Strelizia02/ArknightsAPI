@@ -76,8 +76,8 @@ public class UpdateDataServiceImpl implements UpdateDataService {
     @Value("${userConfig.loginQq}")
     private Long loginQq;
 
-//    private String url = "https://cdn.jsdelivr.net/gh/Kengxxiao/ArknightsGameData@master/zh_CN/gamedata/";
-    private String url = "https://raw.githubusercontent.com/Kengxxiao/ArknightsGameData/master/zh_CN/gamedata/";
+    private String url = "https://cdn.jsdelivr.net/gh/Kengxxiao/ArknightsGameData@master/zh_CN/gamedata/";
+//    private String url = "https://raw.githubusercontent.com/Kengxxiao/ArknightsGameData/master/zh_CN/gamedata/";
 
     @Override
     /**
@@ -86,6 +86,7 @@ public class UpdateDataServiceImpl implements UpdateDataService {
      *      —— 否，不进行版本检查，强制更新
      */
     public void updateAllData(boolean checkUpdate) {
+        log.info("开始更新全部数据");
         //获取kokodayo的Json数据Key
         String koKoDaYoKeyUrl = url + "excel/data_version.txt";
 
@@ -95,8 +96,10 @@ public class UpdateDataServiceImpl implements UpdateDataService {
 //        String charKey = keyJsonObj.getJSONObject("result").getJSONObject("agent").getJSONObject("char").getString("key");
         //版本不同才进行更新
         if (charKey.equals(dataVersion) && checkUpdate) {
+            log.info("当前为最新版本无需更新");
             return;
         }
+        log.info("新数据版本为：{}",charKey);
         updateMapper.updateVersion(charKey);
 
 //        List<Long> groups = userFoundMapper.selectAllGroups();
@@ -129,11 +132,13 @@ public class UpdateDataServiceImpl implements UpdateDataService {
      */
     public void updateAllOperator() {
         //清理干员数据(因部分召唤物无char_id，不方便进行增量更新)
+        log.info("清理干员数据");
         updateMapper.clearOperatorData();
         //获取全部干员基础数据
         String operatorListUrl = url + "excel/character_table.json";
         JSONObject operatorObj = new JSONObject(getJsonStringFromUrl(operatorListUrl));;
         //获取游戏公招描述数据
+        log.info("更新公招描述数据");
         String gachaTableUrl = url + "excel/gacha_table.json";
         String recruit = new JSONObject(getJsonStringFromUrl(gachaTableUrl)).getString("recruitDetail");
         Pattern pattern = Pattern.compile("<(.*?)>");
@@ -149,15 +154,18 @@ public class UpdateDataServiceImpl implements UpdateDataService {
             }
         }
         //获取全部干员技能数据
+        log.info("更新全部干员技能数据");
         String skillIdUrl = url + "excel/skill_table.json";
         JSONObject skillObj = new JSONObject(getJsonStringFromUrl(skillIdUrl));
         //获取全部基建技能数据
+        log.info("更新全部基建技能数据");
         String buildingUrl = url + "excel/building_data.json";
         JSONObject buildingObj = new JSONObject(getJsonStringFromUrl(buildingUrl));
         //获取全部干员档案数据
+        log.info("更新全部干员档案数据");
         String infoTable = url + "excel/handbook_info_table.json";
         JSONObject infoTableObj = new JSONObject(getJsonStringFromUrl(infoTable)).getJSONObject("handbookDict");
-
+        log.info("更新全部干员基础数据");
         Iterator<String> keys = operatorObj.keys();
         while (keys.hasNext()){
             String key = keys.next();
@@ -198,7 +206,7 @@ public class UpdateDataServiceImpl implements UpdateDataService {
      * @param operatorNum 数据库中的干员Id
      */
     private void updateOperatorInfoById(String operatorId, Integer operatorNum, JSONObject infoJsonObj) {
-            OperatorBasicInfo operatorBasicInfo = new OperatorBasicInfo();
+        OperatorBasicInfo operatorBasicInfo = new OperatorBasicInfo();
             operatorBasicInfo.setOperatorId(operatorNum);
             operatorBasicInfo.setCharId(operatorId);
             operatorBasicInfo.setDrawName(infoJsonObj.getString("drawName"));
@@ -872,6 +880,7 @@ public class UpdateDataServiceImpl implements UpdateDataService {
     }
 
     public void updateOperatorEquipByJson(){
+        log.info("开始更新模组数据");
         String equipUrl = url + "excel/battle_equip_table.json";
         String equipUnlockUrl = url + "excel/uniequip_table.json";
         JSONObject equip = new JSONObject(getJsonStringFromUrl(equipUrl));

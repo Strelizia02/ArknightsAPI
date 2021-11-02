@@ -127,6 +127,9 @@ public class WebController {
     @Token
     @GetMapping("getPool")
     public JsonResult<List<AgentInfo>> getPool(@RequestParam Integer current, @RequestParam String pool) {
+        if(pool == null || pool.equals("")){
+            pool = "%";
+        }
         List<String> poolNames = agentMapper.selectPoolByPage(pool, 10 * (current - 1));
         List<AgentInfo> pools = new ArrayList<>(poolNames.size());
         for(String poolName : poolNames){

@@ -266,7 +266,6 @@
         TRUNCATE TABLE t_operator_skill_mastery_costs;
         TRUNCATE TABLE t_operator_tags_relation;
         TRUNCATE TABLE t_operator_talent;
-        TRUNCATE TABLE a_activity
     </delete>
 
     <delete id="clearMatrixData">

@@ -1,5 +1,6 @@
 package com.strelizia.arknights.job;
 
+import com.strelizia.arknights.dao.ActivityMapper;
 import com.strelizia.arknights.service.DailyCountService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;

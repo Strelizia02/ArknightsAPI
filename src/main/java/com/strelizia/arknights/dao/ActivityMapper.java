@@ -17,4 +17,6 @@ public interface ActivityMapper {
     Integer insertGetMsg();
 
     List<ActivityInfo> selectActivity();
+
+    Integer clearActivity();
 }

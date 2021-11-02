@@ -9,8 +9,20 @@
 
 
     <select id="selectActivity" resultMap="BaseResultMap">
-        SELECT type, HOUR(time) as hour from a_activity group by type, HOUR(time)
+        SELECT
+        type,
+        DATE_FORMAT(time,'%H:%i') AS hour,
+        count(*) AS count
+        FROM
+        a_activity
+        GROUP BY
+        type,
+        DATE_FORMAT(time,'%H:%i')
     </select>
+
+    <delete id="clearActivity">
+        delete from a_activity where DAY(time) != DAY(CURRENT_TIME)
+    </delete>
     
     <insert id="insertSendMsg">
         insert into a_activity (type) values (1)
