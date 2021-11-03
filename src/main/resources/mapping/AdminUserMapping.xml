@@ -41,6 +41,6 @@
 
     <insert id="insertUserAdmin" parameterType="com.strelizia.arknights.model.AdminUserInfo">
         INSERT into a_admin_user (qq, found, img, six, `sql`, upload, name)
-         VALUES(#{qq}, #{found}, #{img}, #{six}, #{sql}, #{upload}, (select name from a_user_found where qq = #{qq}))
+         VALUES(md5(#{qq}), #{found}, #{img}, #{six}, #{sql}, #{upload}, (select name from a_user_found where qq = md5(#{qq})))
     </insert>
 </mapper>
