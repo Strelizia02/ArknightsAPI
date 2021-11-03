@@ -88,7 +88,7 @@ public class ImageUtil {
      * @param imgUrl 图片url
      * @return 返回图片base64的字符串
      */
-    public String getImageBase64ByUrl(String imgUrl) {
+    public static String getImageBase64ByUrl(String imgUrl) {
         URL url;
         InputStream is = null;
         ByteArrayOutputStream outStream = null;
