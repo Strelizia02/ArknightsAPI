@@ -9,15 +9,7 @@
 
 
     <select id="selectActivity" resultMap="BaseResultMap">
-        SELECT
-        type,
-        DATE_FORMAT(time,'%H:%i') AS hour,
-        count(*) AS count
-        FROM
-        a_activity
-        GROUP BY
-        type,
-        DATE_FORMAT(time,'%H:%i')
+        SELECT type, HOUR(time) as hour from a_activity group by type, HOUR(time)
     </select>
 
     <delete id="clearActivity">
