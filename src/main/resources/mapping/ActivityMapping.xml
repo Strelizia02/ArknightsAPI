@@ -9,7 +9,7 @@
 
 
     <select id="selectActivity" resultMap="BaseResultMap">
-        SELECT type, HOUR(time) as hour from a_activity group by type, HOUR(time)
+        SELECT type, HOUR(time) as hour, count(*) as count from a_activity group by type, HOUR(time)
     </select>
 
     <delete id="clearActivity">
