@@ -28,7 +28,7 @@
 
 # 特别鸣谢：
 
-[前端负责人](https://github.com/aStrangerPassingBy)
+[水長歌](https://github.com/aStrangerPassingBy)
 
 [Chino酱](https://github.com/vivien8261)
 
