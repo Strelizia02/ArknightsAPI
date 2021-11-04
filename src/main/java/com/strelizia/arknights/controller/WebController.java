@@ -369,9 +369,9 @@ public class WebController {
             }
         }
         Map<String, List<ActivityInfo>> result = new HashMap<>(3);
-        result.put("接收消息", Getmsg);
-        result.put("发送文字", SendMsg);
-        result.put("发送图片", SendPic);
+        result.put("getMsg", Getmsg);
+        result.put("sendMsg", SendMsg);
+        result.put("sendPic", SendPic);
         return JsonResult.success(result);
     }
 
