@@ -26,6 +26,12 @@
 
 前端项目链接:[Angelina-bot](https://github.com/aStrangerPassingBy/Angelina-bot)
 
+# 特别鸣谢：
+
+[前端负责人](https://github.com/aStrangerPassingBy)
+
+[Chino酱](https://github.com/vivien8261)
+
 # 责任声明：
 
 **我国有一套完善的法律制度，请不要使用本项目传播不能过审的信息，应当遵守中华人民共和国法律法规。**
