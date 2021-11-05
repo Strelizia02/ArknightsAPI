@@ -116,7 +116,7 @@
         delete from a_bili_dynamic where uid = #{uid}
     </delete>
 
-    <select id="selectGroupByUid">
+    <select id="selectGroupByUid" resultType="java.lang.Long">
         select group_id from a_group_bili_rel where uid = #{uid}
     </select>
 
