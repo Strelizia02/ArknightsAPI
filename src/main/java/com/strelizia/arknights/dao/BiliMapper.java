@@ -14,7 +14,7 @@ public interface BiliMapper {
     List<BiliCount> getBiliCountList();
 
     //分页获取关注uid
-    List<BiliCount> getBiliCountListByPage(@Param("name")String name, @Param("cuurent")Integer cuurent);
+    List<BiliCount> getBiliCountListByPage(@Param("name")String name, @Param("current")Integer current);
 
     Integer getBiliCountListCount(@Param("name")String name);
 
