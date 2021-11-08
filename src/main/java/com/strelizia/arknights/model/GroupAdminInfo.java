@@ -1,10 +1,12 @@
 package com.strelizia.arknights.model;
 
+import java.io.Serializable;
+
 /**
  * @author wangzy
  * @Date 2021/3/17 17:50
  **/
-public class GroupAdminInfo {
+public class GroupAdminInfo  implements Serializable {
     private Long groupId;
     private Integer found;
     private Integer picture;

@@ -1,6 +1,8 @@
 package com.strelizia.arknights.model;
 
-public class LoginUser {
+import java.io.Serializable;
+
+public class LoginUser  implements Serializable {
     private String userName;
     private String passWord;
 

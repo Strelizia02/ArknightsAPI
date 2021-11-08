@@ -1,5 +1,7 @@
 package com.strelizia.arknights.model;
 
+import java.io.Serializable;
+
 /**
  * @author Strelizia
  * @Description
@@ -7,7 +9,7 @@ package com.strelizia.arknights.model;
  * @Package com.strelizia.arknights.model
  * @Date 2021/4/20 17:41
  **/
-public class NickName {
+public class NickName  implements Serializable {
     private String nickName;
     private String name;
 

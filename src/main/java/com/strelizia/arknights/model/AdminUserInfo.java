@@ -1,11 +1,13 @@
 package com.strelizia.arknights.model;
 
+import java.io.Serializable;
+
 /**
  * @author wangzy
  * @Date 2020/12/29 14:38
  * 管理员权限信息
  **/
-public class AdminUserInfo {
+public class AdminUserInfo  implements Serializable {
     //管理员qq
     private String qq;
     //管理员昵称，用于肉眼识别

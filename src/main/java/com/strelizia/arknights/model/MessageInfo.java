@@ -1,11 +1,13 @@
 package com.strelizia.arknights.model;
 
+import java.io.Serializable;
+
 /**
  * @author wangzy
  * @Date 2020/12/10 16:37
  * qq消息封装
  **/
-public class MessageInfo {
+public class MessageInfo implements Serializable {
     private String text;
     private Long qq;
     private String name;

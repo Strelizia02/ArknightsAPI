@@ -1,6 +1,8 @@
 package com.strelizia.arknights.model;
 
-public class EventsMessage {
+import java.io.Serializable;
+
+public class EventsMessage implements Serializable {
     private String msgType;
     private Long groupId;
     private Long qq;
