@@ -3,9 +3,6 @@ package com.strelizia.arknights.util;
 import com.baidu.aip.ocr.AipOcr;
 import org.json.JSONArray;
 import org.json.JSONObject;
-import sun.misc.BASE64Decoder;
-
-import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -70,18 +67,8 @@ public class BaiduAPIUtil {
         List<String> allTag = Arrays.asList(all);
 
         // 调用接口
-        JSONArray words_result;
-        try {
-            BASE64Decoder decoder = new BASE64Decoder();
-            byte[] image = decoder.decodeBuffer(ImageUtil.getImageBase64ByUrl(url));
-            JSONObject res = client.basicAccurateGeneral(image, new HashMap<>());
-            words_result = new JSONArray(res.get("words_result").toString());
-        }catch (Exception e){
-            JSONObject res = client.basicGeneralUrl(url, new HashMap<>());
-            words_result = new JSONArray(res.get("words_result").toString());
-        }
-
-
+        JSONObject res = client.basicGeneralUrl(url, new HashMap<>());
+        JSONArray words_result = new JSONArray(res.get("words_result").toString());
         List<String> str = new ArrayList<>();
         for (int i = 0; i < words_result.length(); i++) {
             String words = words_result.getJSONObject(i).getString("words");
