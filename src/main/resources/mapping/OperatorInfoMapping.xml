@@ -42,14 +42,16 @@
         SELECT
             operator_name
         FROM
-            t_operator
+            t_operator o left join a_nick_name n on o.operator_name = n.name
         WHERE
             draw_name = #{info}
-        OR info_name = #{info}
-        OR sex = #{info}
-        OR come_from = #{info}
-        OR birthday = #{info}
-        OR race = #{info}
+            OR info_name = #{info}
+            OR sex = #{info}
+            OR come_from = #{info}
+            OR birthday = #{info}
+            OR race = #{info}
+            OR operator_name like CONCAT('%',#{info}, '%')
+            OR nick_name = #{info}
     </select>
 
     <select id="getOperatorByBirthday" parameterType="java.lang.String" resultType="java.lang.String">
