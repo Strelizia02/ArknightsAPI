@@ -596,7 +596,8 @@ public class UpdateDataServiceImpl implements UpdateDataService {
         List<String> allOperatorId = operatorInfoMapper.getAllOperatorId();
         for (String id : allOperatorId) {
             String base = operatorInfoMapper.selectOperatorPngById(id);
-            if (base == null || base.startsWith("https://")) {
+            if (base == null || base.startsWith("http")) {
+                log.info(id + "半身照正在更新");
                 operatorInfoMapper.insertOperatorPngById(id, ImageUtil.getImageBase64ByUrl("http://vivien8261.gitee.io/amiya-bot-resource/images/game/portraits/" + id + "_1.png"));
             }
         }
