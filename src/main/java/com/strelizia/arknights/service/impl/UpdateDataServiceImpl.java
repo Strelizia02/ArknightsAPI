@@ -535,6 +535,7 @@ public class UpdateDataServiceImpl implements UpdateDataService {
             if(skinObj.getJSONObject("displaySkin").get("skinName") instanceof String) {
                 String name = skinObj.getJSONObject("displaySkin").getString("skinName");
                 if (!skinNames.contains(name)) {
+                    log.info("新增时装：" + name);
                     SkinInfo skinInfo = new SkinInfo();
                     skinInfo.setSkinName(name);
                     skinInfo.setDialog(skinObj.getJSONObject("displaySkin").getString("dialog"));
@@ -544,7 +545,7 @@ public class UpdateDataServiceImpl implements UpdateDataService {
                     String avatarId = skinObj.getString("avatarId");
                     String[] split = avatarId.split("#");
                     String skinImgUrl = "http://amiya.net.cn:18080/resource/images/game/skins/";
-                    skinInfo.setSkinBase64(imageUtil.getImageBase64ByUrl(skinImgUrl + split[0] + "_" + split[1] + ".png"));
+                    skinInfo.setSkinBase64(ImageUtil.getImageBase64ByUrl(skinImgUrl + split[0] + "_" + split[1] + ".png"));
                     if(!skinInfo.getSkinBase64().startsWith("http")){
                         skinInfoMapper.insertBySkinInfo(skinInfo);
                     }
@@ -558,7 +559,7 @@ public class UpdateDataServiceImpl implements UpdateDataService {
             int i = 0;
             for (Integer id : ids) {
                 skinInfoMapper.updateBaseStrById(id,
-                        imageUtil.getImageBase64ByUrl(skinInfoMapper.selectSkinById(id)));
+                        ImageUtil.getImageBase64ByUrl(skinInfoMapper.selectSkinById(id)));
                 i++;
             }
             if (i != 0)
@@ -580,7 +581,7 @@ public class UpdateDataServiceImpl implements UpdateDataService {
             String picBase64 = materialMadeMapper.selectMaterialPicById(id);
             if (picBase64 == null || picBase64.startsWith("https://")) {
                 String iconId = materialMadeMapper.selectAllMaterIconId(id);
-                materialMadeMapper.updateBase64ById(imageUtil.getImageBase64ByUrl("http://vivien8261.gitee.io/amiya-bot-resource/images/game/items/" + iconId + ".png"), id);
+                materialMadeMapper.updateBase64ById(ImageUtil.getImageBase64ByUrl("http://vivien8261.gitee.io/amiya-bot-resource/images/game/items/" + iconId + ".png"), id);
             }
         }
         sendMsgUtil.CallOPQApiSendMyself("材料图标更新完成\n--"
@@ -596,7 +597,7 @@ public class UpdateDataServiceImpl implements UpdateDataService {
         for (String id : allOperatorId) {
             String base = operatorInfoMapper.selectOperatorPngById(id);
             if (base == null || base.startsWith("https://")) {
-                operatorInfoMapper.insertOperatorPngById(id, imageUtil.getImageBase64ByUrl("http://vivien8261.gitee.io/amiya-bot-resource/images/game/portraits/" + id + "_1.png"));
+                operatorInfoMapper.insertOperatorPngById(id, ImageUtil.getImageBase64ByUrl("http://vivien8261.gitee.io/amiya-bot-resource/images/game/portraits/" + id + "_1.png"));
             }
         }
         sendMsgUtil.CallOPQApiSendMyself("干员半身照更新完成\n--"
@@ -986,7 +987,6 @@ public class UpdateDataServiceImpl implements UpdateDataService {
             value = FormatStringUtil.FormatDouble2String(val) + percent;
             m.appendReplacement(stringBuffer, value);
         }
-        String str = m.appendTail(stringBuffer).toString().replace("--", "-");
-        return str;
+        return m.appendTail(stringBuffer).toString().replace("--", "-");
     }
 }
