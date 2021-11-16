@@ -5,10 +5,10 @@ spring:
     allow-bean-definition-overriding: true
   datasource:
     localdatasource:
-      url: jdbc:mysql://localhost:3306/arknights?useUnicode=true&characterEncoding=utf8&allowMultiQueries=true&serverTimezone=UTC
-      username: root
-      password: root
-      driver-class-name: com.mysql.jdbc.Driver
+      url: jdbc:sqlite:E:/develop/SQLite/parcelx_fabric.db
+      username:
+      password:
+      driver-class-name: org.sqlite.JDBC
 
 scheduled:
   # 每天4点抽卡次数清空
