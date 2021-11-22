@@ -34,9 +34,9 @@ public class OperatorInfoServiceImpl implements OperatorInfoService {
                 break;
             }
 
-            String realName = nickNameMapper.selectNameByNickName(info);
-            if (realName != null && !realName.equals(""))
-                info = realName;
+//            String realName = nickNameMapper.selectNameByNickName(info);
+//            if (realName != null && !realName.equals(""))
+//                info = realName;
 
             List<String> operatorNameByInfo = operatorInfoMapper.getOperatorNameByInfo(info);
             operators.retainAll(operatorNameByInfo);

@@ -254,21 +254,21 @@
     </update>
 
     <delete id="clearOperatorData">
-        TRUNCATE TABLE t_equip;
-        TRUNCATE TABLE t_equip_buff;
-        TRUNCATE TABLE t_equip_cost;
-        TRUNCATE TABLE t_equip_mission;
-        TRUNCATE TABLE t_operator;
-        TRUNCATE TABLE t_operator_building_skill;
-        TRUNCATE TABLE t_operator_evolve_costs;
-        TRUNCATE TABLE t_operator_skill;
-        TRUNCATE TABLE t_operator_skill_desc;
-        TRUNCATE TABLE t_operator_skill_mastery_costs;
-        TRUNCATE TABLE t_operator_tags_relation;
-        TRUNCATE TABLE t_operator_talent;
+        DELETE FROM t_equip;
+        DELETE FROM t_equip_buff;
+        DELETE FROM t_equip_cost;
+        DELETE FROM t_equip_mission;
+        DELETE FROM t_operator;
+        DELETE FROM t_operator_building_skill;
+        DELETE FROM t_operator_evolve_costs;
+        DELETE FROM t_operator_skill;
+        DELETE FROM t_operator_skill_desc;
+        DELETE FROM t_operator_skill_mastery_costs;
+        DELETE FROM t_operator_tags_relation;
+        DELETE FROM t_operator_talent;
     </delete>
 
     <delete id="clearMatrixData">
-        TRUNCATE TABLE t_matrix;
+        DELETE FROM t_matrix;
     </delete>
 </mapper>
