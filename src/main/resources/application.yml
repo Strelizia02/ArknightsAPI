@@ -5,7 +5,7 @@ spring:
     allow-bean-definition-overriding: true
   datasource:
     localdatasource:
-      url: jdbc:sqlite:E:/develop/SQLite/parcelx_fabric.db
+      url: jdbc:sqlite:F:\MyProject\ArknightsAPI\src\main\resources\SQLite\arknights.db
       username:
       password:
       driver-class-name: org.sqlite.JDBC
