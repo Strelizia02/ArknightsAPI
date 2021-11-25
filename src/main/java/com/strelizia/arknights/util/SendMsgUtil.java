@@ -96,6 +96,47 @@ public class SendMsgUtil {
         restTemplate.postForEntity(sendTextMsgUrl, httpEntity, SendMsgRespInfo.class);
     }
 
+    private void shutAllGroup(RestTemplate restTemplate, Long groupId, Integer Switch, String sendTextMsgUrl) {
+        Map<String, Object> map = new HashMap<>(2);
+        map.put("GroupID", groupId);
+        map.put("Switch", Switch);
+
+        String jsonData = null;
+        try {
+            jsonData = new ObjectMapper().writeValueAsString(map);
+        } catch (JsonProcessingException e) {
+            log.error("封装请求Body失败{}", e.getMessage());
+        }
+        //获取请求头
+        HttpHeaders httpHeaders = new HttpHeaders();
+        MediaType type = MediaType.parseMediaType("application/json; charset=UTF-8;OAuth e1bac1205283429d818c5ab6ae4c2b10");
+        httpHeaders.setContentType(type);
+        HttpEntity<String> httpEntity = new HttpEntity<>(jsonData, httpHeaders);
+        //发送请求，封装结果数据
+        restTemplate.postForEntity(sendTextMsgUrl, httpEntity, SendMsgRespInfo.class);
+    }
+
+    private void shutSomeOneInGroup(RestTemplate restTemplate, Long groupId, Integer minute, Long qq, String sendTextMsgUrl) {
+        Map<String, Object> map = new HashMap<>(7);
+        map.put("GroupID", groupId);
+        map.put("ShutTime", minute);
+        map.put("ShutUpUserID", qq);
+
+        String jsonData = null;
+        try {
+            jsonData = new ObjectMapper().writeValueAsString(map);
+        } catch (JsonProcessingException e) {
+            log.error("封装请求Body失败{}", e.getMessage());
+        }
+        //获取请求头
+        HttpHeaders httpHeaders = new HttpHeaders();
+        MediaType type = MediaType.parseMediaType("application/json; charset=UTF-8;OAuth e1bac1205283429d818c5ab6ae4c2b10");
+        httpHeaders.setContentType(type);
+        HttpEntity<String> httpEntity = new HttpEntity<>(jsonData, httpHeaders);
+        //发送请求，封装结果数据
+        restTemplate.postForEntity(sendTextMsgUrl, httpEntity, SendMsgRespInfo.class);
+    }
+
     private void sendTextImgToGroup(RestTemplate restTemplate, Long groupId, String Text, String picType, String url, String sendTextMsgUrl, Integer sendToType) {
         Map<String, Object> map = new HashMap<>(7);
         map.put("ToUserUid", groupId);
@@ -206,6 +247,18 @@ public class SendMsgUtil {
         String finalStr = str;
         poolTaskExecutor.execute(() -> sendTextMsgToGroup(restTemplate, loginQq, finalStr,
                 "http://" + OPQUrl + ":8888" + sendTextMsgApi + "?qq=" + loginQq + "&funcname=SendMsgV2", 1));
+    }
+
+    public void CallOPQApiShutSomeOne(Long groupId, Long qq, Integer time){
+        poolTaskExecutor.execute(() -> shutSomeOneInGroup(restTemplate, groupId,
+                time, qq, sendTextMsgApi + "?qq=" + loginQq + "&funcname=OidbSvc.0x570_8"));
+        log.info("禁言{} {}分钟", qq, time);
+    }
+
+    public void CallOPQApiShutAll(Long groupId, Integer Switch){
+        poolTaskExecutor.execute(() -> shutAllGroup(restTemplate, groupId,
+                Switch,  sendTextMsgApi + "?qq=" + loginQq + "&funcname=OidbSvc.0x89a_0"));
+        log.info("全体禁言{}", groupId);
     }
 }
 

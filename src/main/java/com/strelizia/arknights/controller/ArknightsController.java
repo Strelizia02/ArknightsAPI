@@ -128,7 +128,7 @@ public class ArknightsController {
             } else if (text.startsWith("安洁莉娜")) {
                 String messages = text.substring(4);
                 return queryKeyword(qq, groupId, name, messages);
-            }else if (text.contains("安洁莉娜") || text.contains("洁哥") || text.contains("杰哥")){
+            } else if (text.contains("安洁莉娜") || text.contains("洁哥") || text.contains("杰哥")){
                 return talkWith(text, groupId, name, qq);
             }
         }
@@ -193,6 +193,9 @@ public class ArknightsController {
                     "嗯哼哼~"
             };
             result = replace[new Random().nextInt(replace.length)];
+        }else if (text.contains("口球") || text.contains("口我")){
+            result = "";
+            sendMsgUtil.CallOPQApiShutSomeOne(groupId, qq, 1);
         }
         if (!result.equals("")) {
             sendMsgUtil.CallOPQApiSendMsg(groupId, result, 2);
