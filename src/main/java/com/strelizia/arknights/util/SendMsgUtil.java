@@ -251,13 +251,13 @@ public class SendMsgUtil {
 
     public void CallOPQApiShutSomeOne(Long groupId, Long qq, Integer time){
         poolTaskExecutor.execute(() -> shutSomeOneInGroup(restTemplate, groupId,
-                time, qq, sendTextMsgApi + "?qq=" + loginQq + "&funcname=OidbSvc.0x570_8"));
+                time, qq, "http://" + OPQUrl + ":8888" + sendTextMsgApi + "?qq=" + loginQq + "&funcname=OidbSvc.0x570_8"));
         log.info("禁言{} {}分钟", qq, time);
     }
 
     public void CallOPQApiShutAll(Long groupId, Integer Switch){
         poolTaskExecutor.execute(() -> shutAllGroup(restTemplate, groupId,
-                Switch,  sendTextMsgApi + "?qq=" + loginQq + "&funcname=OidbSvc.0x89a_0"));
+                Switch,  "http://" + OPQUrl + ":8888" + sendTextMsgApi + "?qq=" + loginQq + "&funcname=OidbSvc.0x89a_0"));
         log.info("全体禁言{}", groupId);
     }
 }
