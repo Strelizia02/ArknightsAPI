@@ -27,4 +27,12 @@
     <insert id="insertGetMsg">
         insert into a_activity(type) values (0)
     </insert>
+
+    <select id="getUserCount" resultType="java.lang.Long">
+        select count(qq) from a_user_found
+    </select>
+
+    <select id="getGroupCount" resultType="java.lang.Long">
+        select count(group_id) from a_group_admin
+    </select>
 </mapper>

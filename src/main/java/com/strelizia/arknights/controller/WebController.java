@@ -375,4 +375,18 @@ public class WebController {
         return JsonResult.success(result);
     }
 
+    /**
+     * 获取基本信息
+     * @return
+     */
+    @GetMapping("getBasicInfo")
+    public JsonResult<Map<String, Long>> getBasicInfo() {
+        Long userCount = activityMapper.getUserCount();
+        Long groupCount = activityMapper.getGroupCount();
+        Map<String, Long> map = new HashMap<>(2);
+        map.put("user_count", userCount);
+        map.put("group_count", groupCount);
+        return JsonResult.success(map);
+    }
+
 }

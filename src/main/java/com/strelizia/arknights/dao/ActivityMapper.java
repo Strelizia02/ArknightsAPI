@@ -19,4 +19,8 @@ public interface ActivityMapper {
     List<ActivityInfo> selectActivity();
 
     Integer clearActivity();
+
+    Long getUserCount();
+
+    Long getGroupCount();
 }
