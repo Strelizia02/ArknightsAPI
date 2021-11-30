@@ -193,7 +193,7 @@ public class ArknightsController {
             result = replace[new Random().nextInt(replace.length)];
         }else if (text.contains("口球") || text.contains("口我")){
             result = "";
-            sendMsgUtil.CallOPQApiShutSomeOne(groupId, qq, new Random().nextInt(5));
+            sendMsgUtil.CallOPQApiShutSomeOne(groupId, qq, new Random().nextInt(5) + 1);
         }
         if (!result.equals("")) {
             sendMsgUtil.CallOPQApiSendMsg(groupId, result, 2);
