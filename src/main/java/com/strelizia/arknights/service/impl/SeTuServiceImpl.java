@@ -71,7 +71,7 @@ public class SeTuServiceImpl implements SeTuService {
             String url = array.getJSONObject(0).getString("Url");
             //开一个线程url转换为base64
             poolTaskExecutor.execute(() -> {
-                String base64 = imageUtil.getImageBase64ByUrl(url);
+                String base64 = ImageUtil.getImageBase64ByUrl(url);
                 seTuMapper.insertSeTuUrl(base64, type);
             });
             s = "感谢[" + name + "]的涩图";
@@ -91,7 +91,7 @@ public class SeTuServiceImpl implements SeTuService {
             JSONArray array = new JSONArray(jsonObj.get("FriendPic").toString());
             String url = array.getJSONObject(0).getString("Url");
             poolTaskExecutor.execute(() -> {
-                String base64 = imageUtil.getImageBase64ByUrl(url);
+                String base64 = ImageUtil.getImageBase64ByUrl(url);
                 seTuMapper.insertSeTuUrl(base64, type);
             });
             s = "涩图已收到get√";

@@ -49,7 +49,7 @@
         FROM
             t_operator_skin
         WHERE
-            INSTR(skin_base64,'https://')
+            INSTR(skin_base64,'http')
     </select>
 
     <update id="updateBaseStrById">
