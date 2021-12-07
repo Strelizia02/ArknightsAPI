@@ -128,6 +128,8 @@ public class ArknightsController {
             } else if (text.startsWith("安洁莉娜")) {
                 String messages = text.substring(4);
                 return queryKeyword(qq, groupId, name, messages);
+            }else if (text.contains("洁哥") || text.contains("杰哥") ||text.contains("安洁莉娜")){
+                talkWith(text, groupId, name, qq);
             }
         }
         return null;
@@ -194,6 +196,37 @@ public class ArknightsController {
         }else if (text.contains("口球") || text.contains("口我")){
             result = "";
             sendMsgUtil.CallOPQApiShutSomeOne(groupId, qq, new Random().nextInt(5) + 1);
+        }else if (text.contains("现有福岛鸡兔同笼，")) {
+            if (new Random().nextInt(10) == 1) {
+                int chicken = 1;
+                int rabbit = 1;
+                int head = 1;
+                int foot = 1;
+                int chickenHead = 1;
+                int rabbit_Head = 1;
+                int chickenFoot = 1;
+                int rabbitFoot = 1;
+                String[] split = text.split("，");
+                for (String s : split) {
+                    if (s.contains("鸡有")) {
+                        chickenHead = Character.getNumericValue(s.charAt(2));
+                        chickenFoot = Character.getNumericValue(s.charAt(4));
+                    } else if (s.contains("兔有")) {
+                        rabbit_Head = Character.getNumericValue(s.charAt(2));
+                        rabbitFoot = Character.getNumericValue(s.charAt(4));
+                    } else if (s.contains("共有") && s.contains("个头")) {
+                        head = Integer.parseInt(s.replace("共有", "").replace("个头", ""));
+                    } else if (s.contains("只脚")) {
+                        foot = Integer.parseInt(s.replace("只脚", ""));
+                    }
+                    //ax + by = c
+                    //dx + ey = f
+
+                }
+                rabbit = (foot * chickenHead - chickenFoot * head) / (chickenHead * rabbitFoot - chickenFoot * rabbit_Head);
+                chicken = (head - rabbit_Head * rabbit) / chickenHead;
+                result = "" + chicken + "鸡" + rabbit + "兔";
+            }
         }
         if (!result.equals("")) {
             sendMsgUtil.CallOPQApiSendMsg(groupId, result, 2);

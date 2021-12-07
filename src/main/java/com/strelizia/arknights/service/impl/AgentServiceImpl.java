@@ -84,7 +84,7 @@ public class AgentServiceImpl implements AgentService {
         List<AdminUserInfo> admins = adminUserMapper.selectAllAdmin();
         boolean b = AdminUtil.getFoundAdmin(qqMd5, admins);
 
-        if ((search < 2 && today < limit) || b) {
+        if (today < limit || b) {
             //如果没输入卡池名或者卡池不存在
             if (pool == null || agentMapper.selectPoolIsExit(pool).size() == 0) {
                 pool = "常规";
@@ -164,8 +164,6 @@ public class AgentServiceImpl implements AgentService {
 //            }
             userFoundMapper.updateTodaySearch(qqMd5, name, groupId);
             return "";
-        }else if (today < limit){
-            return "您今日的图片寻访次数已用完，请使用[##十连]进行文字抽卡";
         }else {
             return "今日抽卡机会无了";
         }
