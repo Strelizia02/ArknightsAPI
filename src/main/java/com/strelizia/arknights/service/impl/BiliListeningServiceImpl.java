@@ -80,53 +80,65 @@ public class BiliListeningServiceImpl implements BiliListeningService {
                 JSONArray dynamics = dynamicJson.getJSONObject("data").getJSONArray("cards");
                 //获取当前的最新5动态
                 List<Long> newList = new ArrayList<>(5);
-                for (int i = 0; i < 5; i++) {
+                for (int i = 0; i < 5 && i < dynamics.length(); i++) {
                     newList.add(dynamics.getJSONObject(i).getJSONObject("desc").getLong("dynamic_id"));
                 }
                 //对比第一条动态
-                Long newId = newList.get(0);
-                Long first = bili.getFirst();
-                if (!first.equals(newId)) {
-                    bili.setFirst(newId);
-                    bili.setSecond(newList.get(1));
-                    bili.setThird(newList.get(2));
-                    bili.setFourth(newList.get(3));
-                    bili.setFifth(newList.get(4));
-                    //获取最新动态详情
-                    DynamicDetail newDetail = getDynamicDetail(newId);
-                    String name = newDetail.getName();
-                    bili.setName(name);
-                    biliMapper.updateNewDynamic(bili);
-                    result = name + "更新了一条" + newDetail.getType() + "动态\n" +
-                            newDetail.getTitle() + "\n" +
-                            newDetail.getText() + "\n" + biliSpace;
-                    log.info("{}有新动态", name);
-                    b = true;
-                    List<Long> groups = userFoundMapper.selectCakeGroups(bili.getUid());
-                    String pic = newDetail.getPicUrl();
-                    if (pic == null) {
-                        for (Long groupId : groups) {
-                            sendMsgUtil.CallOPQApiSendMsg(groupId, result, 2);
-                            try {
-                                Thread.sleep(3000);
-                            } catch (InterruptedException ignored) {
-
+                int size = newList.size();
+                if (size > 0) {
+                    Long newId = newList.get(0);
+                    Long first = bili.getFirst();
+                    if (!first.equals(newId)) {
+                        bili.setFirst(newId);
+                        if (size > 1) {
+                            bili.setSecond(newList.get(1));
+                            if (size > 2) {
+                                bili.setThird(newList.get(2));
+                                if (size > 3) {
+                                    bili.setFourth(newList.get(3));
+                                    if (size > 4) {
+                                        bili.setFifth(newList.get(4));
+                                    }
+                                }
                             }
                         }
-                    } else {
-//                    String picBase64 = imageUtil.getImageBase64ByUrl(pic);
-                        for (Long groupId : groups) {
-                            sendMsgUtil.CallOPQApiSendImg(groupId, result, SendMsgUtil.picUrl, pic, 2);
-                            try {
-                                Thread.sleep(3000);
-                            } catch (InterruptedException ignored) {
 
+                        //获取最新动态详情
+                        DynamicDetail newDetail = getDynamicDetail(newId);
+                        String name = newDetail.getName();
+                        bili.setName(name);
+                        biliMapper.updateNewDynamic(bili);
+                        result = name + "更新了一条" + newDetail.getType() + "动态\n" +
+                                newDetail.getTitle() + "\n" +
+                                newDetail.getText() + "\n" + biliSpace;
+                        log.info("{}有新动态", name);
+                        b = true;
+                        List<Long> groups = userFoundMapper.selectCakeGroups(bili.getUid());
+                        String pic = newDetail.getPicUrl();
+                        if (pic == null) {
+                            for (Long groupId : groups) {
+                                sendMsgUtil.CallOPQApiSendMsg(groupId, result, 2);
+                                try {
+                                    Thread.sleep(3000);
+                                } catch (InterruptedException ignored) {
+
+                                }
+                            }
+                        } else {
+//                    String picBase64 = imageUtil.getImageBase64ByUrl(pic);
+                            for (Long groupId : groups) {
+                                sendMsgUtil.CallOPQApiSendImg(groupId, result, SendMsgUtil.picUrl, pic, 2);
+                                try {
+                                    Thread.sleep(3000);
+                                } catch (InterruptedException ignored) {
+
+                                }
                             }
                         }
                     }
                 }
             }catch(Exception e){
-
+                log.error(e.getMessage());
             }
         }
         return b;
