@@ -24,7 +24,7 @@ SET FOREIGN_KEY_CHECKS = 0;
 DROP TABLE IF EXISTS `a_admin_user`;
 CREATE TABLE `a_admin_user`  (
   `qq` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '权限狗列表',
-  `name` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL,
+  `name` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL,
   `found` int(0) NULL DEFAULT 0 COMMENT '无限抽卡权限',
   `img` int(0) NULL DEFAULT 0 COMMENT '无限涩图权限',
   `six` int(0) NULL DEFAULT 0 COMMENT '概率拉满权限',
