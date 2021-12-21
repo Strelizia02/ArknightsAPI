@@ -76,9 +76,9 @@ public class ClassificationUtil {
         map.put("公招截图", GongZhaoJieTu);
         map.put("公开招募", GongKaiZhaoMu);
 
-        map.put("涩图", SeTu);
-        map.put("不够涩", SeTu);
-//
+//        map.put("涩图", SeTu);
+//        map.put("不够涩", SeTu);
+
         map.put("给你涩图", GeiNiSeTu);
         map.put("上传涩图", GeiNiSeTu);
 
@@ -165,11 +165,11 @@ public class ClassificationUtil {
         map.put("技能描述", JiNengXiangQing);
         map.put("技能详情", JiNengXiangQing);
 
-        map.put("删除涩图", ShanChuSeTu);
+//        map.put("删除涩图", ShanChuSeTu);
 
-        map.put("关闭涩图", GuanBiSeTu);
+//        map.put("关闭涩图", GuanBiSeTu);
 
-        map.put("打开涩图", DaKaiSeTu);
+//        map.put("打开涩图", DaKaiSeTu);
 
         map.put("皮肤查询", PiFuChaXun);
         map.put("时装查询", PiFuChaXun);

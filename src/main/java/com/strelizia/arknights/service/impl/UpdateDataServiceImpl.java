@@ -76,8 +76,9 @@ public class UpdateDataServiceImpl implements UpdateDataService {
     @Value("${userConfig.loginQq}")
     private Long loginQq;
 
-    private String url = "https://cdn.jsdelivr.net/gh/Kengxxiao/ArknightsGameData@master/zh_CN/gamedata/";
+//    private String url = "https://cdn.jsdelivr.net/gh/Kengxxiao/ArknightsGameData@master/zh_CN/gamedata/";
 //    private String url = "https://raw.githubusercontent.com/Kengxxiao/ArknightsGameData/master/zh_CN/gamedata/";
+    private String url = "http://vivien8261.gitee.io/arknights-bot-resource/gamedata/";
 
     @Override
     /**
@@ -88,7 +89,7 @@ public class UpdateDataServiceImpl implements UpdateDataService {
     public void updateAllData(boolean checkUpdate) {
         log.info("开始更新全部数据");
         //获取kokodayo的Json数据Key
-        String koKoDaYoKeyUrl = url + "excel/data_version.txt";
+        String koKoDaYoKeyUrl = "https://gitee.com/vivien8261/Arknights-Bot-Resource/raw/main/gamedata/excel/data_version.txt";
 
         String charKey = getJsonStringFromUrl(koKoDaYoKeyUrl);
 //        JSONObject keyJsonObj = new JSONObject(jsonStr);
@@ -544,11 +545,9 @@ public class UpdateDataServiceImpl implements UpdateDataService {
                     skinInfo.setSkinGroupName(skinObj.getJSONObject("displaySkin").getString("skinGroupName"));
                     String avatarId = skinObj.getString("avatarId");
                     String[] split = avatarId.split("#");
-                    String skinImgUrl = "http://amiya.net.cn:18080/resource/images/game/skins/";
+                    String skinImgUrl = "http://vivien8261.gitee.io/arknights-bot-resource";
                     skinInfo.setSkinBase64(ImageUtil.getImageBase64ByUrl(skinImgUrl + split[0] + "_" + split[1] + ".png"));
-                    if(!skinInfo.getSkinBase64().startsWith("http")){
-                        skinInfoMapper.insertBySkinInfo(skinInfo);
-                    }
+                    skinInfoMapper.insertBySkinInfo(skinInfo);
                 }
             }
         }
@@ -581,7 +580,7 @@ public class UpdateDataServiceImpl implements UpdateDataService {
             String picBase64 = materialMadeMapper.selectMaterialPicById(id);
             if (picBase64 == null || picBase64.startsWith("https://")) {
                 String iconId = materialMadeMapper.selectAllMaterIconId(id);
-                materialMadeMapper.updateBase64ById(ImageUtil.getImageBase64ByUrl("http://vivien8261.gitee.io/amiya-bot-resource/images/game/items/" + iconId + ".png"), id);
+                materialMadeMapper.updateBase64ById(ImageUtil.getImageBase64ByUrl("http://vivien8261.gitee.io/arknights-bot-resource/item/" + iconId + ".png"), id);
             }
         }
         sendMsgUtil.CallOPQApiSendMyself("材料图标更新完成\n--"
@@ -598,7 +597,7 @@ public class UpdateDataServiceImpl implements UpdateDataService {
             String base = operatorInfoMapper.selectOperatorPngById(id);
             if (base == null || base.startsWith("http")) {
                 log.info(id + "半身照正在更新");
-                operatorInfoMapper.insertOperatorPngById(id, ImageUtil.getImageBase64ByUrl("http://vivien8261.gitee.io/amiya-bot-resource/images/game/portraits/" + id + "_1.png"));
+                operatorInfoMapper.insertOperatorPngById(id, ImageUtil.getImageBase64ByUrl("http://vivien8261.gitee.io/arknights-bot-resource/portrait/" + id + "_1.png"));
             }
         }
         sendMsgUtil.CallOPQApiSendMyself("干员半身照更新完成\n--"
