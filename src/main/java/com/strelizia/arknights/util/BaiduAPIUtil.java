@@ -1,6 +1,9 @@
 package com.strelizia.arknights.util;
 
+import com.baidu.aip.http.AipRequest;
 import com.baidu.aip.ocr.AipOcr;
+import com.baidu.aip.ocr.OcrConsts;
+import com.baidu.aip.util.Base64Util;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import java.io.IOException;
@@ -8,12 +11,13 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
+import com.baidu.aip.client.BaseClient;
 
 /**
  * @author wangzy
  * @Date 2020/12/15 9:23
  **/
-public class BaiduAPIUtil {
+public class BaiduAPIUtil{
 
     /**
      * 单例实现
@@ -50,7 +54,7 @@ public class BaiduAPIUtil {
      */
     public String[] BaiduOCRGetTags(String url) {
         // 初始化一个AipOcr
-        AipOcr client = new AipOcr(APP_ID, API_KEY, SECRET_KEY);
+        MyApiOcr client = new MyApiOcr(APP_ID, API_KEY, SECRET_KEY);
 
         // 可选：设置网络连接参数
         client.setConnectionTimeoutInMillis(2000);
@@ -67,7 +71,7 @@ public class BaiduAPIUtil {
         List<String> allTag = Arrays.asList(all);
 
         // 调用接口
-        JSONObject res = client.basicGeneralUrl(url, new HashMap<>());
+        JSONObject res = client.basicAccurateGeneral(url, new HashMap<>());
         JSONArray words_result = new JSONArray(res.get("words_result").toString());
         List<String> str = new ArrayList<>();
         for (int i = 0; i < words_result.length(); i++) {
@@ -93,5 +97,30 @@ public class BaiduAPIUtil {
             }
         }
         return bytes;
+    }
+}
+
+class MyApiOcr extends BaseClient{
+    /**
+     * 我他妈直接重写百度的高精度sdk方法
+     * @param appId
+     * @param apiKey
+     * @param secretKey
+     */
+    protected MyApiOcr(String appId, String apiKey, String secretKey) {
+        super(appId, apiKey, secretKey);
+    }
+
+    public JSONObject basicAccurateGeneral(String url, HashMap<String, String> options) {
+        AipRequest request = new AipRequest();
+        preOperation(request);
+
+        request.addBody("url", url);
+        if (options != null) {
+            request.addBody(options);
+        }
+        request.setUri("https://aip.baidubce.com/rest/2.0/ocr/v1/accurate_basic");
+        postOperation(request);
+        return requestServer(request);
     }
 }
