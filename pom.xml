@@ -177,6 +177,13 @@
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-aop</artifactId>
         </dependency>
+        <dependency>
+            <groupId>it.sauronsoftware</groupId>
+            <artifactId>jave</artifactId>
+            <version>1.0.2.1</version>
+            <scope>system</scope>
+            <systemPath>${basedir}/jar/jave-1.0.2.jar</systemPath>
+        </dependency>
     </dependencies>
 
 

@@ -216,10 +216,10 @@ public class WebController {
      * 查询干员外号
      * @return
      */
-    @Token
+//    @Token
     @GetMapping("getNickName")
-    public JsonResult<List<NickName>> getNickName(@RequestParam Integer current) {
-        List<NickName> nickNames = nickNameMapper.selectAllNickName(10 * (current - 1));
+    public JsonResult<List<NickName>> getNickName(@RequestParam Integer current, @RequestParam(required = false, defaultValue = "%") String keyWord) {
+        List<NickName> nickNames = nickNameMapper.selectAllNickName(10 * (current - 1), keyWord);
         Integer count = nickNameMapper.selectAllNickNameCount();
         return JsonResult.success(nickNames, count);
     }

@@ -1,18 +1,16 @@
 package com.strelizia.arknights.util;
 
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.IOException;
+import java.io.*;
 
-import java.io.ByteArrayOutputStream;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.Arrays;
 
+import io.github.mzdluo123.silk4j.AudioUtils;
+import it.sauronsoftware.jave.AudioAttributes;
+import it.sauronsoftware.jave.Encoder;
+import it.sauronsoftware.jave.EncodingAttributes;
 
 public class MusicTranscodingUtil {
 
@@ -61,7 +59,48 @@ public class MusicTranscodingUtil {
         return data;
     }
 
-    public static void main(String[] args) {
-        convertAudioFiles("C:\\Users\\41245\\Downloads\\安洁莉娜_任命助理.wav","C:\\Users\\41245\\Downloads\\安洁莉娜_任命助理.pcm");
+    public static boolean wavToMp3(String inPath,String outFile){
+        boolean status=false;
+        File file=new File(inPath);
+        try {
+            execute(file,outFile);
+            status=true;
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return status;
+    }
+
+    /**
+     * 执行转化
+     *
+     * @param source
+     *            输入文件
+     * @param desFileName  目标文件名
+     * @return  转换之后文件
+     */
+    public static File execute(File source, String desFileName)
+            throws Exception {
+        File target = new File(desFileName);
+        AudioAttributes audio = new AudioAttributes();
+        audio.setCodec("libmp3lame");
+        audio.setBitRate(36000);
+        audio.setChannels(2);
+        audio.setSamplingRate(44100);
+        EncodingAttributes attrs = new EncodingAttributes();
+        attrs.setFormat("mp3");
+        attrs.setAudioAttributes(audio);
+        Encoder encoder = new Encoder();
+        encoder.encode(source, target, attrs);
+        return target;
+    }
+
+
+    public static void main(String[] args) throws IOException {
+        File mp3 = new File("F:\\MyProject\\ArknightsAPI\\target\\MP3tosilk\\test.mp3");
+        File newFile = new File("F:\\MyProject\\ArknightsAPI\\target\\MP3tosilk");
+        AudioUtils.init(newFile);
+        AudioUtils.mp3ToSilk(mp3);
+//        wavToMp3("C:\\Users\\41245\\Downloads\\安洁莉娜_任命助理.wav", "C:\\Users\\41245\\Downloads\\安洁莉娜_任命助理.mp3");
     }
 }

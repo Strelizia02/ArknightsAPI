@@ -1,6 +1,7 @@
 package com.strelizia.arknights.dao;
 
 import com.strelizia.arknights.model.NickName;
+import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 
@@ -14,7 +15,7 @@ import java.util.List;
 public interface NickNameMapper {
     String selectNameByNickName(String name);
 
-    List<NickName> selectAllNickName(Integer current);
+    List<NickName> selectAllNickName(@Param("current") Integer current, @Param("keyWord") String keyWord);
 
     Integer selectAllNickNameCount();
 
