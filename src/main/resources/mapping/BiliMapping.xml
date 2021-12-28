@@ -120,12 +120,12 @@
         select group_id from a_group_bili_rel where uid = #{uid}
     </select>
 
-    <select id="selectGroupByNotListenUid">
+    <select id="selectGroupByNotListenUid" resultType="java.lang.Long">
         select group_id from a_group_admin where group_id not in(
         select group_id from a_group_bili_rel where uid = #{uid}) and group_id like CONCAT('%',#{group_id},'%')
     </select>
 
-    <select id="getNotListenListByGroupId">
+    <select id="getNotListenListByGroupId" resultMap="BaseResultMap">
         SELECT
         uid,
         name,
