@@ -38,6 +38,7 @@
         FROM
             a_bili_dynamic
         WHERE name like CONCAT('%',#{name},'%')
+        or uid like CONCAT('%',#{name},'%')
         LIMIT 10 offset #{current}
     </select>
 
