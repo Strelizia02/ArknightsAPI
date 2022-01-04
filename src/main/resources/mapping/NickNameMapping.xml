@@ -29,6 +29,6 @@
 
     <insert id="insertNickName" parameterType="com.strelizia.arknights.model.NickName">
         insert into a_nick_name
-            values(#{nick_name}, #{name})
+            values(#{nickName}, #{name})
     </insert>
 </mapper>
