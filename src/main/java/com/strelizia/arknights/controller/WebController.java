@@ -164,8 +164,9 @@ public class WebController {
      */
     @Token
     @DeleteMapping("deleteAgentPool")
-    public void deleteAgentPool(@RequestParam String pool) {
-        agentMapper.deleteAgentPool(pool);
+    public JsonResult<Integer> deleteAgentPool(@RequestParam String pool) {
+        Integer integer = agentMapper.deleteAgentPool(pool);
+        return JsonResult.success(integer);
     }
 
 
