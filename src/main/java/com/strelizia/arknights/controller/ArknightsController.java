@@ -13,11 +13,12 @@ import lombok.extern.slf4j.Slf4j;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.scheduling.annotation.Async;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.util.DigestUtils;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
-import java.util.Random;
+import java.util.*;
 
 /**
  * @author wangzy
@@ -89,6 +90,9 @@ public class ArknightsController {
     @Autowired
     private ActivityMapper activityMapper;
 
+    private final Map<Long, List<Long>> qqMsgRateList = new HashMap<>();
+
+
     /**
      * 消息处理总控制器，用于接收消息，并处理分流到不同的service
      */
@@ -123,13 +127,22 @@ public class ArknightsController {
                 text = text.replace(" ", "\001");
             }
             if (text.startsWith("##") || text.startsWith("洁哥") || text.startsWith("杰哥")) {
+                //判断回复效率，以防和其他机器人互动死锁
+                if (getMsgLimit(qq, groupId, name)) {
                 String messages = text.substring(2);
                 return queryKeyword(qq, groupId, name, messages);
+                }
             } else if (text.startsWith("安洁莉娜")) {
-                String messages = text.substring(4);
-                return queryKeyword(qq, groupId, name, messages);
-            }else if (text.contains("洁哥") || text.contains("杰哥") ||text.contains("安洁莉娜")){
-                talkWith(text, groupId, name, qq);
+                //判断回复效率，以防和其他机器人互动死锁
+                if (getMsgLimit(qq, groupId, name)) {
+                    String messages = text.substring(4);
+                    return queryKeyword(qq, groupId, name, messages);
+                }
+            } else if (text.contains("洁哥") || text.contains("杰哥") || text.contains("安洁莉娜")) {
+                //判断回复效率，以防和其他机器人互动死锁
+                if (getMsgLimit(qq, groupId, name)) {
+                    talkWith(text, groupId, name, qq);
+                }
             }
         }
         return null;
@@ -624,5 +637,67 @@ public class ArknightsController {
             sendMsgUtil.CallOPQApiSendMsg(groupId, result, 2);
         }
         return result;
+    }
+
+    //消息回复限速机制
+    private boolean getMsgLimit(Long qq, Long groupId, String name){
+        boolean flag = true;
+        //每10秒限制三条消息,10秒内超过5条就不再提示
+        int length = 3;
+        int maxTips = 5;
+        int second = 10;
+        if (!qqMsgRateList.containsKey(qq)){
+            List<Long> msgList = new ArrayList<>(maxTips);
+            msgList.add(System.currentTimeMillis());
+            qqMsgRateList.put(qq, msgList);
+        }
+        List<Long> limit = qqMsgRateList.get(qq);
+        if (limit.size() <= length) {
+            //队列未满三条，直接返回消息
+            limit.add(System.currentTimeMillis());
+        }else {
+            if (getSecondDiff(limit.get(0), second)){
+                //队列长度超过三条，但是距离首条消息已经大于10秒
+                limit.remove(0);
+                //把后面两次提示的时间戳删掉
+                while (limit.size() > 3){
+                    limit.remove(3);
+                }
+                limit.add(System.currentTimeMillis());
+            }else {
+                if (limit.size() <= maxTips){
+                    //队列长度在3~5之间，并且距离首条消息不足10秒，发出提示
+                    log.warn("{}超出单人回复速率,{}", name, limit.size());
+                    sendMsgUtil.CallOPQApiSendMsg(groupId, name + "说话太快了，请稍后再试", 2);
+                    limit.add(System.currentTimeMillis());
+                }else {
+                    //队列长度等于5，直接忽略消息
+                    log.warn("{}连续请求,已拒绝消息", name);
+                }
+                flag = false;
+            }
+        }
+        //对队列进行垃圾回收
+        gcMsgLimitRate();
+
+        return flag;
+    }
+
+    public boolean getSecondDiff(Long timestamp, int second){
+        return (System.currentTimeMillis() - timestamp) / 1000 > second;
+    }
+
+    public void gcMsgLimitRate() {
+        //大于2048个队列的时候进行垃圾回收,大概占用24k
+        if (qqMsgRateList.size() > 2048){
+            log.warn("开始对消息速率队列进行回收，当前map长度为：{}", qqMsgRateList.size());
+            for (Map.Entry<Long, List<Long>> entry : qqMsgRateList.entrySet()) {
+                //回收所有超过30秒的会话
+                if (getSecondDiff(entry.getValue().get(0), 30)){
+                    qqMsgRateList.remove(entry.getKey());
+                }
+            }
+            log.info("消息速率队列回收结束，当前map长度为：{}", qqMsgRateList.size());
+        }
     }
 }
