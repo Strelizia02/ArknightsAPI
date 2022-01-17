@@ -689,14 +689,10 @@ public class ArknightsController {
 
     public void gcMsgLimitRate() {
         //大于2048个队列的时候进行垃圾回收,大概占用24k
-        if (qqMsgRateList.size() > 2048){
+        if (qqMsgRateList.size() > 0){
             log.warn("开始对消息速率队列进行回收，当前map长度为：{}", qqMsgRateList.size());
-            for (Map.Entry<Long, List<Long>> entry : qqMsgRateList.entrySet()) {
-                //回收所有超过30秒的会话
-                if (getSecondDiff(entry.getValue().get(0), 30)){
-                    qqMsgRateList.remove(entry.getKey());
-                }
-            }
+            //回收所有超过30秒的会话
+            qqMsgRateList.entrySet().removeIf(entry -> getSecondDiff(entry.getValue().get(0), 30));
             log.info("消息速率队列回收结束，当前map长度为：{}", qqMsgRateList.size());
         }
     }
