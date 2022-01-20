@@ -171,12 +171,12 @@ public class TagsFoundServiceImpl implements TagsfFoundService {
                 height += bf.getHeight();
             }
         }
-        File outputfile = new File("D://image.png");
-        try {
-            ImageIO.write(image, "png", outputfile);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+//        File outputfile = new File("D://image.png");
+//        try {
+//            ImageIO.write(image, "png", outputfile);
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//        }
         return replaceEnter(new BASE64Encoder().encode(TextToImage.imageToBytes(image)));
     }
 
