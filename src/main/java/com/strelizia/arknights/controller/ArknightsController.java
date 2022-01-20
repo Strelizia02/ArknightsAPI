@@ -13,8 +13,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.scheduling.annotation.Async;
-import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.util.DigestUtils;
 import org.springframework.web.bind.annotation.*;
 
@@ -118,10 +116,21 @@ public class ArknightsController {
                 //在json结构前添加关键字信息， 使用波浪线分隔，可以将图片内容和文字内容统一进行处理。
                 text = keyword + "\001" + text;
             } else if (text.startsWith("{\"FileID")) {
+                //上传文件返回文件的FileID，方便一键更新包
                 JSONObject jsonObj = new JSONObject(text);
                 String fileID = jsonObj.getString("FileID");
                 log.info("获取到文件Id为{}", fileID.substring(1));
                 sendMsgUtil.CallOPQApiSendMsg(groupId, fileID.substring(1), 2);
+            } else if (text.startsWith("{\"GroupPic")) {
+                //纯图片消息，只判断第一张
+                JSONObject jsonObj = new JSONObject(text).getJSONArray("GroupPic").getJSONObject(0);
+                String Url = jsonObj.getString("Url");
+                if(isUrlGongZhao(Url)){
+                    String result = tagsfFoundService.FoundAgentByJson(text);
+                    if (!result.equals("")) {
+                        sendMsgUtil.CallOPQApiSendMsg(groupId, result, 2);
+                    }
+                }
             } else {
                 //split("~")，以防图片信息中多余的空格导致的json结构破坏
                 text = text.replace(" ", "\001");
@@ -695,5 +704,13 @@ public class ArknightsController {
             qqMsgRateList.entrySet().removeIf(entry -> getSecondDiff(entry.getValue().get(0), 30));
             log.info("消息速率队列回收结束，当前map长度为：{}", qqMsgRateList.size());
         }
+    }
+
+    private boolean isUrlGongZhao(String url){
+        String dHash = DHashUtil.getDHash(url);
+        return DHashUtil.getHammingDistance(dHash,
+                "0001111110100110001111010010001100100011001001110010011100101101") < 5 ||
+                DHashUtil.getHammingDistance(dHash,
+                "0001111110100110001111010010001100110011001101110010011100101101") < 5;
     }
 }
