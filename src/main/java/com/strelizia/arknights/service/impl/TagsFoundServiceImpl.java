@@ -171,12 +171,12 @@ public class TagsFoundServiceImpl implements TagsfFoundService {
                 height += bf.getHeight();
             }
         }
-//        File outputfile = new File("D://image.png");
-//        try {
-//            ImageIO.write(image, "png", outputfile);
-//        } catch (IOException e) {
-//            e.printStackTrace();
-//        }
+        File outputfile = new File("D://image.png");
+        try {
+            ImageIO.write(image, "png", outputfile);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
         return replaceEnter(new BASE64Encoder().encode(TextToImage.imageToBytes(image)));
     }
 
@@ -188,7 +188,7 @@ public class TagsFoundServiceImpl implements TagsfFoundService {
      * @return
      */
     private BufferedImage drawPicByAgentList(String key, List<AgentTagsInfo> value, int star){
-        if(star == 3 || star == 2 || value.size() == 0){
+        if(star < 4 || value.size() == 0){
             return null;
         }
         Map<Integer, List<String>> integerListMap = groupByStar(value);
@@ -236,16 +236,6 @@ public class TagsFoundServiceImpl implements TagsfFoundService {
                 length++;
             }
         }
-        if (integerListMap.containsKey(1)){
-            g.setColor(Color.GRAY);
-            g.drawString("  ★", 0, 50 + 50 * length);
-            length++;
-            g.setColor(Color.BLACK);
-            for (String line: integerListMap.get(1)){
-                g.drawString("    " + line, 0, 50 + 50 * length);
-                length++;
-            }
-        }
 //        File outputfile = new File("D://" + System.currentTimeMillis() + ".png");
 //        try {
 //            ImageIO.write(image, "png", outputfile);
@@ -265,15 +255,12 @@ public class TagsFoundServiceImpl implements TagsfFoundService {
         List<String> six = new ArrayList<>();
         List<String> five = new ArrayList<>();
         List<String> four = new ArrayList<>();
-        List<String> one = new ArrayList<>();
         StringBuilder sixSb = new StringBuilder();
         StringBuilder fiveSb = new StringBuilder();
         StringBuilder fourSb = new StringBuilder();
-        StringBuilder oneSb = new StringBuilder();
         int i = 0;
         int j = 0;
         int k = 0;
-        int l = 0;
         for(AgentTagsInfo a: value){
             if(a.getStar() == 6){
                 if (i == 5) {
@@ -293,7 +280,7 @@ public class TagsFoundServiceImpl implements TagsfFoundService {
                 }
                 fiveSb.append(a.getAgentName()).append(",");
                 j++;
-            }else if(a.getStar() == 4){
+            }else if(a.getStar() == 4) {
                 if (k == 5) {
                     fourSb.deleteCharAt(fourSb.length() - 1);
                     four.add(fourSb.toString());
@@ -302,15 +289,6 @@ public class TagsFoundServiceImpl implements TagsfFoundService {
                 }
                 fourSb.append(a.getAgentName()).append(",");
                 k++;
-            }else if(a.getStar() == 1){
-                if (l == 5) {
-                    oneSb.deleteCharAt(oneSb.length() - 1);
-                    one.add(oneSb.toString());
-                    oneSb.delete(0, oneSb.length());
-                    l = 0;
-                }
-                oneSb.append(a.getAgentName()).append(",");
-                l++;
             }
         }
         if (fourSb.length() > 0) {
@@ -325,10 +303,6 @@ public class TagsFoundServiceImpl implements TagsfFoundService {
             sixSb.deleteCharAt(sixSb.length() - 1);
             six.add(sixSb.toString());
         }
-        if (oneSb.length() > 0) {
-            oneSb.deleteCharAt(oneSb.length() - 1);
-            one.add(oneSb.toString());
-        }
 
         if (six.size() > 0){
             result.put(6, six);
@@ -338,9 +312,6 @@ public class TagsFoundServiceImpl implements TagsfFoundService {
         }
         if (four.size() > 0){
             result.put(4, four);
-        }
-        if (one.size() > 0){
-            result.put(1, one);
         }
         return result;
     }
