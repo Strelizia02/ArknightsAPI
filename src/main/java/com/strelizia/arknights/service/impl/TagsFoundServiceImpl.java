@@ -171,6 +171,7 @@ public class TagsFoundServiceImpl implements TagsfFoundService {
                 height += bf.getHeight();
             }
         }
+        g.dispose();
 //        File outputfile = new File("D://image.png");
 //        try {
 //            ImageIO.write(image, "png", outputfile);
@@ -236,6 +237,7 @@ public class TagsFoundServiceImpl implements TagsfFoundService {
                 length++;
             }
         }
+        g.dispose();
 //        File outputfile = new File("D://" + System.currentTimeMillis() + ".png");
 //        try {
 //            ImageIO.write(image, "png", outputfile);
