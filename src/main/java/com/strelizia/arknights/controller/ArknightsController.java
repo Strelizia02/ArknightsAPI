@@ -446,7 +446,7 @@ public class ArknightsController {
                 result = "";
                 String base64 = tagsfFoundService.FoundAgentByJson(s[1]);
                 if (base64 != null) {
-                    sendMsgUtil.CallOPQApiSendImg(groupId, name, SendMsgUtil.picBase64Buf, result, 2);
+                    sendMsgUtil.CallOPQApiSendImg(groupId, name, SendMsgUtil.picBase64Buf, base64, 2);
                 }else {
                     result = "QAQ没有找到对应的稀有公招结果";
                 }
