@@ -30,8 +30,9 @@ public class DHashUtil {
 
         //文件转成9*8像素，为算法比较通用的长宽
         BufferedImage buffImg = new BufferedImage(9, 8, BufferedImage.TYPE_INT_RGB);
-        buffImg.getGraphics().drawImage(srcImage.getScaledInstance(9, 8, Image.SCALE_SMOOTH), 0, 0, null);
-
+        Graphics graphics = buffImg.getGraphics();
+        graphics.drawImage(srcImage.getScaledInstance(9, 8, Image.SCALE_SMOOTH), 0, 0, null);
+        graphics.dispose();
         int width = buffImg.getWidth();
         int height = buffImg.getHeight();
         int[][] grayPix = new int[width][height];
