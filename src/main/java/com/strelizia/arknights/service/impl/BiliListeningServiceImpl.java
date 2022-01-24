@@ -129,7 +129,7 @@ public class BiliListeningServiceImpl implements BiliListeningService {
                             for (Long groupId : groups) {
                                 sendMsgUtil.CallOPQApiSendImg(groupId, result, SendMsgUtil.picUrl, pic, 2);
                                 try {
-                                    Thread.sleep(3000);
+                                    Thread.sleep(1000);
                                 } catch (InterruptedException ignored) {
 
                                 }
