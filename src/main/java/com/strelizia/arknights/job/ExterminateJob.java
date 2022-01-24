@@ -29,7 +29,7 @@ public class ExterminateJob {
         List<Long> groups = userFoundMapper.selectAllGroups();
 
         for (Long groupId : groups) {
-                sendMsgUtil.CallOPQApiSendMsg(groupId, "我是本群剿灭小助手，今天是本周最后一天，博士不要忘记打剿灭哦❤\n道路千万条，剿灭第一条\n剿灭忘记打，博士两行泪\n洁哥主页：http://www.angelina-bot.top/", 2);
+                sendMsgUtil.CallOPQApiSendMsg(groupId, "我是本群剿灭小助手，今天是本周最后一天，博士不要忘记打剿灭哦❤\n道路千万条，剿灭第一条\n剿灭忘记打，博士两行泪\n洁哥主页：https://www.angelina-bot.top/", 2);
             try {
                 Thread.sleep(2000);
             }catch (InterruptedException ignored){

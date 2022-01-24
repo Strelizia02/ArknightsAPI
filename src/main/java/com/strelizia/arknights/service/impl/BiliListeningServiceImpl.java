@@ -119,7 +119,7 @@ public class BiliListeningServiceImpl implements BiliListeningService {
                             for (Long groupId : groups) {
                                 sendMsgUtil.CallOPQApiSendMsg(groupId, result, 2);
                                 try {
-                                    Thread.sleep(3000);
+                                    Thread.sleep(1000);
                                 } catch (InterruptedException ignored) {
 
                                 }

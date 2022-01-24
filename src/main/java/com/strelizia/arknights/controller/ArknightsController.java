@@ -108,6 +108,7 @@ public class ArknightsController {
             Long groupId = message.getGroupId();
             String name = message.getName();
             String text = message.getText();
+            message = null;
             //这样开头的消息是图片消息
             if (text.startsWith("{\"Content")) {
                 JSONObject jsonObj = new JSONObject(text);
@@ -681,7 +682,7 @@ public class ArknightsController {
 
     public void gcMsgLimitRate() {
         //大于2048个队列的时候进行垃圾回收,大概占用24k
-        if (qqMsgRateList.size() > 2048){
+        if (qqMsgRateList.size() > 256){
             log.warn("开始对消息速率队列进行回收，当前map长度为：{}", qqMsgRateList.size());
             //回收所有超过30秒的会话
             qqMsgRateList.entrySet().removeIf(entry -> getSecondDiff(entry.getValue().get(0), 30));
