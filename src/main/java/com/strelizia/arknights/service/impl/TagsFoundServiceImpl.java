@@ -237,6 +237,16 @@ public class TagsFoundServiceImpl implements TagsfFoundService {
                 length++;
             }
         }
+        if (integerListMap.containsKey(1)){
+            g.setColor(Color.GRAY);
+            g.drawString("  ★", 0, 50 + 50 * length);
+            length++;
+            g.setColor(Color.BLACK);
+            for (String line: integerListMap.get(1)){
+                g.drawString("    " + line, 0, 50 + 50 * length);
+                length++;
+            }
+        }
         g.dispose();
 //        File outputfile = new File("D://" + System.currentTimeMillis() + ".png");
 //        try {
@@ -257,12 +267,15 @@ public class TagsFoundServiceImpl implements TagsfFoundService {
         List<String> six = new ArrayList<>();
         List<String> five = new ArrayList<>();
         List<String> four = new ArrayList<>();
+        List<String> seven = new ArrayList<>();
         StringBuilder sixSb = new StringBuilder();
         StringBuilder fiveSb = new StringBuilder();
         StringBuilder fourSb = new StringBuilder();
+        StringBuilder sevenSb = new StringBuilder();
         int i = 0;
         int j = 0;
         int k = 0;
+        int m = 0;
         for(AgentTagsInfo a: value){
             if(a.getStar() == 6){
                 if (i == 5) {
@@ -291,6 +304,15 @@ public class TagsFoundServiceImpl implements TagsfFoundService {
                 }
                 fourSb.append(a.getAgentName()).append(",");
                 k++;
+            }else if(a.getStar() == 1) {
+                if (m == 5) {
+                    sevenSb.deleteCharAt(sevenSb.length() - 1);
+                    seven.add(sevenSb.toString());
+                    sevenSb.delete(0, sevenSb.length());
+                    k = 0;
+                }
+                sevenSb.append(a.getAgentName()).append(",");
+                m++;
             }
         }
         if (fourSb.length() > 0) {
@@ -305,6 +327,10 @@ public class TagsFoundServiceImpl implements TagsfFoundService {
             sixSb.deleteCharAt(sixSb.length() - 1);
             six.add(sixSb.toString());
         }
+        if (sevenSb.length() > 0) {
+            sevenSb.deleteCharAt(sevenSb.length() - 1);
+            seven.add(sevenSb.toString());
+        }
 
         if (six.size() > 0){
             result.put(6, six);
@@ -314,6 +340,9 @@ public class TagsFoundServiceImpl implements TagsfFoundService {
         }
         if (four.size() > 0){
             result.put(4, four);
+        }
+        if (seven.size() > 0){
+            result.put(1, seven);
         }
         return result;
     }
@@ -325,8 +354,12 @@ public class TagsFoundServiceImpl implements TagsfFoundService {
             return 0;
         }
         for (AgentTagsInfo a: list){
-            if (a.getStar() < result){
-                result = a.getStar();
+            int star = a.getStar();
+            if (star == 1){
+                star = 7;
+            }
+            if (star < result){
+                result = star;
             }
         }
         return result;
