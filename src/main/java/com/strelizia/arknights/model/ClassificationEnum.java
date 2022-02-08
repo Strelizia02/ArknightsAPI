@@ -61,5 +61,7 @@ public enum ClassificationEnum {
     MoZuChaXun,
     GuanZhu,
     QuXiaoGuanZhu,
-    XianLiao
+    XianLiao,
+    JiangPaiBang,
+    XIAOXI;
 }

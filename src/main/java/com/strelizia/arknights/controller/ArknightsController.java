@@ -10,11 +10,16 @@ import com.strelizia.arknights.model.ModelCountInfo;
 import com.strelizia.arknights.service.*;
 import com.strelizia.arknights.util.*;
 import lombok.extern.slf4j.Slf4j;
+import org.json.JSONArray;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpMethod;
 import org.springframework.util.DigestUtils;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.client.RestTemplate;
 
 import java.util.*;
 
@@ -84,6 +89,9 @@ public class ArknightsController {
 
     @Autowired
     private BeastUtil beastUtil;
+
+    @Autowired
+    protected RestTemplate restTemplate;
 
     @Autowired
     private ActivityMapper activityMapper;
@@ -255,7 +263,7 @@ public class ArknightsController {
                                 "6.精英化材料查询：{##精一材料 干员名}或{精二材料 干员名}\n" +
                                 "7.查询材料合成路线：{##合成路线 材料名}\n" +
                                 "8.查询材料掉落关卡：{##材料获取 材料名}\n" +
-                                "9.公招结果查询：{##公招截图 [图片]}\n" +
+                                "9.公招结果查询：{##公招截图 [图片]}，单发图片洁哥可以自动识别公招截图，如果识别失败再使用指令\n" +
                                 "10.公开招募tag组合查询：{##公开招募 [tag1],[tag2]}\n" +
                                 "11.涩图功能：{##涩图 [编号]} --涩图会导致洁哥封号，已停用\n" +
                                 "12.上传涩图：{##给你涩图[图片]}或私聊{[图片]} --涩图会导致洁哥封号，已停用\n" +
@@ -286,7 +294,8 @@ public class ArknightsController {
                                 "36.源码查询：{##源码}\n" +
                                 "37.兽音解密：{##兽音解密}\n" +
                                 "38.兽音加密：{##兽音加密}\n" +
-                                "39.模组查询：{##模组查询 [干员名]}" +
+                                "39.模组查询：{##模组查询 [干员名]}\n" +
+                                "40.关注/取消关注：{##关注 [uid]}/{##取消关注 [uid]}\n" +
                                 "过大的涩图将导致回复缓慢，请不要上传不能过审的图片";
                 break;
             case XiangXiCaiDan:
@@ -320,6 +329,7 @@ public class ArknightsController {
                                 "\t例2：##材料获取 研磨石-all\n" +
                                 "9.公招结果查询：\n" +
                                 "\t使用方法：输入{##公招截图 [图片]}，自动识图并返回结果\n" +
+                                "\t单发图片洁哥可以自动识别公招截图，如果识别失败再使用指令\n" +
                                 "10.公开招募tag组合查询：\n" +
                                 "\t使用方法：输入{##公开招募 [tag1],[tag2]}\n" +
                                 "\t例：##公开招募 爆发,近战位,高级资深干员\n" +
@@ -411,6 +421,9 @@ public class ArknightsController {
                                 "39.模组查询：\n" +
                                 "\t使用方法：{##模组查询 [干员名]}\n" +
                                 "\t例：{##模组查询 麦哲伦}\n" +
+                                "40.关注/取消关注\n" +
+                                "\t使用方法：{##关注 [uid]}/{##取消关注 [uid]}\n" +
+                                "\t无权限的情况请联系开发者索要权限\n" +
                                 "注：本项目需严格按照格式输入，自然语言处理功能将在后期优化";
                 break;
             case ShiLian:
@@ -621,6 +634,26 @@ public class ArknightsController {
                 break;
             case XianLiao:
                 result = talkWith(text, groupId, name, qq);
+                break;
+            case JiangPaiBang:
+                StringBuilder stringBuilder = new StringBuilder("排名\t国家\t金牌\t银牌\t铜牌\n");
+                JSONArray medalsRank = new JSONObject(
+                        restTemplate.getForObject(
+                                "https://app.sports.qq.com/m/oly/medalsRank?seasonID=2022&callback=jQuery19006330078021719667_1644122210304&_=1644122210305",
+                                String.class)).getJSONObject("data").getJSONArray("list");
+                for(int i = 0; i < 10; i++){
+                    stringBuilder.append(i + 1)
+                            .append("\t").append(medalsRank.getJSONObject(i).getString("nocName"))
+                            .append("\t").append(medalsRank.getJSONObject(i).getString("gold"))
+                            .append("\t").append(medalsRank.getJSONObject(i).getString("silver"))
+                            .append("\t").append(medalsRank.getJSONObject(i).getString("bronze"))
+                            .append("\n");
+                }
+                result = stringBuilder.toString();
+                break;
+            case XIAOXI:
+                result = "";
+                log.info(qqMsgRateList.toString());
                 break;
             default:
                 result = "";

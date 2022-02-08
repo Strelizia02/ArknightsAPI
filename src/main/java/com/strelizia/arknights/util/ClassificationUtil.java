@@ -225,6 +225,12 @@ public class ClassificationUtil {
         map.put("取消关注", QuXiaoGuanZhu);
         map.put("取关", QuXiaoGuanZhu);
 
+        map.put("奖牌榜", JiangPaiBang);
+        map.put("冬奥奖牌榜", JiangPaiBang);
+        map.put("冬奥", JiangPaiBang);
+
+        map.put("消息队列", XIAOXI);
+
         return map.getOrDefault(s, XianLiao);
     }
 }
