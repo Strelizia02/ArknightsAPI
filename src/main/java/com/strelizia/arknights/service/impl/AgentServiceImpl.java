@@ -153,8 +153,10 @@ public class AgentServiceImpl implements AgentService {
             g.drawString("结果仅供参考，详细代码请见：", 470, 420);
             g.drawString("http://www.angelina-bot.top/", 470, 440);
             g.dispose();
+            String imgUrl = replaceEnter(new BASE64Encoder().encode(TextToImage.imageToBytes(image)));
+            image = null;
             sendMsgUtil.CallOPQApiSendImg(groupId, "[ATUSER(" + qq + ")]", SendMsgUtil.picBase64Buf,
-                    replaceEnter(new BASE64Encoder().encode(TextToImage.imageToBytes(image))), 2);
+                    imgUrl, 2);
 //            File outputfile = new File("D://image.png");
 //
 //            try {

@@ -55,6 +55,7 @@ public class DHashUtil {
                 }
             }
         }
+        buffImg = null;
         return figure.toString();
     }
 
@@ -84,12 +85,12 @@ public class DHashUtil {
     }
 
     //DHashUtil 参数值为待处理文件夹
-    public static void main(String[] args) {
-        String dHash1 = getDHash("http://gchat.qpic.cn/gchatpic_new/412459523/901158551-2534335053-31F9DEF76F48683FDFBBE58CB129F85B/0?vuin=2398095263&term=255&pictype=0");
-        System.out.println("图片1hash值："+ dHash1);
-        String dHash2 = getDHash("http://gchat.qpic.cn/gchatpic_new/412459523/901158551-2534335053-502A7BE94A252EC7FC7B6E497AA2DDE2/0?vuin=3022645754\\u0026term=255\\u0026pictype=0");
-        System.out.println("图片2hash值："+ dHash2);
-        getHammingDistance(dHash1, "0001111110100110001111010010001100100011001001110010011100101101");
-        getHammingDistance(dHash2, "0001111110100110001111010010001100110011001101110010011100101101");
-    }
+//    public static void main(String[] args) {
+//        String dHash1 = getDHash("http://gchat.qpic.cn/gchatpic_new/412459523/901158551-2534335053-31F9DEF76F48683FDFBBE58CB129F85B/0?vuin=2398095263&term=255&pictype=0");
+//        System.out.println("图片1hash值："+ dHash1);
+//        String dHash2 = getDHash("http://gchat.qpic.cn/gchatpic_new/412459523/901158551-2534335053-502A7BE94A252EC7FC7B6E497AA2DDE2/0?vuin=3022645754\\u0026term=255\\u0026pictype=0");
+//        System.out.println("图片2hash值："+ dHash2);
+//        getHammingDistance(dHash1, "0001111110100110001111010010001100100011001001110010011100101101");
+//        getHammingDistance(dHash2, "0001111110100110001111010010001100110011001101110010011100101101");
+//    }
 }

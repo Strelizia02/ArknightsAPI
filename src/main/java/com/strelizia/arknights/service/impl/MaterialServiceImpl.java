@@ -213,8 +213,10 @@ public class MaterialServiceImpl implements MaterialService {
                 g.drawString(matrix.getMaterialName() + "\t掉率：" + matrix.getRate() + "%\t测试次数：" + matrix.getTimes() + "\t掉落个数：" + matrix.getQuantity(), 50, (i + 2) * 50);
             }
             g.dispose();
+            String imgUrl = replaceEnter(new BASE64Encoder().encode(TextToImage.imageToBytes(image)));
+            image = null;
             sendMsgUtil.CallOPQApiSendImg(groupId, "[ATUSER(" + qq + ")]", SendMsgUtil.picBase64Buf,
-                    replaceEnter(new BASE64Encoder().encode(TextToImage.imageToBytes(image))), 2);
+                    imgUrl, 2);
         }
         return "";
     }
@@ -264,7 +266,9 @@ public class MaterialServiceImpl implements MaterialService {
             g.drawString(m.getMaterialName() + " * " + m.getMaterialNum() + "个", 100, (i + 2) * 100);
         }
         g.dispose();
+        String imgUrl = replaceEnter(new BASE64Encoder().encode(TextToImage.imageToBytes(image)));
+        image = null;
         sendMsgUtil.CallOPQApiSendImg(groupId, "[ATUSER(" + qq + ")]", SendMsgUtil.picBase64Buf,
-                replaceEnter(new BASE64Encoder().encode(TextToImage.imageToBytes(image))), 2);
+                imgUrl, 2);
     }
 }

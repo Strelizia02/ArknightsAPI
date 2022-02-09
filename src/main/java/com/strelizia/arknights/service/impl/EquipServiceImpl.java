@@ -151,7 +151,9 @@ public class EquipServiceImpl implements EquipService {
 //        } catch (IOException e) {
 //            e.printStackTrace();
 //        }
+        String imgUrl = replaceEnter(new BASE64Encoder().encode(TextToImage.imageToBytes(image)));
+        image = null;
         sendMsgUtil.CallOPQApiSendImg(groupId, "[ATUSER(" + qq + ")]", SendMsgUtil.picBase64Buf,
-                replaceEnter(new BASE64Encoder().encode(TextToImage.imageToBytes(image))), 2);
+                imgUrl, 2);
     }
 }

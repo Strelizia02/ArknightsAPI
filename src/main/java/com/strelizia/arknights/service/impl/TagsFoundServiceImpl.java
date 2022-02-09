@@ -178,7 +178,9 @@ public class TagsFoundServiceImpl implements TagsfFoundService {
 //        } catch (IOException e) {
 //            e.printStackTrace();
 //        }
-        return replaceEnter(new BASE64Encoder().encode(TextToImage.imageToBytes(image)));
+        String s = replaceEnter(new BASE64Encoder().encode(TextToImage.imageToBytes(image)));
+        image = null;
+        return s;
     }
 
     /**

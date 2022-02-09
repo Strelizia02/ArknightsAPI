@@ -61,8 +61,9 @@ public class TextToImage {
             }
         }
         g.dispose();
-        BASE64Encoder decoder = new BASE64Encoder();
-        return replaceEnter(decoder.encode(imageToBytes(image)));
+        String s = replaceEnter(new BASE64Encoder().encode(imageToBytes(image)));
+        image = null;
+        return s;
     }
 
     /**

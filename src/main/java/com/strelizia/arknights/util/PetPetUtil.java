@@ -12,7 +12,6 @@ import java.awt.image.BufferedImage;
 import java.io.*;
 import java.util.Objects;
 
-import static com.strelizia.arknights.util.ImageUtil.replaceEnter;
 
 
 @Component
