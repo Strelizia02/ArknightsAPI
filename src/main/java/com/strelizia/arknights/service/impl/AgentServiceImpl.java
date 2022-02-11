@@ -260,7 +260,7 @@ public class AgentServiceImpl implements AgentService {
             }
             s = pool + "池：\n" + FoundAgentByNum(count, pool, qq, sum, name, groupId);
         }
-        return "[ATUSER(" + qq + ")]" + s;
+        return s;
     }
 
     /**
