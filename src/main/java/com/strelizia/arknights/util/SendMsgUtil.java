@@ -163,19 +163,17 @@ public class SendMsgUtil {
     public void CallOPQApiSendMsg(Long groupId, String s, Integer sendToType) {
         activityMapper.insertSendMsg();
         // TODO 临时去掉艾特功能
-        Pattern pattern1 = Pattern.compile("\\[ATUSER\\([0-9]*\\)]");
-        String str1 = s;
-        Matcher matcher1 = pattern1.matcher(str1);
-        if (matcher1.find())
-        {
-            str1 = matcher1.replaceAll("");
-        }
-        String finalStr = str1;
+//        Pattern pattern1 = Pattern.compile("\\[ATUSER\\([0-9]*\\)]");
+        //        Matcher matcher1 = pattern1.matcher(str1);
+//        if (matcher1.find())
+//        {
+//            str1 = matcher1.replaceAll("");
+//        }
         poolTaskExecutor.execute(() -> {
             try {
                 String atUser = null;
                 Pattern pattern = Pattern.compile("\\[ATUSER\\([0-9]*\\)]");
-                String str = finalStr;
+                String str = s;
                 Matcher matcher = pattern.matcher(str);
                 if (matcher.find())
                 {
@@ -193,7 +191,7 @@ public class SendMsgUtil {
                                 "http://" + OPQUrl + ":8888" + sendTextMsgApi + "?qq=" + loginQq + "&funcname=SendMsgV2", sendToType);
                     }
                 } else {
-                    sendTextMsgToGroup(restTemplate, groupId, finalStr,
+                    sendTextMsgToGroup(restTemplate, groupId, s,
                             "http://" + OPQUrl + ":8888" + sendTextMsgApi + "?qq=" + loginQq + "&funcname=SendMsgV2", sendToType);
                 }
             } catch (Exception e) {
@@ -214,16 +212,14 @@ public class SendMsgUtil {
     public void CallOPQApiSendImg(Long groupId, String s, String picType, String imgUrl, Integer sendToType) {
         activityMapper.insertSendPic();
         // TODO 临时去掉艾特功能
-        Pattern pattern = Pattern.compile("\\[ATUSER\\([0-9]*\\)]");
-        String str = s;
-        if(s != null) {
-            Matcher matcher = pattern.matcher(str);
-            if (matcher.find()) {
-                str = matcher.replaceAll("");
-            }
-        }
-        String finalStr = str;
-        poolTaskExecutor.execute(() -> sendTextImgToGroup(restTemplate, groupId, finalStr, picType, imgUrl,
+//        Pattern pattern = Pattern.compile("\\[ATUSER\\([0-9]*\\)]");
+        //        if(s != null) {
+//            Matcher matcher = pattern.matcher(str);
+//            if (matcher.find()) {
+//                str = matcher.replaceAll("");
+//            }
+//        }
+        poolTaskExecutor.execute(() -> sendTextImgToGroup(restTemplate, groupId, s, picType, imgUrl,
                 "http://" + OPQUrl + ":8888" + sendTextMsgApi + "?qq=" + loginQq + "&funcname=SendMsgV2", sendToType));
         log.info("发送消息图片+文字{}成功", s);
     }
@@ -237,15 +233,13 @@ public class SendMsgUtil {
 
     public void CallOPQApiSendMyself(String s) {
         // TODO 临时去掉艾特功能
-        Pattern pattern = Pattern.compile("\\[ATUSER\\([0-9]*\\)]");
-        String str = s;
-        Matcher matcher = pattern.matcher(str);
-        if (matcher.find())
-        {
-            str = matcher.replaceAll("");
-        }
-        String finalStr = str;
-        poolTaskExecutor.execute(() -> sendTextMsgToGroup(restTemplate, loginQq, finalStr,
+//        Pattern pattern = Pattern.compile("\\[ATUSER\\([0-9]*\\)]");
+        //        Matcher matcher = pattern.matcher(str);
+//        if (matcher.find())
+//        {
+//            str = matcher.replaceAll("");
+//        }
+        poolTaskExecutor.execute(() -> sendTextMsgToGroup(restTemplate, loginQq, s,
                 "http://" + OPQUrl + ":8888" + sendTextMsgApi + "?qq=" + loginQq + "&funcname=SendMsgV2", 1));
     }
 
