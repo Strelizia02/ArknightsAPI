@@ -72,7 +72,7 @@ public class DHashUtil {
     public static long getHammingDistance(String str1, String str2) {
         int distance;
         if (str1 == null || str2 == null || str1.length() != str2.length()) {
-            distance = -1;
+            distance = 1000;//如果是null就直接设置为1000，视为不同图片
         } else {
             distance = 0;
             for (int i = 0; i < str1.length(); i++) {
@@ -85,12 +85,19 @@ public class DHashUtil {
     }
 
     //DHashUtil 参数值为待处理文件夹
-//    public static void main(String[] args) {
-//        String dHash1 = getDHash("http://gchat.qpic.cn/gchatpic_new/412459523/901158551-2534335053-31F9DEF76F48683FDFBBE58CB129F85B/0?vuin=2398095263&term=255&pictype=0");
-//        System.out.println("图片1hash值："+ dHash1);
-//        String dHash2 = getDHash("http://gchat.qpic.cn/gchatpic_new/412459523/901158551-2534335053-502A7BE94A252EC7FC7B6E497AA2DDE2/0?vuin=3022645754\\u0026term=255\\u0026pictype=0");
-//        System.out.println("图片2hash值："+ dHash2);
-//        getHammingDistance(dHash1, "0001111110100110001111010010001100100011001001110010011100101101");
-//        getHammingDistance(dHash2, "0001111110100110001111010010001100110011001101110010011100101101");
-//    }
+    public static void main(String[] args) {
+        String dHash1 = getDHash("http://gchat.qpic.cn/gchatpic_new/1604831024/691029037-2534335053-6A0263C648D33AC31B3178B8C1591694/0?vuin=3022645754\\u0026term=255\\u0026pictype=0");
+        System.out.println("图片1hash值："+ dHash1);
+        String dHash2 = getDHash("http://gchat.qpic.cn/gchatpic_new/3421351452/691029037-2534335053-C9808E123068840D81D152AED3F4E420/0?vuin=3022645754\\u0026term=255\\u0026pictype=0");
+        System.out.println("图片2hash值："+ dHash2);
+        long hamming11 = getHammingDistance(null, "0001111110100110001111010010001100100011001001110010011100101101");
+        long hamming12 = getHammingDistance(null, "0001111101100111001101010110001101110011001001110010011100101111");
+
+        long hamming21 = getHammingDistance(dHash2, "0001111110100110001111010010001100100011001001110010011100101101");
+        long hamming22 = getHammingDistance(dHash2, "0001111101100111001101010110001101110011001001110010011100101111");
+        System.out.println("图片1海明1距离："+ hamming11);
+        System.out.println("图片1海明2距离："+ hamming12);
+        System.out.println("图片2海明1距离："+ hamming21);
+        System.out.println("图片2海明2距离："+ hamming22);
+    }
 }
