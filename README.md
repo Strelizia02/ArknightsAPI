@@ -1,3 +1,5 @@
+# 自2022.4起，因架构设计不合理，本项目停止更新。重构项目分为两部分：[AngelinaFrame](https://github.com/Strelizia02/AngelinaFrame)负责与QQ进行交互，[AngelinaBot](https://github.com/Strelizia02/AngelinaBot)负责业务逻辑实现。
+
 # 警告！！
 
 **本项目中包含：**
